@@ -36,7 +36,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_one" value="Belum ada"
                                         id="question_one1"
-                                        {{ old('question_one', $pillarOne->question_one) == 'Belum ada' ? 'checked' : '' }}>
+                                        {{ old('question_one', $pillarOne->question_one ?? '') == 'Belum ada' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_one1">
                                         Belum ada
                                     </label>
@@ -45,7 +45,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_one"
                                         id="question_one2" value="Ada, hanya pelaporan dokumen"
-                                        {{ old('question_one', $pillarOne->question_one) == 'Ada, hanya pelaporan dokumen' ? 'checked' : '' }}>
+                                        {{ old('question_one', $pillarOne->question_one ?? '') == 'Ada, hanya pelaporan dokumen' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_one2">
                                         Ada, hanya pelaporan dokumen
                                     </label>
@@ -54,7 +54,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_one"
                                         id="question_one3" value="Ada, rapat tidak rutin dan pelaporan dokumen"
-                                        {{ old('question_one', $pillarOne->question_one) == 'Ada, rapat tidak rutin dan pelaporan dokumen' ? 'checked' : '' }}>
+                                        {{ old('question_one', $pillarOne->question_one ?? '') == 'Ada, rapat tidak rutin dan pelaporan dokumen' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_one3">
                                         Ada, rapat tidak rutin dan pelaporan dokumen
                                     </label>
@@ -63,7 +63,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_one"
                                         id="question_one4" value="Ada, rapat rutin dan pelaporan dokumen"
-                                        {{ old('question_one', $pillarOne->question_one) == 'Ada, rapat rutin dan pelaporan dokumen' ? 'checked' : '' }}>
+                                        {{ old('question_one', $pillarOne->question_one ?? '') == 'Ada, rapat rutin dan pelaporan dokumen' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_one4">
                                         Ada, rapat rutin dan pelaporan dokumen
                                     </label>
@@ -74,13 +74,13 @@
                                 @enderror
                             </div>
 
-                            <div class="{{ $pillarOne->file_question_one ? 'mb-2' : 'mb-3' }}">
+                            <div class="{{ $pillarOne && $pillarOne->file_question_one ? 'mb-2' : 'mb-3' }}">
                                 <label for="file_question_one" class="form-label fw-medium">Dokumen Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_one"
                                     name="file_question_one">
                             </div>
 
-                            @if ($pillarOne->file_question_one)
+                            @if ($pillarOne && $pillarOne->file_question_one)
                                 <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
@@ -98,7 +98,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_two" value="Belum ada"
                                         id="question_two1"
-                                        {{ old('question_two', $pillarOne->question_two) == 'Belum ada' ? 'checked' : '' }}>
+                                        {{ old('question_two', $pillarOne->question_two ?? '') == 'Belum ada' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_two1">
                                         Belum ada
                                     </label>
@@ -108,7 +108,7 @@
                                     <input class="form-check-input" type="radio" name="question_two"
                                         value="Kegiatan yang melibatkan sebagian kecil karyawan (kurang dari 30%)"
                                         id="question_two2"
-                                        {{ old('question_two', $pillarOne->question_two) == 'Kegiatan yang melibatkan sebagian kecil karyawan (kurang dari 30%)' ? 'checked' : '' }}>
+                                        {{ old('question_two', $pillarOne->question_two ?? '') == 'Kegiatan yang melibatkan sebagian kecil karyawan (kurang dari 30%)' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_two2">
                                         Kegiatan yang melibatkan sebagian kecil karyawan (kurang dari 30%)
                                     </label>
@@ -118,7 +118,7 @@
                                     <input class="form-check-input" type="radio" name="question_two"
                                         value="Kegiatan yang melibatkan sebagian besar karyawan (lebih dari 70%)"
                                         id="question_two3"
-                                        {{ old('question_two', $pillarOne->question_two) == 'Kegiatan yang melibatkan sebagian besar karyawan (lebih dari 70%)' ? 'checked' : '' }}>
+                                        {{ old('question_two', $pillarOne->question_two ?? '') == 'Kegiatan yang melibatkan sebagian besar karyawan (lebih dari 70%)' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_two3">
                                         Kegiatan yang melibatkan sebagian besar karyawan (lebih dari 70%)
                                     </label>
@@ -128,7 +128,7 @@
                                     <input class="form-check-input" type="radio" name="question_two"
                                         value="Kegiatan yang melibatkan sebagian besar karyawan dan masyarakat"
                                         id="question_two4"
-                                        {{ old('question_two', $pillarOne->question_two) == 'Kegiatan yang melibatkan sebagian besar karyawan dan masyarakat' ? 'checked' : '' }}>
+                                        {{ old('question_two', $pillarOne->question_two ?? '') == 'Kegiatan yang melibatkan sebagian besar karyawan dan masyarakat' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_two4">
                                         Kegiatan yang melibatkan sebagian besar karyawan dan masyarakat
                                     </label>
@@ -139,7 +139,7 @@
                                 @enderror
                             </div>
 
-                            <div class="{{ $pillarOne->file_question_two_one ? 'mb-2' : 'mb-3' }}">
+                            <div class="{{ $pillarOne && $pillarOne->file_question_two_one ? 'mb-2' : 'mb-3' }}">
                                 <label for="file_question_two_one" class="form-label fw-medium">Dokumen SK
                                     kepengurusan
                                     DKM
@@ -148,7 +148,7 @@
                                     name="file_question_two_one">
                             </div>
 
-                            @if ($pillarOne->file_question_two_one)
+                            @if ($pillarOne && $pillarOne->file_question_two_one)
                                 <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
@@ -158,14 +158,14 @@
                                 </div>
                             @endif
 
-                            <div class="{{ $pillarOne->file_question_two_two ? 'mb-2' : 'mb-3' }}">
+                            <div class="{{ $pillarOne && $pillarOne->file_question_two_two ? 'mb-2' : 'mb-3' }}">
                                 <label for="file_question_two_two" class="form-label fw-medium">Dokumen program kerja
                                     dan anggaran yang sudah disetujui oleh manajemen</label>
                                 <input class="form-control" type="file" id="file_question_two_two"
                                     name="file_question_two_two">
                             </div>
 
-                            @if ($pillarOne->file_question_two_two)
+                            @if ($pillarOne && $pillarOne->file_question_two_two)
                                 <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
@@ -175,14 +175,14 @@
                                 </div>
                             @endif
 
-                            <div class="{{ $pillarOne->file_question_two_three ? 'mb-2' : 'mb-3' }}">
+                            <div class="{{ $pillarOne && $pillarOne->file_question_two_three ? 'mb-2' : 'mb-3' }}">
                                 <label for="file_question_two_three" class="form-label fw-medium">Dokumen penunjang
                                     lainnya(foto & notulensi rapat,dll)</label>
                                 <input class="form-control" type="file" id="file_question_two_three"
                                     name="file_question_two_three">
                             </div>
 
-                            @if ($pillarOne->file_question_two_three)
+                            @if ($pillarOne && $pillarOne->file_question_two_three)
                                 <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
@@ -208,7 +208,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_three"
                                         value="Belum ada" id="question_three1"
-                                        {{ old('question_three', $pillarOne->question_three) == 'Belum ada' ? 'checked' : '' }}>
+                                        {{ old('question_three', $pillarOne->question_three ?? '') == 'Belum ada' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_three1">
                                         Belum ada
                                     </label>
@@ -217,7 +217,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_three"
                                         value="Ada, rutin update per bulan" id="question_three2"
-                                        {{ old('question_three', $pillarOne->question_three) == 'Ada, rutin update per bulan' ? 'checked' : '' }}>
+                                        {{ old('question_three', $pillarOne->question_three ?? '') == 'Ada, rutin update per bulan' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_three2">
                                         Ada, rutin update per bulan
                                     </label>
@@ -226,7 +226,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_three"
                                         value="Ada, rutin update per minggu" id="question_three3"
-                                        {{ old('question_three', $pillarOne->question_three) == 'Ada, rutin update per minggu' ? 'checked' : '' }}>
+                                        {{ old('question_three', $pillarOne->question_three ?? '') == 'Ada, rutin update per minggu' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_three3">
                                         Ada, rutin update per minggu
                                     </label>
@@ -235,7 +235,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_three"
                                         value="Ada, rutin update per hari" id="question_three4"
-                                        {{ old('question_three', $pillarOne->question_three) == 'Ada, rutin update per hari' ? 'checked' : '' }}>
+                                        {{ old('question_three', $pillarOne->question_three ?? '') == 'Ada, rutin update per hari' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_three4">
                                         Ada, rutin update per hari
                                     </label>
@@ -246,14 +246,14 @@
                                 @enderror
                             </div>
 
-                            <div class="{{ $pillarOne->file_question_three ? 'mb-2' : 'mb-3' }}">
+                            <div class="{{ $pillarOne && $pillarOne->file_question_three ? 'mb-2' : 'mb-3' }}">
                                 <label for="file_question_three" class="form-label fw-medium">Dokumen
                                     Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_three"
                                     name="file_question_three">
                             </div>
 
-                            @if ($pillarOne->file_question_three)
+                            @if ($pillarOne && $pillarOne->file_question_three)
                                 <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
@@ -271,7 +271,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_four"
                                         value="Update per minggu" id="question_four1"
-                                        {{ old('question_four', $pillarOne->question_four) == 'Update per minggu' ? 'checked' : '' }}>
+                                        {{ old('question_four', $pillarOne->question_four ?? '') == 'Update per minggu' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_four1">
                                         Update per minggu
                                     </label>
@@ -280,7 +280,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_four"
                                         value="Anggota kurang dari 10% karyawan muslim" id="question_four2"
-                                        {{ old('question_four', $pillarOne->question_four) == 'Anggota kurang dari 10% karyawan muslim' ? 'checked' : '' }}>
+                                        {{ old('question_four', $pillarOne->question_four ?? '') == 'Anggota kurang dari 10% karyawan muslim' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_four2">
                                         Anggota kurang dari 10% karyawan muslim
                                     </label>
@@ -289,7 +289,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_four"
                                         value="Anggota 10 sampai 30% karyawan muslim" id="question_four3"
-                                        {{ old('question_four', $pillarOne->question_four) == 'Anggota 10 sampai 30% karyawan muslim' ? 'checked' : '' }}>
+                                        {{ old('question_four', $pillarOne->question_four ?? '') == 'Anggota 10 sampai 30% karyawan muslim' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_four3">
                                         Anggota 10 sampai 30% karyawan muslim
                                     </label>
@@ -298,7 +298,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_four"
                                         value="Anggota lebih dari 30% karyawan muslim" id="question_four4"
-                                        {{ old('question_four', $pillarOne->question_four) == 'Anggota lebih dari 30% karyawan muslim' ? 'checked' : '' }}>
+                                        {{ old('question_four', $pillarOne->question_four ?? '') == 'Anggota lebih dari 30% karyawan muslim' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_four4">
                                         Anggota lebih dari 30% karyawan muslim
                                     </label>
@@ -309,14 +309,14 @@
                                 @enderror
                             </div>
 
-                            <div class="{{ $pillarOne->file_question_four ? 'mb-2' : 'mb-3' }}">
+                            <div class="{{ $pillarOne && $pillarOne->file_question_four ? 'mb-2' : 'mb-3' }}">
                                 <label for="file_question_four" class="form-label fw-medium">Dokumen
                                     Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_four"
                                     name="file_question_four">
                             </div>
 
-                            @if ($pillarOne->file_question_four)
+                            @if ($pillarOne && $pillarOne->file_question_four)
                                 <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
@@ -334,7 +334,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_five"
                                         value="Tidak ada" id="question_five1"
-                                        {{ old('question_five', $pillarOne->question_five) == 'Tidak ada' ? 'checked' : '' }}>
+                                        {{ old('question_five', $pillarOne->question_five ?? '') == 'Tidak ada' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_five1">
                                         Tidak ada
                                     </label>
@@ -343,7 +343,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_five"
                                         value="Ada, tapi tidak rutin" id="question_five2"
-                                        {{ old('question_five', $pillarOne->question_five) == 'Ada, tapi tidak rutin' ? 'checked' : '' }}>
+                                        {{ old('question_five', $pillarOne->question_five ?? '') == 'Ada, tapi tidak rutin' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_five2">
                                         Ada, tapi tidak rutin
                                     </label>
@@ -352,7 +352,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_five"
                                         value="Ada, sebulan sekali" id="question_five3"
-                                        {{ old('question_five', $pillarOne->question_five) == 'Ada, sebulan sekali' ? 'checked' : '' }}>
+                                        {{ old('question_five', $pillarOne->question_five ?? '') == 'Ada, sebulan sekali' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_five3">
                                         Ada, sebulan sekali
                                     </label>
@@ -361,7 +361,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_five"
                                         value="Ada, seminggu sekali" id="question_five4"
-                                        {{ old('question_five', $pillarOne->question_five) == 'Ada, seminggu sekali' ? 'checked' : '' }}>
+                                        {{ old('question_five', $pillarOne->question_five ?? '') == 'Ada, seminggu sekali' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_five4">
                                         Ada, seminggu sekali
                                     </label>
@@ -372,14 +372,14 @@
                                 @enderror
                             </div>
 
-                            <div class="{{ $pillarOne->file_question_five ? 'mb-2' : 'mb-3 mb-md-4' }}">
+                            <div class="{{ $pillarOne && $pillarOne->file_question_five ? 'mb-2' : 'mb-3 mb-md-4' }}">
                                 <label for="file_question_five" class="form-label fw-medium">Dokumen
                                     Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_five"
                                     name="file_question_five">
                             </div>
 
-                            @if ($pillarOne->file_question_five)
+                            @if ($pillarOne && $pillarOne->file_question_five)
                                 <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"

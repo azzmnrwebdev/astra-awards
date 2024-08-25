@@ -27,11 +27,11 @@ class FormController extends Controller
     public function managementRelationshipAct(Request $request)
     {
         $rules = [
-            'question_one' => 'required|string',
-            'question_two' => 'required|string',
-            'question_three' => 'required|string',
-            'question_four' => 'required|string',
-            'question_five' => 'required|string',
+            'question_one' => 'string',
+            'question_two' => 'string',
+            'question_three' => 'string',
+            'question_four' => 'string',
+            'question_five' => 'string',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_two_one' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_two_two' => 'file|mimes:pdf,jpg,jpeg,png',
