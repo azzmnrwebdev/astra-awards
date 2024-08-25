@@ -1,0 +1,23 @@
+.card-title,
+.form-label {
+    color: #333333;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #343a40;
+    outline: #343a40 solid 1px;
+}
+
+.form-control:focus,
+.form-control.is-invalid:focus,
+.form-select:focus,
+.form-select.is-invalid:focus {
+    box-shadow: none;
+}
+
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus {
+    border-color: #dc3545;
+    outline: #dc3545 solid 1px;
+}
