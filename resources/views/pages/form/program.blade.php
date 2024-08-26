@@ -192,7 +192,7 @@
                             </div>
 
                             @if ($pillarThree && $pillarThree->file_question_six)
-                                <div class="mb-3 mb-md-4">
+                                <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
                                         data-url="{{ url('/' . ltrim($pillarThree->file_question_six, '/')) }}">

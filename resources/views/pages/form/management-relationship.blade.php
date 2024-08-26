@@ -175,7 +175,7 @@
                                 </div>
                             @endif
 
-                            <div class="{{ $pillarOne && $pillarOne->file_question_two_three ? 'mb-2' : 'mb-3' }}">
+                            <div class="{{ $pillarOne && $pillarOne->file_question_two_three ? 'mb-2' : 'mb-0' }}">
                                 <label for="file_question_two_three" class="form-label fw-medium">Dokumen penunjang
                                     lainnya(foto & notulensi rapat,dll)</label>
                                 <input class="form-control" type="file" id="file_question_two_three"
@@ -183,7 +183,7 @@
                             </div>
 
                             @if ($pillarOne && $pillarOne->file_question_two_three)
-                                <div class="mb-3">
+                                <div class="mb-0">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
                                         data-url="{{ url('/' . ltrim($pillarOne->file_question_two_three, '/')) }}">
@@ -380,7 +380,7 @@
                             </div>
 
                             @if ($pillarOne && $pillarOne->file_question_five)
-                                <div class="mb-3 mb-md-4">
+                                <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
                                         data-url="{{ url('/' . ltrim($pillarOne->file_question_five, '/')) }}">

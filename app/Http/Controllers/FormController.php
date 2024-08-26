@@ -153,7 +153,7 @@ class FormController extends Controller
 
         $mosqueId = Auth::user()->mosque->id;
 
-        $pillarTwo = PillarThree::updateOrCreate(
+        $pillarThree = PillarThree::updateOrCreate(
             ['id' => $request->input('id')],
             [
                 'mosque_id' => $mosqueId,
@@ -166,11 +166,11 @@ class FormController extends Controller
             ]
         );
 
-        $pillarTwo->file_question_one = $this->handleFileUpdate($request, 'file_question_one', $pillarTwo->file_question_one, 'pillarThrees');
-        $pillarTwo->file_question_four = $this->handleFileUpdate($request, 'file_question_four', $pillarTwo->file_question_four, 'pillarThrees');
-        $pillarTwo->file_question_six = $this->handleFileUpdate($request, 'file_question_six', $pillarTwo->file_question_six, 'pillarThrees');
+        $pillarThree->file_question_one = $this->handleFileUpdate($request, 'file_question_one', $pillarThree->file_question_one, 'pillarThrees');
+        $pillarThree->file_question_four = $this->handleFileUpdate($request, 'file_question_four', $pillarThree->file_question_four, 'pillarThrees');
+        $pillarThree->file_question_six = $this->handleFileUpdate($request, 'file_question_six', $pillarThree->file_question_six, 'pillarThrees');
 
-        $pillarTwo->save();
+        $pillarThree->save();
 
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
@@ -185,7 +185,44 @@ class FormController extends Controller
 
     public function administrationAct(Request $request)
     {
-        //
+        $rules = [
+            'question_one' => 'required|string',
+            'question_two' => 'required|string',
+            'question_three' => 'required|string',
+            'question_four' => 'required|string',
+            'question_five' => 'required|string',
+            'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_six' => 'file|mimes:pdf,jpg,jpeg,png',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $mosqueId = Auth::user()->mosque->id;
+
+        $pillarFour = PillarFour::updateOrCreate(
+            ['id' => $request->input('id')],
+            [
+                'mosque_id' => $mosqueId,
+                'question_one' => $request->input('question_one'),
+                'question_two' => $request->input('question_two'),
+                'question_three' => $request->input('question_three'),
+                'question_four' => $request->input('question_four'),
+                'question_five' => $request->input('question_five'),
+            ]
+        );
+
+        $pillarFour->file_question_one = $this->handleFileUpdate($request, 'file_question_one', $pillarFour->file_question_one, 'pillarFours');
+        $pillarFour->file_question_four = $this->handleFileUpdate($request, 'file_question_four', $pillarFour->file_question_four, 'pillarFours');
+        $pillarFour->file_question_five = $this->handleFileUpdate($request, 'file_question_five', $pillarFour->file_question_five, 'pillarFours');
+
+        $pillarFour->save();
+
+        return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
     public function infrastructure()
