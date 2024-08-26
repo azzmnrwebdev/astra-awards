@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
         Route::get('form/administration', [FormController::class, 'administration'])->name('form.administration');
         Route::get('form/infrastructure', [FormController::class, 'infrastructure'])->name('form.infrastructure');
 
-        Route::put('profile', [ProfileController::class, 'profileAct'])->name('profileAct');
+        Route::put('profile/informasi-akun', [ProfileController::class, 'updateProfile'])->name('profile.update');
     });
 
     // Route Admin

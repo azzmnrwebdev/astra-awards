@@ -35,7 +35,7 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{ route('information') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
