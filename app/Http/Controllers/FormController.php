@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PillarOne;
+use App\Models\PillarTwo; 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -76,8 +77,48 @@ class FormController extends Controller
 
     public function relationship()
     {
-        return view('pages.form.relationship');
+        $mosqueId = Auth::user()->mosque->id;
+        $pillarTwo = PillarTwo::where('mosque_id', $mosqueId)->first();
+
+        return view('pages.form.relationship', compact('pillarTwo'));
     }
+    public function relationshipAct(Request $request)
+    {
+        $rules = [
+            'question_one' => 'string',
+            'file_question_two' => 'file|mimes:pdf,jpg,jpeg,png',
+        ];
+    
+        $validator = Validator::make($request->all(), $rules);
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        $mosqueId = Auth::user()->mosque->id;
+    
+        // Update or create PillarTwo record
+        $pillarTwo = PillarTwo::updateOrCreate(
+            ['id' => $request->input('id')],
+            [
+                'mosque_id' => $mosqueId,
+                'question_one' => $request->input('question_one'),
+                'question_two' => $request->input('question_two'),
+                'question_three' => $request->input('question_three'),
+                'question_four' => $request->input('question_four'),
+                'question_five' => $request->input('question_five'),
+            ]
+        );
+    
+        // Handle file upload and update
+        $pillarTwo->file_question_two = $this->handleFileUpdate($request, 'file_question_two', $pillarTwo->file_question_two, 'pillarTwos');
+    
+        // Save the updated record
+        $pillarTwo->save();
+    
+        return redirect()->back()->with('success', 'Data berhasil disimpan');
+    }
+    
 
     public function program()
     {

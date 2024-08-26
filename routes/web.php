@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
         Route::get('form/management-relationship', [FormController::class, 'managementRelationship'])->name('form.managementRelationship');
         Route::post('form/management-relationship', [FormController::class, 'managementRelationshipAct'])->name('form.managementRelationshipAct');
         Route::get('form/relationship', [FormController::class, 'relationship'])->name('form.relationship');
+        Route::post('form/relationship', [FormController::class, 'relationshipAct'])->name('form.relationship');
         Route::get('form/program', [FormController::class, 'program'])->name('form.program');
         Route::get('form/administration', [FormController::class, 'administration'])->name('form.administration');
         Route::get('form/infrastructure', [FormController::class, 'infrastructure'])->name('form.infrastructure');
