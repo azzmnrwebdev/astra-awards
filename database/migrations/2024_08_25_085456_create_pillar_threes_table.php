@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('question_one')->nullable();
             $table->string('question_two')->nullable();
             $table->string('question_three')->nullable();
-            $table->string('question_four')->nullable();
+            $table->json('question_four')->nullable();
             $table->string('question_five')->nullable();
-            $table->string('question_six')->nullable();
+            $table->json('question_six')->nullable();
             $table->text('file_question_one')->nullable();
             $table->text('file_question_four')->nullable();
             $table->text('file_question_six')->nullable();

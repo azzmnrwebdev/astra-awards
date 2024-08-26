@@ -31,11 +31,11 @@ class FormController extends Controller
     public function managementRelationshipAct(Request $request)
     {
         $rules = [
-            'question_one' => 'required|string',
-            'question_two' => 'required|string',
-            'question_three' => 'required|string',
-            'question_four' => 'required|string',
-            'question_five' => 'required|string',
+            'question_one' => 'string',
+            'question_two' => 'string',
+            'question_three' => 'string',
+            'question_four' => 'string',
+            'question_five' => 'string',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_two_one' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_two_two' => 'file|mimes:pdf,jpg,jpeg,png',
@@ -88,11 +88,7 @@ class FormController extends Controller
     public function relationshipAct(Request $request)
     {
         $rules = [
-            'question_one' => 'required|string',
-            'question_two' => 'required',
-            'question_three' => 'required',
-            'question_four' => 'required',
-            'question_five' => 'required',
+            'question_one' => 'string',
             'file_question_two' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
@@ -109,10 +105,10 @@ class FormController extends Controller
             [
                 'mosque_id' => $mosqueId,
                 'question_one' => $request->input('question_one'),
-                'question_two' => $request->input('question_two'),
-                'question_three' => $request->input('question_three'),
-                'question_four' => $request->input('question_four'),
-                'question_five' => $request->input('question_five'),
+                'question_two' => json_encode($request->input('question_two')),
+                'question_three' => json_encode($request->input('question_three')),
+                'question_four' => json_encode($request->input('question_four')),
+                'question_five' => json_encode($request->input('question_five')),
             ]
         );
 
@@ -134,12 +130,10 @@ class FormController extends Controller
     public function programAct(Request $request)
     {
         $rules = [
-            'question_one' => 'required|string',
-            'question_two' => 'required|string',
-            'question_three' => 'required|string',
-            'question_four' => 'required',
-            'question_five' => 'required|string',
-            'question_six' => 'required',
+            'question_one' => 'string',
+            'question_two' => 'string',
+            'question_three' => 'string',
+            'question_five' => 'string',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_six' => 'file|mimes:pdf,jpg,jpeg,png',
@@ -186,11 +180,11 @@ class FormController extends Controller
     public function administrationAct(Request $request)
     {
         $rules = [
-            'question_one' => 'required|string',
-            'question_two' => 'required|string',
-            'question_three' => 'required|string',
-            'question_four' => 'required|string',
-            'question_five' => 'required|string',
+            'question_one' => 'string',
+            'question_two' => 'string',
+            'question_three' => 'string',
+            'question_four' => 'string',
+            'question_five' => 'string',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_six' => 'file|mimes:pdf,jpg,jpeg,png',
@@ -235,7 +229,40 @@ class FormController extends Controller
 
     public function infrastructureAct(Request $request)
     {
-        //
+        $rules = [
+            'question_one' => 'string',
+            'question_two' => 'string',
+            'question_three' => 'string',
+            'question_four' => 'string',
+            'question_five' => 'string',
+            'file_question_two' => 'file|mimes:pdf,jpg,jpeg,png',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $mosqueId = Auth::user()->mosque->id;
+
+        $pillarFive = PillarFive::updateOrCreate(
+            ['id' => $request->input('id')],
+            [
+                'mosque_id' => $mosqueId,
+                'question_one' => $request->input('question_one'),
+                'question_two' => $request->input('question_two'),
+                'question_three' => $request->input('question_three'),
+                'question_four' => $request->input('question_four'),
+                'question_five' => $request->input('question_five'),
+            ]
+        );
+
+        $pillarFive->file_question_two = $this->handleFileUpdate($request, 'file_question_two', $pillarFive->file_question_two, 'pillarFives');
+
+        $pillarFive->save();
+
+        return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
     private function handleFileUpdate(Request $request, $inputName, $currentFilePath, $path)
