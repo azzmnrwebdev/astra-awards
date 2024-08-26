@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PillarOne;
-use App\Models\PillarTwo; 
+use App\Models\PillarTwo;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,16 +88,15 @@ class FormController extends Controller
             'question_one' => 'string',
             'file_question_two' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
-    
+
         $validator = Validator::make($request->all(), $rules);
-    
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    
+
         $mosqueId = Auth::user()->mosque->id;
-    
-        // Update or create PillarTwo record
+
         $pillarTwo = PillarTwo::updateOrCreate(
             ['id' => $request->input('id')],
             [
@@ -109,16 +108,13 @@ class FormController extends Controller
                 'question_five' => $request->input('question_five'),
             ]
         );
-    
-        // Handle file upload and update
+
         $pillarTwo->file_question_two = $this->handleFileUpdate($request, 'file_question_two', $pillarTwo->file_question_two, 'pillarTwos');
-    
-        // Save the updated record
+
         $pillarTwo->save();
-    
+
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
-    
 
     public function program()
     {
