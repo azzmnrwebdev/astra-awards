@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
         Route::get('form', [FormController::class, 'index'])->name('form.index');
         Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
         Route::get('presentation', [PresentationController::class, 'presentation'])->name('presentation');
+        Route::post('presentation', [PresentationController::class, 'presentationAct'])->name('presentationAct');
 
         Route::get('form/management-relationship', [FormController::class, 'managementRelationship'])->name('form.managementRelationship');
         Route::post('form/management-relationship', [FormController::class, 'managementRelationshipAct'])->name('form.managementRelationshipAct');
