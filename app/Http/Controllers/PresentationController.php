@@ -24,38 +24,37 @@ class PresentationController extends Controller
         $rules = [
             'file' => 'required|file|mimes:pptx',
         ];
-    
+
         $validator = Validator::make($request->all(), $rules);
-    
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-    
+
         $mosque = Auth::user()->mosque;
-    
-        // Check if all pillars are completed
+
         $checkPillarOne = $mosque->pillarOne ? true : false;
         $checkPillarTwo = $mosque->pillarTwo ? true : false;
         $checkPillarThree = $mosque->pillarThree ? true : false;
         $checkPillarFour = $mosque->pillarFour ? true : false;
         $checkPillarFive = $mosque->pillarFive ? true : false;
-    
+
         if ($checkPillarOne && $checkPillarTwo && $checkPillarThree && $checkPillarFour && $checkPillarFive) {
-            // Update or create the presentation record
+            $presentation = Presentation::where('mosque_id', $mosque->id)->first();
+
             $presentation = Presentation::updateOrCreate(
                 ['id' => $request->input('id')],
                 [
                     'mosque_id' => $mosque->id,
-                    'file' => $this->handleFileUpdate($request, 'file', $presentation->file ?? null, 'presentations') // Update the file
+                    'file' => $this->handleFileUpdate($request, 'file', $presentation->file ?? null, 'presentations'),
                 ]
             );
-    
+
             return redirect()->back()->with('success', 'File presentasi berhasil disimpan.');
         } else {
             return redirect()->back()->with('error', 'Semua pilar harus lengkap sebelum mengunggah file presentasi.');
         }
     }
-    
 
     private function handleFileUpdate(Request $request, $inputName, $currentFilePath, $path)
     {
