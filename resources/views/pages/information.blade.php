@@ -46,11 +46,44 @@
                 <div class="card h-100 border-0 shadow rounded-4">
                     <div class="card-body p-4">
                         <h5 class="card-title fw-bold mb-3">Formulir</h5>
-
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
+            
+                        <div>
+                            <ul class="" style="list-style-type:none;">
+                                <li>
+                                    1. HUBUNGAN MANAJEMEN PERUSAHAAN DENGAN DKM & JAMAAH
+                                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="{{ $pillarOneCompletion }}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar" style="width: {{ $pillarOneCompletion }}%;">{{ $pillarOneCompletion }}%</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    2. HUBUNGAN DKM DENGAN YAA
+                                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="{{ $pillarTwoCompletion }}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar" style="width: {{ $pillarTwoCompletion }}%;">{{ $pillarTwoCompletion }}%</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    3. PROGRAM SOSIAL
+                                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="{{ $pillarThreeCompletion }}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar" style="width: {{ $pillarThreeCompletion }}%;">{{ $pillarThreeCompletion }}%</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    4. ADMINISTRASI & KEUANGAN
+                                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="{{ $pillarFourCompletion }}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar" style="width: {{ $pillarFourCompletion }}%;">{{ $pillarFourCompletion }}%</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    5. PERIBADAHAN & INFRASTRUKTUR
+                                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="{{ $pillarFiveCompletion }}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar" style="width: {{ $pillarFiveCompletion }}%;">{{ $pillarFiveCompletion }}%</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
+            
         </div>
 </x-user>
