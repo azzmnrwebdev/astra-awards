@@ -60,6 +60,16 @@
                                     </div>
                                 @endforeach
 
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="question_two[]" value="custom"
+                                        id="question_two4"
+                                        {{ in_array('custom', (array) old('question_two', json_decode($pillarTwo->question_two ?? '[]', true) ?? '')) ? 'checked' : '' }}>
+                                    <label class="form-check-label w-100" for="question_two4">
+                                        <input type="text" class="form-control" id="option_two" name="option_two"
+                                            value="{{ old('option_two', $pillarTwo->option_two ?? '') }}">
+                                    </label>
+                                </div>
+
                                 @error('question_two')
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
                                 @enderror
@@ -150,7 +160,8 @@
     </div>
 
     {{-- Modal --}}
-    <div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="documentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="documentModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">

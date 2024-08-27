@@ -100,12 +100,32 @@ class FormController extends Controller
 
         $mosqueId = Auth::user()->mosque->id;
 
+        $questionTwo = $request->input('question_two', []);
+        $optionTwoValue = $request->input('option_two', '');
+
+        if (empty($questionTwo)) {
+            $questionTwo = null;
+        } else {
+            if (!empty($optionTwoValue)) {
+                if (!in_array('custom', $questionTwo)) {
+                    $questionTwo[] = 'custom';
+                }
+            } else {
+                $questionTwo = array_filter($questionTwo, function ($value) {
+                    return $value !== 'custom';
+                });
+            }
+
+            $questionTwo = json_encode($questionTwo);
+        }
+
         $pillarTwo = PillarTwo::updateOrCreate(
             ['id' => $request->input('id')],
             [
                 'mosque_id' => $mosqueId,
                 'question_one' => $request->input('question_one'),
-                'question_two' => json_encode($request->input('question_two')),
+                'question_two' => $questionTwo,
+                'option_two' => $request->input('option_two') ?? null,
                 'question_three' => json_encode($request->input('question_three')),
                 'question_four' => json_encode($request->input('question_four')),
                 'question_five' => json_encode($request->input('question_five')),

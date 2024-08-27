@@ -19,6 +19,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('question_one')->nullable();
             $table->json('question_two')->nullable();
+            $table->string('option_two')->nullable();
             $table->json('question_three')->nullable();
             $table->json('question_four')->nullable();
             $table->json('question_five')->nullable();
