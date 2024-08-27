@@ -21,7 +21,9 @@ return new class extends Migration
             $table->json('question_two')->nullable();
             $table->string('option_two')->nullable();
             $table->json('question_three')->nullable();
+            $table->string('option_three')->nullable();
             $table->json('question_four')->nullable();
+            $table->string('option_four')->nullable();
             $table->json('question_five')->nullable();
             $table->text('file_question_two')->nullable();
             $table->timestamps();

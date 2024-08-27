@@ -99,9 +99,12 @@ class FormController extends Controller
         }
 
         $mosqueId = Auth::user()->mosque->id;
-
         $questionTwo = $request->input('question_two', []);
+        $questionThree = $request->input('question_three', []);
+        $questionFour = $request->input('question_four', []);
         $optionTwoValue = $request->input('option_two', '');
+        $optionThreeValue = $request->input('option_three', '');
+        $optionFourValue = $request->input('option_four', '');
 
         if (empty($questionTwo)) {
             $questionTwo = null;
@@ -119,6 +122,38 @@ class FormController extends Controller
             $questionTwo = json_encode($questionTwo);
         }
 
+        if (empty($questionThree)) {
+            $questionThree = null;
+        } else {
+            if (!empty($optionThreeValue)) {
+                if (!in_array('custom', $questionThree)) {
+                    $questionThree[] = 'custom';
+                }
+            } else {
+                $questionThree = array_filter($questionThree, function ($value) {
+                    return $value !== 'custom';
+                });
+            }
+
+            $questionThree = json_encode($questionThree);
+        }
+
+        if (empty($questionFour)) {
+            $questionFour = null;
+        } else {
+            if (!empty($optionFourValue)) {
+                if (!in_array('custom', $questionFour)) {
+                    $questionFour[] = 'custom';
+                }
+            } else {
+                $questionFour = array_filter($questionFour, function ($value) {
+                    return $value !== 'custom';
+                });
+            }
+
+            $questionFour = json_encode($questionFour);
+        }
+
         $pillarTwo = PillarTwo::updateOrCreate(
             ['id' => $request->input('id')],
             [
@@ -126,8 +161,10 @@ class FormController extends Controller
                 'question_one' => $request->input('question_one'),
                 'question_two' => $questionTwo,
                 'option_two' => $request->input('option_two') ?? null,
-                'question_three' => json_encode($request->input('question_three')),
-                'question_four' => json_encode($request->input('question_four')),
+                'question_three' => $questionThree,
+                'option_three' => $request->input('option_three') ?? null,
+                'question_four' => $questionFour,
+                'option_four' => $request->input('option_four') ?? null,
                 'question_five' => json_encode($request->input('question_five')),
             ]
         );
@@ -166,6 +203,42 @@ class FormController extends Controller
         }
 
         $mosqueId = Auth::user()->mosque->id;
+        $questionFour = $request->input('question_four', []);
+        $questionSix = $request->input('question_six', []);
+        $optionFourValue = $request->input('option_four', '');
+        $optionSixValue = $request->input('option_six', '');
+
+        if (empty($questionFour)) {
+            $questionFour = null;
+        } else {
+            if (!empty($optionFourValue)) {
+                if (!in_array('custom', $questionFour)) {
+                    $questionFour[] = 'custom';
+                }
+            } else {
+                $questionFour = array_filter($questionFour, function ($value) {
+                    return $value !== 'custom';
+                });
+            }
+
+            $questionFour = json_encode($questionFour);
+        }
+
+        if (empty($questionSix)) {
+            $questionSix = null;
+        } else {
+            if (!empty($optionSixValue)) {
+                if (!in_array('custom', $questionSix)) {
+                    $questionSix[] = 'custom';
+                }
+            } else {
+                $questionSix = array_filter($questionSix, function ($value) {
+                    return $value !== 'custom';
+                });
+            }
+
+            $questionSix = json_encode($questionSix);
+        }
 
         $pillarThree = PillarThree::updateOrCreate(
             ['id' => $request->input('id')],
@@ -174,9 +247,11 @@ class FormController extends Controller
                 'question_one' => $request->input('question_one'),
                 'question_two' => $request->input('question_two'),
                 'question_three' => $request->input('question_three'),
-                'question_four' => json_encode($request->input('question_four')),
+                'question_four' => $questionFour,
+                'option_four' => $request->input('option_four') ?? null,
                 'question_five' => $request->input('question_five'),
-                'question_six' => json_encode($request->input('question_six')),
+                'question_six' => $questionSix,
+                'option_six' => $request->input('option_six') ?? null,
             ]
         );
 

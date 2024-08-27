@@ -105,6 +105,16 @@
                                     </div>
                                 @endforeach
 
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="question_three[]"
+                                        value="custom" id="question_three4"
+                                        {{ in_array('custom', (array) old('question_three', json_decode($pillarTwo->question_three ?? '[]', true) ?? '')) ? 'checked' : '' }}>
+                                    <label class="form-check-label w-100" for="question_three4">
+                                        <input type="text" class="form-control" id="option_three" name="option_three"
+                                            value="{{ old('option_three', $pillarTwo->option_three ?? '') }}">
+                                    </label>
+                                </div>
+
                                 @error('question_three')
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
                                 @enderror
@@ -123,6 +133,17 @@
                                         </label>
                                     </div>
                                 @endforeach
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="question_four[]"
+                                        value="custom" id="question_four4"
+                                        {{ in_array('custom', (array) old('question_four', json_decode($pillarTwo->question_four ?? '[]', true) ?? '')) ? 'checked' : '' }}>
+                                    <label class="form-check-label w-100" for="question_four4">
+                                        <input type="text" class="form-control" id="option_four"
+                                            name="option_four"
+                                            value="{{ old('option_four', $pillarTwo->option_four ?? '') }}">
+                                    </label>
+                                </div>
 
                                 @error('question_four')
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
@@ -180,6 +201,32 @@
     @prepend('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const optionInput2 = document.getElementById('option_two');
+                const optionInput3 = document.getElementById('option_three');
+                const optionInput4 = document.getElementById('option_four');
+                const customCheckbox2 = document.getElementById('question_two4');
+                const customCheckbox3 = document.getElementById('question_three4');
+                const customCheckbox4 = document.getElementById('question_four4');
+
+                function updateCheckbox() {
+                    const trimmedValue2 = optionInput2.value.trim();
+                    customCheckbox2.checked = trimmedValue2.length > 0;
+
+                    const trimmedValue3 = optionInput3.value.trim();
+                    customCheckbox3.checked = trimmedValue3.length > 0;
+
+                    const trimmedValue4 = optionInput4.value.trim();
+                    customCheckbox4.checked = trimmedValue4.length > 0;
+                }
+
+                updateCheckbox();
+
+                optionInput2.addEventListener('input', updateCheckbox);
+                optionInput3.addEventListener('input', updateCheckbox);
+                optionInput4.addEventListener('input', updateCheckbox);
+
+                // =============================================================================================
+
                 $('#documentModal').on('show.bs.modal', function(event) {
                     let button = $(event.relatedTarget);
                     let url = button.data('url');

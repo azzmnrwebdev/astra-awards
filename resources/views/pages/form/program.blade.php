@@ -121,6 +121,16 @@
                                     </div>
                                 @endforeach
 
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="question_four[]"
+                                        value="custom" id="question_four6"
+                                        {{ in_array('custom', (array) old('question_four', json_decode($pillarThree->question_four ?? '[]', true) ?? '')) ? 'checked' : '' }}>
+                                    <label class="form-check-label w-100" for="question_four6">
+                                        <input type="text" class="form-control" id="option_four" name="option_four"
+                                            value="{{ old('option_four', $pillarThree->option_four ?? '') }}">
+                                    </label>
+                                </div>
+
                                 @error('question_four')
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
                                 @enderror
@@ -176,6 +186,16 @@
                                         </label>
                                     </div>
                                 @endforeach
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="question_six[]"
+                                        value="custom" id="question_six4"
+                                        {{ in_array('custom', (array) old('question_six', json_decode($pillarThree->question_six ?? '[]', true) ?? '')) ? 'checked' : '' }}>
+                                    <label class="form-check-label w-100" for="question_six4">
+                                        <input type="text" class="form-control" id="option_six" name="option_six"
+                                            value="{{ old('option_six', $pillarThree->option_six ?? '') }}">
+                                    </label>
+                                </div>
 
                                 @error('question_six')
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
@@ -233,6 +253,26 @@
     @prepend('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const optionInput4 = document.getElementById('option_four');
+                const optionInput6 = document.getElementById('option_six');
+                const customCheckbox4 = document.getElementById('question_four6');
+                const customCheckbox6 = document.getElementById('question_six4');
+
+                function updateCheckbox() {
+                    const trimmedValue4 = optionInput4.value.trim();
+                    customCheckbox4.checked = trimmedValue4.length > 0;
+
+                    const trimmedValue6 = optionInput6.value.trim();
+                    customCheckbox6.checked = trimmedValue6.length > 0;
+                }
+
+                updateCheckbox();
+
+                optionInput4.addEventListener('input', updateCheckbox);
+                optionInput6.addEventListener('input', updateCheckbox);
+
+                // =============================================================================================
+
                 $('#documentModal').on('show.bs.modal', function(event) {
                     let button = $(event.relatedTarget);
                     let url = button.data('url');
