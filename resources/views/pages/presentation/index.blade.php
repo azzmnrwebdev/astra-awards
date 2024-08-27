@@ -88,9 +88,8 @@
                     documentContent.html('');
 
                     if (url.match(/\.pptx$/i)) {
-                        documentContent.html('<iframe src="https://docs.google.com/gview?url=' +
-                            encodeURIComponent(url) +
-                            '&embedded=true" style="width:100%; height:500px;" frameborder="0"></iframe>');
+                        documentContent.html('<p>Preview tidak tersedia. <a href="' + url +
+                            '" target="_blank">Klik di sini untuk mengunduh file PPTX</a></p>');
                     } else {
                         documentContent.html('<p>File format tidak didukung.</p>');
                     }
