@@ -3,7 +3,7 @@
         <form action="{{ route('presentationAct') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <input type="hidden" name="id" value="{{ $pillarThree->id ?? '' }}">
+            <input type="hidden" name="id" value="{{ $presentation->id ?? '' }}">
 
             <div class="row row-cols-1 g-3">
                 @if (Session('success'))
