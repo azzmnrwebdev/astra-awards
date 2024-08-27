@@ -24,11 +24,11 @@ class HomeController extends Controller
 
         // ----- Pillar One -----
         $pillarOne = PillarOne::where('mosque_id', $mosqueId)->first();
-        $pillarOneFields = ['question_one', 'question_two', 'question_three', 'question_four','question_five', 'file_question_one', 'file_question_two_one','file_question_two_two', 'file_question_two_three', 'file_question_four', 'file_question_five']; // Ganti dengan field sebenarnya dari PillarOne
+        $pillarOneFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'file_question_one', 'file_question_two_one', 'file_question_two_two', 'file_question_two_three', 'file_question_four', 'file_question_five']; // Ganti dengan field sebenarnya dari PillarOne
         $pillarOneCompleted = 0;
         $totalFields = count($pillarOneFields); // Jumlah total field yang dicek
 
-        
+
         if ($pillarOne) {
             foreach ($pillarOneFields as $field) {
                 if (!empty($pillarOne->$field)) {
@@ -40,14 +40,14 @@ class HomeController extends Controller
         // Hitung persentase, bulatkan ke bawah atau ke atas sesuai kebutuhan
         $pillarOneCompletion = ($pillarOneCompleted / $totalFields) * 100;
         $pillarOneCompletion = round($pillarOneCompletion); // Untuk membulatkan persentase
-        
-        
+
+
         // ----- Pillar Two -----
         $pillarTwo = PillarTwo::where('mosque_id', $mosqueId)->first();
-        $pillarTwoFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
+        $pillarTwoFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'file_question_two'];
         $pillarTwoCompleted = 0;
-        $totalFields = count($pillarTwoFields); 
-        
+        $totalFields = count($pillarTwoFields);
+
         if ($pillarTwo) {
             foreach ($pillarTwoFields as $field) {
                 if (!empty($pillarTwo->$field)) {
@@ -57,15 +57,15 @@ class HomeController extends Controller
         }
         // Hitung persentase, bulatkan ke bawah atau ke atas sesuai kebutuhan
         $pillarTwoCompletion = ($pillarTwoCompleted / $totalFields) * 100;
-        $pillarTwoCompletion = round($pillarTwoCompletion); 
+        $pillarTwoCompletion = round($pillarTwoCompletion);
 
 
         // ----- Pillar Three -----
         $pillarThree = PillarThree::where('mosque_id', $mosqueId)->first();
         $pillarThreeFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'question_six', 'file_question_one', 'file_question_four', 'file_question_six']; // Ganti dengan field sebenarnya dari PillarThree
         $pillarThreeCompleted = 0;
-        $totalFields = count($pillarThreeFields); 
-        
+        $totalFields = count($pillarThreeFields);
+
         if ($pillarThree) {
             foreach ($pillarThreeFields as $field) {
                 if (!empty($pillarThree->$field)) {
@@ -76,15 +76,15 @@ class HomeController extends Controller
 
         // Hitung persentase, bulatkan ke bawah atau ke atas sesuai kebutuhan
         $pillarThreeCompletion = ($pillarThreeCompleted / $totalFields) * 100;
-        $pillarThreeCompletion = round($pillarThreeCompletion); 
+        $pillarThreeCompletion = round($pillarThreeCompletion);
 
 
         // ----- Pillar Four -----
         $pillarFour = PillarFour::where('mosque_id', $mosqueId)->first();
         $pillarFourFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'file_question_one', 'file_question_four', 'file_question_five']; // Ganti dengan field sebenarnya dari PillarFour
         $pillarFourCompleted = 0;
-        $totalFields = count($pillarFourFields); 
-        
+        $totalFields = count($pillarFourFields);
+
         if ($pillarFour) {
             foreach ($pillarFourFields as $field) {
                 if (!empty($pillarFour->$field)) {
@@ -95,15 +95,15 @@ class HomeController extends Controller
 
         // Hitung persentase, bulatkan ke bawah atau ke atas sesuai kebutuhan
         $pillarFourCompletion = ($pillarFourCompleted / $totalFields) * 100;
-        $pillarFourCompletion = round($pillarFourCompletion); 
+        $pillarFourCompletion = round($pillarFourCompletion);
 
 
         // ----- Pillar Five -----
         $pillarFive = PillarFive::where('mosque_id', $mosqueId)->first();
         $pillarFiveFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'file_question_two']; // Ganti dengan field sebenarnya dari PillarFive
         $pillarFiveCompleted = 0;
-        $totalFields = count($pillarFiveFields); 
-        
+        $totalFields = count($pillarFiveFields);
+
         if ($pillarFive) {
             foreach ($pillarFiveFields as $field) {
                 if (!empty($pillarFive->$field)) {
@@ -128,5 +128,3 @@ class HomeController extends Controller
         ));
     }
 }
-
-
