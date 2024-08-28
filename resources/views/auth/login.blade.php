@@ -48,7 +48,7 @@
 
                         {{-- Lupa Password --}}
                         <div class="col-lg-6">
-                            <a href="{{ route('login') }}" class="text-decoration-none text-primary"
+                            <a href="{{ route('forgotPassword') }}" class="text-decoration-none text-primary"
                                 style="font-weight: 500;">Lupa
                                 password?</a>
                         </div>

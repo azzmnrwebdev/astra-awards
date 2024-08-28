@@ -19,7 +19,7 @@ class LoginController extends Controller
     {
         // Validation
         $rules = [
-            'email' => 'required|string',
+            'email' => 'required|string|email',
             'password' => 'required|string',
         ];
 

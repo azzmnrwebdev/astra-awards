@@ -34,7 +34,7 @@ class RegisterController extends Controller
             'name' => 'required|string',
             'position' => 'required|string',
             'phone_number' => 'required|numeric|unique:users,phone_number',
-            'email' => 'required|string|unique:users,email',
+            'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'category_area_id' => 'required|exists:category_areas,id',
             'name_mosque' => 'required|string',

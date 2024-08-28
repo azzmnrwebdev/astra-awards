@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ParentCompanyController;
 use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -22,6 +23,10 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class, 'loginAct'])->name('loginAct');
     Route::get('register', [RegisterController::class, 'register'])->name('register');
     Route::post('register', [RegisterController::class, 'registerAct'])->name('registerAct');
+    Route::get('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPasswordAct'])->name('forgotPasswordAct');
+    Route::get('reset-password/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('resetPassword');
+    Route::post('reset-password', [ForgotPasswordController::class, 'resetPasswordAct'])->name('resetPasswordAct');
 });
 
 Route::middleware('auth')->group(function () {
@@ -46,7 +51,8 @@ Route::middleware('auth')->group(function () {
         Route::get('form/infrastructure', [FormController::class, 'infrastructure'])->name('form.infrastructure');
         Route::post('form/infrastructure', [FormController::class, 'infrastructureAct'])->name('form.infrastructureAct');
 
-        Route::put('profile/informasi-akun', [ProfileController::class, 'updateProfile'])->name('profile.update');
+        Route::put('profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+        Route::put('profile/change-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     });
 
     // Route Admin
