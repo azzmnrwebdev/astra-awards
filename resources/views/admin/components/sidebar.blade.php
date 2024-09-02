@@ -1,19 +1,18 @@
-<aside id="sidebar">
-    <div class="h-100">
-        <div class="sidebar-logo d-flex align-items-center justify-content-between">
-            <a wire:navigate href="{{ route('dashboard') }}">Astra Awards</a>
-            <i class="bi bi-caret-left-fill d-lg-none text-white" id="sidebarToggle"></i>
-        </div>
+<aside id="sidebar" class="d-flex flex-column gap-4">
+    <div class="sidebar-logo d-flex align-items-center justify-content-between">
+        <a wire:navigate href="{{ route('information') }}">Awards Amaliah</a>
+        <i class="bi bi-caret-left-fill d-lg-none text-white" id="sidebarToggle"></i>
+    </div>
 
-        <ul class="sidebar-nav my-4 h-100 overflow-y-auto">
-            <li class="sidebar-item">
-                <a href="{{ route('dashboard') }}"
-                    class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                    <i class="bi bi-house-fill me-2 fs-5"></i>
-                    Dashboard
-                </a>
-            </li>
+    <ul class="sidebar-nav h-100 overflow-y-scroll">
+        <li class="sidebar-item">
+            <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <i class="bi bi-house-fill me-2 fs-5"></i>
+                Dashboard
+            </a>
+        </li>
 
+        @if (auth()->check() && auth()->user()->hasRole('admin'))
             <li class="sidebar-item">
                 <a href="{{ route('category.index') }}"
                     class="sidebar-link {{ request()->routeIs('category.*') ? 'active' : '' }}">
@@ -55,18 +54,30 @@
             </li>
 
             <li class="sidebar-item">
-                <a href="{{ route('dashboard') }}" class="sidebar-link">
+                <a href="{{ route('committee.index') }}"
+                    class="sidebar-link {{ request()->routeIs('committee.*') ? 'active' : '' }}">
                     <i class="bi bi-people-fill me-2 fs-5"></i>
-                    Pengguna
+                    Manajemen Panitia
                 </a>
             </li>
+        @endif
 
+        <li class="sidebar-item">
+            <a href="{{ route('jury.index') }}"
+                class="sidebar-link {{ request()->routeIs('jury.*') ? 'active' : '' }}">
+                <i class="bi bi-people-fill me-2 fs-5"></i>
+                Manajemen Juri
+            </a>
+        </li>
+
+        @if (auth()->check() && auth()->user()->hasRole('admin'))
             <li class="sidebar-item">
-                <a href="{{ route('dashboard') }}" class="sidebar-link">
-                    <i class="bi bi-moon-stars-fill me-2 fs-5"></i>
-                    Masjid
+                <a href="{{ route('user.index') }}"
+                    class="sidebar-link {{ request()->routeIs('user.*') ? 'active' : '' }} mb-0">
+                    <i class="bi bi-people-fill me-2 fs-5"></i>
+                    Manajemen DKM
                 </a>
             </li>
-        </ul>
-    </div>
+        @endif
+    </ul>
 </aside>

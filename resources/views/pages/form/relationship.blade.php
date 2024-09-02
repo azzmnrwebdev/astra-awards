@@ -120,6 +120,22 @@
                                 @enderror
                             </div>
 
+                            <div class="{{ $pillarTwo && $pillarTwo->file_question_three ? 'mb-2' : 'mb-3' }}">
+                                <label for="file_question_three" class="form-label fw-medium">Dokumen Pendukung</label>
+                                <input class="form-control" type="file" id="file_question_three"
+                                    name="file_question_three">
+                            </div>
+
+                            @if ($pillarTwo && $pillarTwo->file_question_three)
+                                <div class="mb-3">
+                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                        data-bs-toggle="modal" data-bs-target="#documentModal"
+                                        data-url="{{ url('/' . ltrim($pillarTwo->file_question_three, '/')) }}">
+                                        Lihat Dokumen
+                                    </button>
+                                </div>
+                            @endif
+
                             <!-- Pertanyaan 4 -->
                             <div class="mb-3">
                                 <label class="form-label">4. Divisi Kemitraan</label>
@@ -149,6 +165,22 @@
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
                                 @enderror
                             </div>
+
+                            <div class="{{ $pillarTwo && $pillarTwo->file_question_four ? 'mb-2' : 'mb-3' }}">
+                                <label for="file_question_four" class="form-label fw-medium">Dokumen Pendukung</label>
+                                <input class="form-control" type="file" id="file_question_four"
+                                    name="file_question_four">
+                            </div>
+
+                            @if ($pillarTwo && $pillarTwo->file_question_four)
+                                <div class="mb-3">
+                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                        data-bs-toggle="modal" data-bs-target="#documentModal"
+                                        data-url="{{ url('/' . ltrim($pillarTwo->file_question_four, '/')) }}">
+                                        Lihat Dokumen
+                                    </button>
+                                </div>
+                            @endif
 
                             <!-- Pertanyaan 5 -->
                             <div class="mb-3">

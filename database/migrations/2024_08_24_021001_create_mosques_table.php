@@ -17,6 +17,7 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->string('position');
             $table->foreignId('category_area_id')
                 ->constrained('category_areas')
                 ->cascadeOnUpdate()

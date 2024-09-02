@@ -38,13 +38,13 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $checkUser = User::where('email', $request->input('email'))->first();
 
-            if ($checkUser->role === "admin") {
+            if ($checkUser->role === "admin" || $checkUser->role === "jury") {
                 return redirect(route('dashboard'));
             } else {
                 return redirect(route('information'));
             }
         } else {
-            return redirect()->back()->with('error', 'Email atau kata sandi Anda salah');
+            return redirect()->back()->with('error', 'Email atau password Anda salah');
         }
     }
 }

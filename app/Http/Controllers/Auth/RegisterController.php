@@ -10,6 +10,7 @@ use App\Models\Company;
 use App\Models\Mosque;
 use App\Models\ParentCompany;
 use App\Models\Province;
+use App\Models\Timeline;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -18,13 +19,14 @@ class RegisterController extends Controller
 {
     public function register()
     {
+        $timeline = Timeline::latest()->first();
         $categoryAreas = CategoryArea::all();
         $companies = Company::all();
         $parentCompanies = ParentCompany::all();
         $businessLines = BusinessLine::all();
         $provinces = Province::all();
 
-        return view('auth.register', compact('categoryAreas', 'companies', 'parentCompanies', 'businessLines', 'provinces'));
+        return view('auth.register', compact('timeline', 'categoryAreas', 'companies', 'parentCompanies', 'businessLines', 'provinces'));
     }
 
     public function registerAct(Request $request)
@@ -65,10 +67,11 @@ class RegisterController extends Controller
         // User
         $user = User::create([
             'name' => $request->input('name'),
-            'position' => $request->input('position'),
             'phone_number' => $request->input('phone_number'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
+            'role' => 'user',
+            'status' => 0,
         ]);
 
         // Company
@@ -96,6 +99,7 @@ class RegisterController extends Controller
         // Mosque
         Mosque::create([
             'user_id' => $user->id,
+            'position' => $request->input('position'),
             'category_area_id' => $request->input('category_area_id'),
             'name' => $request->input('name_mosque'),
             'capacity' => $request->input('capacity'),
@@ -106,6 +110,6 @@ class RegisterController extends Controller
             'province_id' => $request->input('province_id'),
         ]);
 
-        return redirect(route('login'))->with('success', 'Registrasi berhasil. Anda sekarang dapat masuk');
+        return redirect(route('login'))->with('success', 'Pendaftaran berhasil. Anda sekarang dapat masuk');
     }
 }

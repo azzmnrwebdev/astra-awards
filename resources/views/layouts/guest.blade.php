@@ -11,7 +11,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js', 'resources/css/guest.css'])
 
     {{-- Title --}}
-    <title>{{ $title }} - Astra Awards</title>
+    <title>{{ $title }} - Awards Amaliah</title>
 
     {{-- Custom CSS --}}
     <style>

@@ -17,11 +17,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'position',
         'phone_number',
         'email',
         'password',
         'role',
+        'status'
     ];
 
     /**
@@ -49,5 +49,15 @@ class User extends Authenticatable
     public function mosque()
     {
         return $this->hasOne(Mosque::class, 'user_id');
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    public function hasAnyRole(array $roles)
+    {
+        return in_array($this->role, $roles);
     }
 }

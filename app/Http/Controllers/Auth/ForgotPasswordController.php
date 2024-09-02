@@ -78,7 +78,7 @@ class ForgotPasswordController extends Controller
         }
 
         $userToken->password = Hash::make($request->input('password'));
-        $userToken->remember_token = Str::random(60);
+        $userToken->remember_token = null;
         $userToken->save();
 
         return redirect(route('login'))->with('success', 'Password berhasil direset');

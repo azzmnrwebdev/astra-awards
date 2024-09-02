@@ -10,7 +10,7 @@ class Mosque extends Model
     use HasFactory;
 
     protected $table = 'mosques';
-    protected $fillable = ['user_id', 'category_area_id', 'name', 'capacity', 'leader', 'company_id', 'address', 'city', 'province_id'];
+    protected $fillable = ['user_id', 'position', 'category_area_id', 'name', 'capacity', 'leader', 'company_id', 'address', 'city', 'province_id'];
 
     public function user()
     {
@@ -55,5 +55,10 @@ class Mosque extends Model
     public function pillarFive()
     {
         return $this->hasOne(PillarFive::class, 'mosque_id');
+    }
+
+    public function presentation()
+    {
+        return $this->hasOne(Presentation::class, 'mosque_id');
     }
 }

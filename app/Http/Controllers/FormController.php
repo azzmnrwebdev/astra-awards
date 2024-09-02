@@ -170,6 +170,8 @@ class FormController extends Controller
         );
 
         $pillarTwo->file_question_two = $this->handleFileUpdate($request, 'file_question_two', $pillarTwo->file_question_two, 'pillarTwos');
+        $pillarTwo->file_question_three = $this->handleFileUpdate($request, 'file_question_three', $pillarTwo->file_question_three, 'pillarTwos');
+        $pillarTwo->file_question_four = $this->handleFileUpdate($request, 'file_question_four', $pillarTwo->file_question_four, 'pillarTwos');
 
         $pillarTwo->save();
 

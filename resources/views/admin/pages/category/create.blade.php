@@ -25,9 +25,9 @@
                 @csrf
 
                 <div class="row mb-3">
-                    <label for="name" class="col-sm-2 col-form-label">Nama Kategori Area</label>
+                    <label for="name" class="col-md-3 col-xl-2 col-form-label">Nama Kategori Area</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-md-9 col-xl-10">
                         <input type="text" name="name" id="name"
                             class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
 

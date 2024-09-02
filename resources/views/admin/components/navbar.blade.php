@@ -12,8 +12,8 @@
 
             <ul class="dropdown-menu dropdown-menu-end border-0 shadow me-2">
                 <li>
-                    <a class="dropdown-item fw-medium" href="{{ route('dashboard') }}">
-                        <i class="bi bi-person-fill pe-2"></i>Profile
+                    <a class="dropdown-item fw-medium" href="{{ route('dashboard_profile.index') }}">
+                        <i class="bi bi-person-fill pe-2"></i>Profil Saya
                     </a>
                 </li>
 
@@ -26,7 +26,7 @@
                         @csrf
 
                         <button type="submit" class="border-0 bg-transparent text-white dropdown-item fw-medium">
-                            <i class="bi bi-power pe-2"></i>Keluar
+                            <i class="bi bi-power pe-2"></i>Keluar Aplikasi
                         </button>
                     </form>
                 </li>

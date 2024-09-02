@@ -1,11 +1,91 @@
 <x-guest title="Daftar">
+    {{-- Custom CSS --}}
+    @prepend('styles')
+        <style>
+            /*  */
+        </style>
+    @endprepend
+
     <div class="row justify-content-center align-items-center min-vh-100">
         <div class="col-12 col-md-10 my-5">
             <div class="card border-0 shadow-lg" style="border-radius: 20px;">
                 <div class="card-body p-5">
                     <h3 style="margin-bottom: 1.5rem; font-weight: 700;">Daftar</h3>
-                    <h5 class="card-title mb-3" style="font-weight: 600;">PIC Amaliah Astra Awards</h5>
 
+                    {{-- Timeline --}}
+                    <h5 class="card-title mb-3" style="font-weight: 600;">Timeline Kegiatan</h5>
+                    <div class="table-responsive">
+                        <table class="table text-nowrap align-middle mb-0">
+                            <thead class="border-top border-start border-end table-info">
+                                <tr>
+                                    <th class="text-center py-3">Pendaftaran</th>
+                                    <th class="text-center py-3">Seleksi</th>
+                                    <th class="text-center py-3">Penilaian Awal</th>
+                                    <th class="text-center py-3">Penilaian Akhir</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="border-start border-end">
+                                <tr>
+                                    @if ($timeline)
+                                        <td class="text-center py-3">
+                                            @if ($timeline->start_registration && $timeline->end_registration)
+                                                {{ \Carbon\Carbon::parse($timeline->start_registration)->locale('id')->translatedFormat('d F Y') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($timeline->end_registration)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->start_registration)
+                                                {{ \Carbon\Carbon::parse($timeline->start_registration)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->end_registration)
+                                                {{ \Carbon\Carbon::parse($timeline->end_registration)->locale('id')->translatedFormat('d F Y') }}
+                                            @endif
+                                        </td>
+
+                                        <td class="text-center py-3">
+                                            @if ($timeline->start_selection && $timeline->end_selection)
+                                                {{ \Carbon\Carbon::parse($timeline->start_selection)->locale('id')->translatedFormat('d F Y') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($timeline->end_selection)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->start_selection)
+                                                {{ \Carbon\Carbon::parse($timeline->start_selection)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->end_selection)
+                                                {{ \Carbon\Carbon::parse($timeline->end_selection)->locale('id')->translatedFormat('d F Y') }}
+                                            @endif
+                                        </td>
+
+                                        <td class="text-center py-3">
+                                            @if ($timeline->start_initial_assessment && $timeline->end_initial_assessment)
+                                                {{ \Carbon\Carbon::parse($timeline->start_initial_assessment)->locale('id')->translatedFormat('d F Y') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($timeline->end_initial_assessment)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->start_initial_assessment)
+                                                {{ \Carbon\Carbon::parse($timeline->start_initial_assessment)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->end_initial_assessment)
+                                                {{ \Carbon\Carbon::parse($timeline->end_initial_assessment)->locale('id')->translatedFormat('d F Y') }}
+                                            @endif
+                                        </td>
+
+                                        <td class="text-center py-3">
+                                            @if ($timeline->start_final_assessment && $timeline->end_final_assessment)
+                                                {{ \Carbon\Carbon::parse($timeline->start_final_assessment)->locale('id')->translatedFormat('d F Y') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($timeline->end_final_assessment)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->start_final_assessment)
+                                                {{ \Carbon\Carbon::parse($timeline->start_final_assessment)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->end_final_assessment)
+                                                {{ \Carbon\Carbon::parse($timeline->end_final_assessment)->locale('id')->translatedFormat('d F Y') }}
+                                            @endif
+                                        </td>
+                                    @else
+                                        <td colspan="4" class="text-center py-3">
+                                            Timeline kegiatan belum di tentukan
+                                        </td>
+                                    @endif
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h5 class="card-title mb-3 mt-5" style="font-weight: 600;">PIC Amaliah Astra Awards</h5>
                     <form id="registrationForm" class="row g-3" action="{{ route('registerAct') }}" method="POST">
                         @csrf
 
@@ -70,7 +150,8 @@
 
                         {{-- Konfirmasi Password --}}
                         <div class="col-lg-6">
-                            <label for="password_confirmation" class="form-label fw-medium">Konfirmasi Password</label>
+                            <label for="password_confirmation" class="form-label fw-medium">Konfirmasi
+                                Password</label>
                             <input type="password" class="form-control" id="password_confirmation"
                                 name="password_confirmation" placeholder="Masukan konfirmasi password">
                         </div>

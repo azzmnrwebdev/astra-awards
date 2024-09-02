@@ -26,6 +26,8 @@ return new class extends Migration
             $table->string('option_four')->nullable();
             $table->json('question_five')->nullable();
             $table->text('file_question_two')->nullable();
+            $table->text('file_question_three')->nullable();
+            $table->text('file_question_four')->nullable();
             $table->timestamps();
         });
     }

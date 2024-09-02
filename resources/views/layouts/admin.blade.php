@@ -11,7 +11,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     {{-- Title --}}
-    <title>{{ $title }} - Astra Awards</title>
+    <title>{{ $title }} - Awards Amaliah</title>
 
     {{-- Custom CSS --}}
     <style>
@@ -34,11 +34,6 @@
 
         li {
             list-style: none;
-        }
-
-        .tippy-box[data-theme~="darkBlue"] {
-            background-color: #1c2434;
-            color: #ffffff;
         }
 
         /* Layout skeleton */

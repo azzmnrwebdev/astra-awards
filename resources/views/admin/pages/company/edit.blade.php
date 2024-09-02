@@ -1,4 +1,4 @@
-<x-admin title="Ubah Perusahaan">
+<x-admin title="Edit Perusahaan">
     {{-- Custom CSS --}}
     @prepend('styles')
         <style>
@@ -10,7 +10,7 @@
 
     {{-- Main Content --}}
     <h4 class="mb-4 fw-semibold d-inline-flex" id="pageTitle">
-        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Ubah Perusahaan
+        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Edit Perusahaan
     </h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
@@ -26,9 +26,9 @@
                 @method('PUT')
 
                 <div class="row mb-3">
-                    <label for="name" class="col-sm-2 col-form-label">Nama Perusahaan</label>
+                    <label for="name" class="col-md-3 col-xl-2 col-form-label">Nama Perusahaan</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-md-9 col-xl-10">
                         <input type="text" name="name" id="name"
                             class="form-control @error('name') is-invalid @enderror"
                             value="{{ old('name', $company->name) }}">
@@ -40,9 +40,9 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="parent_company_id" class="col-sm-2 col-form-label">Induk Perusahaan</label>
+                    <label for="parent_company_id" class="col-md-3 col-xl-2 col-form-label">Induk Perusahaan</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-md-9 col-xl-10">
                         <select name="parent_company_id" id="parent_company_id"
                             class="form-select @error('parent_company_id') is-invalid @enderror">
                             <option value="">-- Pilih Induk Perusahaan --</option>
@@ -63,9 +63,9 @@
                 </div>
 
                 <div class="row mb-3 {{ old('parent_company_id') == 'another' ? '' : 'd-none' }} otherParentCompany">
-                    <label for="otherParentCompany" class="col-sm-2 col-form-label">Induk Perusahaan Lainnya</label>
+                    <label for="otherParentCompany" class="col-md-3 col-xl-2 col-form-label">Induk Perusahaan Lainnya</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-md-9 col-xl-10">
                         <input type="text" name="otherParentCompany" id="otherParentCompany"
                             class="form-control @error('otherParentCompany') is-invalid @enderror"
                             value="{{ old('otherParentCompany') }}">
@@ -77,9 +77,9 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="business_line_id" class="col-sm-2 col-form-label">Lini Bisnis</label>
+                    <label for="business_line_id" class="col-md-3 col-xl-2 col-form-label">Lini Bisnis</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-md-9 col-xl-10">
                         <select name="business_line_id" id="business_line_id"
                             class="form-select @error('business_line_id') is-invalid @enderror">
                             <option value="">-- Pilih Lini Bisnis --</option>
@@ -100,9 +100,9 @@
                 </div>
 
                 <div class="row mb-3 {{ old('business_line_id') == 'another' ? '' : 'd-none' }} otherBusinessLine">
-                    <label for="otherBusinessLine" class="col-sm-2 col-form-label">Lini Bisnis Lainnya</label>
+                    <label for="otherBusinessLine" class="col-md-3 col-xl-2 col-form-label">Lini Bisnis Lainnya</label>
 
-                    <div class="col-sm-10">
+                    <div class="col-md-9 col-xl-10">
                         <input type="text" name="otherBusinessLine" id="otherBusinessLine"
                             class="form-control @error('otherBusinessLine') is-invalid @enderror"
                             value="{{ old('otherBusinessLine') }}">
