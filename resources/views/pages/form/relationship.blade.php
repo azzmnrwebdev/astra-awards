@@ -76,7 +76,7 @@
                             </div>
 
                             <div class="{{ $pillarTwo && $pillarTwo->file_question_two ? 'mb-2' : 'mb-3' }}">
-                                <label for="file_question_two" class="form-label fw-medium">Dokumen Pendukung</label>
+                                <label for="file_question_two" class="form-label fw-medium">Dokumen Pendukung (bisa lebih dari satu dokumen)</label>
                                 <input class="form-control" type="file" id="file_question_two"
                                     name="file_question_two">
                             </div>
