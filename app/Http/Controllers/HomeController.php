@@ -15,15 +15,15 @@ class HomeController extends Controller
 {
     public function information()
     {
-        // Ambil informasi pengguna
-        $userId = Auth::user()->id;
-        $information = Mosque::with(['user'])->where('user_id', $userId)->first();
+        // Ambil data mosque dari pengguna yang sedang login
+        $mosque = Auth::user()->mosque;
 
-        // Ambil mosqueId dari pengguna yang sedang login
-        $mosqueId = Auth::user()->mosque->id;
+        if (!$mosque) {
+            return view('pages.information');
+        }
 
-        // ----- Pillar One -----
-        $pillarOne = PillarOne::where('mosque_id', $mosqueId)->first();
+        // Pillar One
+        $pillarOne = PillarOne::where('mosque_id', $mosque->id)->first();
         $pillarOneFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
 
         $pillarOneCompleted = 0;
@@ -40,8 +40,8 @@ class HomeController extends Controller
         $pillarOneCompletion = ($pillarOneCompleted / $totalFields) * 100;
         $pillarOneCompletion = round($pillarOneCompletion);
 
-        // ----- Pillar Two -----
-        $pillarTwo = PillarTwo::where('mosque_id', $mosqueId)->first();
+        // Pillar Two
+        $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->first();
         $pillarTwoFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
 
         $pillarTwoCompleted = 0;
@@ -58,8 +58,8 @@ class HomeController extends Controller
         $pillarTwoCompletion = ($pillarTwoCompleted / $totalFields) * 100;
         $pillarTwoCompletion = round($pillarTwoCompletion);
 
-        // ----- Pillar Three -----
-        $pillarThree = PillarThree::where('mosque_id', $mosqueId)->first();
+        // Pillar Three
+        $pillarThree = PillarThree::where('mosque_id', $mosque->id)->first();
         $pillarThreeFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'question_six'];
 
         $pillarThreeCompleted = 0;
@@ -76,8 +76,8 @@ class HomeController extends Controller
         $pillarThreeCompletion = ($pillarThreeCompleted / $totalFields) * 100;
         $pillarThreeCompletion = round($pillarThreeCompletion);
 
-        // ----- Pillar Four -----
-        $pillarFour = PillarFour::where('mosque_id', $mosqueId)->first();
+        // Pillar Four
+        $pillarFour = PillarFour::where('mosque_id', $mosque->id)->first();
         $pillarFourFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
 
         $pillarFourCompleted = 0;
@@ -94,8 +94,8 @@ class HomeController extends Controller
         $pillarFourCompletion = ($pillarFourCompleted / $totalFields) * 100;
         $pillarFourCompletion = round($pillarFourCompletion);
 
-        // ----- Pillar Five -----
-        $pillarFive = PillarFive::where('mosque_id', $mosqueId)->first();
+        // Pillar Five
+        $pillarFive = PillarFive::where('mosque_id', $mosque->id)->first();
         $pillarFiveFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
 
         $pillarFiveCompleted = 0;
@@ -112,10 +112,9 @@ class HomeController extends Controller
         $pillarFiveCompletion = ($pillarFiveCompleted / $totalFields) * 100;
         $pillarFiveCompletion = round($pillarFiveCompletion);
 
-
         // Kirim data ke view
         return view('pages.information', compact(
-            'information',
+            'mosque',
             'pillarOneCompletion',
             'pillarTwoCompletion',
             'pillarThreeCompletion',

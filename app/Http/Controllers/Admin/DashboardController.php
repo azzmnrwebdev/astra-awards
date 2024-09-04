@@ -41,14 +41,11 @@ class DashboardController extends Controller
     public function dashboardAct(Request $request)
     {
         $rules = [
-            'start_registration' => 'date',
-            'end_registration' => 'nullable|date|after_or_equal:start_registration',
-            'start_selection' => 'date',
-            'end_selection' => 'nullable|date|after_or_equal:start_selection',
-            'start_initial_assessment' => 'date',
-            'end_initial_assessment' => 'nullable|date|after_or_equal:start_initial_assessment',
-            'start_final_assessment' => 'date',
-            'end_final_assessment' => 'nullable|date|after_or_equal:start_final_assessment',
+            'registration' => 'required',
+            'form_filling' => 'required',
+            'selection' => 'required',
+            'initial_assessment' => 'required',
+            'final_assessment' => 'required',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -57,17 +54,30 @@ class DashboardController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $startRegistration = $request->input('start_registration');
+        $endRegistration = $request->input('end_registration');
+        $startForm = $request->input('start_form');
+        $endForm = $request->input('end_form');
+        $startSelection = $request->input('start_selection');
+        $endSelection = $request->input('end_selection');
+        $startInitialAssessment = $request->input('start_initial_assessment');
+        $endInitialAssessment = $request->input('end_initial_assessment');
+        $startFinalAssessment = $request->input('start_final_assessment');
+        $endFinalAssessment = $request->input('end_final_assessment');
+
         Timeline::updateOrCreate(
             ['id' => $request->input('id')],
             [
-                'start_registration' => $request->input('start_registration'),
-                'end_registration' => $request->input('end_registration'),
-                'start_selection' => $request->input('start_selection'),
-                'end_selection' => $request->input('end_selection'),
-                'start_initial_assessment' => $request->input('start_initial_assessment'),
-                'end_initial_assessment' => $request->input('end_initial_assessment'),
-                'start_final_assessment' => $request->input('start_final_assessment'),
-                'end_final_assessment' => $request->input('end_final_assessment'),
+                'start_registration' => $startRegistration,
+                'end_registration' => $endRegistration,
+                'start_form' => $startForm,
+                'end_form' => $endForm,
+                'start_selection' => $startSelection,
+                'end_selection' => $endSelection,
+                'start_initial_assessment' => $startInitialAssessment,
+                'end_initial_assessment' => $endInitialAssessment,
+                'start_final_assessment' => $startFinalAssessment,
+                'end_final_assessment' => $endFinalAssessment,
             ]
         );
 

@@ -16,4 +16,9 @@ class PillarOne extends Model
     {
         return $this->belongsTo(Mosque::class, 'mosque_id');
     }
+
+    public function systemAssessment()
+    {
+        return $this->hasMany(SystemAssessment::class, 'pillar_one_id');
+    }
 }

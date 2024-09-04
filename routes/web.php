@@ -19,16 +19,20 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SystemAssessmentController;
 use App\Http\Middleware\CheckRolesMiddleware;
 use App\Http\Middleware\CheckStatusMiddleware;
+use App\Http\Middleware\FormDKMMiddleware;
+use App\Http\Middleware\RegisterMiddleware;
+use App\Http\Middleware\SelectionMiddleware;
 
 Route::middleware('guest')->group(function () {
-    Route::get('login', [LoginController::class, 'login'])->name('login');
-    Route::post('login', [LoginController::class, 'loginAct'])->name('loginAct');
-    Route::get('register', [RegisterController::class, 'register'])->name('register');
-    Route::post('register', [RegisterController::class, 'registerAct'])->name('registerAct');
-    Route::get('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
-    Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPasswordAct'])->name('forgotPasswordAct');
+    Route::get('masuk', [LoginController::class, 'login'])->name('login');
+    Route::post('masuk', [LoginController::class, 'loginAct'])->name('loginAct');
+    Route::get('daftar', [RegisterController::class, 'register'])->name('register')->middleware(RegisterMiddleware::class);
+    Route::post('daftar', [RegisterController::class, 'registerAct'])->name('registerAct')->middleware(RegisterMiddleware::class);
+    Route::get('lupa-password', [ForgotPasswordController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::post('lupa-password', [ForgotPasswordController::class, 'forgotPasswordAct'])->name('forgotPasswordAct');
     Route::get('reset-password/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('resetPassword');
     Route::post('reset-password', [ForgotPasswordController::class, 'resetPasswordAct'])->name('resetPasswordAct');
 });
@@ -39,26 +43,36 @@ Route::middleware('auth')->group(function () {
     // Route All Role
     Route::middleware([CheckStatusMiddleware::class])->group(function () {
         Route::get('/', [HomeController::class, 'information'])->name('information');
-        Route::get('formulir', [FormController::class, 'index'])->name('form.index');
-        Route::get('formulir/manajemen-hubungan', [FormController::class, 'managementRelationship'])->name('form.managementRelationship');
-        Route::get('formulir/hubungan', [FormController::class, 'relationship'])->name('form.relationship');
-        Route::get('formulir/program', [FormController::class, 'program'])->name('form.program');
-        Route::get('formulir/administrasi', [FormController::class, 'administration'])->name('form.administration');
-        Route::get('formulir/infrastruktur', [FormController::class, 'infrastructure'])->name('form.infrastructure');
         Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation');
+
         Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
         Route::put('profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
         Route::put('profile/change-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     });
 
+    // Route Admin & User
+    Route::middleware([CheckRolesMiddleware::class . ':admin,user'])->group(function () {
+        Route::get('formulir', [FormController::class, 'index'])->name('form.index')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
+        Route::get('formulir/manajemen-hubungan/{user?}/{action?}', [FormController::class, 'managementRelationship'])->name('form.managementRelationship')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
+        Route::get('formulir/hubungan/{user?}/{action?}', [FormController::class, 'relationship'])->name('form.relationship')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
+        Route::get('formulir/program/{user?}/{action?}', [FormController::class, 'program'])->name('form.program')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
+        Route::get('formulir/administrasi/{user?}/{action?}', [FormController::class, 'administration'])->name('form.administration')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
+        Route::get('formulir/infrastruktur/{user?}/{action?}', [FormController::class, 'infrastructure'])->name('form.infrastructure')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
+    });
+
+    // Route Admin
+    Route::middleware([CheckRolesMiddleware::class . ':admin'])->group(function () {
+        Route::post('formulir/manajemen-hubungan/{user?}/{action?}', [SystemAssessmentController::class, 'pillarOneAct'])->name('system_assessment.pillarOneAct')->middleware([SelectionMiddleware::class]);
+    });
+
     // Route Only User
     Route::middleware([CheckRolesMiddleware::class . ':user'])->group(function () {
-        Route::post('formulir/manajemen-hubungan', [FormController::class, 'managementRelationshipAct'])->name('form.managementRelationshipAct');
-        Route::post('formulir/hubungan', [FormController::class, 'relationshipAct'])->name('form.relationshipAct');
-        Route::post('presentasi', [PresentationController::class, 'presentationAct'])->name('presentationAct');
-        Route::post('formulir/program', [FormController::class, 'programAct'])->name('form.programAct');
-        Route::post('formulir/administrasi', [FormController::class, 'administrationAct'])->name('form.administrationAct');
-        Route::post('formulir/infrastruktur', [FormController::class, 'infrastructureAct'])->name('form.infrastructureAct');
+        Route::post('formulir/manajemen-hubungan', [FormController::class, 'managementRelationshipAct'])->name('form.managementRelationshipAct')->middleware(FormDKMMiddleware::class);
+        Route::post('formulir/hubungan', [FormController::class, 'relationshipAct'])->name('form.relationshipAct')->middleware(FormDKMMiddleware::class);
+        Route::post('presentasi', [PresentationController::class, 'presentationAct'])->name('presentationAct')->middleware(FormDKMMiddleware::class);
+        Route::post('formulir/program', [FormController::class, 'programAct'])->name('form.programAct')->middleware(FormDKMMiddleware::class);
+        Route::post('formulir/administrasi', [FormController::class, 'administrationAct'])->name('form.administrationAct')->middleware(FormDKMMiddleware::class);
+        Route::post('formulir/infrastruktur', [FormController::class, 'infrastructureAct'])->name('form.infrastructureAct')->middleware(FormDKMMiddleware::class);
     });
 
     // Route Admin & Jury

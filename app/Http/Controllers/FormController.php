@@ -7,6 +7,8 @@ use App\Models\PillarFour;
 use App\Models\PillarOne;
 use App\Models\PillarThree;
 use App\Models\PillarTwo;
+use App\Models\SystemAssessment;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,15 +19,54 @@ class FormController extends Controller
 {
     public function index()
     {
-        return view('pages.form.index');
+        $pillarOnes = User::where('role', 'user')
+            ->whereHas('mosque.pillarOne')
+            ->paginate(10);
+
+        $pillarTwos = User::where('role', 'user')
+            ->whereHas('mosque.pillarTwo')
+            ->paginate(10);
+
+        $pillarThrees = User::where('role', 'user')
+            ->whereHas('mosque.pillarThree')
+            ->paginate(10);
+
+        $pillarFours = User::where('role', 'user')
+            ->whereHas('mosque.pillarFour')
+            ->paginate(10);
+
+        $pillarFives = User::where('role', 'user')
+            ->whereHas('mosque.pillarFive')
+            ->paginate(10);
+
+        return view('pages.form.index', compact('pillarOnes', 'pillarTwos', 'pillarThrees', 'pillarFours', 'pillarFives'));
     }
 
-    public function managementRelationship()
+    public function managementRelationship($user = null, $action = null)
     {
-        $mosqueId = Auth::user()->mosque->id;
-        $pillarOne = PillarOne::where('mosque_id', $mosqueId)->first();
+        if (!$user && !$action) {
+            $mosque = Auth::user()->mosque;
 
-        return view('pages.form.management-relationship', compact('pillarOne'));
+            if (!$mosque) {
+                return redirect(route('form.index'));
+            }
+
+            $pillarOne = PillarOne::where('mosque_id', $mosque->id)->first();
+
+            return view('pages.form.management-relationship', compact('pillarOne'));
+        } else {
+            $user = User::where('id', $user)->first();
+            $pillarOne = $user->mosque->pillarOne;
+
+            $systemAssessment = SystemAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
+
+            if ($systemAssessment) {
+                $totalValue = $systemAssessment->pillar_one_question_one + $systemAssessment->pillar_one_question_two + $systemAssessment->pillar_one_question_three + $systemAssessment->pillar_one_question_four + $systemAssessment->pillar_one_question_five;
+                return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment', 'totalValue'));
+            }
+
+            return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment'));
+        }
     }
 
     public function managementRelationshipAct(Request $request)

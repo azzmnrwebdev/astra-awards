@@ -72,7 +72,11 @@ class UserController extends Controller
 
     public function editStatus(User $user)
     {
-        return view('admin.pages.user.edit-status', compact('user'));
+        if ($user->status === 0) {
+            return view('admin.pages.user.edit-status', compact('user'));
+        } else {
+            return redirect()->back()->with('error', 'DKM ini sudah aktif dan tidak bisa akses halaman edit status');
+        }
     }
 
     public function updateStatus(Request $request, User $user)

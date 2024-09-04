@@ -16,19 +16,12 @@
                     <h5 class="card-title mb-3" style="font-weight: 600;">Timeline Kegiatan</h5>
                     <div class="table-responsive">
                         <table class="table text-nowrap align-middle mb-0">
-                            <thead class="border-top border-start border-end table-info">
+                            <tbody class="border">
                                 <tr>
-                                    <th class="text-center py-3">Pendaftaran</th>
-                                    <th class="text-center py-3">Seleksi</th>
-                                    <th class="text-center py-3">Penilaian Awal</th>
-                                    <th class="text-center py-3">Penilaian Akhir</th>
-                                </tr>
-                            </thead>
-
-                            <tbody class="border-start border-end">
-                                <tr>
-                                    @if ($timeline)
-                                        <td class="text-center py-3">
+                                    <td class="py-3 fw-semibold">Pendaftaran</td>
+                                    <td class="py-3 fw-semibold">:</td>
+                                    <td class="py-3">
+                                        @if ($timeline)
                                             @if ($timeline->start_registration && $timeline->end_registration)
                                                 {{ \Carbon\Carbon::parse($timeline->start_registration)->locale('id')->translatedFormat('d F Y') }}
                                                 -
@@ -38,9 +31,35 @@
                                             @elseif ($timeline->end_registration)
                                                 {{ \Carbon\Carbon::parse($timeline->end_registration)->locale('id')->translatedFormat('d F Y') }}
                                             @endif
-                                        </td>
-
-                                        <td class="text-center py-3">
+                                        @else
+                                            Belum di tentukan
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 fw-semibold">Pengisian Formulir</td>
+                                    <td class="py-3 fw-semibold">:</td>
+                                    <td class="py-3">
+                                        @if ($timeline)
+                                            @if ($timeline->start_form && $timeline->end_form)
+                                                {{ \Carbon\Carbon::parse($timeline->start_form)->locale('id')->translatedFormat('d F Y') }}
+                                                -
+                                                {{ \Carbon\Carbon::parse($timeline->end_form)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->start_form)
+                                                {{ \Carbon\Carbon::parse($timeline->start_form)->locale('id')->translatedFormat('d F Y') }}
+                                            @elseif ($timeline->end_form)
+                                                {{ \Carbon\Carbon::parse($timeline->end_form)->locale('id')->translatedFormat('d F Y') }}
+                                            @endif
+                                        @else
+                                            Belum di tentukan
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 fw-semibold">Seleksi</td>
+                                    <td class="py-3 fw-semibold">:</td>
+                                    <td class="py-3">
+                                        @if ($timeline)
                                             @if ($timeline->start_selection && $timeline->end_selection)
                                                 {{ \Carbon\Carbon::parse($timeline->start_selection)->locale('id')->translatedFormat('d F Y') }}
                                                 -
@@ -50,9 +69,16 @@
                                             @elseif ($timeline->end_selection)
                                                 {{ \Carbon\Carbon::parse($timeline->end_selection)->locale('id')->translatedFormat('d F Y') }}
                                             @endif
-                                        </td>
-
-                                        <td class="text-center py-3">
+                                        @else
+                                            Belum di tentukan
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 fw-semibold">Penilaian Awal</td>
+                                    <td class="py-3 fw-semibold">:</td>
+                                    <td class="py-3">
+                                        @if ($timeline)
                                             @if ($timeline->start_initial_assessment && $timeline->end_initial_assessment)
                                                 {{ \Carbon\Carbon::parse($timeline->start_initial_assessment)->locale('id')->translatedFormat('d F Y') }}
                                                 -
@@ -62,9 +88,16 @@
                                             @elseif ($timeline->end_initial_assessment)
                                                 {{ \Carbon\Carbon::parse($timeline->end_initial_assessment)->locale('id')->translatedFormat('d F Y') }}
                                             @endif
-                                        </td>
-
-                                        <td class="text-center py-3">
+                                        @else
+                                            Belum di tentukan
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 fw-semibold">Penilaian Akhir</td>
+                                    <td class="py-3 fw-semibold">:</td>
+                                    <td class="py-3">
+                                        @if ($timeline)
                                             @if ($timeline->start_final_assessment && $timeline->end_final_assessment)
                                                 {{ \Carbon\Carbon::parse($timeline->start_final_assessment)->locale('id')->translatedFormat('d F Y') }}
                                                 -
@@ -74,12 +107,10 @@
                                             @elseif ($timeline->end_final_assessment)
                                                 {{ \Carbon\Carbon::parse($timeline->end_final_assessment)->locale('id')->translatedFormat('d F Y') }}
                                             @endif
-                                        </td>
-                                    @else
-                                        <td colspan="4" class="text-center py-3">
-                                            Timeline kegiatan belum di tentukan
-                                        </td>
-                                    @endif
+                                        @else
+                                            Belum di tentukan
+                                        @endif
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

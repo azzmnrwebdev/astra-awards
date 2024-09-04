@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->date('start_registration')->nullable();
             $table->date('end_registration')->nullable();
+            $table->date('start_form')->nullable();
+            $table->date('end_form')->nullable();
             $table->date('start_selection')->nullable();
             $table->date('end_selection')->nullable();
             $table->date('start_initial_assessment')->nullable();

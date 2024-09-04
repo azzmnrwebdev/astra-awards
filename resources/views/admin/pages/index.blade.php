@@ -118,21 +118,15 @@
                 </div>
             @endif
 
+            {{-- belum selesai --}}
             <div class="table-responsive mt-3">
                 <table class="table text-nowrap align-middle mb-0">
-                    <thead class="border-top border-start border-end">
+                    <tbody class="border">
                         <tr>
-                            <th class="text-center py-3">Pendaftaran</th>
-                            <th class="text-center py-3">Seleksi</th>
-                            <th class="text-center py-3">Penilaian Awal</th>
-                            <th class="text-center py-3">Penilaian Akhir</th>
-                        </tr>
-                    </thead>
-
-                    <tbody class="border-start border-end">
-                        <tr>
-                            @if ($timeline)
-                                <td class="text-center py-3">
+                            <td class="py-3 fw-semibold">Pendaftaran</td>
+                            <td class="py-3 fw-semibold">:</td>
+                            <td class="py-3">
+                                @if ($timeline)
                                     @if ($timeline->start_registration && $timeline->end_registration)
                                         {{ \Carbon\Carbon::parse($timeline->start_registration)->locale('id')->translatedFormat('d F Y') }}
                                         -
@@ -142,9 +136,35 @@
                                     @elseif ($timeline->end_registration)
                                         {{ \Carbon\Carbon::parse($timeline->end_registration)->locale('id')->translatedFormat('d F Y') }}
                                     @endif
-                                </td>
-
-                                <td class="text-center py-3">
+                                @else
+                                    Belum di tentukan
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 fw-semibold">Pengisian Formulir</td>
+                            <td class="py-3 fw-semibold">:</td>
+                            <td class="py-3">
+                                @if ($timeline)
+                                    @if ($timeline->start_form && $timeline->end_form)
+                                        {{ \Carbon\Carbon::parse($timeline->start_form)->locale('id')->translatedFormat('d F Y') }}
+                                        -
+                                        {{ \Carbon\Carbon::parse($timeline->end_form)->locale('id')->translatedFormat('d F Y') }}
+                                    @elseif ($timeline->start_form)
+                                        {{ \Carbon\Carbon::parse($timeline->start_form)->locale('id')->translatedFormat('d F Y') }}
+                                    @elseif ($timeline->end_form)
+                                        {{ \Carbon\Carbon::parse($timeline->end_form)->locale('id')->translatedFormat('d F Y') }}
+                                    @endif
+                                @else
+                                    Belum di tentukan
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 fw-semibold">Seleksi</td>
+                            <td class="py-3 fw-semibold">:</td>
+                            <td class="py-3">
+                                @if ($timeline)
                                     @if ($timeline->start_selection && $timeline->end_selection)
                                         {{ \Carbon\Carbon::parse($timeline->start_selection)->locale('id')->translatedFormat('d F Y') }}
                                         -
@@ -154,9 +174,16 @@
                                     @elseif ($timeline->end_selection)
                                         {{ \Carbon\Carbon::parse($timeline->end_selection)->locale('id')->translatedFormat('d F Y') }}
                                     @endif
-                                </td>
-
-                                <td class="text-center py-3">
+                                @else
+                                    Belum di tentukan
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 fw-semibold">Penilaian Awal</td>
+                            <td class="py-3 fw-semibold">:</td>
+                            <td class="py-3">
+                                @if ($timeline)
                                     @if ($timeline->start_initial_assessment && $timeline->end_initial_assessment)
                                         {{ \Carbon\Carbon::parse($timeline->start_initial_assessment)->locale('id')->translatedFormat('d F Y') }}
                                         -
@@ -166,9 +193,16 @@
                                     @elseif ($timeline->end_initial_assessment)
                                         {{ \Carbon\Carbon::parse($timeline->end_initial_assessment)->locale('id')->translatedFormat('d F Y') }}
                                     @endif
-                                </td>
-
-                                <td class="text-center py-3">
+                                @else
+                                    Belum di tentukan
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 fw-semibold">Penilaian Akhir</td>
+                            <td class="py-3 fw-semibold">:</td>
+                            <td class="py-3">
+                                @if ($timeline)
                                     @if ($timeline->start_final_assessment && $timeline->end_final_assessment)
                                         {{ \Carbon\Carbon::parse($timeline->start_final_assessment)->locale('id')->translatedFormat('d F Y') }}
                                         -
@@ -178,10 +212,10 @@
                                     @elseif ($timeline->end_final_assessment)
                                         {{ \Carbon\Carbon::parse($timeline->end_final_assessment)->locale('id')->translatedFormat('d F Y') }}
                                     @endif
-                                </td>
-                            @else
-                                <td colspan="4" class="text-center py-3">Timeline kegiatan belum di tentukan</td>
-                            @endif
+                                @else
+                                    Belum di tentukan
+                                @endif
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -195,131 +229,328 @@
                     <input type="hidden" name="id" value="{{ $timeline->id ?? '' }}">
 
                     {{-- Pendaftaran --}}
+                    @php
+                        $registrationValue = '';
+
+                        if ($timeline) {
+                            if (!is_null($timeline->start_registration) && !is_null($timeline->end_registration)) {
+                                $registrationValue =
+                                    $timeline->start_registration . ' - ' . $timeline->end_registration;
+                            }
+                        }
+                    @endphp
+
                     <div class="row mb-3">
-                        <label for="start_registration" class="col-md-3 col-xl-2 col-form-label">Mulai
-                            Pendaftaran</label>
+                        <label for="registration" class="col-md-3 col-xl-2 col-form-label">Pendaftaran</label>
 
                         <div class="col-md-9 col-xl-10">
-                            <input type="date" name="start_registration" id="start_registration"
-                                class="form-control @error('start_registration') is-invalid @enderror"
-                                value="{{ old('start_registration', $timeline->start_registration ?? '') }}">
+                            <input type="text" name="registration" id="registration"
+                                class="form-control daterange  @error('registration') is-invalid @enderror"
+                                value="{{ old('registration', $registrationValue) }}"
+                                placeholder="Tentukan tanggal pendaftaran">
 
-                            @error('start_registration')
+                            <input type="text" name="start_registration" id="start_registration"
+                                class="form-control"
+                                value="{{ old('start_registration', $timeline->start_registration ?? '') }}" hidden>
+                            <input type="text" name="end_registration" id="end_registration" class="form-control"
+                                value="{{ old('end_registration', $timeline->end_registration ?? '') }}" hidden>
+
+                            @error('registration')
                                 <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
                             @enderror
                         </div>
                     </div>
 
+                    {{-- Pengisian Formulir --}}
+                    @php
+                        $formFillingValue = '';
+
+                        if ($timeline) {
+                            if (!is_null($timeline->start_form) && !is_null($timeline->end_form)) {
+                                $formFillingValue = $timeline->start_form . ' - ' . $timeline->end_form;
+                            }
+                        }
+                    @endphp
+
                     <div class="row mb-3">
-                        <label for="end_registration" class="col-md-3 col-xl-2 col-form-label">Selesai
-                            Pendaftaran</label>
+                        <label for="form_filling" class="col-md-3 col-xl-2 col-form-label">Pengisian Formulir</label>
 
                         <div class="col-md-9 col-xl-10">
-                            <input type="date" name="end_registration" id="end_registration"
-                                class="form-control @error('end_registration') is-invalid @enderror"
-                                value="{{ old('end_registration', $timeline->end_registration ?? '') }}">
+                            <input type="text" name="form_filling" id="form_filling"
+                                class="form-control daterange  @error('form_filling') is-invalid @enderror"
+                                value="{{ old('form_filling', $formFillingValue) }}"
+                                placeholder="Tentukan tanggal pengisian formulir">
 
-                            @error('end_registration')
+                            <input type="text" name="start_form" id="start_form" class="form-control"
+                                value="{{ old('start_form', $timeline->start_form ?? '') }}" hidden>
+                            <input type="text" name="end_form" id="end_form" class="form-control"
+                                value="{{ old('end_form', $timeline->end_form ?? '') }}" hidden>
+
+                            @error('form_filling')
                                 <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
                             @enderror
                         </div>
                     </div>
 
                     {{-- Seleksi --}}
+                    @php
+                        $selectionValue = '';
+
+                        if ($timeline) {
+                            if (!is_null($timeline->start_selection) && !is_null($timeline->end_selection)) {
+                                $selectionValue = $timeline->start_selection . ' - ' . $timeline->end_selection;
+                            }
+                        }
+                    @endphp
+
                     <div class="row mb-3">
-                        <label for="start_selection" class="col-md-3 col-xl-2 col-form-label">Mulai Seleksi</label>
+                        <label for="selection" class="col-md-3 col-xl-2 col-form-label">Seleksi</label>
 
                         <div class="col-md-9 col-xl-10">
-                            <input type="date" name="start_selection" id="start_selection"
-                                class="form-control @error('start_selection') is-invalid @enderror"
-                                value="{{ old('start_selection', $timeline->start_selection ?? '') }}">
+                            <input type="text" name="selection" id="selection"
+                                class="form-control daterange  @error('selection') is-invalid @enderror"
+                                value="{{ old('selection', $selectionValue) }}"
+                                placeholder="Tentukan tanggal seleksi">
 
-                            @error('start_selection')
+                            <input type="text" name="start_selection" id="start_selection" class="form-control"
+                                value="{{ old('start_selection', $timeline->start_selection ?? '') }}" hidden>
+                            <input type="text" name="end_selection" id="end_selection" class="form-control"
+                                value="{{ old('end_selection', $timeline->end_selection ?? '') }}" hidden>
+
+                            @error('selection')
                                 <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
                             @enderror
                         </div>
                     </div>
 
+                    {{-- Penilaian Awal --}}
+                    @php
+                        $initalAssessmentValue = '';
+
+                        if ($timeline) {
+                            if (
+                                !is_null($timeline->start_initial_assessment) &&
+                                !is_null($timeline->end_initial_assessment)
+                            ) {
+                                $initalAssessmentValue =
+                                    $timeline->start_initial_assessment . ' - ' . $timeline->end_initial_assessment;
+                            }
+                        }
+                    @endphp
+
                     <div class="row mb-3">
-                        <label for="end_selection" class="col-md-3 col-xl-2 col-form-label">Selesai Seleksi</label>
-
-                        <div class="col-md-9 col-xl-10">
-                            <input type="date" name="end_selection" id="end_selection"
-                                class="form-control @error('end_selection') is-invalid @enderror"
-                                value="{{ old('end_selection', $timeline->end_selection ?? '') }}">
-
-                            @error('end_selection')
-                                <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
-                            @enderror
-                        </div>
-                    </div>
-
-                    {{-- Penilaian --}}
-                    <div class="row mb-3">
-                        <label for="start_initial_assessment" class="col-md-3 col-xl-2 col-form-label">Mulai Penilaian
+                        <label for="initial_assessment" class="col-md-3 col-xl-2 col-form-label">Penilaian
                             Awal</label>
 
                         <div class="col-md-9 col-xl-10">
-                            <input type="date" name="start_initial_assessment" id="start_initial_assessment"
-                                class="form-control @error('start_initial_assessment') is-invalid @enderror"
-                                value="{{ old('start_initial_assessment', $timeline->start_initial_assessment ?? '') }}">
+                            <input type="text" name="initial_assessment" id="initial_assessment"
+                                class="form-control daterange  @error('initial_assessment') is-invalid @enderror"
+                                value="{{ old('initial_assessment', $initalAssessmentValue) }}"
+                                placeholder="Tentukan tanggal penilaian awal">
 
-                            @error('start_initial_assessment')
+                            <input type="text" name="start_initial_assessment" id="start_initial_assessment"
+                                class="form-control"
+                                value="{{ old('start_initial_assessment', $timeline->start_initial_assessment ?? '') }}"
+                                hidden>
+                            <input type="text" name="end_initial_assessment" id="end_initial_assessment"
+                                class="form-control"
+                                value="{{ old('end_initial_assessment', $timeline->end_initial_assessment ?? '') }}"
+                                hidden>
+
+                            @error('initial_assessment')
                                 <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
                             @enderror
                         </div>
                     </div>
 
+                    {{-- Penilaian Akhir --}}
+                    @php
+                        $finalAssessmentValue = '';
+
+                        if ($timeline) {
+                            if (
+                                !is_null($timeline->start_final_assessment) &&
+                                !is_null($timeline->end_final_assessment)
+                            ) {
+                                $finalAssessmentValue =
+                                    $timeline->start_final_assessment . ' - ' . $timeline->end_final_assessment;
+                            }
+                        }
+                    @endphp
+
                     <div class="row mb-3">
-                        <label for="end_initial_assessment" class="col-md-3 col-xl-2 col-form-label">Selesai Penilaian
-                            Awal</label>
-
-                        <div class="col-md-9 col-xl-10">
-                            <input type="date" name="end_initial_assessment" id="end_initial_assessment"
-                                class="form-control @error('end_initial_assessment') is-invalid @enderror"
-                                value="{{ old('end_initial_assessment', $timeline->end_initial_assessment ?? '') }}">
-
-                            @error('end_initial_assessment')
-                                <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <label for="start_final_assessment" class="col-md-3 col-xl-2 col-form-label">Mulai Penilaian
+                        <label for="final_assessment" class="col-md-3 col-xl-2 col-form-label">Penilaian
                             Akhir</label>
 
                         <div class="col-md-9 col-xl-10">
-                            <input type="date" name="start_final_assessment" id="start_final_assessment"
-                                class="form-control @error('start_final_assessment') is-invalid @enderror"
-                                value="{{ old('start_final_assessment', $timeline->start_final_assessment ?? '') }}">
+                            <input type="text" name="final_assessment" id="final_assessment"
+                                class="form-control daterange  @error('final_assessment') is-invalid @enderror"
+                                value="{{ old('final_assessment', $finalAssessmentValue) }}"
+                                placeholder="Tentukan tanggal penilaian akhir">
 
-                            @error('start_final_assessment')
+                            <input type="text" name="start_final_assessment" id="start_final_assessment"
+                                class="form-control"
+                                value="{{ old('start_final_assessment', $timeline->start_final_assessment ?? '') }}"
+                                hidden>
+                            <input type="text" name="end_final_assessment" id="end_final_assessment"
+                                class="form-control"
+                                value="{{ old('end_final_assessment', $timeline->end_final_assessment ?? '') }}"
+                                hidden>
+
+                            @error('final_assessment')
                                 <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
                             @enderror
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <label for="end_final_assessment" class="col-md-3 col-xl-2 col-form-label">Selesai Penilaian
-                            Akhir</label>
-
-                        <div class="col-md-9 col-xl-10">
-                            <input type="date" name="end_final_assessment" id="end_final_assessment"
-                                class="form-control @error('end_final_assessment') is-invalid @enderror"
-                                value="{{ old('end_final_assessment', $timeline->end_final_assessment ?? '') }}">
-
-                            @error('end_final_assessment')
-                                <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
-                            @enderror
+                    @if ($timeline)
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-warning">Simpan Perubahan</button>
                         </div>
-                    </div>
-
-                    <div class="col-12 text-end">
-                        <button type="submit" class="btn btn-success">Simpan</button>
-                    </div>
+                    @else
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-success">Simpan</button>
+                        </div>
+                    @endif
                 </form>
             @endif
         </div>
     </div>
+
+    {{-- Custom Javascript --}}
+    @prepend('scripts')
+        <script type="text/javascript">
+            $(function() {
+                // Pendaftaran
+                $('input[name="registration"]').daterangepicker({
+                    autoUpdateInput: false,
+                    opens: 'right',
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                }, function(start, end, label) {
+                    pickstart = start.format('YYYY-MM-DD');
+                    pickend = end.format('YYYY-MM-DD');
+
+                    $('#start_registration').val(pickstart);
+                    $('#end_registration').val(pickend);
+
+                    $('input[name="registration"]').val(pickstart + ' - ' + pickend);
+                });
+
+                $('input[name="registration"]').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format(
+                        'YYYY-MM-DD'));
+                });
+
+                $('input[name="registration"]').on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
+                });
+
+                // Formulir
+                $('input[name="form_filling"]').daterangepicker({
+                    autoUpdateInput: false,
+                    opens: 'right',
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                }, function(start, end, label) {
+                    pickstart = start.format('YYYY-MM-DD');
+                    pickend = end.format('YYYY-MM-DD');
+
+                    $('#start_form').val(pickstart);
+                    $('#end_form').val(pickend);
+
+                    $('input[name="form_filling"]').val(pickstart + ' - ' + pickend);
+                });
+
+                $('input[name="form_filling"]').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format(
+                        'YYYY-MM-DD'));
+                });
+
+                $('input[name="form_filling"]').on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
+                });
+
+                // Seleksi
+                $('input[name="selection"]').daterangepicker({
+                    autoUpdateInput: false,
+                    opens: 'right',
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                }, function(start, end, label) {
+                    pickstart = start.format('YYYY-MM-DD');
+                    pickend = end.format('YYYY-MM-DD');
+
+                    $('#start_selection').val(pickstart);
+                    $('#end_selection').val(pickend);
+
+                    $('input[name="selection"]').val(pickstart + ' - ' + pickend);
+                });
+
+                $('input[name="selection"]').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format(
+                        'YYYY-MM-DD'));
+                });
+
+                $('input[name="selection"]').on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
+                });
+
+                // Penilaian Awal
+                $('input[name="initial_assessment"]').daterangepicker({
+                    autoUpdateInput: false,
+                    opens: 'right',
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                }, function(start, end, label) {
+                    pickstart = start.format('YYYY-MM-DD');
+                    pickend = end.format('YYYY-MM-DD');
+
+                    $('#start_initial_assessment').val(pickstart);
+                    $('#end_initial_assessment').val(pickend);
+
+                    $('input[name="initial_assessment"]').val(pickstart + ' - ' + pickend);
+                });
+
+                $('input[name="initial_assessment"]').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format(
+                        'YYYY-MM-DD'));
+                });
+
+                $('input[name="initial_assessment"]').on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
+                });
+
+                // Penilaian Akhir
+                $('input[name="final_assessment"]').daterangepicker({
+                    autoUpdateInput: false,
+                    opens: 'right',
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                }, function(start, end, label) {
+                    pickstart = start.format('YYYY-MM-DD');
+                    pickend = end.format('YYYY-MM-DD');
+
+                    $('#start_final_assessment').val(pickstart);
+                    $('#end_final_assessment').val(pickend);
+
+                    $('input[name="final_assessment"]').val(pickstart + ' - ' + pickend);
+                });
+
+                $('input[name="final_assessment"]').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format(
+                        'YYYY-MM-DD'));
+                });
+
+                $('input[name="final_assessment"]').on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
+                });
+            });
+        </script>
+    @endprepend
 </x-admin>
