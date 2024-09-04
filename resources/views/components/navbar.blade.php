@@ -16,10 +16,12 @@
                         href="{{ route('information') }}">Informasi</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('form.*') ? 'active' : '' }}"
-                        href="{{ route('form.index') }}">Formulir</a>
-                </li>
+                @if ((auth()->check() && auth()->user()->hasRole('admin')) || auth()->user()->hasRole('jury'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('form.*') ? 'active' : '' }}"
+                            href="{{ route('form.index') }}">Formulir</a>
+                    </li>
+                @endif
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('presentation') ? 'active' : '' }}"
