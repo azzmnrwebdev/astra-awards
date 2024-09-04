@@ -23,6 +23,47 @@ return new class extends Migration
             $table->integer('pillar_one_question_three')->nullable();
             $table->integer('pillar_one_question_four')->nullable();
             $table->integer('pillar_one_question_five')->nullable();
+            $table->foreignId('pillar_two_id')
+                ->nullable()
+                ->constrained('pillar_twos')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->integer('pillar_two_question_one')->nullable();
+            $table->integer('pillar_two_question_two')->nullable();
+            $table->integer('pillar_two_question_three')->nullable();
+            $table->integer('pillar_two_question_four')->nullable();
+            $table->integer('pillar_two_question_five')->nullable();
+            $table->foreignId('pillar_three_id')
+                ->nullable()
+                ->constrained('pillar_threes')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->integer('pillar_three_question_one')->nullable();
+            $table->integer('pillar_three_question_two')->nullable();
+            $table->integer('pillar_three_question_three')->nullable();
+            $table->integer('pillar_three_question_four')->nullable();
+            $table->integer('pillar_three_question_five')->nullable();
+            $table->integer('pillar_three_question_six')->nullable();
+            $table->foreignId('pillar_four_id')
+                ->nullable()
+                ->constrained('pillar_fours')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->integer('pillar_four_question_one')->nullable();
+            $table->integer('pillar_four_question_two')->nullable();
+            $table->integer('pillar_four_question_three')->nullable();
+            $table->integer('pillar_four_question_four')->nullable();
+            $table->integer('pillar_four_question_five')->nullable();
+            $table->foreignId('pillar_five_id')
+                ->nullable()
+                ->constrained('pillar_fives')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->integer('pillar_five_question_one')->nullable();
+            $table->integer('pillar_five_question_two')->nullable();
+            $table->integer('pillar_five_question_three')->nullable();
+            $table->integer('pillar_five_question_four')->nullable();
+            $table->integer('pillar_five_question_five')->nullable();
             $table->timestamps();
         });
     }

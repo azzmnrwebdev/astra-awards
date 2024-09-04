@@ -1,85 +1,86 @@
 <x-user title="Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah"
     name="Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah">
     <div class="container py-4">
-        <form action="{{ route('form.managementRelationshipAct') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-
-            @if (auth()->check() && auth()->user()->hasRole('user'))
-                <input type="hidden" name="id" value="{{ $pillarOne->id ?? '' }}">
+        <div class="row row-cols-1 row-cols-lg-2 g-4">
+            @if (Session('success'))
+                <div class="col-md-10 col-lg-8">
+                    <div class="alert alert-success mb-2" role="alert">
+                        {{ Session('success') }}
+                    </div>
+                </div>
             @endif
 
-            <div class="row row-cols-1 row-cols-lg-2 g-4">
-                @if (Session('success'))
-                    <div class="col-md-10 col-lg-8">
-                        <div class="alert alert-success mb-2" role="alert">
-                            {{ Session('success') }}
-                        </div>
+            @if (Session('success_assessment'))
+                <div class="col-md-10 col-lg-12">
+                    <div class="alert alert-success mb-2" role="alert">
+                        {{ Session('success_assessment') }}
                     </div>
-                @endif
+                </div>
+            @endif
 
-                @if (Session('success_assessment'))
-                    <div class="col-md-10 col-lg-12">
-                        <div class="alert alert-success mb-2" role="alert">
-                            {{ Session('success_assessment') }}
-                        </div>
-                    </div>
-                @endif
-
-                @if (Session('error'))
-                    <div class="col-md-10 col-lg-8">
-                        <div class="alert alert-danger mb-2" role="alert">
-                            {{ Session('error') }}
-                        </div>
-                    </div>
-                @endif
-
+            @if (Session('error'))
                 <div class="col-md-10 col-lg-8">
-                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                        <div class="col mb-4">
-                            <div class="card h-100 border-0 shadow rounded-4">
-                                <div class="card-body p-4">
-                                    <h5 class="card-title fw-bold mb-3">Informasi DKM</h5>
+                    <div class="alert alert-danger mb-2" role="alert">
+                        {{ Session('error') }}
+                    </div>
+                </div>
+            @endif
 
-                                    <p class="card-text mb-0"><span class="fw-medium">Nama:</span> {{ $user->name }}
-                                    </p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Email:</span> {{ $user->email }}
-                                    </p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Nomor Ponsel:</span>
-                                        {{ $user->phone_number }}</p>
+            <div class="col-md-10 col-lg-8">
+                @if (auth()->check() && auth()->user()->hasRole('admin'))
+                    <div class="col mb-4">
+                        <div class="card h-100 border-0 shadow rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold mb-3">Informasi DKM</h5>
 
-                                    <hr>
+                                <p class="card-text mb-0"><span class="fw-medium">Nama:</span> {{ $user->name }}
+                                </p>
+                                <p class="card-text mb-0"><span class="fw-medium">Email:</span> {{ $user->email }}
+                                </p>
+                                <p class="card-text mb-0"><span class="fw-medium">Nomor Ponsel:</span>
+                                    {{ $user->phone_number }}</p>
 
-                                    <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Mushala:</span>
-                                        {{ $user->mosque->name }}</p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Alamat:</span>
-                                        {{ $user->mosque->address }}</p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:</span>
-                                        {{ $user->mosque->city }}</p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Provinsi:</span>
-                                        {{ $user->mosque->province->name }}</p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Kapasitas Jamaah:</span>
-                                        {{ $user->mosque->capacity }}</p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Kategori Area:</span>
-                                        {{ $user->mosque->categoryArea->name }}</p>
+                                <hr>
 
-                                    <hr>
+                                <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Mushala:</span>
+                                    {{ $user->mosque->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Alamat:</span>
+                                    {{ $user->mosque->address }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:</span>
+                                    {{ $user->mosque->city }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Provinsi:</span>
+                                    {{ $user->mosque->province->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kapasitas Jamaah:</span>
+                                    {{ $user->mosque->capacity }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kategori Area:</span>
+                                    {{ $user->mosque->categoryArea->name }}</p>
 
-                                    <p class="card-text mb-0"><span class="fw-medium">Jabatan di DKM:</span>
-                                        {{ $user->mosque->position }}</p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Ketua Pengurus DKM:</span>
-                                        {{ $user->mosque->leader }}</p>
+                                <hr>
 
-                                    <hr>
+                                <p class="card-text mb-0"><span class="fw-medium">Jabatan di DKM:</span>
+                                    {{ $user->mosque->position }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Ketua Pengurus DKM:</span>
+                                    {{ $user->mosque->leader }}</p>
 
-                                    <p class="card-text mb-0"><span class="fw-medium">Perusahaan:</span>
-                                        {{ $user->mosque->company->name }}</p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Induk Perusahaan:</span>
-                                        {{ $user->mosque->company->parentCompany->name }}</p>
-                                    <p class="card-text mb-0"><span class="fw-medium">Lini Bisnis:</span>
-                                        {{ $user->mosque->company->businessLine->name }}</p>
-                                </div>
+                                <hr>
+
+                                <p class="card-text mb-0"><span class="fw-medium">Perusahaan:</span>
+                                    {{ $user->mosque->company->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Induk Perusahaan:</span>
+                                    {{ $user->mosque->company->parentCompany->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Lini Bisnis:</span>
+                                    {{ $user->mosque->company->businessLine->name }}</p>
                             </div>
                         </div>
+                    </div>
+                @endif
+
+                <form action="{{ route('form.managementRelationshipAct') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+
+                    @if (auth()->check() && auth()->user()->hasRole('user'))
+                        <input type="hidden" name="id" value="{{ $pillarOne->id ?? '' }}">
                     @endif
 
                     <div class="col mb-4">
@@ -509,66 +510,66 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
+            </div>
 
-                @if (auth()->check() && auth()->user()->hasRole('admin'))
-                    <div class="col-md-10 col-lg-4" style="z-index: 3;">
-                        <div class="card border-0 shadow rounded-4">
-                            <div class="card-body p-4">
-                                <form id="systemAssessment" action="{{ route('system_assessment.pillarOneAct') }}"
-                                    method="POST">
-                                    @csrf
+            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                <div class="col-md-10 col-lg-4" style="z-index: 3;">
+                    <div class="card border-0 shadow rounded-4">
+                        <div class="card-body p-4">
+                            <form id="systemAssessment" action="{{ route('system_assessment.pillarOneAct') }}"
+                                method="POST">
+                                @csrf
 
-                                    <input type="hidden" name="pillar_one_id" value="{{ $pillarOne->id }}">
+                                <input type="hidden" name="pillar_one_id" value="{{ $pillarOne->id }}">
 
-                                    <input type="hidden" name="pillar_one_question_one">
-                                    <input type="hidden" name="pillar_one_question_two">
-                                    <input type="hidden" name="pillar_one_question_three">
-                                    <input type="hidden" name="pillar_one_question_four">
-                                    <input type="hidden" name="pillar_one_question_five">
+                                <input type="hidden" name="pillar_one_question_one">
+                                <input type="hidden" name="pillar_one_question_two">
+                                <input type="hidden" name="pillar_one_question_three">
+                                <input type="hidden" name="pillar_one_question_four">
+                                <input type="hidden" name="pillar_one_question_five">
 
-                                    <button type="submit" class="btn btn-primary">Tampilkan Nilai</button>
-                                </form>
+                                <button type="submit" class="btn btn-primary">Tampilkan Nilai</button>
+                            </form>
 
-                                <hr />
+                            <hr />
 
-                                <h5 class="card-title">Niai Berdasarkan Sistem</h5>
+                            <h5 class="card-title">Niai Berdasarkan Sistem</h5>
 
-                                @if ($systemAssessment)
-                                    <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Koordinasi Manajemen
-                                            dengan
-                                            Pengurus DKM</span>
-                                        ({{ $systemAssessment->pillar_one_question_one ?? 0 }} Poin)</p>
-                                    <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. Kegiatan Bersama
-                                            antara DKM
-                                            dengan Manajemen Perusahaan</span>
-                                        ({{ $systemAssessment->pillar_one_question_two ?? 0 }} Poin)</p>
-                                    <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Media Interaksi dan
-                                            Komunikasi dengan Jamaah</span>
-                                        ({{ $systemAssessment->pillar_one_question_three ?? 0 }} Poin)</p>
-                                    <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Memiliki Grup
-                                            WhatsApp Jamaah</span>
-                                        ({{ $systemAssessment->pillar_one_question_four ?? 0 }} Poin)</p>
-                                    <p class="card-text fw-bold"><span class="fw-medium">5. Program Pembinaan
-                                            Keagamaan Untuk
-                                            Jamaah</span>
-                                        ({{ $systemAssessment->pillar_one_question_five ?? 0 }} Poin)</p>
+                            @if ($systemAssessment)
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Koordinasi Manajemen
+                                        dengan
+                                        Pengurus DKM</span>
+                                    ({{ $systemAssessment->pillar_one_question_one ?? 0 }} Poin)</p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. Kegiatan Bersama
+                                        antara DKM
+                                        dengan Manajemen Perusahaan</span>
+                                    ({{ $systemAssessment->pillar_one_question_two ?? 0 }} Poin)</p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Media Interaksi dan
+                                        Komunikasi dengan Jamaah</span>
+                                    ({{ $systemAssessment->pillar_one_question_three ?? 0 }} Poin)</p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Memiliki Grup
+                                        WhatsApp Jamaah</span>
+                                    ({{ $systemAssessment->pillar_one_question_four ?? 0 }} Poin)</p>
+                                <p class="card-text fw-bold"><span class="fw-medium">5. Program Pembinaan
+                                        Keagamaan Untuk
+                                        Jamaah</span>
+                                    ({{ $systemAssessment->pillar_one_question_five ?? 0 }} Poin)</p>
 
-                                    <h6 class="card-subtitle mb-0 text-body-dark">Total Nilai:
-                                        {{ $totalValue }} Poin</h6>
-                                @else
-                                    <p class="card-text mb-0">Nilai belum dihitung</p>
-                                @endif
+                                <h6 class="card-subtitle mb-0 text-body-dark">Total Nilai:
+                                    {{ $totalValue }} Poin</h6>
+                            @else
+                                <p class="card-text mb-0">Nilai belum dihitung</p>
+                            @endif
 
-                                <hr />
+                            <hr />
 
-                                {{-- Panitia --}}
-                            </div>
+                            {{-- Panitia --}}
                         </div>
                     </div>
-                @endif
-            </div>
-        </form>
+                </div>
+            @endif
+        </div>
     </div>
 
     {{-- Modal --}}

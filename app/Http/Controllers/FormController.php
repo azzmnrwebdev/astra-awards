@@ -119,13 +119,33 @@ class FormController extends Controller
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
-    public function relationship()
+    public function relationship($user = null, $action = null)
     {
-        $mosqueId = Auth::user()->mosque->id;
-        $pillarTwo = PillarTwo::where('mosque_id', $mosqueId)->first();
+        if (!$user && !$action) {
+            $mosque = Auth::user()->mosque;
 
-        return view('pages.form.relationship', compact('pillarTwo'));
+            if (!$mosque) {
+                return redirect(route('form.index'));
+            }
+
+            $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->first();
+
+            return view('pages.form.relationship', compact('pillarTwo'));
+        } else {
+            $user = User::where('id', $user)->first();
+            $pillarTwo = $user->mosque->pillarTwo;
+
+            $systemAssessment = SystemAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
+
+            if ($systemAssessment) {
+                $totalValue = $systemAssessment->pillar_two_question_one + $systemAssessment->pillar_two_question_two + $systemAssessment->pillar_two_question_three + $systemAssessment->pillar_two_question_four + $systemAssessment->pillar_two_question_five;
+                return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment', 'totalValue'));
+            }
+
+            return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment'));
+        }
     }
+
     public function relationshipAct(Request $request)
     {
         $rules = [

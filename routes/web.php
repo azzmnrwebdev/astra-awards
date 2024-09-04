@@ -60,11 +60,6 @@ Route::middleware('auth')->group(function () {
         Route::get('formulir/infrastruktur/{user?}/{action?}', [FormController::class, 'infrastructure'])->name('form.infrastructure')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
     });
 
-    // Route Admin
-    Route::middleware([CheckRolesMiddleware::class . ':admin'])->group(function () {
-        Route::post('formulir/manajemen-hubungan/{user?}/{action?}', [SystemAssessmentController::class, 'pillarOneAct'])->name('system_assessment.pillarOneAct')->middleware([SelectionMiddleware::class]);
-    });
-
     // Route Only User
     Route::middleware([CheckRolesMiddleware::class . ':user'])->group(function () {
         Route::post('formulir/manajemen-hubungan', [FormController::class, 'managementRelationshipAct'])->name('form.managementRelationshipAct')->middleware(FormDKMMiddleware::class);
@@ -73,6 +68,12 @@ Route::middleware('auth')->group(function () {
         Route::post('formulir/program', [FormController::class, 'programAct'])->name('form.programAct')->middleware(FormDKMMiddleware::class);
         Route::post('formulir/administrasi', [FormController::class, 'administrationAct'])->name('form.administrationAct')->middleware(FormDKMMiddleware::class);
         Route::post('formulir/infrastruktur', [FormController::class, 'infrastructureAct'])->name('form.infrastructureAct')->middleware(FormDKMMiddleware::class);
+    });
+
+    // Route Admin
+    Route::prefix('admin')->middleware([CheckRolesMiddleware::class . ':admin'])->group(function () {
+        Route::post('formulir/manajemen-hubungan/{user?}/{action?}', [SystemAssessmentController::class, 'pillarOneAct'])->name('system_assessment.pillarOneAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/hubungan/{user?}/{action?}', [SystemAssessmentController::class, 'pillarTwoAct'])->name('system_assessment.pillarTwoAct')->middleware([SelectionMiddleware::class]);
     });
 
     // Route Admin & Jury

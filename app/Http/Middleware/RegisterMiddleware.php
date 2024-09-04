@@ -26,6 +26,8 @@ class RegisterMiddleware
             if ($currentDate->gt($endRegistration->endOfDay())) {
                 return response()->view('auth.registration-closed');
             }
+        } else {
+            return response()->view('auth.registration-not-open');
         }
 
         return $next($request);
