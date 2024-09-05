@@ -16,9 +16,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategoryAreaSeeder::class,
             CategoryMosqueSeeder::class,
-            ParentCompanySeeder::class,
-            BusinessLineSeeder::class,
-            CompanySeeder::class,
+            // Development Test
+            // ParentCompanySeeder::class,
+            // BusinessLineSeeder::class,
+            // CompanySeeder::class,
             ProvinceSeeder::class,
             CitySeeder::class,
         ]);
