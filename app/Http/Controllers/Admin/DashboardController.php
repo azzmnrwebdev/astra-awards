@@ -9,6 +9,7 @@ use App\Models\BusinessLine;
 use App\Models\CategoryArea;
 use App\Models\CategoryMosque;
 use App\Models\Company;
+use App\Models\Mosque;
 use App\Models\Province;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -28,6 +29,16 @@ class DashboardController extends Controller
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
 
+        $mosqueCounts = [];
+        foreach ($categoryAreas as $area) {
+            foreach ($categoryMosques as $mosque) {
+                $count = Mosque::where('category_area_id', $area->id)
+                    ->where('category_mosque_id', $mosque->id)
+                    ->count();
+                $mosqueCounts[$area->id][$mosque->id] = $count;
+            }
+        }
+
         foreach ($provinces as $province) {
             $province->mosque_count = $province->city->sum(function ($city) {
                 return $city->mosque ? $city->mosque->count() : 0;
@@ -40,7 +51,18 @@ class DashboardController extends Controller
             });
         }
 
-        return view('admin.pages.index', compact('totalCompany', 'totalProvince', 'timeline', 'totalBusinessLine', 'totalDKM', 'categoryMosques', 'categoryAreas', 'businessLines', 'provinces'));
+        return view('admin.pages.index', compact(
+            'totalCompany',
+            'totalProvince',
+            'timeline',
+            'totalBusinessLine',
+            'totalDKM',
+            'categoryMosques',
+            'categoryAreas',
+            'businessLines',
+            'provinces',
+            'mosqueCounts',
+        ));
     }
 
     public function dashboardAct(Request $request)

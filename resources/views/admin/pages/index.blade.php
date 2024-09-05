@@ -82,21 +82,44 @@
                         <thead class="border-top border-start border-end table-dark">
                             <tr>
                                 <th class="text-center py-3">Kategori</th>
-                                @foreach ($categoryMosques as $item)
-                                    <th class="text-center py-3">{{ $item->name }}</th>
+                                @foreach ($categoryMosques as $mosque)
+                                    <th class="text-center py-3">{{ $mosque->name }}</th>
                                 @endforeach
                             </tr>
                         </thead>
 
                         <tbody class="border-start border-end">
-                            @foreach ($categoryAreas as $item)
+                            @php
+                                $totalPerMosque = [];
+                                foreach ($categoryMosques as $mosque) {
+                                    $totalPerMosque[$mosque->id] = 0;
+                                }
+                            @endphp
+
+                            @foreach ($categoryAreas as $area)
                                 <tr>
-                                    <td class="text-center py-3">{{ $item->name }}</td>
-                                    <td class="text-center py-3">0</td>
-                                    <td class="text-center py-3">0</td>
-                                    <td class="text-center py-3">0</td>
+                                    <td class="text-center py-3">{{ $area->name }}</td>
+                                    @foreach ($categoryMosques as $mosque)
+                                        @php
+                                            $count = $mosqueCounts[$area->id][$mosque->id] ?? 0;
+                                            $totalPerMosque[$mosque->id] += $count;
+                                        @endphp
+
+                                        <td class="text-center py-3">
+                                            {{ $count === 0 ? '-' : $count }}
+                                        </td>
+                                    @endforeach
                                 </tr>
                             @endforeach
+
+                            <tr>
+                                <td class="text-center py-3 fw-bold">Total</td>
+                                @foreach ($categoryMosques as $mosque)
+                                    <td class="text-center py-3 fw-bold">
+                                        {{ $totalPerMosque[$mosque->id] }}
+                                    </td>
+                                @endforeach
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -108,16 +131,17 @@
                     </h5>
 
                     <ul class="list-group overflow-x-hidden rounded-0 border-bottom rounded-bottom">
-                        @foreach ($businessLines as $item)
+                        @foreach ($businessLines as $businessLine)
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-top-0 border-bottom-0">
                                 <div class="me-auto pe-4" style="flex: 1; min-width: 0;">
                                     <div style="overflow-wrap: break-word;">
-                                        <a href="{{ route('dashboard') }}" class="text-reset">{{ $item->name }}</a>
+                                        <a href="{{ route('dashboard') }}"
+                                            class="text-reset">{{ $businessLine->name }}</a>
                                     </div>
                                 </div>
 
-                                <span>{{ $item->mosque_count }}</span>
+                                <span>{{ $businessLine->mosque_count === 0 ? '-' : $businessLine->mosque_count }}</span>
                             </li>
                         @endforeach
                     </ul>
@@ -132,16 +156,17 @@
 
                     <ul class="list-group overflow-y-scroll overflow-x-hidden rounded-0 border-bottom rounded-bottom"
                         style="max-height: 365px;">
-                        @foreach ($provinces as $item)
+                        @foreach ($provinces as $province)
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-top-0 border-bottom-0">
                                 <div class="me-auto pe-4" style="flex: 1; min-width: 0;">
                                     <div style="overflow-wrap: break-word;">
-                                        <a href="{{ route('dashboard') }}" class="text-reset">{{ $item->name }}</a>
+                                        <a href="{{ route('dashboard') }}"
+                                            class="text-reset">{{ $province->name }}</a>
                                     </div>
                                 </div>
 
-                                <span>{{ $item->mosque_count }}</span>
+                                <span>{{ $province->mosque_count === 0 ? '-' : $province->mosque_count }}</span>
                             </li>
                         @endforeach
                     </ul>
