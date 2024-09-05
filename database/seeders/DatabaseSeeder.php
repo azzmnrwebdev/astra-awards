@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,10 +15,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategoryAreaSeeder::class,
             CategoryMosqueSeeder::class,
-            // Development Test
-            // ParentCompanySeeder::class,
-            // BusinessLineSeeder::class,
-            // CompanySeeder::class,
             ProvinceSeeder::class,
             CitySeeder::class,
         ]);

@@ -18,3 +18,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+/database/seeders/BusinessLineSeeder.php
+/database/seeders/ParentCompanySeeder.php
+/database/seeders/CompanySeeder.php
