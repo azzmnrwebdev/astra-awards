@@ -45,17 +45,18 @@
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-3">Informasi Umum</h5>
 
-                            <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Mushala:
-                                </span>{{ $mosque->name }}</p>
+                            <img src="{{ asset('storage/' . $mosque->logo) }}" alt="Logo" style="width: 200px;">
+
+                            <p class="card-text mb-0 fw-bold mt-3">Nama Masjid/Mushala: {{ $mosque->name }}</p>
+                            <p class="card-text mb-0 fw-bold">Kategori Masjid: {{ $mosque->categoryMosque->name }}</p>
+                            <p class="card-text mb-0 fw-bold">Kategori Area: {{ $mosque->categoryArea->name }}</p>
                             <p class="card-text mb-0"><span class="fw-medium">Alamat: </span>{{ $mosque->address }}</p>
                             <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:
-                                </span>{{ $mosque->city }}</p>
+                                </span>{{ $mosque->city->name }}</p>
                             <p class="card-text mb-0"><span class="fw-medium">Provinsi:
-                                </span>{{ $mosque->province->name }}</p>
+                                </span>{{ $mosque->city->province->name }}</p>
                             <p class="card-text mb-0"><span class="fw-medium">Kapasitas Jamaah:
                                 </span>{{ $mosque->capacity }}</p>
-                            <p class="card-text mb-0"><span class="fw-medium">Kategori Area:
-                                </span>{{ $mosque->categoryArea->name }}</p>
                             <p class="card-text mb-0"><span class="fw-medium">Ketua Pengurus DKM:
                                 </span>{{ $mosque->leader }}</p>
                             <p class="card-text mb-0"><span class="fw-medium">Perusahaan:
@@ -74,7 +75,18 @@
                             <h5 class="card-title fw-bold mb-3">Formulir</h5>
 
                             <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium">1. Formulir Hubungan Manajemen
+                                <p class="card-text mb-2"><span class="fw-medium">1. Hubungan DKM dan YAA</p>
+                                <div class="progress" role="progressbar" aria-label="Animated striped example"
+                                    aria-valuenow="{{ $pillarTwoCompletion }}" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        style="width: {{ $pillarTwoCompletion }}%;">
+                                        {{ $pillarTwoCompletion }}%
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <p class="card-text mb-2"><span class="fw-medium">2. Hubungan Manajemen
                                         Perusahaan
                                         dengan DKM dan Jamaah</p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
@@ -87,18 +99,7 @@
                             </div>
 
                             <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium">2. Formulir Hubungan DKM dan YAA</p>
-                                <div class="progress" role="progressbar" aria-label="Animated striped example"
-                                    aria-valuenow="{{ $pillarTwoCompletion }}" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                        style="width: {{ $pillarTwoCompletion }}%;">
-                                        {{ $pillarTwoCompletion }}%
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium">3. Formulir Program Sosial</p>
+                                <p class="card-text mb-2"><span class="fw-medium">3. Program Sosial</p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
                                     aria-valuenow="{{ $pillarThreeCompletion }}" aria-valuemin="0" aria-valuemax="100">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -109,7 +110,7 @@
                             </div>
 
                             <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium">4. Formulir Administrasi & Keuangan
+                                <p class="card-text mb-2"><span class="fw-medium">4. Administrasi & Keuangan
                                 </p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
                                     aria-valuenow="{{ $pillarFourCompletion }}" aria-valuemin="0" aria-valuemax="100">
@@ -120,8 +121,8 @@
                                 </div>
                             </div>
 
-                            <div class="mb-0">
-                                <p class="card-text mb-2"><span class="fw-medium">5. Formulir Peribadahan dan
+                            <div class="mb-2">
+                                <p class="card-text mb-2"><span class="fw-medium">5. Peribadahan dan
                                         Infrastruktur
                                 </p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
@@ -129,6 +130,18 @@
                                     <div class="progress-bar progress-bar-striped progress-bar-animated"
                                         style="width: {{ $pillarFiveCompletion }}%;">
                                         {{ $pillarFiveCompletion }}%
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-0">
+                                <p class="card-text mb-2"><span class="fw-medium">6. Presentasi</p>
+                                <div class="progress" role="progressbar" aria-label="Animated striped example"
+                                    aria-valuenow="{{ $presentationCompletion }}" aria-valuemin="0"
+                                    aria-valuemax="100">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                        style="width: {{ $presentationCompletion }}%;">
+                                        {{ $presentationCompletion }}%
                                     </div>
                                 </div>
                             </div>

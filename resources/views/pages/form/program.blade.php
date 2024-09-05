@@ -51,6 +51,13 @@
                                 <label for="file_question_one" class="form-label fw-medium">Dokumen Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_one"
                                     name="file_question_one">
+
+                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                    izinkan.</div>
+
+                                @error('file_question_one')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
 
                             @if ($pillarThree && $pillarThree->file_question_one)
@@ -140,6 +147,13 @@
                                 <label for="file_question_four" class="form-label fw-medium">Dokumen Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_four"
                                     name="file_question_four">
+
+                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                    izinkan.</div>
+
+                                @error('file_question_four')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
 
                             @if ($pillarThree && $pillarThree->file_question_four)
@@ -209,6 +223,13 @@
                                     Aspiration</label>
                                 <input class="form-control" type="file" id="file_question_six"
                                     name="file_question_six">
+
+                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                    izinkan.</div>
+
+                                @error('file_question_six')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
 
                             @if ($pillarThree && $pillarThree->file_question_six)

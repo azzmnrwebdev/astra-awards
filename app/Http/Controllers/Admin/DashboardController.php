@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Timeline;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Mosque;
-use App\Models\PillarOne;
-use App\Models\PillarTwo;
-use App\Models\Presentation;
+use App\Models\BusinessLine;
+use App\Models\CategoryArea;
+use App\Models\CategoryMosque;
+use App\Models\Company;
+use App\Models\Province;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,26 +17,30 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $totalPillarOne = 0;
-        $totalPillarTwo = 0;
-        $totalPillarThree = 0;
-        $totalPillarFour = 0;
-        $totalPillarFive = 0;
-
+        $totalCompany = Company::count();
+        $totalProvince = Province::count();
         $timeline = Timeline::latest()->first();
-        $totalPresentation = Presentation::count();
+        $totalBusinessLine = BusinessLine::count();
         $totalDKM = User::with(['mosque'])->where('role', 'user')->count();
-        $mosques = Mosque::with(['pillarOne', 'pillarTwo', 'pillarThree', 'pillarFour', 'pillarFive'])->get();
 
-        foreach ($mosques as $item) {
-            $totalPillarOne += $this->calculatePillarCompletion($item->pillarOne, ['question_one', 'question_two', 'question_three', 'question_four', 'question_five']);
-            $totalPillarTwo += $this->calculatePillarCompletion($item->pillarTwo, ['question_one', 'question_two', 'question_three', 'question_four', 'question_five']);
-            $totalPillarThree += $this->calculatePillarCompletion($item->pillarThree, ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'question_six']);
-            $totalPillarFour += $this->calculatePillarCompletion($item->pillarFour, ['question_one', 'question_two', 'question_three', 'question_four', 'question_five']);
-            $totalPillarFive += $this->calculatePillarCompletion($item->pillarFive, ['question_one', 'question_two', 'question_three', 'question_four', 'question_five']);
+        $provinces = Province::all();
+        $businessLines = BusinessLine::all();
+        $categoryAreas = CategoryArea::all();
+        $categoryMosques = CategoryMosque::all();
+
+        foreach ($provinces as $province) {
+            $province->mosque_count = $province->city->sum(function ($city) {
+                return $city->mosque ? $city->mosque->count() : 0;
+            });
         }
 
-        return view('admin.pages.index', compact('totalDKM', 'totalPillarOne', 'totalPillarTwo', 'totalPillarThree', 'totalPillarFour', 'totalPillarFive', 'totalPresentation', 'timeline'));
+        foreach ($businessLines as $businessLine) {
+            $businessLine->mosque_count = $businessLine->company->sum(function ($company) {
+                return $company->mosque ? $company->mosque->count() : 0;
+            });
+        }
+
+        return view('admin.pages.index', compact('totalCompany', 'totalProvince', 'timeline', 'totalBusinessLine', 'totalDKM', 'categoryMosques', 'categoryAreas', 'businessLines', 'provinces'));
     }
 
     public function dashboardAct(Request $request)
@@ -82,23 +87,5 @@ class DashboardController extends Controller
         );
 
         return redirect()->back()->with('success', 'Data berhasil disimpan');
-    }
-
-    private function calculatePillarCompletion($pillar, $fields)
-    {
-        if (!$pillar) {
-            return 0;
-        }
-
-        $completed = 0;
-        $totalFields = count($fields);
-
-        foreach ($fields as $field) {
-            if (!empty($pillar->$field)) {
-                $completed++;
-            }
-        }
-
-        return $completed === $totalFields ? 1 : 0;
     }
 }

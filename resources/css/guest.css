@@ -21,3 +21,11 @@
     border-color: #dc3545;
     outline: #dc3545 solid 1px;
 }
+
+.form-check-input:focus {
+    box-shadow: none;
+}
+
+.btn-close:focus {
+    box-shadow: none;
+}

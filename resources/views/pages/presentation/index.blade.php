@@ -32,6 +32,8 @@
                                 <label for="file" class="form-label fw-medium">Silahkan untuk mengunggah file
                                     presentasi yang memuat keseluruhan pilar penilaian (Pilar 1, 2, 3, 4, dan 5)</label>
                                 <input class="form-control" type="file" id="file" name="file">
+
+                                <div class="form-text">Hanya file bertipe pdf yang di izinkan.</div>
                             </div>
 
                             @error('file')
@@ -87,9 +89,9 @@
 
                     documentContent.html('');
 
-                    if (url.match(/\.pptx$/i)) {
-                        documentContent.html('<p>Preview tidak tersedia. <a href="' + url +
-                            '" target="_blank">Klik di sini untuk mengunduh file PPTX</a></p>');
+                    if (url.match(/\.pdf$/i)) {
+                        documentContent.html('<embed src="' + url +
+                            '" type="application/pdf" width="100%" height="500px" />');
                     } else {
                         documentContent.html('<p>File format tidak didukung.</p>');
                     }

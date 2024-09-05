@@ -10,7 +10,21 @@ class Mosque extends Model
     use HasFactory;
 
     protected $table = 'mosques';
-    protected $fillable = ['user_id', 'position', 'category_area_id', 'name', 'capacity', 'leader', 'company_id', 'address', 'city', 'province_id'];
+    protected $fillable = [
+        'user_id',
+        'position',
+        'category_area_id',
+        'category_mosque_id',
+        'name',
+        'capacity',
+        'logo',
+        'leader',
+        'leader_phone',
+        'leader_email',
+        'company_id',
+        'address',
+        'city_id'
+    ];
 
     public function user()
     {
@@ -22,14 +36,19 @@ class Mosque extends Model
         return $this->belongsTo(CategoryArea::class, 'category_area_id');
     }
 
+    public function categoryMosque()
+    {
+        return $this->belongsTo(CategoryMosque::class, 'category_mosque_id');
+    }
+
     public function company()
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
 
-    public function province()
+    public function city()
     {
-        return $this->belongsTo(Province::class, 'province_id');
+        return $this->belongsTo(City::class, 'city_id');
     }
 
     public function pillarOne()

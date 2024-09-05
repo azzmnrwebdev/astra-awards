@@ -1,7 +1,7 @@
 <x-guest title="Masuk">
     <div class="row justify-content-center align-items-center min-vh-100">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-            <div class="card border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="card border-0 shadow" style="border-radius: 20px;">
                 <div class="card-body p-5">
                     <h2 style="margin-bottom: 1.5rem; font-weight: 700;">Masuk</h2>
                     <h5 class="card-title mb-3" style="font-weight: 600;">Halo, selamat datang 👋</h5>
@@ -38,12 +38,18 @@
                         {{-- Password --}}
                         <div class="col-12 mb-lg-4">
                             <label for="password" class="form-label fw-medium">Password</label>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                id="password" name="password" placeholder="Masukan password">
+                            <div class="input-group">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                    id="password" name="password" placeholder="Masukan password">
 
-                            @error('password')
-                                <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
-                            @enderror
+                                <span class="input-group-text">
+                                    <i class="bi bi-eye" id="toggle-password" style="cursor: pointer;"></i>
+                                </span>
+
+                                @error('password')
+                                    <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
+                                @enderror
+                            </div>
                         </div>
 
                         {{-- Lupa Password --}}
@@ -72,7 +78,24 @@
     {{-- Custom Javascript --}}
     @prepend('scripts')
         <script>
-            //
+            function togglePasswordVisibility(inputId, iconElement) {
+                let passwordInput = document.getElementById(inputId);
+                let icon = iconElement;
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('bi-eye');
+                    icon.classList.add('bi-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('bi-eye-slash');
+                    icon.classList.add('bi-eye');
+                }
+            }
+
+            document.getElementById('toggle-password').addEventListener('click', function() {
+                togglePasswordVisibility('password', this);
+            });
         </script>
     @endprepend
 </x-guest>

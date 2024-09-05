@@ -36,11 +36,13 @@
 
             <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Mushala:
                 </span>{{ $user->mosque->name }}</p>
+            <p class="card-text mb-0"><span class="fw-medium">Kategori Masjid:
+                </span>{{ $user->mosque->categoryMosque->name }}</p>
             <p class="card-text mb-0"><span class="fw-medium">Alamat: </span>{{ $user->mosque->address }}</p>
             <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:
-                </span>{{ $user->mosque->city }}</p>
+                </span>{{ $user->mosque->city->name }}</p>
             <p class="card-text mb-0"><span class="fw-medium">Provinsi:
-                </span>{{ $user->mosque->province->name }}</p>
+                </span>{{ $user->mosque->city->province->name }}</p>
             <p class="card-text mb-0"><span class="fw-medium">Kapasitas Jamaah:
                 </span>{{ $user->mosque->capacity }}</p>
             <p class="card-text mb-0"><span class="fw-medium">Kategori Area:

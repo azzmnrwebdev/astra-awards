@@ -22,7 +22,7 @@ class PresentationController extends Controller
     public function presentationAct(Request $request)
     {
         $rules = [
-            'file' => 'required|file|mimes:pptx',
+            'file' => 'required|file|mimes:pdf',
         ];
 
         $validator = Validator::make($request->all(), $rules);

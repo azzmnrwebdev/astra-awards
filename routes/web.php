@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BusinessLineController;
 use App\Http\Controllers\Admin\CategoryAreaController;
+use App\Http\Controllers\Admin\CategoryMosqueController;
+use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CommitteeController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -51,7 +53,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Route Admin & User
-    Route::middleware([CheckRolesMiddleware::class . ':admin,user'])->group(function () {
+    Route::middleware([CheckRolesMiddleware::class . ':admin,user', CheckStatusMiddleware::class])->group(function () {
         Route::get('formulir', [FormController::class, 'index'])->name('form.index')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
         Route::get('formulir/manajemen-hubungan/{user?}/{action?}', [FormController::class, 'managementRelationship'])->name('form.managementRelationship')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
         Route::get('formulir/hubungan/{user?}/{action?}', [FormController::class, 'relationship'])->name('form.relationship')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
@@ -99,13 +101,22 @@ Route::middleware('auth')->group(function () {
 
     // Route Admin
     Route::middleware([CheckRolesMiddleware::class . ':admin'])->prefix('dashboard')->group(function () {
-        Route::prefix('kategori')->group(function () {
-            Route::get('/', [CategoryAreaController::class, 'index'])->name('category.index');
-            Route::get('tambah', [CategoryAreaController::class, 'create'])->name('category.create');
-            Route::post('/', [CategoryAreaController::class, 'store'])->name('category.store');
-            Route::get('{category}/edit', [CategoryAreaController::class, 'edit'])->name('category.edit');
-            Route::put('{category}', [CategoryAreaController::class, 'update'])->name('category.update');
-            Route::delete('{category}', [CategoryAreaController::class, 'destroy'])->name('category.destroy');
+        Route::prefix('kategori-area')->group(function () {
+            Route::get('/', [CategoryAreaController::class, 'index'])->name('categoryArea.index');
+            Route::get('tambah', [CategoryAreaController::class, 'create'])->name('categoryArea.create');
+            Route::post('/', [CategoryAreaController::class, 'store'])->name('categoryArea.store');
+            Route::get('{categoryArea}/edit', [CategoryAreaController::class, 'edit'])->name('categoryArea.edit');
+            Route::put('{categoryArea}', [CategoryAreaController::class, 'update'])->name('categoryArea.update');
+            Route::delete('{categoryArea}', [CategoryAreaController::class, 'destroy'])->name('categoryArea.destroy');
+        });
+
+        Route::prefix('kategori-masjid')->group(function () {
+            Route::get('/', [CategoryMosqueController::class, 'index'])->name('categoryMosque.index');
+            Route::get('tambah', [CategoryMosqueController::class, 'create'])->name('categoryMosque.create');
+            Route::post('/', [CategoryMosqueController::class, 'store'])->name('categoryMosque.store');
+            Route::get('{categoryMosque}/edit', [CategoryMosqueController::class, 'edit'])->name('categoryMosque.edit');
+            Route::put('{categoryMosque}', [CategoryMosqueController::class, 'update'])->name('categoryMosque.update');
+            Route::delete('{categoryMosque}', [CategoryMosqueController::class, 'destroy'])->name('categoryMosque.destroy');
         });
 
         Route::prefix('provinsi')->group(function () {
@@ -115,6 +126,15 @@ Route::middleware('auth')->group(function () {
             Route::get('{province}/edit', [ProvinceController::class, 'edit'])->name('province.edit');
             Route::put('{province}', [ProvinceController::class, 'update'])->name('province.update');
             Route::delete('{province}', [ProvinceController::class, 'destroy'])->name('province.destroy');
+        });
+
+        Route::prefix('kota-kabupaten')->group(function () {
+            Route::get('/', [CityController::class, 'index'])->name('city.index');
+            Route::get('tambah', [CityController::class, 'create'])->name('city.create');
+            Route::post('/', [CityController::class, 'store'])->name('city.store');
+            Route::get('{city}/edit', [CityController::class, 'edit'])->name('city.edit');
+            Route::put('{city}', [CityController::class, 'update'])->name('city.update');
+            Route::delete('{city}', [CityController::class, 'destroy'])->name('city.destroy');
         });
 
         Route::prefix('perusahaan')->group(function () {

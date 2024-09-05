@@ -1,4 +1,4 @@
-<x-admin title="Edit Kategori Area">
+<x-admin title="Tambah Kategori Masjid">
     {{-- Custom CSS --}}
     @prepend('styles')
         <style>
@@ -10,7 +10,7 @@
 
     {{-- Main Content --}}
     <h4 class="mb-4 fw-semibold d-inline-flex" id="pageTitle">
-        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Edit Kategori Area
+        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Tambah Kategori Masjid
     </h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
@@ -21,17 +21,15 @@
                 </div>
             @endif
 
-            <form action="{{ route('category.update', ['category' => $category->id]) }}" method="POST">
+            <form action="{{ route('categoryMosque.store') }}" method="POST">
                 @csrf
-                @method('PUT')
 
                 <div class="row mb-3">
-                    <label for="name" class="col-md-3 col-xl-2 col-form-label">Nama Kategori Area</label>
+                    <label for="name" class="col-md-3 col-xl-2 col-form-label">Nama Kategori Masjid</label>
 
                     <div class="col-md-9 col-xl-10">
                         <input type="text" name="name" id="name"
-                            class="form-control @error('name') is-invalid @enderror"
-                            value="{{ old('name', $category->name) }}">
+                            class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
 
                         @error('name')
                             <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
@@ -39,8 +37,21 @@
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <label for="description" class="col-md-3 col-xl-2 col-form-label">Deskripsi Kategori Masjid</label>
+
+                    <div class="col-md-9 col-xl-10">
+                        <textarea name="description" id="description" rows="5"
+                            class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+
+                        @error('description')
+                            <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="col-12 text-end">
-                    <button type="submit" class="btn btn-warning">Simpan Perubahan</button>
+                    <button type="submit" class="btn btn-success">Simpan Baru</button>
                 </div>
             </form>
         </div>
@@ -50,7 +61,7 @@
     @prepend('scripts')
         <script>
             document.getElementById('pageTitle').addEventListener('click', function() {
-                window.location.href = "{{ route('category.index') }}";
+                window.location.href = "{{ route('categoryMosque.index') }}";
             });
         </script>
     @endprepend

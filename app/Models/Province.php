@@ -12,8 +12,8 @@ class Province extends Model
     protected $table = 'provinces';
     protected $fillable = ['name'];
 
-    public function mosque()
+    public function city()
     {
-        return $this->hasMany(Mosque::class, 'province_id');
+        return $this->hasMany(City::class, 'province_id');
     }
 }

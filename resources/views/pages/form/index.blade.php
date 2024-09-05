@@ -8,17 +8,17 @@
 
             {{-- List Form --}}
             <ul class="list-group list-group-numbered">
-                <a href="{{ route('form.managementRelationship') }}"
-                    class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah
-                    </div>
-                </a>
-
                 <a href="{{ route('form.relationship') }}"
                     class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
                         Formulir Hubungan DKM dengan YAA
+                    </div>
+                </a>
+
+                <a href="{{ route('form.managementRelationship') }}"
+                    class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah
                     </div>
                 </a>
 

@@ -71,6 +71,16 @@ class FormController extends Controller
 
     public function managementRelationshipAct(Request $request)
     {
+        if (
+            !$request->input('question_one') &&
+            !$request->input('question_two') &&
+            !$request->input('question_three') &&
+            !$request->input('question_four') &&
+            !$request->input('question_five')
+        ) {
+            return redirect()->back()->with('error', 'Harus mengisi setidaknya salah satu bidang data.');
+        }
+
         $rules = [
             'question_one' => 'string',
             'question_two' => 'string',
@@ -148,9 +158,21 @@ class FormController extends Controller
 
     public function relationshipAct(Request $request)
     {
+        if (
+            !$request->input('question_one') &&
+            !$request->input('question_two') &&
+            !$request->input('question_three') &&
+            !$request->input('question_four') &&
+            !$request->input('question_five')
+        ) {
+            return redirect()->back()->with('error', 'Harus mengisi setidaknya salah satu bidang data.');
+        }
+
         $rules = [
             'question_one' => 'string',
-            'file_question_two' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_two' => 'file|mimes:zip',
+            'file_question_three' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -159,7 +181,7 @@ class FormController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mosqueId = Auth::user()->mosque->id;
+        $mosque = Auth::user()->mosque;
         $questionTwo = $request->input('question_two', []);
         $questionThree = $request->input('question_three', []);
         $questionFour = $request->input('question_four', []);
@@ -218,7 +240,7 @@ class FormController extends Controller
         $pillarTwo = PillarTwo::updateOrCreate(
             ['id' => $request->input('id')],
             [
-                'mosque_id' => $mosqueId,
+                'mosque_id' => $mosque->id,
                 'question_one' => $request->input('question_one'),
                 'question_two' => $questionTwo,
                 'option_two' => $request->input('option_two') ?? null,
@@ -249,6 +271,17 @@ class FormController extends Controller
 
     public function programAct(Request $request)
     {
+        if (
+            !$request->input('question_one') &&
+            !$request->input('question_two') &&
+            !$request->input('question_three') &&
+            !$request->input('question_four') &&
+            !$request->input('question_five') &&
+            !$request->input('question_six')
+        ) {
+            return redirect()->back()->with('error', 'Harus mengisi setidaknya salah satu bidang data.');
+        }
+
         $rules = [
             'question_one' => 'string',
             'question_two' => 'string',
@@ -265,7 +298,7 @@ class FormController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mosqueId = Auth::user()->mosque->id;
+        $mosque = Auth::user()->mosque;
         $questionFour = $request->input('question_four', []);
         $questionSix = $request->input('question_six', []);
         $optionFourValue = $request->input('option_four', '');
@@ -306,7 +339,7 @@ class FormController extends Controller
         $pillarThree = PillarThree::updateOrCreate(
             ['id' => $request->input('id')],
             [
-                'mosque_id' => $mosqueId,
+                'mosque_id' => $mosque->id,
                 'question_one' => $request->input('question_one'),
                 'question_two' => $request->input('question_two'),
                 'question_three' => $request->input('question_three'),
@@ -337,6 +370,16 @@ class FormController extends Controller
 
     public function administrationAct(Request $request)
     {
+        if (
+            !$request->input('question_one') &&
+            !$request->input('question_two') &&
+            !$request->input('question_three') &&
+            !$request->input('question_four') &&
+            !$request->input('question_five')
+        ) {
+            return redirect()->back()->with('error', 'Harus mengisi setidaknya salah satu bidang data.');
+        }
+
         $rules = [
             'question_one' => 'string',
             'question_two' => 'string',
@@ -354,12 +397,12 @@ class FormController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mosqueId = Auth::user()->mosque->id;
+        $mosque = Auth::user()->mosque;
 
         $pillarFour = PillarFour::updateOrCreate(
             ['id' => $request->input('id')],
             [
-                'mosque_id' => $mosqueId,
+                'mosque_id' => $mosque->id,
                 'question_one' => $request->input('question_one'),
                 'question_two' => $request->input('question_two'),
                 'question_three' => $request->input('question_three'),
@@ -387,6 +430,16 @@ class FormController extends Controller
 
     public function infrastructureAct(Request $request)
     {
+        if (
+            !$request->input('question_one') &&
+            !$request->input('question_two') &&
+            !$request->input('question_three') &&
+            !$request->input('question_four') &&
+            !$request->input('question_five')
+        ) {
+            return redirect()->back()->with('error', 'Harus mengisi setidaknya salah satu bidang data.');
+        }
+
         $rules = [
             'question_one' => 'string',
             'question_two' => 'string',
@@ -394,6 +447,9 @@ class FormController extends Controller
             'question_four' => 'string',
             'question_five' => 'string',
             'file_question_two' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_three' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_five' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -417,6 +473,9 @@ class FormController extends Controller
         );
 
         $pillarFive->file_question_two = $this->handleFileUpdate($request, 'file_question_two', $pillarFive->file_question_two, 'pillarFives');
+        $pillarFive->file_question_three = $this->handleFileUpdate($request, 'file_question_three', $pillarFive->file_question_three, 'pillarFives');
+        $pillarFive->file_question_four = $this->handleFileUpdate($request, 'file_question_four', $pillarFive->file_question_four, 'pillarFives');
+        $pillarFive->file_question_five = $this->handleFileUpdate($request, 'file_question_five', $pillarFive->file_question_five, 'pillarFives');
 
         $pillarFive->save();
 
@@ -438,7 +497,7 @@ class FormController extends Controller
 
     private function handleUploadFile($name, $file, $path)
     {
-        $fileName = $name . '-' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $file->getClientOriginalExtension();
+        $fileName = $name . '_' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $file->getClientOriginalExtension();
         $filePath = $file->storeAs($path, $fileName, 'public');
 
         return 'storage/' . $filePath;

@@ -22,17 +22,23 @@ return new class extends Migration
                 ->constrained('category_areas')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->foreignId('category_mosque_id')
+                ->constrained('category_mosques')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->string('name');
             $table->integer('capacity');
+            $table->text('logo');
             $table->string('leader');
+            $table->string('leader_phone')->unique();
+            $table->string('leader_email')->unique();
             $table->foreignId('company_id')
                 ->constrained('companies')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->text('address');
-            $table->string('city');
-            $table->foreignId('province_id')
-                ->constrained('provinces')
+            $table->foreignId('city_id')
+                ->constrained('cities')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->timestamps();

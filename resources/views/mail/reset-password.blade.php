@@ -11,7 +11,7 @@
 <body style="background-color: #ECEEF1; padding: 2rem 20px; font-family: Arial, sans-serif;">
     <h1
         style="width: 100%; display: block; margin-bottom: 2rem; color: #333333; text-transform: uppercase; text-align: center;">
-        Awards Amaliah</h1>
+        Amaliah Astra Awards</h1>
 
     <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 8px; overflow: hidden;">
         <div style="padding: 1.5rem 3rem; background-color: #fff;">

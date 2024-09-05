@@ -1,6 +1,6 @@
 <aside id="sidebar" class="d-flex flex-column gap-4">
     <div class="sidebar-logo d-flex align-items-center justify-content-between">
-        <a wire:navigate href="{{ route('information') }}">Awards Amaliah</a>
+        <a wire:navigate href="{{ route('information') }}">Amaliah Astra Awards</a>
         <i class="bi bi-caret-left-fill d-lg-none text-white" id="sidebarToggle"></i>
     </div>
 
@@ -14,10 +14,18 @@
 
         @if (auth()->check() && auth()->user()->hasRole('admin'))
             <li class="sidebar-item">
-                <a href="{{ route('category.index') }}"
-                    class="sidebar-link {{ request()->routeIs('category.*') ? 'active' : '' }}">
+                <a href="{{ route('categoryArea.index') }}"
+                    class="sidebar-link {{ request()->routeIs('categoryArea.*') ? 'active' : '' }}">
                     <i class="bi bi-grid-fill me-2 fs-5"></i>
                     Kategori Area
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('categoryMosque.index') }}"
+                    class="sidebar-link {{ request()->routeIs('categoryMosque.*') ? 'active' : '' }}">
+                    <i class="bi bi-grid-fill me-2 fs-5"></i>
+                    Kategori Masjid
                 </a>
             </li>
 
@@ -26,6 +34,14 @@
                     class="sidebar-link {{ request()->routeIs('province.*') ? 'active' : '' }}">
                     <i class="bi bi-geo-alt-fill me-2 fs-5"></i>
                     Provinsi
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('city.index') }}"
+                    class="sidebar-link {{ request()->routeIs('city.*') ? 'active' : '' }}">
+                    <i class="bi bi-geo-alt-fill me-2 fs-5"></i>
+                    Kota/Kabupaten
                 </a>
             </li>
 

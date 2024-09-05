@@ -13,7 +13,7 @@ class CheckRolesMiddleware
     {
         $user = Auth::user();
 
-        if ($user && $user->hasAnyRole($roles) && $user->status === 1) {
+        if ($user && $user->hasAnyRole($roles)) {
             return $next($request);
         }
 

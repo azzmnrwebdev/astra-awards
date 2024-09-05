@@ -1,105 +1,154 @@
 <x-admin title="Dashboard">
-    {{-- Jumbroton --}}
-    <div class="p-5 mb-4 bg-dark rounded-3">
-        <div class="container-fluid py-4">
-            <h1 class="display-6 text-white fw-bold">Halo {{ Auth::user()->name }}</h1>
-
-            @if (auth()->check() && auth()->user()->hasRole('admin'))
-                <p class="col-md-8 text-white fs-5">Selamat datang di acara Awards Amaliah! Dalam dashboard ini,
-                    Anda dapat mengelola semua aspek acara, mulai dari pendaftaran peserta hingga penilaian formulir.
-                    Kami percaya bahwa dengan bantuan Anda, acara ini akan menjadi sukses yang luar biasa.</p>
-
-                <p class="col-md-8 text-white fs-5 mb-0">Terima kasih atas dedikasi dan kerja keras Anda!</p>
-            @else
-                <p class="col-md-8 text-white fs-5">Selamat datang di acara Awards Amaliah! Dalam dashboard ini,
+    @if (auth()->check() && auth()->user()->hasRole('admin'))
+        <center>
+            <h4 class="mb-5 fw-semibold d-inline-flex text-uppercase">Pendaftaran Amaliah Astra Award 2024</h4>
+        </center>
+    @else
+        {{-- Jumbroton --}}
+        <div class="p-5 mb-4 bg-dark rounded-3">
+            <div class="container-fluid py-4">
+                <h1 class="display-6 text-white fw-bold">Halo {{ Auth::user()->name }}</h1>
+                <p class="col-md-8 text-white fs-5">Selamat datang di acara Amaliah Astra Awards! Dalam dashboard ini,
                     Anda dapat mengakses informasi penting, melakukan penilaian, dan mengikuti proses acara. Kami
                     percaya bahwa dengan keahlian dan komitmen Anda, acara ini akan menjadi sangat berkesan.</p>
 
                 <p class="col-md-8 text-white fs-5 mb-0">Terima kasih atas kontribusi Anda!</p>
-            @endif
+            </div>
         </div>
-    </div>
+    @endif
 
-    {{-- Total Data --}}
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3 mb-4">
-        <div class="col">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center px-4">
-                    <div class="lh-base me-3">
-                        <h5 class="card-title fw-semibold mb-1">{{ $totalDKM }}</h5>
-                        <p class="card-text mb-0 lh-sm">Total Peserta DKM</p>
+    @if (auth()->check() && auth()->user()->hasRole('admin'))
+        {{-- Total Data --}}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 g-3 mb-4">
+            <div class="col">
+                <a href="{{ route('user.index') }}">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center px-4">
+                            <div class="lh-base me-3">
+                                <h5 class="card-title fw-semibold mb-1">{{ $totalDKM }}</h5>
+                                <p class="card-text mb-0 lh-sm">Total Pendaftar</p>
+                            </div>
+                            <i class="bi bi-people-fill fs-1" style="color: #0077B6;"></i>
+                        </div>
                     </div>
-                    <i class="bi bi-people-fill fs-1" style="color: #0077B6;"></i>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ route('company.index') }}">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center px-4">
+                            <div class="lh-base me-3">
+                                <h5 class="card-title fw-semibold mb-1">{{ $totalCompany }}</h5>
+                                <p class="card-text mb-0 lh-sm">Total Perusahaan</p>
+                            </div>
+                            <i class="bi bi-building fs-1" style="color: #0077B6;"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ route('business_line.index') }}">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center px-4">
+                            <div class="lh-base me-3">
+                                <h5 class="card-title fw-semibold mb-1">{{ $totalBusinessLine }}</h5>
+                                <p class="card-text mb-0 lh-sm">Total Lini Bisnis</p>
+                            </div>
+                            <i class="bi bi-briefcase-fill fs-1" style="color: #0077B6;"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <a href="{{ route('province.index') }}">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body d-flex justify-content-between align-items-center px-4">
+                            <div class="lh-base me-3">
+                                <h5 class="card-title fw-semibold mb-1">{{ $totalProvince }}</h5>
+                                <p class="card-text mb-0 lh-sm">Total Provinsi</p>
+                            </div>
+                            <i class="bi bi-geo-alt-fill fs-1" style="color: #0077B6;"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-lg-7 col-xl-8">
+                {{-- Category --}}
+                <div class="table-responsive mb-3">
+                    <table class="table text-nowrap align-middle mb-0">
+                        <thead class="border-top border-start border-end table-dark">
+                            <tr>
+                                <th class="text-center py-3">Kategori</th>
+                                @foreach ($categoryMosques as $item)
+                                    <th class="text-center py-3">{{ $item->name }}</th>
+                                @endforeach
+                            </tr>
+                        </thead>
+
+                        <tbody class="border-start border-end">
+                            @foreach ($categoryAreas as $item)
+                                <tr>
+                                    <td class="text-center py-3">{{ $item->name }}</td>
+                                    <td class="text-center py-3">0</td>
+                                    <td class="text-center py-3">0</td>
+                                    <td class="text-center py-3">0</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Lini Bisnis --}}
+                <div class="card border-0 bg-transparent">
+                    <h5 class="card-header fw-medium py-3 text-bg-dark text-center">
+                        Lini Bisnis
+                    </h5>
+
+                    <ul class="list-group overflow-x-hidden rounded-0 border-bottom rounded-bottom">
+                        @foreach ($businessLines as $item)
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center border-top-0 border-bottom-0">
+                                <div class="me-auto pe-4" style="flex: 1; min-width: 0;">
+                                    <div style="overflow-wrap: break-word;">
+                                        <a href="{{ route('dashboard') }}" class="text-reset">{{ $item->name }}</a>
+                                    </div>
+                                </div>
+
+                                <span>{{ $item->mosque_count }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-5 col-xl-4">
+                <div class="card border-0 bg-transparent">
+                    <h5 class="card-header fw-medium py-3 text-bg-dark text-center">
+                        Provinsi
+                    </h5>
+
+                    <ul class="list-group overflow-y-scroll overflow-x-hidden rounded-0 border-bottom rounded-bottom"
+                        style="max-height: 365px;">
+                        @foreach ($provinces as $item)
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center border-top-0 border-bottom-0">
+                                <div class="me-auto pe-4" style="flex: 1; min-width: 0;">
+                                    <div style="overflow-wrap: break-word;">
+                                        <a href="{{ route('dashboard') }}" class="text-reset">{{ $item->name }}</a>
+                                    </div>
+                                </div>
+
+                                <span>{{ $item->mosque_count }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center px-4">
-                    <div class="lh-base me-3">
-                        <h5 class="card-title fw-semibold mb-1">{{ $totalPillarOne }}</h5>
-                        <p class="card-text mb-0 lh-sm">Total DKM Formulir 1</p>
-                    </div>
-                    <i class="bi bi-file-earmark-text-fill fs-1" style="color: #28a745;"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center px-4">
-                    <div class="lh-base me-3">
-                        <h5 class="card-title fw-semibold mb-1">{{ $totalPillarTwo }}</h5>
-                        <p class="card-text mb-0 lh-sm">Total DKM Formulir 2</p>
-                    </div>
-                    <i class="bi bi-file-earmark-text-fill fs-1" style="color: #0d6efd;"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center px-4">
-                    <div class="lh-base me-3">
-                        <h5 class="card-title fw-semibold mb-1">{{ $totalPillarThree }}</h5>
-                        <p class="card-text mb-0 lh-sm">Total DKM Formulir 3</p>
-                    </div>
-                    <i class="bi bi-file-earmark-text-fill fs-1" style="color: #ffc107;"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center px-4">
-                    <div class="lh-base me-3">
-                        <h5 class="card-title fw-semibold mb-1">{{ $totalPillarFour }}</h5>
-                        <p class="card-text mb-0 lh-sm">Total DKM Formulir 4</p>
-                    </div>
-                    <i class="bi bi-file-earmark-text-fill fs-1" style="color: #198754;"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center px-4">
-                    <div class="lh-base me-3">
-                        <h5 class="card-title fw-semibold mb-1">{{ $totalPillarFive }}</h5>
-                        <p class="card-text mb-0 lh-sm">Total DKM Formulir 5</p>
-                    </div>
-                    <i class="bi bi-file-earmark-text-fill fs-1" style="color: #fd7e14;"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body d-flex justify-content-between align-items-center px-4">
-                    <div class="lh-base me-3">
-                        <h5 class="card-title fw-semibold mb-1">{{ $totalPresentation }}</h5>
-                        <p class="card-text mb-0 lh-sm">Total DKM Presentasi</p>
-                    </div>
-                    <i class="bi bi-easel-fill fs-1" style="color: #dc3545;"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+    @endif
 
     {{-- Timeline --}}
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
@@ -118,7 +167,6 @@
                 </div>
             @endif
 
-            {{-- belum selesai --}}
             <div class="table-responsive mt-3">
                 <table class="table text-nowrap align-middle mb-0">
                     <tbody class="border">

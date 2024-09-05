@@ -18,7 +18,7 @@
 
             <div class="row">
                 <div class="col-auto">
-                    <a href="{{ route('category.create') }}" class="btn btn-dark rounded-0">Tambah</a>
+                    <a href="{{ route('categoryArea.create') }}" class="btn btn-dark rounded-0">Tambah</a>
                 </div>
             </div>
 
@@ -38,7 +38,7 @@
                                 <td class="text-center py-3">{{ $loop->index + $categories->firstItem() }}</td>
                                 <td class="text-start py-3">{{ $item->name }}</td>
                                 <td class="text-center py-3">
-                                    <a href="{{ route('category.edit', ['category' => $item->id]) }}"
+                                    <a href="{{ route('categoryArea.edit', ['categoryArea' => $item->id]) }}"
                                         class="text-dark align-middle @if (empty(count($item->mosque))) me-3 @endif"><i
                                             class="bi bi-pencil"></i></a>
 
@@ -103,7 +103,7 @@
                 $('.delete').click(function() {
                     const id = $(this).data('id');
                     const name = $(this).data('name');
-                    const deleteUrl = "{{ route('category.destroy', ['category' => ':id']) }}".replace(':id',
+                    const deleteUrl = "{{ route('categoryArea.destroy', ['categoryArea' => ':id']) }}".replace(':id',
                         id);
 
                     $('#deleteForm').attr('action', deleteUrl);

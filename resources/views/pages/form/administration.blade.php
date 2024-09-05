@@ -34,29 +34,20 @@
                                     sudah menggunakan sistem ini?</label>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_one" value="Ya"
+                                    <input class="form-check-input" type="radio" name="question_one" value="Tidak"
                                         id="question_one1"
-                                        {{ old('question_one', $pillarFour->question_one ?? '') == 'Ya' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_one1">
-                                        Ya
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_one"
-                                        id="question_one2" value="Tidak"
                                         {{ old('question_one', $pillarFour->question_one ?? '') == 'Tidak' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_one2">
+                                    <label class="form-check-label" for="question_one1">
                                         Tidak
                                     </label>
                                 </div>
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_one"
-                                        id="question_one3" value="Belum Tau"
-                                        {{ old('question_one', $pillarFour->question_one ?? '') == 'Belum Tau' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_one3">
-                                        Belum Tau
+                                        id="question_one2" value="Ya"
+                                        {{ old('question_one', $pillarFour->question_one ?? '') == 'Ya' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="question_one2">
+                                        Ya
                                     </label>
                                 </div>
 
@@ -69,6 +60,13 @@
                                 <label for="file_question_one" class="form-label fw-medium">Dokumen Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_one"
                                     name="file_question_one">
+
+                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                    izinkan.</div>
+
+                                @error('file_question_one')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
 
                             @if ($pillarFour && $pillarFour->file_question_one)
@@ -87,20 +85,20 @@
                                     dibawah umur 30 tahun?</label>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_two" value="Ada"
+                                    <input class="form-check-input" type="radio" name="question_two" value="Tidak ada"
                                         id="question_two1"
-                                        {{ old('question_two', $pillarFour->question_two ?? '') == 'Ada' ? 'checked' : '' }}>
+                                        {{ old('question_two', $pillarFour->question_two ?? '') == 'Tidak ada' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_two1">
-                                        Ada
+                                        Tidak ada
                                     </label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_two" value="Tidak ada"
+                                    <input class="form-check-input" type="radio" name="question_two" value="Ada"
                                         id="question_two2"
-                                        {{ old('question_two', $pillarFour->question_two ?? '') == 'Tidak ada' ? 'checked' : '' }}>
+                                        {{ old('question_two', $pillarFour->question_two ?? '') == 'Ada' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="question_two2">
-                                        Tidak ada
+                                        Ada
                                     </label>
                                 </div>
 
@@ -183,6 +181,13 @@
                                     Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_four"
                                     name="file_question_four">
+
+                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                    izinkan.</div>
+
+                                @error('file_question_four')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
 
                             @if ($pillarFour && $pillarFour->file_question_four)
@@ -237,6 +242,13 @@
                                     Pendukung</label>
                                 <input class="form-control" type="file" id="file_question_five"
                                     name="file_question_five">
+
+                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                    izinkan.</div>
+
+                                @error('file_question_five')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
 
                             @if ($pillarFour && $pillarFour->file_question_five)

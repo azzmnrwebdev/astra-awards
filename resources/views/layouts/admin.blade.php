@@ -11,7 +11,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     {{-- Title --}}
-    <title>{{ $title }} - Awards Amaliah</title>
+    <title>{{ $title }} - Amaliah Astra Awards</title>
 
     {{-- Custom CSS --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />

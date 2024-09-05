@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('question_four')->nullable();
             $table->string('question_five')->nullable();
             $table->text('file_question_two')->nullable();
+            $table->text('file_question_three')->nullable();
+            $table->text('file_question_four')->nullable();
+            $table->text('file_question_five')->nullable();
             $table->timestamps();
         });
     }

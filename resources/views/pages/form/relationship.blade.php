@@ -145,16 +145,21 @@
                                             lebih dari satu dokumen)</label>
                                         <input class="form-control" type="file" id="file_question_two"
                                             name="file_question_two">
+
+                                        <div class="form-text">Hanya file bertipe zip yang di izinkan.</div>
+
+                                        @error('file_question_two')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 
                                 @if ($pillarTwo && $pillarTwo->file_question_two)
                                     <div class="mb-3">
-                                        <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-bs-toggle="modal" data-bs-target="#documentModal"
-                                            data-url="{{ url('/' . ltrim($pillarTwo->file_question_two, '/')) }}">
-                                            Lihat Dokumen
-                                        </button>
+                                        <a href="{{ url($pillarTwo->file_question_two) }}"
+                                            class="text-primary text-decoration-none" download>
+                                            Download Dokumen
+                                        </a>
                                     </div>
                                 @endif
 
@@ -201,6 +206,13 @@
                                             Pendukung</label>
                                         <input class="form-control" type="file" id="file_question_three"
                                             name="file_question_three">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_three')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -255,6 +267,13 @@
                                             Pendukung</label>
                                         <input class="form-control" type="file" id="file_question_four"
                                             name="file_question_four">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_four')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 

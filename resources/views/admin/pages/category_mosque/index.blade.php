@@ -1,6 +1,6 @@
-<x-admin title="Provinsi">
+<x-admin title="Kategori Masjid">
     {{-- Main Content --}}
-    <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen Provinsi</h4>
+    <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen Kategori Masjid</h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
@@ -18,7 +18,7 @@
 
             <div class="row">
                 <div class="col-auto">
-                    <a href="{{ route('province.create') }}" class="btn btn-dark rounded-0">Tambah</a>
+                    <a href="{{ route('categoryMosque.create') }}" class="btn btn-dark rounded-0">Tambah</a>
                 </div>
             </div>
 
@@ -33,16 +33,17 @@
                     </thead>
 
                     <tbody class="border-start border-end">
-                        @forelse ($provinces as $item)
+                        @forelse ($categories as $item)
                             <tr>
-                                <td class="text-center py-3">{{ $loop->index + $provinces->firstItem() }}</td>
+                                <td class="text-center py-3">{{ $loop->index + $categories->firstItem() }}</td>
                                 <td class="text-start py-3">{{ $item->name }}</td>
+                                <td class="text-start py-3">{{ $item->description }}</td>
                                 <td class="text-center py-3">
-                                    <a href="{{ route('province.edit', ['province' => $item->id]) }}"
-                                        class="text-dark align-middle @if (empty(count($item->city))) me-3 @endif"><i
+                                    <a href="{{ route('categoryMosque.edit', ['categoryMosque' => $item->id]) }}"
+                                        class="text-dark align-middle @if (empty(count($item->mosque))) me-3 @endif"><i
                                             class="bi bi-pencil"></i></a>
 
-                                    @if (empty(count($item->city)))
+                                    @if (empty(count($item->mosque)))
                                         <button type="button"
                                             class="border-0 p-0 bg-transparent text-dark align-middle delete"
                                             data-id="{{ $item->id }}" data-name="{{ $item->name }}"
@@ -62,7 +63,7 @@
 
             {{-- Pagination --}}
             <div class="mt-3">
-                {{ $provinces->appends(request()->query())->links() }}
+                {{ $categories->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
@@ -103,8 +104,9 @@
                 $('.delete').click(function() {
                     const id = $(this).data('id');
                     const name = $(this).data('name');
-                    const deleteUrl = "{{ route('province.destroy', ['province' => ':id']) }}".replace(':id',
-                        id);
+                    const deleteUrl = "{{ route('categoryMosque.destroy', ['categoryMosque' => ':id']) }}"
+                        .replace(':id',
+                            id);
 
                     $('#deleteForm').attr('action', deleteUrl);
                     $('#deleteModalMessage').html(

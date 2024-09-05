@@ -20,18 +20,18 @@ class CategoryAreaController extends Controller
 
         $categories = CategoryArea::orderByDesc('updated_at')->latest('created_at')->paginate(10);
 
-        return view('admin.pages.category.index', compact('theadName', 'categories'));
+        return view('admin.pages.category_area.index', compact('theadName', 'categories'));
     }
 
     public function create()
     {
-        return view('admin.pages.category.create');
+        return view('admin.pages.category_area.create');
     }
 
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|string||unique:category_areas,name',
+            'name' => 'required|string|unique:category_areas,name',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -45,21 +45,21 @@ class CategoryAreaController extends Controller
                 'name' => $request->input('name'),
             ]);
 
-            return redirect(route('category.index'))->with('success', 'Kategori area baru berhasil disimpan');
+            return redirect(route('categoryArea.index'))->with('success', 'Kategori Area berhasil disimpan');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
 
-    public function edit(CategoryArea $category)
+    public function edit(CategoryArea $categoryArea)
     {
-        return view('admin.pages.category.edit', compact('category'));
+        return view('admin.pages.category_area.edit', compact('categoryArea'));
     }
 
-    public function update(Request $request, CategoryArea $category)
+    public function update(Request $request, CategoryArea $categoryArea)
     {
         $rules = [
-            'name' => 'required|string||unique:category_areas,name,' . $category->id,
+            'name' => 'required|string|unique:category_areas,name,' . $categoryArea->id,
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -69,23 +69,23 @@ class CategoryAreaController extends Controller
         }
 
         try {
-            $category->update([
+            $categoryArea->update([
                 'name' => $request->input('name'),
             ]);
 
-            return redirect(route('category.index'))->with('success', 'Kategori area lama berhasil diperbarui');
+            return redirect(route('categoryArea.index'))->with('success', 'Kategori Area berhasil diperbarui');
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengubah data: ' . $e->getMessage());
         }
     }
 
-    public function destroy(CategoryArea $category)
+    public function destroy(CategoryArea $categoryArea)
     {
-        if ($category->mosque()->exists()) {
-            return redirect()->back()->with('error', 'Kategori sedang digunakan dalam data masjid dan tidak dapat dihapus');
+        if ($categoryArea->mosque()->exists()) {
+            return redirect()->back()->with('error', 'Kategori Area sedang digunakan dalam data masjid dan tidak dapat dihapus');
         } else {
-            $category->delete();
-            return redirect()->back()->with('success', 'Kategori berhasil dihapus');
+            $categoryArea->delete();
+            return redirect()->back()->with('success', 'Kategori Area berhasil dihapus');
         }
     }
 }

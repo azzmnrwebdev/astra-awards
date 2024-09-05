@@ -8,6 +8,7 @@ use App\Models\PillarTwo;
 use App\Models\PillarThree;
 use App\Models\PillarFour;
 use App\Models\PillarFive;
+use App\Models\Presentation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -112,6 +113,24 @@ class HomeController extends Controller
         $pillarFiveCompletion = ($pillarFiveCompleted / $totalFields) * 100;
         $pillarFiveCompletion = round($pillarFiveCompletion);
 
+        // Presentation
+        $presentation = Presentation::where('mosque_id', $mosque->id)->first();
+        $presentationFields = ['file'];
+
+        $presentationCompleted = 0;
+        $totalFields = count($presentationFields);
+
+        if ($presentation) {
+            foreach ($presentationFields as $field) {
+                if (!empty($presentation->$field)) {
+                    $presentationCompleted++;
+                }
+            }
+        }
+
+        $presentationCompletion = ($presentationCompleted / $totalFields) * 100;
+        $presentationCompletion = round($presentationCompletion);
+
         // Kirim data ke view
         return view('pages.information', compact(
             'mosque',
@@ -119,7 +138,8 @@ class HomeController extends Controller
             'pillarTwoCompletion',
             'pillarThreeCompletion',
             'pillarFourCompletion',
-            'pillarFiveCompletion'
+            'pillarFiveCompletion',
+            'presentationCompletion'
         ));
     }
 }

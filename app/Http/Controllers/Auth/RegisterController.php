@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CategoryArea;
 use App\Http\Controllers\Controller;
 use App\Models\BusinessLine;
+use App\Models\CategoryMosque;
 use App\Models\Company;
 use App\Models\Mosque;
 use App\Models\ParentCompany;
@@ -21,42 +22,38 @@ class RegisterController extends Controller
     {
         $timeline = Timeline::latest()->first();
         $categoryAreas = CategoryArea::all();
-        $companies = Company::all();
+        $categoryMosques = CategoryMosque::all();
         $parentCompanies = ParentCompany::all();
         $businessLines = BusinessLine::all();
         $provinces = Province::all();
 
-        return view('auth.register', compact('timeline', 'categoryAreas', 'companies', 'parentCompanies', 'businessLines', 'provinces'));
+        return view('auth.register', compact('timeline', 'categoryAreas', 'categoryMosques', 'parentCompanies', 'businessLines', 'provinces'));
     }
 
     public function registerAct(Request $request)
     {
-        // Validation
         $rules = [
             'name' => 'required|string',
             'position' => 'required|string',
-            'phone_number' => 'required|numeric|unique:users,phone_number',
+            'phone_number' => 'required|digits_between:10,13|unique:users,phone_number',
             'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'category_area_id' => 'required|exists:category_areas,id',
+            'category_mosque_id' => 'required|exists:category_mosques,id',
             'name_mosque' => 'required|string',
             'capacity' => 'required|numeric',
+            'logo' => 'required',
+            'logo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
             'leader' => 'required|string',
-            'company_id' => 'required',
-            'parent_company_id' => 'required',
+            'leader_phone' => 'required|digits_between:10,13|unique:mosques,leader_phone',
+            'leader_email' => 'required|email|unique:mosques,leader_email',
+            'company_id' => 'required|exists:companies,id',
+            'parent_company_id' => 'required|exists:parent_companies,id',
             'business_line_id' => 'required|exists:business_lines,id',
             'address' => 'required|string',
-            'city' => 'required|string',
             'province_id' => 'required|exists:provinces,id',
+            'city_id' => 'required|exists:cities,id',
         ];
-
-        if ($request->input('company_id') === 'another') {
-            $rules['otherCompany'] = 'required|string|unique:companies,name';
-        }
-
-        if ($request->input('parent_company_id') === 'another') {
-            $rules['otherParentCompany'] = 'required|string|unique:parent_companies,name';
-        }
 
         $validator = Validator::make($request->all(), $rules);
 
@@ -64,7 +61,6 @@ class RegisterController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // User
         $user = User::create([
             'name' => $request->input('name'),
             'phone_number' => $request->input('phone_number'),
@@ -74,40 +70,24 @@ class RegisterController extends Controller
             'status' => 0,
         ]);
 
-        // Company
-        $parent_company_id = $request->input('parent_company_id');
-        $company_id = $request->input('company_id');
-
-        if ($request->input('parent_company_id') === 'another') {
-            $newParentCompany = ParentCompany::create([
-                'name' => $request->input('otherParentCompany'),
-            ]);
-
-            $parent_company_id = $newParentCompany->id;
-        }
-
-        if ($request->input('company_id') === 'another') {
-            $newCompany = Company::create([
-                'name' => $request->input('otherCompany'),
-                'parent_company_id' => $parent_company_id,
-                'business_line_id' => $request->input('business_line_id'),
-            ]);
-
-            $company_id = $newCompany->id;
-        }
+        $fileName = 'logo' . '_' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $request->file('logo')->getClientOriginalExtension();
+        $filePath = $request->file('logo')->storeAs('logo', $fileName, 'public');
 
         // Mosque
         Mosque::create([
             'user_id' => $user->id,
             'position' => $request->input('position'),
             'category_area_id' => $request->input('category_area_id'),
+            'category_mosque_id' => $request->input('category_mosque_id'),
             'name' => $request->input('name_mosque'),
             'capacity' => $request->input('capacity'),
+            'logo' => $filePath,
             'leader' => $request->input('leader'),
-            'company_id' => $company_id,
+            'leader_phone' => $request->input('leader_phone'),
+            'leader_email' => $request->input('leader_email'),
+            'company_id' => $request->input('company_id'),
             'address' => $request->input('address'),
-            'city' => $request->input('city'),
-            'province_id' => $request->input('province_id'),
+            'city_id' => $request->input('city_id'),
         ]);
 
         return redirect(route('login'))->with('success', 'Pendaftaran berhasil. Anda sekarang dapat masuk');

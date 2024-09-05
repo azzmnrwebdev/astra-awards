@@ -146,6 +146,13 @@
                                             Pendukung</label>
                                         <input class="form-control" type="file" id="file_question_one"
                                             name="file_question_one">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_one')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -225,6 +232,13 @@
                                             dari manajemen</label>
                                         <input class="form-control" type="file" id="file_question_two_one"
                                             name="file_question_two_one">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_two_one')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -247,6 +261,13 @@
                                             dan anggaran yang sudah disetujui oleh manajemen</label>
                                         <input class="form-control" type="file" id="file_question_two_two"
                                             name="file_question_two_two">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_two_two')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -268,6 +289,13 @@
                                             lainnya(foto & notulensi rapat,dll)</label>
                                         <input class="form-control" type="file" id="file_question_two_three"
                                             name="file_question_two_three">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_two_three')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -346,6 +374,13 @@
                                             Pendukung</label>
                                         <input class="form-control" type="file" id="file_question_three"
                                             name="file_question_three">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_three')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -418,6 +453,13 @@
                                             Pendukung</label>
                                         <input class="form-control" type="file" id="file_question_four"
                                             name="file_question_four">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_four')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 
@@ -489,6 +531,13 @@
                                             Pendukung</label>
                                         <input class="form-control" type="file" id="file_question_five"
                                             name="file_question_five">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_five')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 @endif
 

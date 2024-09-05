@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
+use App\Models\Province;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Province;
-use Exception;
 use Illuminate\Support\Facades\Validator;
 
 class ProvinceController extends Controller
@@ -45,7 +45,7 @@ class ProvinceController extends Controller
                 'name' => $request->input('name'),
             ]);
 
-            return redirect(route('province.index'))->with('success', 'Provinsi baru berhasil disimpan');
+            return redirect(route('province.index'))->with('success', 'Provinsi berhasil disimpan');
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
@@ -73,16 +73,16 @@ class ProvinceController extends Controller
                 'name' => $request->input('name'),
             ]);
 
-            return redirect(route('province.index'))->with('success', 'Provinsi lama berhasil diperbarui');
+            return redirect(route('province.index'))->with('success', 'Provinsi berhasil diperbarui');
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengubah data: ' . $e->getMessage());
         }
     }
 
     public function destroy(Province $province)
     {
-        if ($province->mosque()->exists()) {
-            return redirect()->back()->with('error', 'Provinsi sedang digunakan dalam data masjid dan tidak dapat dihapus');
+        if ($province->city()->exists()) {
+            return redirect()->back()->with('error', 'Provinsi sedang digunakan dalam data kota/kabupaten dan tidak dapat dihapus');
         } else {
             $province->delete();
             return redirect()->back()->with('success', 'Provinsi berhasil dihapus');

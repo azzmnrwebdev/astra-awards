@@ -11,7 +11,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     {{-- Title --}}
-    <title>{{ $title ? $title . ' - Awards Amaliah' : 'Awards Amaliah' }}</title>
+    <title>{{ $title ? $title . ' - Amaliah Astra Awards' : 'Amaliah Astra Awards' }}</title>
 
     {{-- Custom CSS --}}
     <style>
