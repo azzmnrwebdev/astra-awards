@@ -15,7 +15,7 @@ class CategoryMosqueSeeder extends Seeder
         DB::table('category_mosques')->insert([
             ['name' => 'Masjid Besar', 'description' => "Kapasitas lebih dari 500 jamaah, dan melaksanakan sholat jum'at."],
             ['name' => 'Masjid Sedang', 'description' => "Kapasitas kurang dari 500 jamaah, dan melaksanakan sholat jum'at."],
-            ['name' => 'Mushala', 'description' => "Hanya digunakan sholat rawatib, tidak digunakan sholat jum'at."],
+            ['name' => 'Musala', 'description' => "Hanya digunakan sholat rawatib, tidak digunakan sholat jum'at."],
         ]);
     }
 }

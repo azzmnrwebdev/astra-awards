@@ -118,7 +118,8 @@
             </div>
 
             {{-- Form Pendaftaran --}}
-            <form id="registrationForm" action="{{ route('registerAct') }}" method="POST" enctype="multipart/form-data">
+            <form id="registrationForm" action="{{ route('registerAct') }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
 
                 {{-- PIC Amaliah Astra Awards --}}
@@ -262,9 +263,9 @@
 
                             {{-- Nama Masjid --}}
                             <div class="col-lg-6">
-                                <label for="name_mosque" class="form-label fw-medium">Nama Masjid/Mushala</label>
+                                <label for="name_mosque" class="form-label fw-medium">Nama Masjid/Musala</label>
                                 <input type="text" class="form-control @error('name_mosque') is-invalid @enderror"
-                                    id="name_mosque" name="name_mosque" placeholder="Masukan nama masjid/mushala"
+                                    id="name_mosque" name="name_mosque" placeholder="Masukan nama masjid/Musala"
                                     value="{{ old('name_mosque') }}">
 
                                 @error('name_mosque')
@@ -272,10 +273,10 @@
                                 @enderror
                             </div>
 
-                            {{-- Kapasitas Jamaah Masjid/Mushala --}}
+                            {{-- Kapasitas Jamaah Masjid/Musala --}}
                             <div class="col-lg-6">
                                 <label for="capacity" class="form-label fw-medium">Kapasitas Jamaah
-                                    Masjid/Mushala</label>
+                                    Masjid/Musala</label>
                                 <input type="number" min="10"
                                     class="form-control @error('capacity') is-invalid @enderror" id="capacity"
                                     name="capacity" placeholder="Masukan kapasitas tempat ibadah"
@@ -288,7 +289,7 @@
 
                             {{-- Logo Masjid --}}
                             <div class="col-12">
-                                <label for="logo" class="form-label fw-medium">Logo Masjid/Mushala</label>
+                                <label for="logo" class="form-label fw-medium">Logo Masjid/Musala</label>
 
                                 <input type="file" class="form-control @error('logo') is-invalid @enderror"
                                     id="logo" name="logo">
@@ -471,7 +472,7 @@
 
                 <div class="modal-body">
                     <img id="logoPreview" src="" alt="Logo Preview" class="img-fluid d-none" />
-                    <p id="noLogoMessage">Anda belum menggunggah logo masjid/mushala</p>
+                    <p id="noLogoMessage">Anda belum menggunggah logo masjid/Musala</p>
                 </div>
             </div>
         </div>

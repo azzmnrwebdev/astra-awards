@@ -46,10 +46,22 @@ class SystemAssessmentController extends Controller
             '1' => 7,
             '2' => 7,
             '3' => 3,
+            '4' => 0,
             '1,3' => 7,
+            '1,4' => 7,
+            '2,4' => 7,
+            '3,4' => 3,
             '2,3' => 7,
             '1,2' => 9,
             '1,2,3' => 9,
+            '2,3,4' => 7,
+            '1,2,3,4' => 9,
+        ];
+
+        $nilaiMappingCheckbox2 = [
+            '' => 1,
+            '1' => 7,
+            '1,2' => 9,
         ];
 
         $questionTwo = $request->input('pillar_two_question_two', []);
@@ -67,11 +79,17 @@ class SystemAssessmentController extends Controller
         $questionFourKey = implode(',', $questionFour);
         $resultQuestionFour = $nilaiMappingCheckbox[$questionFourKey] ?? 1;
 
+        $questionFive= $request->input('pillar_two_question_five', []);
+        sort($questionFive);
+        $questionFiveKey = implode(',', $questionFive);
+        $resultquestionFive = $nilaiMappingCheckbox2[$questionFiveKey] ?? 1;
+
         $data = [
             'pillar_two_question_one' => $nilaiMappingRadio[$request->input('pillar_two_question_one')] ?? null,
             'pillar_two_question_two' => $resultQuestionTwo,
             'pillar_two_question_three' => $resultQuestionThree,
             'pillar_two_question_four' => $resultQuestionFour,
+            'pillar_two_question_five' => $resultquestionFive,
         ];
 
         SystemAssessment::updateOrCreate(

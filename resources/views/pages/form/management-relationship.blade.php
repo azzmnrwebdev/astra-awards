@@ -33,6 +33,9 @@
                             <div class="card-body p-4">
                                 <h5 class="card-title fw-bold mb-3">Informasi DKM</h5>
 
+                                <img src="{{ asset('storage/' . $user->mosque->logo) }}" alt="Logo"
+                                    style="width: 200px;">
+
                                 <p class="card-text mb-0"><span class="fw-medium">Nama:</span> {{ $user->name }}
                                 </p>
                                 <p class="card-text mb-0"><span class="fw-medium">Email:</span> {{ $user->email }}
@@ -42,14 +45,16 @@
 
                                 <hr>
 
-                                <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Mushala:</span>
+                                <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Musala:</span>
                                     {{ $user->mosque->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kategori Masjid:</span>
+                                    {{ $user->mosque->categoryMosque->name }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Alamat:</span>
                                     {{ $user->mosque->address }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:</span>
-                                    {{ $user->mosque->city }}</p>
+                                    {{ $user->mosque->city->name }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Provinsi:</span>
-                                    {{ $user->mosque->province->name }}</p>
+                                    {{ $user->mosque->city->province->name }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Kapasitas Jamaah:</span>
                                     {{ $user->mosque->capacity }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Kategori Area:</span>
@@ -61,6 +66,11 @@
                                     {{ $user->mosque->position }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Ketua Pengurus DKM:</span>
                                     {{ $user->mosque->leader }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Email Ketua Pengurus DKM:</span>
+                                    {{ $user->mosque->leader_email }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Nomor Ponsel Ketua Pengurus
+                                        DKM:</span>
+                                    {{ $user->mosque->leader_phone }}</p>
 
                                 <hr>
 
@@ -158,9 +168,13 @@
 
                                 @if ($pillarOne && $pillarOne->file_question_one)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen Pendukung</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-indexe="modal" data-indext="#documentModal" data-indexurl('/' .
-                                            ltrim($pillarOne->file_question_one, '/')) }}">
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarOne->file_question_one, '/')) }}">
                                             Lihat Dokumen
                                         </button>
                                     </div>
@@ -230,6 +244,7 @@
                                             kepengurusan
                                             DKM
                                             dari manajemen</label>
+
                                         <input class="form-control" type="file" id="file_question_two_one"
                                             name="file_question_two_one">
 
@@ -244,9 +259,16 @@
 
                                 @if ($pillarOne && $pillarOne->file_question_two_one)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen SK
+                                                kepengurusan
+                                                DKM
+                                                dari manajemen</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-indexe="modal" data-indext="#documentModal" data-indexurl('/' .
-                                            ltrim($pillarOne->file_question_two_one, '/')) }}">
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarOne->file_question_two_one, '/')) }}">
                                             Lihat Dokumen
                                         </button>
                                     </div>
@@ -273,9 +295,16 @@
 
                                 @if ($pillarOne && $pillarOne->file_question_two_two)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen
+                                                program
+                                                kerja
+                                                dan anggaran yang sudah disetujui oleh manajemen</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-indexe="modal" data-indext="#documentModal" data-indexurl('/' .
-                                            ltrim($pillarOne->file_question_two_two, '/')) }}">
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarOne->file_question_two_two, '/')) }}">
                                             Lihat Dokumen
                                         </button>
                                     </div>
@@ -301,9 +330,15 @@
 
                                 @if ($pillarOne && $pillarOne->file_question_two_three)
                                     <div class="mb-0">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen
+                                                penunjang
+                                                lainnya(foto & notulensi rapat,dll)</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-indexe="modal" data-indext="#documentModal" data-indexurl('/' .
-                                            ltrim($pillarOne->file_question_two_three, '/')) }}">
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarOne->file_question_two_three, '/')) }}">
                                             Lihat Dokumen
                                         </button>
                                     </div>
@@ -386,9 +421,14 @@
 
                                 @if ($pillarOne && $pillarOne->file_question_three)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen
+                                                Pendukung</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-indexe="modal" data-indext="#documentModal" data-indexurl('/' .
-                                            ltrim($pillarOne->file_question_three, '/')) }}">
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarOne->file_question_three, '/')) }}">
                                             Lihat Dokumen
                                         </button>
                                     </div>
@@ -465,9 +505,14 @@
 
                                 @if ($pillarOne && $pillarOne->file_question_four)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen
+                                                Pendukung</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-indexe="modal" data-indext="#documentModal" data-indexurl('/' .
-                                            ltrim($pillarOne->file_question_four, '/')) }}">
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarOne->file_question_four, '/')) }}">
                                             Lihat Dokumen
                                         </button>
                                     </div>
@@ -543,9 +588,14 @@
 
                                 @if ($pillarOne && $pillarOne->file_question_five)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen
+                                                Pendukung</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-indexe="modal" data-indext="#documentModal" data-indexurl('/' .
-                                            ltrim($pillarOne->file_question_five, '/')) }}">
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarOne->file_question_five, '/')) }}">
                                             Lihat Dokumen
                                         </button>
                                     </div>
@@ -628,7 +678,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="documentModalLabel">Lihat Dokumen</h1>
-                    <button type="button" class="btn-close" data-indexss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">

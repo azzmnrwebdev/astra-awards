@@ -34,7 +34,7 @@
 
             <h5 class="card-title fw-semibold">Informasi Umum</h5>
 
-            <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Mushala:
+            <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Musala:
                 </span>{{ $user->mosque->name }}</p>
             <p class="card-text mb-0"><span class="fw-medium">Kategori Masjid:
                 </span>{{ $user->mosque->categoryMosque->name }}</p>

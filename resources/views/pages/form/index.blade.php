@@ -51,64 +51,6 @@
                 <div class="col">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-4">Formulir Hubungan Manajemen Perusahaan dengan DKM dan
-                                Jamaah</h5>
-
-                            <div class="table-responsive">
-                                <table class="table table-hover text-nowrap align-middle mb-0">
-                                    <thead class="border-top border-start border-end table-info">
-                                        <tr>
-                                            <th class="text-center py-3">No</th>
-                                            <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Mushala</th>
-                                            <th class="text-center py-3">Kategori Area</th>
-                                            <th class="text-center py-3">Penilaian Sistem</th>
-                                            <th class="text-center py-3">Penilaian Panitia</th>
-                                            <th class="text-center py-3">Aksi</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody class="border-start border-end">
-                                        @forelse ($pillarOnes as $item)
-                                            <tr>
-                                                <td class="text-center py-3">
-                                                    {{ $loop->index + $pillarOnes->firstItem() }}</td>
-                                                <td class="text-start py-3">{{ $item->name }}</td>
-                                                <td class="text-start py-3">{{ $item->mosque->name }}</td>
-                                                <td class="text-center py-3">
-                                                    {{ $item->mosque->categoryArea->name }}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian Sistem --}}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian panitia --}}
-                                                </td>
-                                                <td class="text-center py-3">
-                                                    <a href="{{ route('form.managementRelationship', ['user' => $item->id, 'action' => 'show']) }}"
-                                                        class="text-dark align-middle"><i class="bi bi-eye"></i></a>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div class="mt-3">
-                                {{ $pillarOnes->appends(request()->query())->links() }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Formulir 2 --}}
-                <div class="col">
-                    <div class="card h-100 border-0 shadow rounded-4">
-                        <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-4">Formulir Hubungan DKM dengan YAA</h5>
 
                             <div class="table-responsive">
@@ -117,7 +59,7 @@
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Mushala</th>
+                                            <th class="text-start py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>
@@ -162,6 +104,64 @@
                     </div>
                 </div>
 
+                {{-- Formulir 2 --}}
+                <div class="col">
+                    <div class="card h-100 border-0 shadow rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-4">Formulir Hubungan Manajemen Perusahaan dengan DKM dan
+                                Jamaah</h5>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover text-nowrap align-middle mb-0">
+                                    <thead class="border-top border-start border-end table-info">
+                                        <tr>
+                                            <th class="text-center py-3">No</th>
+                                            <th class="text-start py-3">Nama</th>
+                                            <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Kategori Area</th>
+                                            <th class="text-center py-3">Penilaian Sistem</th>
+                                            <th class="text-center py-3">Penilaian Panitia</th>
+                                            <th class="text-center py-3">Aksi</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="border-start border-end">
+                                        @forelse ($pillarOnes as $item)
+                                            <tr>
+                                                <td class="text-center py-3">
+                                                    {{ $loop->index + $pillarOnes->firstItem() }}</td>
+                                                <td class="text-start py-3">{{ $item->name }}</td>
+                                                <td class="text-start py-3">{{ $item->mosque->name }}</td>
+                                                <td class="text-center py-3">
+                                                    {{ $item->mosque->categoryArea->name }}
+                                                </td>
+                                                <td class="text-start py-3">
+                                                    {{-- penilaian Sistem --}}
+                                                </td>
+                                                <td class="text-start py-3">
+                                                    {{-- penilaian panitia --}}
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    <a href="{{ route('form.managementRelationship', ['user' => $item->id, 'action' => 'show']) }}"
+                                                        class="text-dark align-middle"><i class="bi bi-eye"></i></a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="mt-3">
+                                {{ $pillarOnes->appends(request()->query())->links() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {{-- Formulir 3 --}}
                 <div class="col">
                     <div class="card h-100 border-0 shadow rounded-4">
@@ -174,7 +174,7 @@
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Mushala</th>
+                                            <th class="text-start py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>
@@ -231,7 +231,7 @@
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Mushala</th>
+                                            <th class="text-start py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>
@@ -288,7 +288,7 @@
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Mushala</th>
+                                            <th class="text-start py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>

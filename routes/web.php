@@ -76,6 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware([CheckRolesMiddleware::class . ':admin'])->group(function () {
         Route::post('formulir/manajemen-hubungan/{user?}/{action?}', [SystemAssessmentController::class, 'pillarOneAct'])->name('system_assessment.pillarOneAct')->middleware([SelectionMiddleware::class]);
         Route::post('formulir/hubungan/{user?}/{action?}', [SystemAssessmentController::class, 'pillarTwoAct'])->name('system_assessment.pillarTwoAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/infrastruktur/{user?}/{action?}', [SystemAssessmentController::class, 'pillarFiveAct'])->name('system_assessment.pillarFiveAct')->middleware([SelectionMiddleware::class]);
     });
 
     // Route Admin & Jury

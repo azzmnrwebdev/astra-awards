@@ -420,12 +420,31 @@ class FormController extends Controller
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
-    public function infrastructure()
+    public function infrastructure($user = null, $action = null)
     {
-        $mosqueId = Auth::user()->mosque->id;
-        $pillarFive = PillarFive::where('mosque_id', $mosqueId)->first();
+        if (!$user && !$action) {
+            $mosque = Auth::user()->mosque;
 
-        return view('pages.form.infrastructure', compact('pillarFive'));
+            if (!$mosque) {
+                return redirect(route('form.index'));
+            }
+
+            $pillarFive = PillarFive::where('mosque_id', $mosque->id)->first();
+
+            return view('pages.form.infrastructure', compact('pillarFive'));
+        } else {
+            $user = User::where('id', $user)->first();
+            $pillarFive = $user->mosque->pillarFive;
+
+            $systemAssessment = SystemAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
+
+            if ($systemAssessment) {
+                $totalValue = $systemAssessment->pillar_five_question_one + $systemAssessment->pillar_five_question_two + $systemAssessment->pillar_five_question_three + $systemAssessment->pillar_five_question_four + $systemAssessment->pillar_five_question_five;
+                return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment', 'totalValue'));
+            }
+
+            return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment'));
+        }
     }
 
     public function infrastructureAct(Request $request)

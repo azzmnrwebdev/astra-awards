@@ -47,7 +47,7 @@
 
                             <img src="{{ asset('storage/' . $mosque->logo) }}" alt="Logo" style="width: 200px;">
 
-                            <p class="card-text mb-0 fw-bold mt-3">Nama Masjid/Mushala: {{ $mosque->name }}</p>
+                            <p class="card-text mb-0 fw-bold mt-3">Nama Masjid/Musala: {{ $mosque->name }}</p>
                             <p class="card-text mb-0 fw-bold">Kategori Masjid: {{ $mosque->categoryMosque->name }}</p>
                             <p class="card-text mb-0 fw-bold">Kategori Area: {{ $mosque->categoryArea->name }}</p>
                             <p class="card-text mb-0"><span class="fw-medium">Alamat: </span>{{ $mosque->address }}</p>

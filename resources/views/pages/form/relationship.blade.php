@@ -32,6 +32,9 @@
                             <div class="card-body p-4">
                                 <h5 class="card-title fw-bold mb-3">Informasi DKM</h5>
 
+                                <img src="{{ asset('storage/' . $user->mosque->logo) }}" alt="Logo"
+                                    style="width: 200px;">
+
                                 <p class="card-text mb-0"><span class="fw-medium">Nama:</span> {{ $user->name }}
                                 </p>
                                 <p class="card-text mb-0"><span class="fw-medium">Email:</span> {{ $user->email }}
@@ -41,14 +44,16 @@
 
                                 <hr>
 
-                                <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Mushala:</span>
+                                <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Musala:</span>
                                     {{ $user->mosque->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kategori Masjid:</span>
+                                    {{ $user->mosque->categoryMosque->name }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Alamat:</span>
                                     {{ $user->mosque->address }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:</span>
-                                    {{ $user->mosque->city }}</p>
+                                    {{ $user->mosque->city->name }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Provinsi:</span>
-                                    {{ $user->mosque->province->name }}</p>
+                                    {{ $user->mosque->city->province->name }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Kapasitas Jamaah:</span>
                                     {{ $user->mosque->capacity }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Kategori Area:</span>
@@ -60,6 +65,11 @@
                                     {{ $user->mosque->position }}</p>
                                 <p class="card-text mb-0"><span class="fw-medium">Ketua Pengurus DKM:</span>
                                     {{ $user->mosque->leader }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Email Ketua Pengurus DKM:</span>
+                                    {{ $user->mosque->leader_email }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Nomor Ponsel Ketua Pengurus
+                                        DKM:</span>
+                                    {{ $user->mosque->leader_phone }}</p>
 
                                 <hr>
 
@@ -127,7 +137,8 @@
                                             {{ in_array('custom', (array) old('question_two', json_decode($pillarTwo->question_two ?? '[]', true) ?? '')) ? 'checked' : '' }}
                                             @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                         <label class="form-check-label w-100" for="question_two4">
-                                            <input type="text" class="form-control" id="option_two" name="option_two"
+                                            <input type="text" class="form-control" id="option_two"
+                                                name="option_two"
                                                 value="{{ old('option_two', $pillarTwo->option_two ?? '') }}"
                                                 @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                         </label>
@@ -156,6 +167,12 @@
 
                                 @if ($pillarTwo && $pillarTwo->file_question_two)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen Pendukung
+                                                (bisa
+                                                lebih dari satu dokumen)</label>
+                                        @endif
+
                                         <a href="{{ url($pillarTwo->file_question_two) }}"
                                             class="text-primary text-decoration-none" download>
                                             Download Dokumen
@@ -218,6 +235,10 @@
 
                                 @if ($pillarTwo && $pillarTwo->file_question_three)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen Pendukung</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                             data-bs-toggle="modal" data-bs-target="#documentModal"
                                             data-url="{{ url('/' . ltrim($pillarTwo->file_question_three, '/')) }}">
@@ -279,6 +300,10 @@
 
                                 @if ($pillarTwo && $pillarTwo->file_question_four)
                                     <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen Pendukung</label>
+                                        @endif
+
                                         <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                             data-bs-toggle="modal" data-bs-target="#documentModal"
                                             data-url="{{ url('/' . ltrim($pillarTwo->file_question_four, '/')) }}">
@@ -345,23 +370,19 @@
                             <h5 class="card-title">Niai Berdasarkan Sistem</h5>
 
                             @if ($systemAssessment)
-                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Koordinasi Manajemen
-                                        dengan
-                                        Pengurus DKM</span>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Kerjasama dengan
+                                        YAA</span>
                                     ({{ $systemAssessment->pillar_two_question_one ?? 0 }} Poin)</p>
-                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. Kegiatan Bersama
-                                        antara DKM
-                                        dengan Manajemen Perusahaan</span>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. Divisi Sosial
+                                        Religi</span>
                                     ({{ $systemAssessment->pillar_two_question_two ?? 0 }} Poin)</p>
-                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Media Interaksi dan
-                                        Komunikasi dengan Jamaah</span>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Divisi Layanan
+                                        Amal</span>
                                     ({{ $systemAssessment->pillar_two_question_three ?? 0 }} Poin)</p>
-                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Memiliki Grup
-                                        WhatsApp Jamaah</span>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Divisi Kemitraan</span>
                                     ({{ $systemAssessment->pillar_two_question_four ?? 0 }} Poin)</p>
-                                <p class="card-text fw-bold"><span class="fw-medium">5. Program Pembinaan
-                                        Keagamaan Untuk
-                                        Jamaah</span>
+                                <p class="card-text fw-bold"><span class="fw-medium">5. Divisi Administrasi &
+                                        Keuangan</span>
                                     ({{ $systemAssessment->pillar_two_question_five ?? 0 }} Poin)</p>
 
                                 <h6 class="card-subtitle mb-0 text-body-dark">Total Nilai:
@@ -443,6 +464,15 @@
                     $('input[name="pillar_two_question_four[]"]').val(indexes.join(','));
                 }
 
+                // Jawaban 5
+                if (selectedCheckbox4.length) {
+                    let indexes = [];
+                    selectedCheckbox4.each(function() {
+                        indexes.push($(this).data('index'));
+                    });
+
+                    $('input[name="pillar_two_question_five[]"]').val(indexes.join(','));
+                }
 
                 const optionInput2 = document.getElementById('option_two');
                 const optionInput3 = document.getElementById('option_three');

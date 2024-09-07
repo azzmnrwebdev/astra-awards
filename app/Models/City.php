@@ -14,7 +14,7 @@ class City extends Model
 
     public function mosque()
     {
-        return $this->hasOne(Mosque::class, 'city_id');
+        return $this->hasMany(Mosque::class, 'city_id');
     }
 
     public function province()
