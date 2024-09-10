@@ -22,6 +22,7 @@ class ApiController extends Controller
 
         $companies = Company::where('business_line_id', $businessLineId)
             ->where('parent_company_id', $parentCompanyId)
+            ->orderBy('name', 'asc')
             ->get();
 
         return response()->json($companies);
