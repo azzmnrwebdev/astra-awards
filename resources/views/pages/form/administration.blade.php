@@ -1,275 +1,458 @@
 <x-user title="Formulir Administrasi & Keuangan" name="Formulir Administrasi dan Keuangan">
     <div class="container py-4">
-        <form action="{{ route('form.administrationAct') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-
-            <input type="hidden" name="id" value="{{ $pillarFour->id ?? '' }}">
-
-            <div class="row row-cols-1 g-3">
-                @if (Session('success'))
-                    <div class="col-md-10 col-lg-8">
-                        <div class="alert alert-success mb-2" role="alert">
-                            {{ Session('success') }}
-                        </div>
-                    </div>
-                @endif
-
-                @if (Session('error'))
-                    <div class="col-md-10 col-lg-8">
-                        <div class="alert alert-danger mb-2" role="alert">
-                            {{ Session('error') }}
-                        </div>
-                    </div>
-                @endif
-
+        <div class="row row-cols-1 row-cols-lg-2 g-4">
+            @if (Session('success'))
                 <div class="col-md-10 col-lg-8">
-                    <div class="card h-100 border-0 shadow rounded-4">
-                        <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-3">Struktur Organisasi, Rencana Kegiatan & Budget</h5>
-
-                            {{-- Pertanyaan 1 --}}
-                            <div class="mb-3">
-                                <label for="question_one" class="form-label fw-medium">1. Yayasan Amaliah Astra sudah
-                                    membuat sistem keuangan masjid online, Apakah DKM
-                                    sudah menggunakan sistem ini?</label>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_one" value="Tidak"
-                                        id="question_one1"
-                                        {{ old('question_one', $pillarFour->question_one ?? '') == 'Tidak' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_one1">
-                                        Tidak
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_one"
-                                        id="question_one2" value="Ya"
-                                        {{ old('question_one', $pillarFour->question_one ?? '') == 'Ya' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_one2">
-                                        Ya
-                                    </label>
-                                </div>
-
-                                @error('question_one')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-                            </div>
-
-                            <div class="{{ $pillarFour && $pillarFour->file_question_one ? 'mb-2' : 'mb-3' }}">
-                                <label for="file_question_one" class="form-label fw-medium">Dokumen Pendukung</label>
-                                <input class="form-control" type="file" id="file_question_one"
-                                    name="file_question_one">
-
-                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
-                                    izinkan.</div>
-
-                                @error('file_question_one')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-                            </div>
-
-                            @if ($pillarFour && $pillarFour->file_question_one)
-                                <div class="mb-3">
-                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                        data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($pillarFour->file_question_one, '/')) }}">
-                                        Lihat Dokumen
-                                    </button>
-                                </div>
-                            @endif
-
-                            {{-- Pertanyaan 2 --}}
-                            <div class="mb-3">
-                                <label for="question_two" class="form-label fw-medium">2. DKM memiliki pengurus masjid
-                                    dibawah umur 30 tahun?</label>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_two" value="Tidak ada"
-                                        id="question_two1"
-                                        {{ old('question_two', $pillarFour->question_two ?? '') == 'Tidak ada' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_two1">
-                                        Tidak ada
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_two" value="Ada"
-                                        id="question_two2"
-                                        {{ old('question_two', $pillarFour->question_two ?? '') == 'Ada' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_two2">
-                                        Ada
-                                    </label>
-                                </div>
-
-                                @error('question_two')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-                            </div>
-
-                            {{-- Pertanyaan 3 --}}
-                            <div class="mb-0">
-                                <label for="question_three" class="form-label fw-medium">3. Berapa persen jumlah
-                                    pengurus masjid dibawah umur 30 tahun dari total pengurus DKM</label>
-
-                                <input type="text" class="form-control" name="question_three" id="question_three"
-                                    value="{{ old('question_three', $pillarFour->question_three ?? '') }}">
-
-                                @error('question_three')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-                            </div>
-                        </div>
+                    <div class="alert alert-success mb-2" role="alert">
+                        {{ Session('success') }}
                     </div>
                 </div>
+            @endif
 
+            @if (Session('success_assessment'))
+                <div class="col-md-10 col-lg-12">
+                    <div class="alert alert-success mb-2" role="alert">
+                        {{ Session('success_assessment') }}
+                    </div>
+                </div>
+            @endif
+
+            @if (Session('error'))
                 <div class="col-md-10 col-lg-8">
-                    <div class="card h-100 border-0 shadow rounded-4">
-                        <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-3">Laporan Keuangan</h5>
+                    <div class="alert alert-danger mb-2" role="alert">
+                        {{ Session('error') }}
+                    </div>
+                </div>
+            @endif
 
-                            {{-- Pertanyaan 4 --}}
-                            <div class="mb-3">
-                                <label for="question_four" class="form-label fw-medium">4. Laporan Keuangan
-                                    Masjid/Musala</label>
+            <div class="col-md-10 col-lg-8">
+                @if (auth()->check() && auth()->user()->hasRole('admin'))
+                    <div class="col mb-4">
+                        <div class="card h-100 border-0 shadow rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold mb-3">Informasi DKM</h5>
 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_four"
-                                        value="Belum ada" id="question_four1"
-                                        {{ old('question_four', $pillarFour->question_four ?? '') == 'Belum ada' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_four1">
-                                        Belum ada
-                                    </label>
-                                </div>
+                                <img src="{{ asset('storage/' . $user->mosque->logo) }}" alt="Logo"
+                                    style="width: 200px;">
 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_four"
-                                        value="Ada, update lebih dari sebulan yang lalu" id="question_four2"
-                                        {{ old('question_four', $pillarFour->question_four ?? '') == 'Ada, update lebih dari sebulan yang lalu' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_four2">
-                                        Ada, update lebih dari sebulan yang lalu
-                                    </label>
-                                </div>
+                                <p class="card-text mb-0"><span class="fw-medium">Nama:</span> {{ $user->name }}
+                                </p>
+                                <p class="card-text mb-0"><span class="fw-medium">Email:</span> {{ $user->email }}
+                                </p>
+                                <p class="card-text mb-0"><span class="fw-medium">Nomor Ponsel:</span>
+                                    {{ $user->phone_number }}</p>
 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_four"
-                                        value=" Ada, rutin dilakukan evaluasi dan update per bulan"
-                                        id="question_four3"
-                                        {{ old('question_four', $pillarFour->question_four ?? '') == ' Ada, rutin dilakukan evaluasi dan update per bulan' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_four3">
-                                        Ada, rutin dilakukan evaluasi dan update per bulan
-                                    </label>
-                                </div>
+                                <hr>
 
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_four"
-                                        value="Ada, rutin update per bulan dan ada pelaporan ke jamaah"
-                                        id="question_four4"
-                                        {{ old('question_four', $pillarFour->question_four ?? '') == 'Ada, rutin update per bulan dan ada pelaporan ke jamaah' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_four4">
-                                        Ada, rutin update per bulan dan ada pelaporan ke jamaah
-                                    </label>
-                                </div>
+                                <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Musala:</span>
+                                    {{ $user->mosque->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kategori Masjid:</span>
+                                    {{ $user->mosque->categoryMosque->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Alamat:</span>
+                                    {{ $user->mosque->address }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:</span>
+                                    {{ $user->mosque->city->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Provinsi:</span>
+                                    {{ $user->mosque->city->province->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kapasitas Jamaah:</span>
+                                    {{ $user->mosque->capacity }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Kategori Area:</span>
+                                    {{ $user->mosque->categoryArea->name }}</p>
 
-                                @error('question_four')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
+                                <hr>
+
+                                <p class="card-text mb-0"><span class="fw-medium">Jabatan di DKM:</span>
+                                    {{ $user->mosque->position }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Ketua Pengurus DKM:</span>
+                                    {{ $user->mosque->leader }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Email Ketua Pengurus DKM:</span>
+                                    {{ $user->mosque->leader_email }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Nomor Ponsel Ketua Pengurus
+                                        DKM:</span>
+                                    {{ $user->mosque->leader_phone }}</p>
+
+                                <hr>
+
+                                <p class="card-text mb-0"><span class="fw-medium">Perusahaan:</span>
+                                    {{ $user->mosque->company->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Induk Perusahaan:</span>
+                                    {{ $user->mosque->company->parentCompany->name }}</p>
+                                <p class="card-text mb-0"><span class="fw-medium">Lini Bisnis:</span>
+                                    {{ $user->mosque->company->businessLine->name }}</p>
                             </div>
+                        </div>
+                    </div>
+                @endif
 
-                            <div class="{{ $pillarFour && $pillarFour->file_question_four ? 'mb-2' : 'mb-0' }}">
-                                <label for="file_question_four" class="form-label fw-medium">Dokumen
-                                    Pendukung</label>
-                                <input class="form-control" type="file" id="file_question_four"
-                                    name="file_question_four">
+                <form action="{{ route('form.administrationAct') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
 
-                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
-                                    izinkan.</div>
+                    <input type="hidden" name="id" value="{{ $pillarFour->id ?? '' }}">
 
-                                @error('file_question_four')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-                            </div>
+                    <div class="col mb-4">
+                        <div class="card h-100 border-0 shadow rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold mb-3">Struktur Organisasi, Rencana Kegiatan & Budget</h5>
 
-                            @if ($pillarFour && $pillarFour->file_question_four)
+                                {{-- Pertanyaan 1 --}}
+                                <div class="mb-3">
+                                    <label for="question_one" class="form-label fw-medium">1. Yayasan Amaliah Astra
+                                        sudah
+                                        membuat sistem keuangan masjid online, Apakah DKM
+                                        sudah menggunakan sistem ini?</label>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_one"
+                                            value="Tidak" id="question_one1" data-index="1"
+                                            {{ old('question_one', $pillarFour->question_one ?? '') == 'Tidak' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_one1">
+                                            Tidak
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_one"
+                                            id="question_one2" value="Ya" data-index="2"
+                                            {{ old('question_one', $pillarFour->question_one ?? '') == 'Ya' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_one2">
+                                            Ya
+                                        </label>
+                                    </div>
+
+                                    @error('question_one')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+
+                                @if (auth()->check() && auth()->user()->hasRole('user'))
+                                    <div class="{{ $pillarFour && $pillarFour->file_question_one ? 'mb-2' : 'mb-3' }}">
+                                        <label for="file_question_one" class="form-label fw-medium">Dokumen
+                                            Pendukung</label>
+                                        <input class="form-control" type="file" id="file_question_one"
+                                            name="file_question_one">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_one')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+                                @endif
+
+                                @if ($pillarFour && $pillarFour->file_question_one)
+                                    <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen
+                                                Pendukung</label>
+                                        @endif
+
+                                        <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarFour->file_question_one, '/')) }}">
+                                            Lihat Dokumen
+                                        </button>
+                                    </div>
+                                @endif
+
+                                {{-- Pertanyaan 2 --}}
+                                <div class="mb-3">
+                                    <label for="question_two" class="form-label fw-medium">2. DKM memiliki pengurus
+                                        masjid
+                                        dibawah umur 30 tahun?</label>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_two"
+                                            value="Tidak ada" id="question_two1" data-index="1"
+                                            {{ old('question_two', $pillarFour->question_two ?? '') == 'Tidak ada' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_two1">
+                                            Tidak ada
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_two"
+                                            value="Ada" id="question_two2" data-index="2"
+                                            {{ old('question_two', $pillarFour->question_two ?? '') == 'Ada' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_two2">
+                                            Ada
+                                        </label>
+                                    </div>
+
+                                    @error('question_two')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+
+                                {{-- Pertanyaan 3 --}}
                                 <div class="mb-0">
-                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                        data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($pillarFour->file_question_four, '/')) }}">
-                                        Lihat Dokumen
-                                    </button>
+                                    <label for="question_three" class="form-label fw-medium">3. Berapa persen jumlah
+                                        pengurus masjid dibawah umur 30 tahun dari total pengurus DKM</label>
+
+                                    <input type="text" class="form-control" name="question_three"
+                                        id="question_three"
+                                        value="{{ old('question_three', $pillarFour->question_three ?? '') }}"
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+
+                                    @error('question_three')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
                                 </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-10 col-lg-8">
-                    <div class="card h-100 border-0 shadow rounded-4">
-                        <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-3">Laporan Tahunan</h5>
+                    <div class="col mb-4">
+                        <div class="card h-100 border-0 shadow rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold mb-3">Laporan Keuangan</h5>
 
-                            {{-- Pertanyaan 4 --}}
-                            <div class="mb-3">
-                                <label for="question_five" class="form-label fw-medium">5. Laporan Kegiatan dan
-                                    keuangan Tahunan</label>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_five"
-                                        value="Belum ada" id="question_five1"
-                                        {{ old('question_five', $pillarFour->question_five ?? '') == 'Belum ada' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_five1">
-                                        Belum ada
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="question_five"
-                                        value="Ada" id="question_five2"
-                                        {{ old('question_five', $pillarFour->question_five ?? '') == 'Ada' ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="question_five2">
-                                        Ada
-                                    </label>
-                                </div>
-
-                                @error('question_five')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-                            </div>
-
-                            <div
-                                class="{{ $pillarFour && $pillarFour->file_question_five ? 'mb-2' : 'mb-3 mb-md-4' }}">
-                                <label for="file_question_five" class="form-label fw-medium">Dokumen
-                                    Pendukung</label>
-                                <input class="form-control" type="file" id="file_question_five"
-                                    name="file_question_five">
-
-                                <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
-                                    izinkan.</div>
-
-                                @error('file_question_five')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-                            </div>
-
-                            @if ($pillarFour && $pillarFour->file_question_five)
+                                {{-- Pertanyaan 4 --}}
                                 <div class="mb-3">
-                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                        data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($pillarFour->file_question_five, '/')) }}">
-                                        Lihat Dokumen
-                                    </button>
-                                </div>
-                            @endif
+                                    <label for="question_four" class="form-label fw-medium">4. Laporan Keuangan
+                                        Masjid/Musala</label>
 
-                            <!-- Submit Button -->
-                            <div class="text-end">
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_four"
+                                            value="Belum ada" id="question_four1" data-index="1"
+                                            {{ old('question_four', $pillarFour->question_four ?? '') == 'Belum ada' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_four1">
+                                            Belum ada
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_four"
+                                            value="Ada, update lebih dari sebulan yang lalu" id="question_four2"
+                                            data-index="2"
+                                            {{ old('question_four', $pillarFour->question_four ?? '') == 'Ada, update lebih dari sebulan yang lalu' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_four2">
+                                            Ada, update lebih dari sebulan yang lalu
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_four"
+                                            value="Ada, rutin dilakukan evaluasi dan update per bulan"
+                                            id="question_four3" data-index="3"
+                                            {{ old('question_four', $pillarFour->question_four ?? '') == 'Ada, rutin dilakukan evaluasi dan update per bulan' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_four3">
+                                            Ada, rutin dilakukan evaluasi dan update per bulan
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_four"
+                                            value="Ada, rutin update per bulan dan ada pelaporan ke jamaah"
+                                            id="question_four4" data-index="4"
+                                            {{ old('question_four', $pillarFour->question_four ?? '') == 'Ada, rutin update per bulan dan ada pelaporan ke jamaah' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_four4">
+                                            Ada, rutin update per bulan dan ada pelaporan ke jamaah
+                                        </label>
+                                    </div>
+
+                                    @error('question_four')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+
+                                @if (auth()->check() && auth()->user()->hasRole('user'))
+                                    <div
+                                        class="{{ $pillarFour && $pillarFour->file_question_four ? 'mb-2' : 'mb-0' }}">
+                                        <label for="file_question_four" class="form-label fw-medium">Dokumen
+                                            Pendukung</label>
+                                        <input class="form-control" type="file" id="file_question_four"
+                                            name="file_question_four">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_four')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+                                @endif
+
+                                @if ($pillarFour && $pillarFour->file_question_four)
+                                    <div class="mb-0">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen
+                                                Pendukung</label>
+                                        @endif
+
+                                        <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarFour->file_question_four, '/')) }}">
+                                            Lihat Dokumen
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="col">
+                        <div class="card h-100 border-0 shadow rounded-4">
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold mb-3">Laporan Tahunan</h5>
+
+                                {{-- Pertanyaan 5 --}}
+                                <div class="mb-3">
+                                    <label for="question_five" class="form-label fw-medium">5. Laporan Kegiatan
+                                        dan
+                                        keuangan Tahunan</label>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_five"
+                                            value="Belum ada" id="question_five1" data-index="1"
+                                            {{ old('question_five', $pillarFour->question_five ?? '') == 'Belum ada' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_five1">
+                                            Belum ada
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_five"
+                                            value="Ada" id="question_five2" data-index="2"
+                                            {{ old('question_five', $pillarFour->question_five ?? '') == 'Ada' ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_five2">
+                                            Ada
+                                        </label>
+                                    </div>
+
+                                    @error('question_five')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+
+                                @if (auth()->check() && auth()->user()->hasRole('user'))
+                                    <div
+                                        class="{{ $pillarFour && $pillarFour->file_question_five ? 'mb-2' : 'mb-3 mb-md-4' }}">
+                                        <label for="file_question_five" class="form-label fw-medium">Dokumen
+                                            Pendukung</label>
+                                        <input class="form-control" type="file" id="file_question_five"
+                                            name="file_question_five">
+
+                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                            izinkan.</div>
+
+                                        @error('file_question_five')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+                                @endif
+
+                                @if ($pillarFour && $pillarFour->file_question_five)
+                                    <div class="mb-3">
+                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                            <label class="form-label fw-medium d-block">Dokumen
+                                                Pendukung</label>
+                                        @endif
+
+                                        <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($pillarFour->file_question_five, '/')) }}">
+                                            Lihat Dokumen
+                                        </button>
+                                    </div>
+                                @endif
+
+                                @if (auth()->check() && auth()->user()->hasRole('user'))
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+
+            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                <div class="col-md-10 col-lg-4" style="z-index: 3;">
+                    <div class="card border-0 shadow rounded-4">
+                        <div class="card-body p-4">
+                            <form id="systemAssessment"
+                                action="{{ route('system_assessment.pillarFourAct', ['user' => $pillarFour->mosque->user->id, 'action' => 'penilaian']) }}"
+                                method="POST">
+                                @csrf
+
+                                <input type="hidden" name="id" value="{{ $systemAssessment->id ?? '' }}">
+                                <input type="hidden" name="pillar_four_id" value="{{ $pillarFour->id }}">
+
+                                <input type="hidden" name="pillar_four_question_one">
+                                <input type="hidden" name="pillar_four_question_two">
+                                <input type="hidden" name="pillar_four_question_three">
+                                <input type="hidden" name="pillar_four_question_four">
+                                <input type="hidden" name="pillar_four_question_five">
+
+                                <button type="submit" class="btn btn-primary">Tampilkan Nilai</button>
+                            </form>
+
+                            <hr />
+
+                            <h5 class="card-title">Nilai Berdasarkan Sistem</h5>
+
+                            @if ($systemAssessment->pillar_four_id ?? '')
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Yayasan Amaliah Astra
+                                        sudah membuat sistem keuangan masjid online, Apakah DKM sudah menggunakan sistem
+                                        ini?</span>
+                                    ({{ $systemAssessment->pillar_four_question_one == null ? 'N/A' : $systemAssessment->pillar_four_question_one . ' Poin' }})
+                                </p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. DKM memiliki pengurus
+                                        masjid dibawah umur 30 tahun?</span>
+                                    ({{ $systemAssessment->pillar_four_question_two == null ? 'N/A' : $systemAssessment->pillar_four_question_two . ' Poin' }})
+                                </p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Berapa persen jumlah
+                                        pengurus masjid dibawah umur 30 tahun dari total pengurus DKM</span>
+                                    ({{ $systemAssessment->pillar_four_question_three == null ? 'N/A' : $systemAssessment->pillar_four_question_three . ' Poin' }})
+                                </p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Laporan Keuangan
+                                        Masjid/Musala</span>
+                                    ({{ $systemAssessment->pillar_four_question_four == null ? 'N/A' : $systemAssessment->pillar_four_question_four . ' Poin' }})
+                                </p>
+                                <p class="card-text fw-bold"><span class="fw-medium">5. Laporan Kegiatan dan keuangan
+                                        Tahunan</span>
+                                    ({{ $systemAssessment->pillar_four_question_five == null ? 'N/A' : $systemAssessment->pillar_four_question_five . ' Poin' }})
+                                </p>
+
+                                <h6 class="card-subtitle mb-2 text-dark">Total Nilai:
+                                    {{ $totalValue }} Poin</h6>
+
+                                <h6 class="card-subtitle mb-0 text-dark">Keterangan:
+                                    @if (
+                                        $systemAssessment->pillar_four_question_one == null ||
+                                            $systemAssessment->pillar_four_question_two == null ||
+                                            $systemAssessment->pillar_four_question_three == null ||
+                                            $systemAssessment->pillar_four_question_four == null ||
+                                            $systemAssessment->pillar_four_question_five == null)
+                                        Formula tidak tersedia
+                                    @else
+                                        Sesuai formula
+                                    @endif
+                                </h6>
+                            @else
+                                <p class="card-text mb-0">Nilai belum dihitung</p>
+                            @endif
+
+                            <hr />
+
+                            {{-- Panitia --}}
+                        </div>
+                    </div>
+                </div>
+            @endif
+        </div>
     </div>
 
     {{-- Modal --}}
@@ -293,6 +476,45 @@
     @prepend('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const selectedRadio1 = $('input[name="question_one"]:checked');
+                const selectedRadio2 = $('input[name="question_two"]:checked');
+                const textInput = $('input[name="question_three"]').val();
+                const selectedRadio3 = $('input[name="question_four"]:checked');
+                const selectedRadio4 = $('input[name="question_five"]:checked');
+
+                // Jawaban 1
+                if (selectedRadio1.length) {
+                    const index = selectedRadio1.data('index');
+                    $('input[name="pillar_four_question_one"]').val(index);
+                }
+
+                // Jawaban 2
+                if (selectedRadio2.length) {
+                    const index = selectedRadio2.data('index');
+                    $('input[name="pillar_four_question_two"]').val(index);
+                }
+
+                // Jawaban 3
+                if ($.trim(textInput) !== "") {
+                    $('input[name="pillar_four_question_three"]').val(9);
+                } else {
+                    $('input[name="pillar_four_question_three"]').val(1);
+                }
+
+                // Jawaban 4
+                if (selectedRadio3.length) {
+                    const index = selectedRadio3.data('index');
+                    $('input[name="pillar_four_question_four"]').val(index);
+                }
+
+                // Jawaban 5
+                if (selectedRadio4.length) {
+                    const index = selectedRadio4.data('index');
+                    $('input[name="pillar_four_question_five"]').val(index);
+                }
+
+                // =============================================================================================
+
                 $('#documentModal').on('show.bs.modal', function(event) {
                     let button = $(event.relatedTarget);
                     let url = button.data('url');

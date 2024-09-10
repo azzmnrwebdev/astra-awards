@@ -31,7 +31,7 @@ class ParentCompanyController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|string||unique:parent_companies,name',
+            'name' => 'required|string|unique:parent_companies,name',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -59,7 +59,7 @@ class ParentCompanyController extends Controller
     public function update(Request $request, ParentCompany $parentCompany)
     {
         $rules = [
-            'name' => 'required|string||unique:parent_companies,name,' . $parentCompany->id,
+            'name' => 'required|string|unique:parent_companies,name,' . $parentCompany->id,
         ];
 
         $validator = Validator::make($request->all(), $rules);

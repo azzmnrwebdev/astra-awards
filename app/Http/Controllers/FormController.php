@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CommitteeAssessment;
 use App\Models\PillarFive;
 use App\Models\PillarFour;
 use App\Models\PillarOne;
@@ -58,14 +59,15 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarOne = $user->mosque->pillarOne;
 
-            $systemAssessment = SystemAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
+            $systemAssessment = SystemAssessment::with(['pillarOne'])->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
 
             if ($systemAssessment) {
                 $totalValue = $systemAssessment->pillar_one_question_one + $systemAssessment->pillar_one_question_two + $systemAssessment->pillar_one_question_three + $systemAssessment->pillar_one_question_four + $systemAssessment->pillar_one_question_five;
-                return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment', 'totalValue'));
+                return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment', 'committeeAssessment', 'totalValue'));
             }
 
-            return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment'));
+            return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment', 'committeeAssessment'));
         }
     }
 
@@ -145,14 +147,15 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarTwo = $user->mosque->pillarTwo;
 
-            $systemAssessment = SystemAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
+            $systemAssessment = SystemAssessment::with(['pillarTwo'])->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
 
             if ($systemAssessment) {
                 $totalValue = $systemAssessment->pillar_two_question_one + $systemAssessment->pillar_two_question_two + $systemAssessment->pillar_two_question_three + $systemAssessment->pillar_two_question_four + $systemAssessment->pillar_two_question_five;
-                return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment', 'totalValue'));
+                return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment', 'committeeAssessment', 'totalValue'));
             }
 
-            return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment'));
+            return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment', 'committeeAssessment'));
         }
     }
 
@@ -261,12 +264,32 @@ class FormController extends Controller
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
-    public function program()
+    public function program($user = null, $action = null)
     {
-        $mosqueId = Auth::user()->mosque->id;
-        $pillarThree = PillarThree::where('mosque_id', $mosqueId)->first();
+        if (!$user && !$action) {
+            $mosque = Auth::user()->mosque;
 
-        return view('pages.form.program', compact('pillarThree'));
+            if (!$mosque) {
+                return redirect(route('form.index'));
+            }
+
+            $pillarThree = PillarThree::where('mosque_id', $mosque->id)->first();
+
+            return view('pages.form.program', compact('pillarThree'));
+        } else {
+            $user = User::where('id', $user)->first();
+            $pillarThree = $user->mosque->pillarThree;
+
+            $systemAssessment = SystemAssessment::with(['pillarThree'])->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
+
+            if ($systemAssessment) {
+                $totalValue = $systemAssessment->pillar_three_question_one + $systemAssessment->pillar_three_question_two + $systemAssessment->pillar_three_question_three + $systemAssessment->pillar_three_question_four + $systemAssessment->pillar_three_question_five + $systemAssessment->pillar_three_question_six;
+                return view('pages.form.program', compact('user', 'pillarThree', 'systemAssessment', 'committeeAssessment', 'totalValue'));
+            }
+
+            return view('pages.form.program', compact('user', 'pillarThree', 'systemAssessment', 'committeeAssessment'));
+        }
     }
 
     public function programAct(Request $request)
@@ -360,12 +383,32 @@ class FormController extends Controller
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
-    public function administration()
+    public function administration($user = null, $action = null)
     {
-        $mosqueId = Auth::user()->mosque->id;
-        $pillarFour = PillarFour::where('mosque_id', $mosqueId)->first();
+        if (!$user && !$action) {
+            $mosque = Auth::user()->mosque;
 
-        return view('pages.form.administration', compact('pillarFour'));
+            if (!$mosque) {
+                return redirect(route('form.index'));
+            }
+
+            $pillarFour = PillarFour::where('mosque_id', $mosque->id)->first();
+
+            return view('pages.form.administration', compact('pillarFour'));
+        } else {
+            $user = User::where('id', $user)->first();
+            $pillarFour = $user->mosque->pillarFour;
+
+            $systemAssessment = SystemAssessment::with(['pillarFour'])->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
+
+            if ($systemAssessment) {
+                $totalValue = $systemAssessment->pillar_four_question_one + $systemAssessment->pillar_four_question_two + $systemAssessment->pillar_four_question_three + $systemAssessment->pillar_four_question_four + $systemAssessment->pillar_four_question_five;
+                return view('pages.form.administration', compact('user', 'pillarFour', 'systemAssessment', 'committeeAssessment', 'totalValue'));
+            }
+
+            return view('pages.form.administration', compact('user', 'pillarFour', 'systemAssessment', 'committeeAssessment'));
+        }
     }
 
     public function administrationAct(Request $request)
@@ -383,7 +426,7 @@ class FormController extends Controller
         $rules = [
             'question_one' => 'string',
             'question_two' => 'string',
-            'question_three' => 'string',
+            'question_three' => 'nullable|string',
             'question_four' => 'string',
             'question_five' => 'string',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
@@ -436,14 +479,15 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarFive = $user->mosque->pillarFive;
 
-            $systemAssessment = SystemAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
+            $systemAssessment = SystemAssessment::with(['pillarFive'])->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
 
             if ($systemAssessment) {
                 $totalValue = $systemAssessment->pillar_five_question_one + $systemAssessment->pillar_five_question_two + $systemAssessment->pillar_five_question_three + $systemAssessment->pillar_five_question_four + $systemAssessment->pillar_five_question_five;
-                return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment', 'totalValue'));
+                return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment', 'committeeAssessment', 'totalValue'));
             }
 
-            return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment'));
+            return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment', 'committeeAssessment'));
         }
     }
 

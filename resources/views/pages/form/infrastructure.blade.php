@@ -484,10 +484,12 @@
                 <div class="col-md-10 col-lg-4" style="z-index: 3;">
                     <div class="card border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <form id="systemAssessment" action="{{ route('system_assessment.pillarFiveAct') }}"
+                            <form id="systemAssessment"
+                                action="{{ route('system_assessment.pillarFiveAct', ['user' => $pillarFive->mosque->user->id, 'action' => 'penilaian']) }}"
                                 method="POST">
                                 @csrf
 
+                                <input type="hidden" name="id" value="{{ $systemAssessment->id ?? '' }}">
                                 <input type="hidden" name="pillar_five_id" value="{{ $pillarFive->id }}">
 
                                 <input type="hidden" name="pillar_five_question_one">
@@ -501,28 +503,45 @@
 
                             <hr />
 
-                            <h5 class="card-title">Niai Berdasarkan Sistem</h5>
+                            <h5 class="card-title">Nilai Berdasarkan Sistem</h5>
 
-                            @if ($systemAssessment)
-                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Pelaksanaan kegiatan shalat wajib 5 waktu berjamaah yang dikelola oleh DKM</span>
-                                    ({{ $systemAssessment->pillar_two_question_one ?? 0 }} Poin)</p>
-                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. Kegiatan Bersama
-                                        antara DKM
-                                        dengan Manajemen Perusahaan</span>
-                                    ({{ $systemAssessment->pillar_two_question_two ?? 0 }} Poin)</p>
-                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Media Interaksi dan
-                                        Komunikasi dengan Jamaah</span>
-                                    ({{ $systemAssessment->pillar_two_question_three ?? 0 }} Poin)</p>
-                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Memiliki Grup
-                                        WhatsApp Jamaah</span>
-                                    ({{ $systemAssessment->pillar_two_question_four ?? 0 }} Poin)</p>
-                                <p class="card-text fw-bold"><span class="fw-medium">5. Program Pembinaan
-                                        Keagamaan Untuk
-                                        Jamaah</span>
-                                    ({{ $systemAssessment->pillar_two_question_five ?? 0 }} Poin)</p>
+                            @if ($systemAssessment->pillar_five_id ?? '')
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Pelaksanaan kegiatan
+                                        shalat wajib 5 waktu berjamaah yang dikelola oleh DKM</span>
+                                    ({{ $systemAssessment->pillar_five_question_one == null ? 'N/A' : $systemAssessment->pillar_five_question_one . ' Poin' }})
+                                </p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. Ada kelompok
+                                        ekstrakulikuler di bawah Masjid/Musala</span>
+                                    ({{ $systemAssessment->pillar_five_question_two == null ? 'N/A' : $systemAssessment->pillar_five_question_two . ' Poin' }})
+                                </p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Apakah ada petugas khusus
+                                        yang rutin melakukan pekerjaan kebersihan</span>
+                                    ({{ $systemAssessment->pillar_five_question_three == null ? 'N/A' : $systemAssessment->pillar_five_question_three . ' Poin' }})
+                                </p>
+                                <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Rutinitas kegiatan
+                                        kebersihan Masjid/Musala</span>
+                                    ({{ $systemAssessment->pillar_five_question_four == null ? 'N/A' : $systemAssessment->pillar_five_question_four . ' Poin' }})
+                                </p>
+                                <p class="card-text fw-bold"><span class="fw-medium">5. Monitoring pekerjaan
+                                        kebersihan Masjid/Musala secara berkala</span>
+                                    ({{ $systemAssessment->pillar_five_question_five == null ? 'N/A' : $systemAssessment->pillar_five_question_five . ' Poin' }})
+                                </p>
 
-                                <h6 class="card-subtitle mb-0 text-body-dark">Total Nilai:
+                                <h6 class="card-subtitle mb-2 text-dark">Total Nilai:
                                     {{ $totalValue }} Poin</h6>
+
+                                <h6 class="card-subtitle mb-0 text-dark">Keterangan:
+                                    @if (
+                                        $systemAssessment->pillar_five_question_one == null ||
+                                            $systemAssessment->pillar_five_question_two == null ||
+                                            $systemAssessment->pillar_five_question_three == null ||
+                                            $systemAssessment->pillar_five_question_four == null ||
+                                            $systemAssessment->pillar_five_question_five == null)
+                                        Formula tidak tersedia
+                                    @else
+                                        Sesuai formula
+                                    @endif
+                                </h6>
                             @else
                                 <p class="card-text mb-0">Nilai belum dihitung</p>
                             @endif
@@ -558,6 +577,44 @@
     @prepend('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                const selectedRadio1 = $('input[name="question_one"]:checked');
+                const selectedRadio2 = $('input[name="question_two"]:checked');
+                const selectedRadio3 = $('input[name="question_three"]:checked');
+                const selectedRadio4 = $('input[name="question_four"]:checked');
+                const selectedRadio5 = $('input[name="question_five"]:checked');
+
+                // Jawaban 1
+                if (selectedRadio1.length) {
+                    const index = selectedRadio1.data('index');
+                    $('input[name="pillar_five_question_one"]').val(index);
+                }
+
+                // Jawaban 2
+                if (selectedRadio2.length) {
+                    const index = selectedRadio2.data('index');
+                    $('input[name="pillar_five_question_two"]').val(index);
+                }
+
+                // Jawaban 3
+                if (selectedRadio3.length) {
+                    const index = selectedRadio3.data('index');
+                    $('input[name="pillar_five_question_three"]').val(index);
+                }
+
+                // Jawaban 4
+                if (selectedRadio4.length) {
+                    const index = selectedRadio4.data('index');
+                    $('input[name="pillar_five_question_four"]').val(index);
+                }
+
+                // Jawaban 5
+                if (selectedRadio5.length) {
+                    const index = selectedRadio5.data('index');
+                    $('input[name="pillar_five_question_five"]').val(index);
+                }
+
+                // =============================================================================================
+
                 $('#documentModal').on('show.bs.modal', function(event) {
                     let button = $(event.relatedTarget);
                     let url = button.data('url');

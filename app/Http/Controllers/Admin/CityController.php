@@ -35,7 +35,7 @@ class CityController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|string||unique:cities,name',
+            'name' => 'required|string|unique:cities,name',
             'province_id' => 'required|exists:provinces,id',
         ];
 

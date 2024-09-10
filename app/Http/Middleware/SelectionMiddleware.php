@@ -18,16 +18,16 @@ class SelectionMiddleware
 
         if ($user->hasRole('admin')) {
             if ($timeline && $timeline->start_selection && $timeline->end_selection) {
-                $startSelection = Carbon::parse($timeline->start_selection);
-                $endSelection = Carbon::parse($timeline->end_selection);
-                $currentDate = Carbon::now();
+                $startSelection = Carbon::parse($timeline->start_selection)->toDateString();
+                $endSelection = Carbon::parse($timeline->end_selection)->toDateString();
+                $currentDate = Carbon::now()->setTimezone('Asia/Jakarta')->toDateString();
 
-                if ($currentDate->lt($startSelection)) {
-                    return response()->view('pages.form.selection-not-open');
+                if ($currentDate < $startSelection) {
+                    return response()->view('pages.selection.not-open');
                 }
 
-                if ($currentDate->gt($endSelection->endOfDay())) {
-                    return response()->view('pages.form.selection-closed');
+                if ($currentDate > $endSelection) {
+                    return response()->view('pages.selection.closed');
                 }
             }
         }

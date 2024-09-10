@@ -60,6 +60,7 @@
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
                                             <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>
@@ -75,22 +76,37 @@
                                                 <td class="text-start py-3">{{ $item->name }}</td>
                                                 <td class="text-start py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
-                                                    {{ $item->mosque->categoryArea->name }}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian Sistem --}}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian panitia --}}
+                                                    {{ $item->mosque->categoryMosque->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    <a href="{{ route('form.relationship', ['user' => $item->id, 'action' => 'show']) }}"
+                                                    {{ $item->mosque->categoryArea->name }}
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarTwo->systemAssessment)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarTwo->committeeAssessmnet)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    <a href="{{ route('form.relationship', ['user' => $item->id, 'action' => 'penilaian']) }}"
                                                         class="text-dark align-middle"><i class="bi bi-eye"></i></a>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -118,6 +134,7 @@
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
                                             <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>
@@ -133,22 +150,37 @@
                                                 <td class="text-start py-3">{{ $item->name }}</td>
                                                 <td class="text-start py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
-                                                    {{ $item->mosque->categoryArea->name }}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian Sistem --}}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian panitia --}}
+                                                    {{ $item->mosque->categoryMosque->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    <a href="{{ route('form.managementRelationship', ['user' => $item->id, 'action' => 'show']) }}"
+                                                    {{ $item->mosque->categoryArea->name }}
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarOne->systemAssessment)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarOne->committeeAssessmnet)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    <a href="{{ route('form.managementRelationship', ['user' => $item->id, 'action' => 'penilaian']) }}"
                                                         class="text-dark align-middle"><i class="bi bi-eye"></i></a>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -170,11 +202,12 @@
 
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap align-middle mb-0">
-                                    <thead class="border-top border-start border-end table-danger">
+                                    <thead class="border-top border-start border-end table-dark">
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
                                             <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>
@@ -190,22 +223,37 @@
                                                 <td class="text-start py-3">{{ $item->name }}</td>
                                                 <td class="text-start py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
-                                                    {{ $item->mosque->categoryArea->name }}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian Sistem --}}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian panitia --}}
+                                                    {{ $item->mosque->categoryMosque->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    <a href="{{ route('form.program', ['user' => $item->id, 'action' => 'show']) }}"
+                                                    {{ $item->mosque->categoryArea->name }}
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarThree->systemAssessment)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarThree->committeeAssessmnet)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    <a href="{{ route('form.program', ['user' => $item->id, 'action' => 'penilaian']) }}"
                                                         class="text-dark align-middle"><i class="bi bi-eye"></i></a>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -232,6 +280,7 @@
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
                                             <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>
@@ -247,22 +296,37 @@
                                                 <td class="text-start py-3">{{ $item->name }}</td>
                                                 <td class="text-start py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
-                                                    {{ $item->mosque->categoryArea->name }}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian Sistem --}}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian panitia --}}
+                                                    {{ $item->mosque->categoryMosque->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    <a href="{{ route('form.administration', ['user' => $item->id, 'action' => 'show']) }}"
+                                                    {{ $item->mosque->categoryArea->name }}
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarFour->systemAssessment)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarFour->committeeAssessmnet)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    <a href="{{ route('form.administration', ['user' => $item->id, 'action' => 'penilaian']) }}"
                                                         class="text-dark align-middle"><i class="bi bi-eye"></i></a>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -289,6 +353,7 @@
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
                                             <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
                                             <th class="text-center py-3">Penilaian Sistem</th>
                                             <th class="text-center py-3">Penilaian Panitia</th>
@@ -304,22 +369,37 @@
                                                 <td class="text-start py-3">{{ $item->name }}</td>
                                                 <td class="text-start py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
-                                                    {{ $item->mosque->categoryArea->name }}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian Sistem --}}
-                                                </td>
-                                                <td class="text-start py-3">
-                                                    {{-- penilaian panitia --}}
+                                                    {{ $item->mosque->categoryMosque->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    <a href="{{ route('form.infrastructure', ['user' => $item->id, 'action' => 'show']) }}"
+                                                    {{ $item->mosque->categoryArea->name }}
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarFive->systemAssessment)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    @if ($item->mosque->pillarFive->committeeAssessmnet)
+                                                        <span class="badge rounded-pill text-bg-success">Sudah
+                                                            dilakukan</span>
+                                                    @else
+                                                        <span class="badge rounded-pill text-bg-danger">Belum
+                                                            dilakukan</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-center py-3">
+                                                    <a href="{{ route('form.infrastructure', ['user' => $item->id, 'action' => 'penilaian']) }}"
                                                         class="text-dark align-middle"><i class="bi bi-eye"></i></a>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

@@ -25,6 +25,14 @@
                 </div>
             @endif
 
+            @if (Session('error_assessment'))
+                <div class="col-md-10 col-lg-12">
+                    <div class="alert alert-danger mb-2" role="alert">
+                        {{ Session('error_assessment') }}
+                    </div>
+                </div>
+            @endif
+
             <div class="col-md-10 col-lg-8">
                 @if (auth()->check() && auth()->user()->hasRole('admin'))
                     <div class="col mb-4">
@@ -350,10 +358,12 @@
                 <div class="col-md-10 col-lg-4" style="z-index: 3;">
                     <div class="card border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <form id="systemAssessment" action="{{ route('system_assessment.pillarTwoAct') }}"
+                            <form id="systemAssessment"
+                                action="{{ route('system_assessment.pillarTwoAct', ['user' => $pillarTwo->mosque->user->id, 'action' => 'penilaian']) }}"
                                 method="POST">
                                 @csrf
 
+                                <input type="hidden" name="id" value="{{ $systemAssessment->id ?? '' }}">
                                 <input type="hidden" name="pillar_two_id" value="{{ $pillarTwo->id }}">
 
                                 <input type="hidden" name="pillar_two_question_one">
@@ -367,26 +377,44 @@
 
                             <hr />
 
-                            <h5 class="card-title">Niai Berdasarkan Sistem</h5>
+                            <h5 class="card-title">Nilai Berdasarkan Sistem</h5>
 
-                            @if ($systemAssessment)
+                            @if ($systemAssessment->pillar_two_id ?? '')
                                 <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Kerjasama dengan
                                         YAA</span>
-                                    ({{ $systemAssessment->pillar_two_question_one ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_two_question_one == null ? 'N/A' : $systemAssessment->pillar_two_question_one . ' Poin' }})
+                                </p>
                                 <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. Divisi Sosial
                                         Religi</span>
-                                    ({{ $systemAssessment->pillar_two_question_two ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_two_question_two == null ? 'N/A' : $systemAssessment->pillar_two_question_two . ' Poin' }})
+                                </p>
                                 <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Divisi Layanan
                                         Amal</span>
-                                    ({{ $systemAssessment->pillar_two_question_three ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_two_question_three == null ? 'N/A' : $systemAssessment->pillar_two_question_three . ' Poin' }})
+                                </p>
                                 <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Divisi Kemitraan</span>
-                                    ({{ $systemAssessment->pillar_two_question_four ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_two_question_four == null ? 'N/A' : $systemAssessment->pillar_two_question_four . ' Poin' }})
+                                </p>
                                 <p class="card-text fw-bold"><span class="fw-medium">5. Divisi Administrasi &
                                         Keuangan</span>
-                                    ({{ $systemAssessment->pillar_two_question_five ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_two_question_five == null ? 'N/A' : $systemAssessment->pillar_two_question_five . ' Poin' }})
+                                </p>
 
-                                <h6 class="card-subtitle mb-0 text-body-dark">Total Nilai:
+                                <h6 class="card-subtitle mb-2 text-dark">Total Nilai:
                                     {{ $totalValue }} Poin</h6>
+
+                                <h6 class="card-subtitle mb-0 text-dark">Keterangan:
+                                    @if (
+                                        $systemAssessment->pillar_two_question_one == null ||
+                                            $systemAssessment->pillar_two_question_two == null ||
+                                            $systemAssessment->pillar_two_question_three == null ||
+                                            $systemAssessment->pillar_two_question_four == null ||
+                                            $systemAssessment->pillar_two_question_five == null)
+                                        Formula tidak tersedia
+                                    @else
+                                        Sesuai formula
+                                    @endif
+                                </h6>
                             @else
                                 <p class="card-text mb-0">Nilai belum dihitung</p>
                             @endif
@@ -394,6 +422,159 @@
                             <hr />
 
                             {{-- Panitia --}}
+                            @if ($systemAssessment->pillar_two_id ?? '')
+                                <h5 class="card-title">Nilai Berdasarkan Panitia</h5>
+
+                                <form
+                                    action="{{ route('committe_assessment.pillarTwoAct', ['user' => $pillarTwo->mosque->user->id, 'action' => 'penilaian']) }}"
+                                    method="POST">
+                                    @csrf
+
+                                    <input type="hidden" name="pillar_two_id" value="{{ $pillarTwo->id }}">
+
+                                    <div class="mb-3">
+                                        <label for="committee_pillar_two_question_one" class="form-label">1. Kerjasama
+                                            dengan YAA</label>
+                                        <select name="committee_pillar_two_question_one"
+                                            id="committee_pillar_two_question_one" class="form-select">
+                                            <option value="">-- Pilih Nilai --</option>
+                                            <option value="0"
+                                                {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 0 ? 'selected' : '' }}>
+                                                0</option>
+                                            <option value="1"
+                                                {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('committee_pillar_two_question_one')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="committee_pillar_two_question_two" class="form-label">2. Divisi
+                                            Sosial Religi</label>
+                                        <select name="committee_pillar_two_question_two"
+                                            id="committee_pillar_two_question_two" class="form-select">
+                                            <option value="">-- Pilih Nilai --</option>
+                                            <option value="0"
+                                                {{ old('committee_pillar_two_question_two', $committeeAssessment->pillar_two_question_two ?? '') == 0 ? 'selected' : '' }}>
+                                                0</option>
+                                            <option value="1"
+                                                {{ old('committee_pillar_two_question_two', $committeeAssessment->pillar_two_question_two ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('committee_pillar_two_question_two', $committeeAssessment->pillar_two_question_two ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('committee_pillar_two_question_two', $committeeAssessment->pillar_two_question_two ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('committee_pillar_two_question_two', $committeeAssessment->pillar_two_question_two ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('committee_pillar_two_question_two')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="committee_pillar_two_question_three" class="form-label">3. Divisi
+                                            Layanan Amal</label>
+                                        <select name="committee_pillar_two_question_three"
+                                            id="committee_pillar_two_question_three" class="form-select">
+                                            <option value="">-- Pilih Nilai --</option>
+                                            <option value="0"
+                                                {{ old('committee_pillar_two_question_three', $committeeAssessment->pillar_two_question_three ?? '') == 0 ? 'selected' : '' }}>
+                                                0</option>
+                                            <option value="1"
+                                                {{ old('committee_pillar_two_question_three', $committeeAssessment->pillar_two_question_three ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('committee_pillar_two_question_three', $committeeAssessment->pillar_two_question_three ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('committee_pillar_two_question_three', $committeeAssessment->pillar_two_question_three ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('committee_pillar_two_question_three', $committeeAssessment->pillar_two_question_three ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('committee_pillar_two_question_three')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="committee_pillar_two_question_four" class="form-label">4. Divisi
+                                            Kemitraan</label>
+                                        <select name="committee_pillar_two_question_four"
+                                            id="committee_pillar_two_question_four" class="form-select">
+                                            <option value="">-- Pilih Nilai --</option>
+                                            <option value="0"
+                                                {{ old('committee_pillar_two_question_four', $committeeAssessment->pillar_two_question_four ?? '') == 0 ? 'selected' : '' }}>
+                                                0</option>
+                                            <option value="1"
+                                                {{ old('committee_pillar_two_question_four', $committeeAssessment->pillar_two_question_four ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('committee_pillar_two_question_four', $committeeAssessment->pillar_two_question_four ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('committee_pillar_two_question_four', $committeeAssessment->pillar_two_question_four ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('committee_pillar_two_question_four', $committeeAssessment->pillar_two_question_four ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('committee_pillar_two_question_four')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="committee_pillar_two_question_five" class="form-label">5. Divisi
+                                            Administrasi & Keuangan</label>
+                                        <select name="committee_pillar_two_question_five"
+                                            id="committee_pillar_two_question_five" class="form-select">
+                                            <option value="">-- Pilih Nilai --</option>
+                                            <option value="0"
+                                                {{ old('committee_pillar_two_question_five', $committeeAssessment->pillar_two_question_five ?? '') == 0 ? 'selected' : '' }}>
+                                                0</option>
+                                            <option value="1"
+                                                {{ old('committee_pillar_two_question_five', $committeeAssessment->pillar_two_question_five ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('committee_pillar_two_question_five', $committeeAssessment->pillar_two_question_five ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('committee_pillar_two_question_five', $committeeAssessment->pillar_two_question_five ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('committee_pillar_two_question_five', $committeeAssessment->pillar_two_question_five ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('committee_pillar_two_question_five')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+
+                                    <button type="submit" class="btn btn-warning">Ubah Nilai</button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -473,6 +654,8 @@
 
                     $('input[name="pillar_two_question_five[]"]').val(indexes.join(','));
                 }
+
+                // =============================================================================================
 
                 const optionInput2 = document.getElementById('option_two');
                 const optionInput3 = document.getElementById('option_three');

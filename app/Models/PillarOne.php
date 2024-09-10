@@ -19,6 +19,11 @@ class PillarOne extends Model
 
     public function systemAssessment()
     {
-        return $this->hasMany(SystemAssessment::class, 'pillar_one_id');
+        return $this->hasOne(SystemAssessment::class, 'pillar_one_id');
+    }
+
+    public function committeeAssessmnet()
+    {
+        return $this->hasOne(CommitteeAssessment::class, 'pillar_one_id');
     }
 }

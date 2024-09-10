@@ -31,7 +31,7 @@ class BusinessLineController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|string||unique:business_lines,name',
+            'name' => 'required|string|unique:business_lines,name',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -59,7 +59,7 @@ class BusinessLineController extends Controller
     public function update(Request $request, BusinessLine $businessLine)
     {
         $rules = [
-            'name' => 'required|string||unique:business_lines,name,' . $businessLine->id,
+            'name' => 'required|string|unique:business_lines,name,' . $businessLine->id,
         ];
 
         $validator = Validator::make($request->all(), $rules);

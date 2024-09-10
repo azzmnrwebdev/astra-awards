@@ -17,6 +17,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CommitteeAssessmentController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PresentationController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\SystemAssessmentController;
 use App\Http\Middleware\CheckRolesMiddleware;
 use App\Http\Middleware\CheckStatusMiddleware;
 use App\Http\Middleware\FormDKMMiddleware;
+use App\Http\Middleware\InitialAssessmentMiddleware;
 use App\Http\Middleware\RegisterMiddleware;
 use App\Http\Middleware\SelectionMiddleware;
 
@@ -45,11 +47,14 @@ Route::middleware('auth')->group(function () {
     // Route All Role
     Route::middleware([CheckStatusMiddleware::class])->group(function () {
         Route::get('/', [HomeController::class, 'information'])->name('information');
-        Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation');
-
         Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
         Route::put('profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
         Route::put('profile/change-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+    });
+
+    // Route Jury & User
+    Route::middleware([CheckRolesMiddleware::class . ':jury,user', CheckStatusMiddleware::class])->group(function () {
+        Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
     });
 
     // Route Admin & User
@@ -74,9 +79,17 @@ Route::middleware('auth')->group(function () {
 
     // Route Admin
     Route::prefix('admin')->middleware([CheckRolesMiddleware::class . ':admin'])->group(function () {
-        Route::post('formulir/manajemen-hubungan/{user?}/{action?}', [SystemAssessmentController::class, 'pillarOneAct'])->name('system_assessment.pillarOneAct')->middleware([SelectionMiddleware::class]);
-        Route::post('formulir/hubungan/{user?}/{action?}', [SystemAssessmentController::class, 'pillarTwoAct'])->name('system_assessment.pillarTwoAct')->middleware([SelectionMiddleware::class]);
-        Route::post('formulir/infrastruktur/{user?}/{action?}', [SystemAssessmentController::class, 'pillarFiveAct'])->name('system_assessment.pillarFiveAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/manajemen-hubungan/{user?}/{action?}/penilaian-sistem', [SystemAssessmentController::class, 'pillarOneAct'])->name('system_assessment.pillarOneAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/hubungan/{user?}/{action?}/penilaian-sistem', [SystemAssessmentController::class, 'pillarTwoAct'])->name('system_assessment.pillarTwoAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/program/{user?}/{action?}/penilaian-sistem', [SystemAssessmentController::class, 'pillarThreeAct'])->name('system_assessment.pillarThreeAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/administrasi/{user?}/{action?}/penilaian-sistem', [SystemAssessmentController::class, 'pillarFourAct'])->name('system_assessment.pillarFourAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/infrastruktur/{user?}/{action?}/penilaian-sistem', [SystemAssessmentController::class, 'pillarFiveAct'])->name('system_assessment.pillarFiveAct')->middleware([SelectionMiddleware::class]);
+
+        Route::post('formulir/manajemen-hubungan/{user?}/{action?}/penilaian-panitia', [CommitteeAssessmentController::class, 'pillarOneAct'])->name('committe_assessment.pillarOneAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/hubungan/{user?}/{action?}/penilaian-panitia', [CommitteeAssessmentController::class, 'pillarTwoAct'])->name('committe_assessment.pillarTwoAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/program/{user?}/{action?}/penilaian-panitia', [CommitteeAssessmentController::class, 'pillarThreeAct'])->name('committe_assessment.pillarThreeAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/administrasi/{user?}/{action?}/penilaian-panitia', [CommitteeAssessmentController::class, 'pillarFourAct'])->name('committe_assessment.pillarFourAct')->middleware([SelectionMiddleware::class]);
+        Route::post('formulir/infrastruktur/{user?}/{action?}/penilaian-panitia', [CommitteeAssessmentController::class, 'pillarFiveAct'])->name('committe_assessment.pillarFiveAct')->middleware([SelectionMiddleware::class]);
     });
 
     // Route Admin & Jury

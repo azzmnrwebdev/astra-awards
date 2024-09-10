@@ -1,11 +1,4 @@
 <x-guest title="Daftar">
-    {{-- Custom CSS --}}
-    @prepend('styles')
-        <style>
-            /*  */
-        </style>
-    @endprepend
-
     <div class="row justify-content-center align-items-center min-vh-100 py-5">
         <div class="col-12 col-md-10">
             {{-- Timeline Kegiatan --}}
@@ -293,6 +286,9 @@
 
                                 <input type="file" class="form-control @error('logo') is-invalid @enderror"
                                     id="logo" name="logo">
+
+                                <div class="form-text">Hanya file bertipe jpg, png dan jpeg yang di
+                                    izinkan.</div>
 
                                 <button type="button" class="border-0 p-0 bg-transparent text-primary mt-2"
                                     data-bs-toggle="modal" data-bs-target="#logoModal">

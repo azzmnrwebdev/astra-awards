@@ -16,4 +16,14 @@ class PillarThree extends Model
     {
         return $this->belongsTo(Mosque::class, 'mosque_id');
     }
+
+    public function systemAssessment()
+    {
+        return $this->hasOne(SystemAssessment::class, 'pillar_three_id');
+    }
+
+    public function committeeAssessmnet()
+    {
+        return $this->hasOne(CommitteeAssessment::class, 'pillar_three_id');
+    }
 }

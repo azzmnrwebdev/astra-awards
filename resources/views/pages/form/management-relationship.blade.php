@@ -616,10 +616,12 @@
                 <div class="col-md-10 col-lg-4" style="z-index: 3;">
                     <div class="card border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <form id="systemAssessment" action="{{ route('system_assessment.pillarOneAct') }}"
+                            <form id="systemAssessment"
+                                action="{{ route('system_assessment.pillarOneAct', ['user' => $pillarOne->mosque->user->id, 'action' => 'penilaian']) }}"
                                 method="POST">
                                 @csrf
 
+                                <input type="hidden" name="id" value="{{ $systemAssessment->id ?? '' }}">
                                 <input type="hidden" name="pillar_one_id" value="{{ $pillarOne->id }}">
 
                                 <input type="hidden" name="pillar_one_question_one">
@@ -633,30 +635,48 @@
 
                             <hr />
 
-                            <h5 class="card-title">Niai Berdasarkan Sistem</h5>
+                            <h5 class="card-title">Nilai Berdasarkan Sistem</h5>
 
-                            @if ($systemAssessment)
+                            @if ($systemAssessment->pillar_one_id ?? '')
                                 <p class="card-text mb-0 fw-bold"><span class="fw-medium">1. Koordinasi Manajemen
                                         dengan
                                         Pengurus DKM</span>
-                                    ({{ $systemAssessment->pillar_one_question_one ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_one_question_one == null ? 'N/A' : $systemAssessment->pillar_one_question_one . ' Poin' }})
+                                </p>
                                 <p class="card-text mb-0 fw-bold"><span class="fw-medium">2. Kegiatan Bersama
                                         antara DKM
                                         dengan Manajemen Perusahaan</span>
-                                    ({{ $systemAssessment->pillar_one_question_two ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_one_question_two == null ? 'N/A' : $systemAssessment->pillar_one_question_two . ' Poin' }})
+                                </p>
                                 <p class="card-text mb-0 fw-bold"><span class="fw-medium">3. Media Interaksi dan
                                         Komunikasi dengan Jamaah</span>
-                                    ({{ $systemAssessment->pillar_one_question_three ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_one_question_three == null ? 'N/A' : $systemAssessment->pillar_one_question_three . ' Poin' }})
+                                </p>
                                 <p class="card-text mb-0 fw-bold"><span class="fw-medium">4. Memiliki Grup
                                         WhatsApp Jamaah</span>
-                                    ({{ $systemAssessment->pillar_one_question_four ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_one_question_four == null ? 'N/A' : $systemAssessment->pillar_one_question_four . ' Poin' }})
+                                </p>
                                 <p class="card-text fw-bold"><span class="fw-medium">5. Program Pembinaan
                                         Keagamaan Untuk
                                         Jamaah</span>
-                                    ({{ $systemAssessment->pillar_one_question_five ?? 0 }} Poin)</p>
+                                    ({{ $systemAssessment->pillar_one_question_five == null ? 'N/A' : $systemAssessment->pillar_one_question_five . ' Poin' }})
+                                </p>
 
-                                <h6 class="card-subtitle mb-0 text-body-dark">Total Nilai:
+                                <h6 class="card-subtitle mb-2 text-dark">Total Nilai:
                                     {{ $totalValue }} Poin</h6>
+
+                                <h6 class="card-subtitle mb-0 text-dark">Keterangan:
+                                    @if (
+                                        $systemAssessment->pillar_one_question_one == null ||
+                                            $systemAssessment->pillar_one_question_two == null ||
+                                            $systemAssessment->pillar_one_question_three == null ||
+                                            $systemAssessment->pillar_one_question_four == null ||
+                                            $systemAssessment->pillar_one_question_five == null)
+                                        Formula tidak tersedia
+                                    @else
+                                        Sesuai formula
+                                    @endif
+                                </h6>
                             @else
                                 <p class="card-text mb-0">Nilai belum dihitung</p>
                             @endif
@@ -727,6 +747,8 @@
                     const index = selectedRadio5.data('index');
                     $('input[name="pillar_one_question_five"]').val(index);
                 }
+
+                // =============================================================================================
 
                 $('#documentModal').on('show.bs.modal', function(event) {
                     let button = $(event.relatedTarget);

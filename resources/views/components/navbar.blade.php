@@ -11,6 +11,12 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                @if (auth()->check() && auth()->user()->hasRole('admin'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                    </li>
+                @endif
+
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('information') ? 'active' : '' }}"
                         href="{{ route('information') }}">Informasi</a>
@@ -23,10 +29,12 @@
                     </li>
                 @endif
 
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('presentation') ? 'active' : '' }}"
-                        href="{{ route('presentation') }}">Presentasi</a>
-                </li>
+                @if (auth()->check() && auth()->user()->hasRole('jury') || auth()->user()->hasRole('user'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('presentation') ? 'active' : '' }}"
+                            href="{{ route('presentation') }}">Presentasi</a>
+                    </li>
+                @endif
             </ul>
 
             <ul class="navbar-nav ms-auto">

@@ -18,16 +18,16 @@ class FormDKMMiddleware
 
         if ($user->hasRole('user')) {
             if ($timeline && $timeline->start_form && $timeline->end_form) {
-                $startForm = Carbon::parse($timeline->start_form);
-                $endForm = Carbon::parse($timeline->end_form);
-                $currentDate = Carbon::now();
+                $startForm = Carbon::parse($timeline->start_form)->toDateString();
+                $endForm = Carbon::parse($timeline->end_form)->toDateString();
+                $currentDate = Carbon::now()->setTimezone('Asia/Jakarta')->toDateString();
 
-                if ($currentDate->lt($startForm)) {
-                    return response()->view('pages.form.form-not-open');
+                if ($currentDate < $startForm) {
+                    return response()->view('pages.form.not-open');
                 }
 
-                if ($currentDate->gt($endForm->endOfDay())) {
-                    return response()->view('pages.form.form-closed');
+                if ($currentDate > $endForm) {
+                    return response()->view('pages.form.closed');
                 }
             }
         }

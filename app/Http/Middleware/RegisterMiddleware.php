@@ -15,15 +15,15 @@ class RegisterMiddleware
         $timeline = Timeline::latest()->first();
 
         if ($timeline && $timeline->start_registration && $timeline->end_registration) {
-            $startRegistration = Carbon::parse($timeline->start_registration);
-            $endRegistration = Carbon::parse($timeline->end_registration);
-            $currentDate = Carbon::now();
+            $startRegistration = Carbon::parse($timeline->start_registration)->toDateString();
+            $endRegistration = Carbon::parse($timeline->end_registration)->toDateString();
+            $currentDate = Carbon::now()->setTimezone('Asia/Jakarta')->toDateString();
 
-            if ($currentDate->lt($startRegistration)) {
+            if ($currentDate < $startRegistration) {
                 return response()->view('auth.registration-not-open');
             }
 
-            if ($currentDate->gt($endRegistration->endOfDay())) {
+            if ($currentDate > $endRegistration) {
                 return response()->view('auth.registration-closed');
             }
         } else {

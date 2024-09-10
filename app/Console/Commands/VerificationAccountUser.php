@@ -10,28 +10,29 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
-class VerificationAccountCron extends Command
+class VerificationAccountUser extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'verificationAccount:cron';
+    protected $signature = 'app:verification-account-user';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Hapus akun pengguna yang statusnya 0 dan sudah lebih dari 1 hari sejak dibuat';
+    protected $description = 'Command description';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $thresholdDate = Carbon::now()->subDay();
+        $thresholdDate = Carbon::now()->setTimezone('Asia/Jakarta')->subDay();
+        $this->info($thresholdDate);
 
         $users = User::where('status', 0)
             ->where('created_at', '<', $thresholdDate)
@@ -45,12 +46,22 @@ class VerificationAccountCron extends Command
             }
 
             $mosque = $user->mosque;
-            $mosque->delete();
+
+            if ($mosque) {
+                if ($mosque->logo && Storage::disk('public')->exists(Str::after($mosque->logo, 'storage/'))) {
+                    Storage::disk('public')->delete(Str::after($mosque->logo, 'storage/'));
+                }
+
+                $mosque->delete();
+            }
+
             $user->delete();
 
-            $this->info("Akun dengan ID {$user->id} telah dihapus.");
+            // kirim email
+
+            info("Akun dengan ID {$user->id} telah dihapus.");
         }
 
-        $this->info('Semua akun yang memenuhi kriteria telah dihapus.');
+        info('Semua akun yang memenuhi kriteria telah dihapus.');
     }
 }

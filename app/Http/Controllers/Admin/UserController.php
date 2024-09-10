@@ -6,10 +6,10 @@ use Exception;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Mail\VerificationFailed;
 use App\Mail\VerificationSuccess;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -110,6 +110,9 @@ class UserController extends Controller
                 $this->invalidateUserSession($user->id);
 
                 $mosque = $user->mosque;
+
+                $this->deleteFileIfExists($mosque->logo);
+
                 $mosque->delete();
                 $user->delete();
 
@@ -137,6 +140,8 @@ class UserController extends Controller
             DB::transaction(function () use ($user) {
                 if ($user->mosque) {
                     $mosque = $user->mosque;
+
+                    $this->deleteFileIfExists($mosque->logo);
 
                     $this->deletePillar($mosque->pillarOne);
                     $this->deletePillar($mosque->pillarTwo);

@@ -31,7 +31,7 @@ class ProvinceController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'name' => 'required|string||unique:provinces,name',
+            'name' => 'required|string|unique:provinces,name',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -59,7 +59,7 @@ class ProvinceController extends Controller
     public function update(Request $request, Province $province)
     {
         $rules = [
-            'name' => 'required|string||unique:provinces,name,' . $province->id,
+            'name' => 'required|string|unique:provinces,name,' . $province->id,
         ];
 
         $validator = Validator::make($request->all(), $rules);
