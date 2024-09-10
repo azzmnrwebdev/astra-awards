@@ -13,6 +13,7 @@ use App\Models\ParentCompany;
 use App\Models\Province;
 use App\Models\Timeline;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -61,35 +62,44 @@ class RegisterController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $user = User::create([
-            'name' => $request->input('name'),
-            'phone_number' => $request->input('phone_number'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'role' => 'user',
-            'status' => 0,
-        ]);
+        DB::beginTransaction();
 
-        $fileName = 'logo' . '_' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $request->file('logo')->getClientOriginalExtension();
-        $filePath = $request->file('logo')->storeAs('logo', $fileName, 'public');
+        try {
+            $user = User::create([
+                'name' => $request->input('name'),
+                'phone_number' => $request->input('phone_number'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'role' => 'user',
+                'status' => 0,
+            ]);
 
-        // Mosque
-        Mosque::create([
-            'user_id' => $user->id,
-            'position' => $request->input('position'),
-            'category_area_id' => $request->input('category_area_id'),
-            'category_mosque_id' => $request->input('category_mosque_id'),
-            'name' => $request->input('name_mosque'),
-            'capacity' => $request->input('capacity'),
-            'logo' => $filePath,
-            'leader' => $request->input('leader'),
-            'leader_phone' => $request->input('leader_phone'),
-            'leader_email' => $request->input('leader_email'),
-            'company_id' => $request->input('company_id'),
-            'address' => $request->input('address'),
-            'city_id' => $request->input('city_id'),
-        ]);
+            $fileName = 'logo' . '_' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $request->file('logo')->getClientOriginalExtension();
+            $filePath = $request->file('logo')->storeAs('logo', $fileName, 'public');
 
-        return redirect(route('login'))->with('success', 'Pendaftaran berhasil. Anda sekarang dapat masuk');
+            Mosque::create([
+                'user_id' => $user->id,
+                'position' => $request->input('position'),
+                'category_area_id' => $request->input('category_area_id'),
+                'category_mosque_id' => $request->input('category_mosque_id'),
+                'name' => $request->input('name_mosque'),
+                'capacity' => $request->input('capacity'),
+                'logo' => $filePath,
+                'leader' => $request->input('leader'),
+                'leader_phone' => $request->input('leader_phone'),
+                'leader_email' => $request->input('leader_email'),
+                'company_id' => $request->input('company_id'),
+                'address' => $request->input('address'),
+                'city_id' => $request->input('city_id'),
+            ]);
+
+            DB::commit();
+
+            return redirect(route('login'))->with('success', 'Pendaftaran berhasil. Anda sekarang dapat masuk');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect(route('login'))->with('error', 'Pendaftaran gagal. Silakan coba lagi');
+        }
     }
 }
