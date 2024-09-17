@@ -84,6 +84,11 @@
             cursor: pointer;
         }
 
+        .sidebar-input {
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
+        }
+
         .sidebar-nav {
             padding: 0;
         }
@@ -97,8 +102,8 @@
         }
 
         .sidebar-item {
-            margin-left: 1.625rem;
-            margin-right: 1.625rem;
+            margin-left: 1.5rem;
+            margin-right: 1.5rem;
         }
 
         a.sidebar-link {
@@ -294,6 +299,8 @@
         sidebarToggle.addEventListener("click", toggleSidebar);
         document.addEventListener("click", handleClickOutside);
 
+        // =============================================================================================
+
         const activeLink = document.querySelector('.sidebar-link.active');
 
         if (activeLink) {
@@ -303,6 +310,24 @@
                 inline: 'nearest'
             });
         }
+
+        // =============================================================================================
+
+        document.querySelector('.sidebar-input input').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+            sidebarLinks.forEach(function(link) {
+                const text = link.textContent.toLowerCase();
+                const parentItem = link.closest('.sidebar-item');
+
+                if (text.includes(filter)) {
+                    parentItem.style.display = '';
+                } else {
+                    parentItem.style.display = 'none';
+                }
+            });
+        });
     </script>
 
     @stack('scripts')

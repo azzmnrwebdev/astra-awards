@@ -46,6 +46,9 @@
                                 <td class="text-start py-3">{{ $item->email }}</td>
                                 <td class="text-center py-3">{{ $item->phone_number ?? '-' }}</td>
                                 <td class="text-center py-3">{{ $item->status ? 'Aktif' : 'Tidal Aktif' }}</td>
+                                <td class="text-center py-3">
+                                    {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}
+                                </td>
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
                                     <td class="text-center py-3">
                                         @if (Auth::user()->email !== $item->email)
@@ -66,9 +69,9 @@
                         @empty
                             <tr>
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                                    <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                                 @else
-                                    <td colspan="5" class="text-center py-3">Data tidak ditemukan</td>
+                                    <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
                                 @endif
                             </tr>
                         @endforelse

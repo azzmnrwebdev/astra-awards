@@ -25,6 +25,7 @@ class UserController extends Controller
             ['class' => 'text-start py-3', 'label' => 'Email'],
             ['class' => 'text-center py-3', 'label' => 'Nomor Ponsel'],
             ['class' => 'text-center py-3', 'label' => 'Status'],
+            ['class' => 'text-center py-3', 'label' => 'Tanggal Bergabung'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 

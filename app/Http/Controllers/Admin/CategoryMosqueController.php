@@ -16,6 +16,7 @@ class CategoryMosqueController extends Controller
             ['class' => 'text-center py-3', 'label' => 'No'],
             ['class' => 'text-start py-3', 'label' => 'Nama'],
             ['class' => 'text-start py-3', 'label' => 'Deskripsi'],
+            ['class' => 'text-center py-3', 'label' => 'Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 

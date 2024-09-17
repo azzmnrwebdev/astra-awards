@@ -116,10 +116,6 @@ Route::middleware('auth')->group(function () {
 
     // Route Admin
     Route::middleware([CheckRolesMiddleware::class . ':admin'])->prefix('dashboard')->group(function () {
-        Route::get('pembagian-dkm', [DistributionController::class, 'index'])->name('distribution.index');
-        Route::post('pembagian-dkm', [DistributionController::class, 'store'])->name('distribution.store');
-        Route::get('pembagian-dkm/{distribution}', [DistributionController::class, 'show'])->name('distribution.show');
-
         Route::prefix('kategori-area')->group(function () {
             Route::get('/', [CategoryAreaController::class, 'index'])->name('categoryArea.index');
             Route::get('tambah', [CategoryAreaController::class, 'create'])->name('categoryArea.create');
@@ -188,12 +184,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [CommitteeController::class, 'index'])->name('committee.index');
             Route::get('tambah', [CommitteeController::class, 'create'])->name('committee.create');
             Route::post('/', [CommitteeController::class, 'store'])->name('committee.store');
+            Route::post('pembagian-penilaian', [CommitteeController::class, 'distribution'])->name('committee.distribution');
+            Route::get('{committee}', [CommitteeController::class, 'show'])->name('committee.show');
             Route::get('{committee}/edit', [CommitteeController::class, 'edit'])->name('committee.edit');
             Route::put('{committee}', [CommitteeController::class, 'update'])->name('committee.update');
             Route::delete('{committee}', [CommitteeController::class, 'destroy'])->name('committee.destroy');
         });
 
-        Route::prefix('peserta-dkm')->group(function () {
+        Route::prefix('peserta')->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('user.index');
             Route::get('{user}', [UserController::class, 'show'])->name('user.show');
             Route::get('{user}/edit', [UserController::class, 'edit'])->name('user.edit');

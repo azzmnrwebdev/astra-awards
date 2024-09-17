@@ -1,12 +1,17 @@
-<aside id="sidebar" class="d-flex flex-column gap-4">
+<aside id="sidebar" class="d-flex flex-column gap-0">
     <div class="sidebar-logo d-flex align-items-center justify-content-between">
         <a wire:navigate href="{{ route('information') }}">Amaliah Astra Awards</a>
         <i class="bi bi-caret-left-fill d-lg-none text-white" id="sidebarToggle"></i>
     </div>
 
+    <div class="sidebar-input mb-4">
+        <input type="text" class="form-control" placeholder="Cari menu">
+    </div>
+
     <ul class="sidebar-nav h-100 overflow-y-scroll">
         <li class="sidebar-item">
-            <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}"
+                class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <i class="bi bi-house-fill me-2 fs-5"></i>
                 Dashboard
             </a>
@@ -89,17 +94,9 @@
         @if (auth()->check() && auth()->user()->hasRole('admin'))
             <li class="sidebar-item">
                 <a href="{{ route('user.index') }}"
-                    class="sidebar-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
+                    class="sidebar-link {{ request()->routeIs('user.*') ? 'active' : '' }} mb-0">
                     <i class="bi bi-people-fill me-2 fs-5"></i>
-                    Manajemen DKM
-                </a>
-            </li>
-
-            <li class="sidebar-item">
-                <a href="{{ route('distribution.index') }}"
-                    class="sidebar-link {{ request()->routeIs('distribution.*') ? 'active' : '' }} mb-0">
-                    <i class="bi bi-person-lines-fill me-2 fs-5"></i>
-                    Pembagian DKM
+                    Manajemen Peserta
                 </a>
             </li>
         @endif

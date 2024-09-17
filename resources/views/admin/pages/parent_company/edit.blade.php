@@ -1,4 +1,4 @@
-<x-admin title="Edit Induk Perusahaan">
+<x-admin title="Edit {{ $parentCompany->name }}">
     {{-- Custom CSS --}}
     @prepend('styles')
         <style>
@@ -10,7 +10,7 @@
 
     {{-- Main Content --}}
     <h4 class="mb-4 fw-semibold d-inline-flex" id="pageTitle">
-        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Edit Induk Perusahaan
+        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Edit {{ $parentCompany->name }}
     </h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">

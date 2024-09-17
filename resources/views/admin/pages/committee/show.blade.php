@@ -1,4 +1,4 @@
-<x-admin title="Panitia {{ $distribution->name }}">
+<x-admin title="Panitia {{ $committee->name }}">
     {{-- Custom CSS --}}
     @prepend('styles')
         <style>
@@ -10,12 +10,13 @@
 
     {{-- Main Content --}}
     <h4 class="mb-4 fw-semibold d-inline-flex" id="pageTitle">
-        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Panitia {{ $distribution->name }}
+        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Panitia
+        {{ $committee->name }}
     </h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
-            <h5 class="card-title mb-4">Daftar DKM yang di nilai</h5>
+            <h5 class="card-title mb-4">Daftar Peserta yang akan di nilai</h5>
 
             <div class="table-responsive">
                 <table class="table table-hover text-nowrap align-middle mb-0">
@@ -34,7 +35,8 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="text-center py-3">
-                                    <img src="{{ asset('storage/' . $item->mosque->logo) }}" alt="Logo" style="width: 150px;">
+                                    <img src="{{ asset('storage/' . $item->mosque->logo) }}" alt="Logo"
+                                        style="width: 150px;">
                                 </td>
                                 <td class="text-start py-3">{{ $item->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
@@ -56,7 +58,7 @@
     @prepend('scripts')
         <script>
             document.getElementById('pageTitle').addEventListener('click', function() {
-                window.location.href = "{{ route('distribution.index') }}";
+                window.location.href = "{{ route('committee.index') }}";
             });
         </script>
     @endprepend

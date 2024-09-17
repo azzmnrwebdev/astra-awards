@@ -1,6 +1,6 @@
-<x-admin title="Peserta DKM">
+<x-admin title="Peserta">
     {{-- Main Content --}}
-    <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen Peserta DKM</h4>
+    <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen Peserta</h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
@@ -35,6 +35,9 @@
                                 <td class="text-center py-3">{{ $item->phone_number ?? '-' }}</td>
                                 <td class="text-center py-3">{{ $item->status === 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
                                 <td class="text-center py-3">
+                                    {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}
+                                </td>
+                                <td class="text-center py-3">
                                     @if ($item->status !== 1)
                                         <a href="{{ route('user.edit_status', ['user' => $item->id]) }}"
                                             class="text-dark align-middle me-3"><i class="bi bi-patch-check"></i></a>
@@ -55,7 +58,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>

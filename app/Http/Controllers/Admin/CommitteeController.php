@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountRegistration;
+use App\Models\Distribution;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,18 +19,35 @@ class CommitteeController extends Controller
 {
     public function index()
     {
-        $theadName = [
+        $theadNameOne = [
             ['class' => 'text-center py-3', 'label' => 'No'],
             ['class' => 'text-start py-3', 'label' => 'Nama'],
             ['class' => 'text-start py-3', 'label' => 'Email'],
             ['class' => 'text-center py-3', 'label' => 'Nomor Ponsel'],
             ['class' => 'text-center py-3', 'label' => 'Status'],
+            ['class' => 'text-center py-3', 'label' => 'Tanggal Bergabung'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $committees = User::where('role', 'admin')->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $theadNametwo = [
+            ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-start py-3', 'label' => 'Nama Panitia'],
+            ['class' => 'text-center py-3', 'label' => 'Jumlah Peserta'],
+            ['class' => 'text-center py-3', 'label' => 'Aksi'],
+        ];
 
-        return view('admin.pages.committee.index', compact('theadName', 'committees'));
+        $query = User::where('role', 'admin')
+            ->orderBy('updated_at', 'desc')
+            ->latest('created_at');
+
+        $committees = $query->clone()->paginate(10);
+
+        $distributions = $query->clone()
+            ->with('distributionToCommitte')
+            ->has('distributionToCommitte')
+            ->paginate(10);
+
+        return view('admin.pages.committee.index', compact('theadNameOne', 'theadNametwo', 'committees', 'distributions'));
     }
 
     public function create()
@@ -77,6 +95,52 @@ class CommitteeController extends Controller
 
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan panitia: ' . $e->getMessage());
         }
+    }
+
+    public function distribution()
+    {
+        $users = User::where('role', 'user')->get();
+        $admins = User::where('role', 'admin')->get();
+
+        if ($admins->count() < 2) {
+            return redirect()->back()->with('error_distribution', 'Jumlah admin minimal 2');
+        }
+
+        foreach ($users as $user) {
+            $randomAdmins = $admins->random(2);
+
+            foreach ($randomAdmins as $admin) {
+                $existingDistribution = Distribution::where('user_id', $user->id)
+                    ->where('committe_id', $admin->id)
+                    ->first();
+
+                if (!$existingDistribution) {
+                    Distribution::create([
+                        'user_id' => $user->id,
+                        'committe_id' => $admin->id
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->back()->with('success_distribution', 'Pembagian penilaian berhasil');
+    }
+
+    public function show(User $committee)
+    {
+        $theadName = [
+            ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-center py-3', 'label' => 'Logo'],
+            ['class' => 'text-start py-3', 'label' => 'Nama Peserta'],
+            ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
+        ];
+
+        $userIds = $committee->distributionToCommitte->pluck('user_id');
+        $users = User::whereIn('id', $userIds)->get();
+
+        return view('admin.pages.committee.show', compact('committee', 'theadName', 'users'));
     }
 
     public function edit(User $committee)
