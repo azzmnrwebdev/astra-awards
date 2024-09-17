@@ -59,11 +59,10 @@
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
-                                            <th class="text-center py-3">Penilaian Sistem</th>
-                                            <th class="text-center py-3">Penilaian Panitia</th>
+                                            <th class="text-center py-3">Penilaian</th>
                                             <th class="text-center py-3">Aksi</th>
                                         </tr>
                                     </thead>
@@ -74,7 +73,7 @@
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarTwos->firstItem() }}</td>
                                                 <td class="text-start py-3">{{ $item->name }}</td>
-                                                <td class="text-start py-3">{{ $item->mosque->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->categoryMosque->name }}
                                                 </td>
@@ -82,21 +81,25 @@
                                                     {{ $item->mosque->categoryArea->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarTwo->systemAssessment)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
+                                                    @if ($item->mosque->pillarTwo->committeeAssessmnet->pillar_two_id ?? '')
+                                                        @if (
+                                                            $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_one &&
+                                                                $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two &&
+                                                                $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three &&
+                                                                $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four &&
+                                                                $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five)
+                                                            <span class="badge rounded-pill text-bg-success">
+                                                                Sudah
+                                                            </span>
+                                                        @else
+                                                            <span class="badge rounded-pill text-bg-warning">
+                                                                Sebagian
+                                                            </span>
+                                                        @endif
                                                     @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarTwo->committeeAssessmnet)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
-                                                    @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
+                                                        <span class="badge rounded-pill text-bg-danger">
+                                                            Belum
+                                                        </span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center py-3">
@@ -106,7 +109,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -133,11 +136,10 @@
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
-                                            <th class="text-center py-3">Penilaian Sistem</th>
-                                            <th class="text-center py-3">Penilaian Panitia</th>
+                                            <th class="text-center py-3">Penilaian</th>
                                             <th class="text-center py-3">Aksi</th>
                                         </tr>
                                     </thead>
@@ -148,7 +150,7 @@
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarOnes->firstItem() }}</td>
                                                 <td class="text-start py-3">{{ $item->name }}</td>
-                                                <td class="text-start py-3">{{ $item->mosque->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->categoryMosque->name }}
                                                 </td>
@@ -156,21 +158,25 @@
                                                     {{ $item->mosque->categoryArea->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarOne->systemAssessment)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
+                                                    @if ($item->mosque->pillarOne->committeeAssessmnet->pillar_one_id ?? '')
+                                                        @if (
+                                                            $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one &&
+                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two &&
+                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three &&
+                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four &&
+                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five)
+                                                            <span class="badge rounded-pill text-bg-success">
+                                                                Sudah
+                                                            </span>
+                                                        @else
+                                                            <span class="badge rounded-pill text-bg-warning">
+                                                                Sebagian
+                                                            </span>
+                                                        @endif
                                                     @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarOne->committeeAssessmnet)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
-                                                    @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
+                                                        <span class="badge rounded-pill text-bg-danger">
+                                                            Belum
+                                                        </span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center py-3">
@@ -180,7 +186,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -202,15 +208,14 @@
 
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap align-middle mb-0">
-                                    <thead class="border-top border-start border-end table-dark">
+                                    <thead class="border-top border-start border-end table-secondary">
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
-                                            <th class="text-center py-3">Penilaian Sistem</th>
-                                            <th class="text-center py-3">Penilaian Panitia</th>
+                                            <th class="text-center py-3">Penilaian</th>
                                             <th class="text-center py-3">Aksi</th>
                                         </tr>
                                     </thead>
@@ -221,7 +226,7 @@
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarThrees->firstItem() }}</td>
                                                 <td class="text-start py-3">{{ $item->name }}</td>
-                                                <td class="text-start py-3">{{ $item->mosque->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->categoryMosque->name }}
                                                 </td>
@@ -229,21 +234,26 @@
                                                     {{ $item->mosque->categoryArea->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarThree->systemAssessment)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
+                                                    @if ($item->mosque->pillarThree->committeeAssessmnet->pillar_three_id ?? '')
+                                                        @if (
+                                                            $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one &&
+                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two &&
+                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three &&
+                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four &&
+                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five &&
+                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six)
+                                                            <span class="badge rounded-pill text-bg-success">
+                                                                Sudah
+                                                            </span>
+                                                        @else
+                                                            <span class="badge rounded-pill text-bg-warning">
+                                                                Sebagian
+                                                            </span>
+                                                        @endif
                                                     @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarThree->committeeAssessmnet)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
-                                                    @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
+                                                        <span class="badge rounded-pill text-bg-danger">
+                                                            Belum
+                                                        </span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center py-3">
@@ -253,7 +263,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -279,11 +289,10 @@
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
-                                            <th class="text-center py-3">Penilaian Sistem</th>
-                                            <th class="text-center py-3">Penilaian Panitia</th>
+                                            <th class="text-center py-3">Penilaian</th>
                                             <th class="text-center py-3">Aksi</th>
                                         </tr>
                                     </thead>
@@ -294,7 +303,7 @@
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarFours->firstItem() }}</td>
                                                 <td class="text-start py-3">{{ $item->name }}</td>
-                                                <td class="text-start py-3">{{ $item->mosque->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->categoryMosque->name }}
                                                 </td>
@@ -302,21 +311,25 @@
                                                     {{ $item->mosque->categoryArea->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarFour->systemAssessment)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
+                                                    @if ($item->mosque->pillarFour->committeeAssessmnet->pillar_four_id ?? '')
+                                                        @if (
+                                                            $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one &&
+                                                                $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two &&
+                                                                $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three &&
+                                                                $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four &&
+                                                                $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five)
+                                                            <span class="badge rounded-pill text-bg-success">
+                                                                Sudah
+                                                            </span>
+                                                        @else
+                                                            <span class="badge rounded-pill text-bg-warning">
+                                                                Sebagian
+                                                            </span>
+                                                        @endif
                                                     @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarFour->committeeAssessmnet)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
-                                                    @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
+                                                        <span class="badge rounded-pill text-bg-danger">
+                                                            Belum
+                                                        </span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center py-3">
@@ -326,7 +339,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -352,11 +365,10 @@
                                         <tr>
                                             <th class="text-center py-3">No</th>
                                             <th class="text-start py-3">Nama</th>
-                                            <th class="text-start py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Masjid/Musala</th>
                                             <th class="text-center py-3">Kategori Area</th>
-                                            <th class="text-center py-3">Penilaian Sistem</th>
-                                            <th class="text-center py-3">Penilaian Panitia</th>
+                                            <th class="text-center py-3">Penilaian</th>
                                             <th class="text-center py-3">Aksi</th>
                                         </tr>
                                     </thead>
@@ -367,7 +379,7 @@
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarFives->firstItem() }}</td>
                                                 <td class="text-start py-3">{{ $item->name }}</td>
-                                                <td class="text-start py-3">{{ $item->mosque->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->categoryMosque->name }}
                                                 </td>
@@ -375,21 +387,25 @@
                                                     {{ $item->mosque->categoryArea->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarFive->systemAssessment)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
+                                                    @if ($item->mosque->pillarFive->committeeAssessmnet->pillar_five_id ?? '')
+                                                        @if (
+                                                            $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one &&
+                                                                $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two &&
+                                                                $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three &&
+                                                                $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four &&
+                                                                $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five)
+                                                            <span class="badge rounded-pill text-bg-success">
+                                                                Sudah
+                                                            </span>
+                                                        @else
+                                                            <span class="badge rounded-pill text-bg-warning">
+                                                                Sebagian
+                                                            </span>
+                                                        @endif
                                                     @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarFive->committeeAssessmnet)
-                                                        <span class="badge rounded-pill text-bg-success">Sudah
-                                                            dilakukan</span>
-                                                    @else
-                                                        <span class="badge rounded-pill text-bg-danger">Belum
-                                                            dilakukan</span>
+                                                        <span class="badge rounded-pill text-bg-danger">
+                                                            Belum
+                                                        </span>
                                                     @endif
                                                 </td>
                                                 <td class="text-center py-3">
@@ -399,7 +415,7 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                                             </tr>
                                         @endforelse
                                     </tbody>

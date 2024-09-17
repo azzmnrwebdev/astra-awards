@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Mail\AccountRegistration;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -50,6 +51,8 @@ class JuryContainer extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        DB::beginTransaction();
+
         try {
             $user = User::create([
                 'name' => $request->input('name'),
@@ -65,8 +68,12 @@ class JuryContainer extends Controller
 
             Mail::to($user->email)->send(new AccountRegistration($user));
 
+            DB::commit();
+
             return redirect(route('jury.index'))->with('success', 'Juri baru berhasil disimpan');
         } catch (Exception $e) {
+            DB::rollBack();
+
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan juri: ' . $e->getMessage());
         }
     }

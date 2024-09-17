@@ -8,6 +8,7 @@ use App\Models\BusinessLine;
 use App\Models\Company;
 use App\Models\ParentCompany;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
@@ -57,6 +58,8 @@ class CompanyController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        DB::beginTransaction();
+
         try {
             $parent_company_id = $request->input('parent_company_id');
             $business_line_id = $request->input('business_line_id');
@@ -83,8 +86,12 @@ class CompanyController extends Controller
                 'business_line_id' => $business_line_id,
             ]);
 
+            DB::commit();
+
             return redirect(route('company.index'))->with('success', 'Perusahaan baru berhasil disimpan');
         } catch (Exception $e) {
+            DB::rollBack();
+
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
     }
@@ -119,6 +126,8 @@ class CompanyController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        DB::beginTransaction();
+
         try {
             $parent_company_id = $request->input('parent_company_id');
             $business_line_id = $request->input('business_line_id');
@@ -145,8 +154,12 @@ class CompanyController extends Controller
                 'business_line_id' => $business_line_id,
             ]);
 
+            DB::commit();
+
             return redirect(route('company.index'))->with('success', 'Perusahaan lama berhasil diperbarui');
         } catch (Exception $e) {
+            DB::rollBack();
+
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
         }
     }

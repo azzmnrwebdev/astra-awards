@@ -30,7 +30,7 @@ class SystemAssessmentController extends Controller
             $data
         );
 
-        return redirect()->back()->with('success_assessment', 'Nilai berhasil ditampilkan');
+        return redirect()->back()->with('success', 'Nilai berhasil ditampilkan');
     }
 
     public function pillarTwoAct(Request $request)
@@ -96,7 +96,7 @@ class SystemAssessmentController extends Controller
             $data
         );
 
-        return redirect()->back()->with('success_assessment', 'Nilai berhasil ditampilkan');
+        return redirect()->back()->with('success', 'Nilai berhasil ditampilkan');
     }
 
     public function pillarThreeAct(Request $request)
@@ -160,7 +160,7 @@ class SystemAssessmentController extends Controller
             $data
         );
 
-        return redirect()->back()->with('success_assessment', 'Nilai berhasil ditampilkan');
+        return redirect()->back()->with('success', 'Nilai berhasil ditampilkan');
     }
 
     // belum selesai
@@ -192,7 +192,7 @@ class SystemAssessmentController extends Controller
             $data
         );
 
-        return redirect()->back()->with('success_assessment', 'Nilai berhasil ditampilkan');
+        return redirect()->back()->with('success', 'Nilai berhasil ditampilkan');
     }
 
     // belum selesai
@@ -224,6 +224,6 @@ class SystemAssessmentController extends Controller
             $data
         );
 
-        return redirect()->back()->with('success_assessment', 'Nilai berhasil ditampilkan');
+        return redirect()->back()->with('success', 'Nilai berhasil ditampilkan');
     }
 }

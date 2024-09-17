@@ -16,7 +16,7 @@
             <li class="sidebar-item">
                 <a href="{{ route('categoryArea.index') }}"
                     class="sidebar-link {{ request()->routeIs('categoryArea.*') ? 'active' : '' }}">
-                    <i class="bi bi-grid-fill me-2 fs-5"></i>
+                    <i class="bi bi-map-fill me-2 fs-5"></i>
                     Kategori Area
                 </a>
             </li>
@@ -24,7 +24,7 @@
             <li class="sidebar-item">
                 <a href="{{ route('categoryMosque.index') }}"
                     class="sidebar-link {{ request()->routeIs('categoryMosque.*') ? 'active' : '' }}">
-                    <i class="bi bi-grid-fill me-2 fs-5"></i>
+                    <i class="bi bi-grid-fill  me-2 fs-5"></i>
                     Kategori Masjid
                 </a>
             </li>
@@ -89,9 +89,17 @@
         @if (auth()->check() && auth()->user()->hasRole('admin'))
             <li class="sidebar-item">
                 <a href="{{ route('user.index') }}"
-                    class="sidebar-link {{ request()->routeIs('user.*') ? 'active' : '' }} mb-0">
+                    class="sidebar-link {{ request()->routeIs('user.*') ? 'active' : '' }}">
                     <i class="bi bi-people-fill me-2 fs-5"></i>
                     Manajemen DKM
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="{{ route('distribution.index') }}"
+                    class="sidebar-link {{ request()->routeIs('distribution.*') ? 'active' : '' }} mb-0">
+                    <i class="bi bi-person-lines-fill me-2 fs-5"></i>
+                    Pembagian DKM
                 </a>
             </li>
         @endif

@@ -293,6 +293,16 @@
         navbarToggle.addEventListener("click", toggleSidebar);
         sidebarToggle.addEventListener("click", toggleSidebar);
         document.addEventListener("click", handleClickOutside);
+
+        const activeLink = document.querySelector('.sidebar-link.active');
+
+        if (activeLink) {
+            activeLink.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'nearest'
+            });
+        }
     </script>
 
     @stack('scripts')

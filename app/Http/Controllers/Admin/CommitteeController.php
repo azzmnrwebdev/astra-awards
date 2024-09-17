@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\AccountRegistration;
 use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,8 @@ class CommitteeController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        DB::beginTransaction();
+
         try {
             $user = User::create([
                 'name' => $request->input('name'),
@@ -66,8 +69,12 @@ class CommitteeController extends Controller
 
             Mail::to($user->email)->send(new AccountRegistration($user));
 
+            DB::commit();
+
             return redirect(route('committee.index'))->with('success', 'Panitia baru berhasil disimpan');
         } catch (Exception $e) {
+            DB::rollBack();
+
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan panitia: ' . $e->getMessage());
         }
     }

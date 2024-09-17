@@ -40,10 +40,10 @@
                                 <td class="text-start py-3">{{ $item->province->name }}</td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('city.edit', ['city' => $item->id]) }}"
-                                        class="text-dark align-middle @if (empty($item->mosque)) me-3 @endif"><i
+                                        class="text-dark align-middle @if (empty(count($item->mosque))) me-3 @endif"><i
                                             class="bi bi-pencil"></i></a>
 
-                                    @if (empty($item->mosque))
+                                    @if (empty(count($item->mosque)))
                                         <button type="button"
                                             class="border-0 p-0 bg-transparent text-dark align-middle delete"
                                             data-id="{{ $item->id }}" data-name="{{ $item->name }}"

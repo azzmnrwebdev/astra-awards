@@ -37,10 +37,14 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $provinces->firstItem() }}</td>
                                 <td class="text-start py-3">{{ $item->name }}</td>
+                                <td class="text-center py-3">{{ count($item->city) }}</td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('province.edit', ['province' => $item->id]) }}"
+                                        class="text-dark align-middle me-3"><i class="bi bi-pencil"></i></a>
+
+                                    <a href="{{ route('province.show', ['province' => $item->id]) }}"
                                         class="text-dark align-middle @if (empty(count($item->city))) me-3 @endif"><i
-                                            class="bi bi-pencil"></i></a>
+                                            class="bi bi-eye"></i></a>
 
                                     @if (empty(count($item->city)))
                                         <button type="button"
@@ -53,7 +57,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="4" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>

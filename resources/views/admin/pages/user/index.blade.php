@@ -1,6 +1,6 @@
-<x-admin title="DKM">
+<x-admin title="Peserta DKM">
     {{-- Main Content --}}
-    <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen DKM</h4>
+    <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen Peserta DKM</h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">

@@ -95,6 +95,8 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        DB::beginTransaction();
+
         try {
             $previousStatus = $user->status;
 
@@ -103,6 +105,8 @@ class UserController extends Controller
             ]);
 
             if ($previousStatus == 0 && $request->input('status') == 0) {
+                DB::rollBack();
+
                 return redirect()->back()->with('error', 'Pilih status disetujui atau ditolak');
             }
 
@@ -117,15 +121,22 @@ class UserController extends Controller
                 $user->delete();
 
                 Mail::to($user->email)->send(new VerificationFailed($user, $request->input('rejection_reason')));
+
+                DB::commit();
+
                 return redirect(route('user.index'))->with('success', 'Akun DKM telah ditolak dan DKM telah dikeluarkan.');
             }
 
             if ($previousStatus == 0 && $request->input('status') == 1) {
                 Mail::to($user->email)->send(new VerificationSuccess($user));
+
+                DB::commit();
             }
 
             return redirect(route('user.index'))->with('success', 'DKM berhasil disetujui');
         } catch (Exception $e) {
+            DB::rollBack();
+
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memverifikasi status DKM: ' . $e->getMessage());
         }
     }

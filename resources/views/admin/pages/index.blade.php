@@ -136,8 +136,7 @@
                                 class="list-group-item d-flex justify-content-between align-items-center border-top-0 border-bottom-0">
                                 <div class="me-auto pe-4" style="flex: 1; min-width: 0;">
                                     <div style="overflow-wrap: break-word;">
-                                        <a href="{{ route('dashboard') }}"
-                                            class="text-reset">{{ $businessLine->name }}</a>
+                                        {{ $businessLine->name }}
                                     </div>
                                 </div>
 
@@ -161,8 +160,7 @@
                                 class="list-group-item d-flex justify-content-between align-items-center border-top-0 border-bottom-0">
                                 <div class="me-auto pe-4" style="flex: 1; min-width: 0;">
                                     <div style="overflow-wrap: break-word;">
-                                        <a href="{{ route('dashboard') }}"
-                                            class="text-reset">{{ $province->name }}</a>
+                                        {{ $province->name }}
                                     </div>
                                 </div>
 

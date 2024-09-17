@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasOne(Mosque::class, 'user_id');
     }
 
+    public function distributionToCommitte()
+    {
+        return $this->hasMany(Distribution::class, 'committe_id');
+    }
+
     public function hasRole($role)
     {
         return $this->role === $role;

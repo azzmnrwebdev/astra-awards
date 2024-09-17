@@ -15,6 +15,7 @@ class ProvinceController extends Controller
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
             ['class' => 'text-start py-3', 'label' => 'Nama'],
+            ['class' => 'text-center py-3', 'label' => 'Kota/Kabupaten'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
@@ -49,6 +50,16 @@ class ProvinceController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
+    }
+
+    public function show(Province $province)
+    {
+        $theadName = [
+            ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-start py-3', 'label' => 'Nama'],
+        ];
+
+        return view('admin.pages.province.show', compact('province', 'theadName'));
     }
 
     public function edit(Province $province)

@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CommitteeController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DistributionController;
 use App\Http\Controllers\Admin\JuryContainer;
 use App\Http\Controllers\Admin\ParentCompanyController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
@@ -115,6 +116,10 @@ Route::middleware('auth')->group(function () {
 
     // Route Admin
     Route::middleware([CheckRolesMiddleware::class . ':admin'])->prefix('dashboard')->group(function () {
+        Route::get('pembagian-dkm', [DistributionController::class, 'index'])->name('distribution.index');
+        Route::post('pembagian-dkm', [DistributionController::class, 'store'])->name('distribution.store');
+        Route::get('pembagian-dkm/{distribution}', [DistributionController::class, 'show'])->name('distribution.show');
+
         Route::prefix('kategori-area')->group(function () {
             Route::get('/', [CategoryAreaController::class, 'index'])->name('categoryArea.index');
             Route::get('tambah', [CategoryAreaController::class, 'create'])->name('categoryArea.create');
@@ -137,6 +142,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [ProvinceController::class, 'index'])->name('province.index');
             Route::get('tambah', [ProvinceController::class, 'create'])->name('province.create');
             Route::post('/', [ProvinceController::class, 'store'])->name('province.store');
+            Route::get('{province}', [ProvinceController::class, 'show'])->name('province.show');
             Route::get('{province}/edit', [ProvinceController::class, 'edit'])->name('province.edit');
             Route::put('{province}', [ProvinceController::class, 'update'])->name('province.update');
             Route::delete('{province}', [ProvinceController::class, 'destroy'])->name('province.destroy');

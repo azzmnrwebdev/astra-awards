@@ -20,25 +20,28 @@ class FormController extends Controller
 {
     public function index()
     {
-        $pillarOnes = User::where('role', 'user')
-            ->whereHas('mosque.pillarOne')
-            ->paginate(10);
+        $userLogin = Auth::user()->id;
+        $admin = User::where('id', $userLogin)->where('role', 'admin')->with('distributionToCommitte')->first();
 
-        $pillarTwos = User::where('role', 'user')
-            ->whereHas('mosque.pillarTwo')
-            ->paginate(10);
+        $pillarOnes = collect();
+        $pillarTwos = collect();
+        $pillarThrees = collect();
+        $pillarFours = collect();
+        $pillarFives = collect();
 
-        $pillarThrees = User::where('role', 'user')
-            ->whereHas('mosque.pillarThree')
-            ->paginate(10);
+        if ($admin && $admin->distributionToCommitte) {
+            $userIds = $admin->distributionToCommitte->pluck('user_id');
 
-        $pillarFours = User::where('role', 'user')
-            ->whereHas('mosque.pillarFour')
-            ->paginate(10);
+            $query = User::where('role', 'user')
+                ->whereIn('id', $userIds)
+                ->with('mosque');
 
-        $pillarFives = User::where('role', 'user')
-            ->whereHas('mosque.pillarFive')
-            ->paginate(10);
+            $pillarOnes = (clone $query)->whereHas('mosque.pillarOne')->paginate(10);
+            $pillarTwos = (clone $query)->whereHas('mosque.pillarTwo')->paginate(10);
+            $pillarThrees = (clone $query)->whereHas('mosque.pillarThree')->paginate(10);
+            $pillarFours = (clone $query)->whereHas('mosque.pillarFour')->paginate(10);
+            $pillarFives = (clone $query)->whereHas('mosque.pillarFive')->paginate(10);
+        }
 
         return view('pages.form.index', compact('pillarOnes', 'pillarTwos', 'pillarThrees', 'pillarFours', 'pillarFives'));
     }
@@ -59,13 +62,8 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarOne = $user->mosque->pillarOne;
 
-            $systemAssessment = SystemAssessment::with(['pillarOne'])->first();
+            $systemAssessment = SystemAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
-
-            if ($systemAssessment) {
-                $totalValue = $systemAssessment->pillar_one_question_one + $systemAssessment->pillar_one_question_two + $systemAssessment->pillar_one_question_three + $systemAssessment->pillar_one_question_four + $systemAssessment->pillar_one_question_five;
-                return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment', 'committeeAssessment', 'totalValue'));
-            }
 
             return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment', 'committeeAssessment'));
         }
@@ -147,13 +145,8 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarTwo = $user->mosque->pillarTwo;
 
-            $systemAssessment = SystemAssessment::with(['pillarTwo'])->first();
+            $systemAssessment = SystemAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
-
-            if ($systemAssessment) {
-                $totalValue = $systemAssessment->pillar_two_question_one + $systemAssessment->pillar_two_question_two + $systemAssessment->pillar_two_question_three + $systemAssessment->pillar_two_question_four + $systemAssessment->pillar_two_question_five;
-                return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment', 'committeeAssessment', 'totalValue'));
-            }
 
             return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment', 'committeeAssessment'));
         }
