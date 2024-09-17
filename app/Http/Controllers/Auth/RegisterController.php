@@ -24,7 +24,7 @@ class RegisterController extends Controller
         $timeline = Timeline::latest()->first();
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
-        $parentCompanies = ParentCompany::all();
+        $parentCompanies = ParentCompany::orderBy('name', 'asc')->get();
         $businessLines = BusinessLine::all();
         $provinces = Province::all();
 

@@ -4,7 +4,7 @@
             <div class="card border-0 shadow" style="border-radius: 20px;">
                 <div class="card-body p-5">
                     <h2 style="margin-bottom: 1.5rem; font-weight: 700;">Masuk</h2>
-                    <h5 class="card-title mb-3" style="font-weight: 600;">Halo, selamat datang 👋</h5>
+                    <h5 class="card-title mb-3" style="font-weight: 600;">Assalamu'alaikum Wr Wb 👋</h5>
 
                     {{-- Alert Success --}}
                     @if (Session('success'))
