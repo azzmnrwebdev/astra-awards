@@ -344,10 +344,10 @@
 
                             {{-- Lini Bisnis --}}
                             <div class="col-lg-6">
-                                <label for="business_line_id" class="form-label fw-medium">Lini Bisnis</label>
+                                <label for="business_line_id" class="form-label fw-medium">Lini Bisnis, Yayasan & Koperasi, Head Office</label>
                                 <select class="form-select @error('business_line_id') is-invalid @enderror"
                                     id="business_line_id" name="business_line_id">
-                                    <option value="">-- Pilih Lini Bisnis --</option>
+                                    <option value="">-- Pilih Lini Bisnis, Yayasan & Koperasi, Head Office --</option>
                                     @foreach ($businessLines as $item)
                                         <option value="{{ $item->id }}"
                                             {{ old('business_line_id') == $item->id ? 'selected' : '' }}>

@@ -70,7 +70,7 @@
                 <a href="{{ route('business_line.index') }}"
                     class="sidebar-link {{ request()->routeIs('business_line.*') ? 'active' : '' }}">
                     <i class="bi bi-briefcase-fill me-2 fs-5"></i>
-                    Lini Bisnis
+                    Lini Bisnis, Yayasan & Koperasi, Head Office
                 </a>
             </li>
 

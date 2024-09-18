@@ -10,7 +10,7 @@
 
     {{-- Main Content --}}
     <h4 class="mb-4 fw-semibold d-inline-flex" id="pageTitle">
-        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Tambah Lini Bisnis
+        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Tambah Lini Bisnis, Yayasan & Koperasi, Head Office
     </h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
@@ -25,7 +25,7 @@
                 @csrf
 
                 <div class="row mb-3">
-                    <label for="name" class="col-md-3 col-xl-2 col-form-label">Nama Lini Bisnis</label>
+                    <label for="name" class="col-md-3 col-xl-2 col-form-label">Nama Lini Bisnis, Yayasan & Koperasi, Head Office</label>
 
                     <div class="col-md-9 col-xl-10">
                         <input type="text" name="name" id="name"

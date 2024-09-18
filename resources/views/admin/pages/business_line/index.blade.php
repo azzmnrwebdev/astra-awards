@@ -1,6 +1,6 @@
 <x-admin title="Lini Bisnis">
     {{-- Main Content --}}
-    <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen Lini Bisnis</h4>
+    <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen Lini Bisnis, Yayasan & Koperasi, Head Office</h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
