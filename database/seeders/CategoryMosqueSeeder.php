@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -16,20 +17,20 @@ class CategoryMosqueSeeder extends Seeder
             [
                 'name' => 'Masjid Besar',
                 'description' => "Kapasitas lebih dari 500 jamaah, dan melaksanakan sholat jum'at.",
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time())
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
             ],
             [
                 'name' => 'Masjid Sedang',
                 'description' => "Kapasitas kurang dari 500 jamaah, dan melaksanakan sholat jum'at.",
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time())
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
             ],
             [
                 'name' => 'Musala',
                 'description' => "Hanya digunakan sholat rawatib, tidak digunakan sholat jum'at.",
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time())
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
             ],
         ]);
     }
