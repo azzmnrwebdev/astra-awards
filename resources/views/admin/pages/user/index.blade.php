@@ -16,6 +16,15 @@
                 </div>
             @endif
 
+            <div class="row justify-content-end">
+                <div class="col-sm-6 col-xl-4">
+                    <form>
+                        <input type="search" name="search" id="search" value="{{ $search }}"
+                            class="form-control" placeholder="Cari peserta">
+                    </form>
+                </div>
+            </div>
+
             <div class="table-responsive mt-4">
                 <table class="table table-hover text-nowrap align-middle mb-0">
                     <thead class="border-top border-start border-end">
@@ -33,7 +42,13 @@
                                 <td class="text-start py-3">{{ $item->name }}</td>
                                 <td class="text-start py-3">{{ $item->email }}</td>
                                 <td class="text-center py-3">{{ $item->phone_number ?? '-' }}</td>
-                                <td class="text-center py-3">{{ $item->status === 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
+                                <td class="text-center py-3">
+                                    @if ($item->status === 1)
+                                        <span class="badge text-bg-success">Aktif</span>
+                                    @else
+                                        <span class="badge text-bg-danger">Tidak Aktif</span>
+                                    @endif
+                                </td>
                                 <td class="text-center py-3">
                                     {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}
                                 </td>
@@ -107,6 +122,43 @@
     @prepend('scripts')
         <script>
             $(document).ready(function() {
+                let debounceTimeout;
+
+                $('#search').on('input keydown', function(e) {
+                    if (e.which !== 13) {
+                        clearTimeout(debounceTimeout);
+
+                        debounceTimeout = setTimeout(function() {
+                            filter();
+                        }, 1000);
+                    }
+                });
+
+                $('#search').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        filter();
+                    }
+                });
+
+                function filter() {
+                    const params = {};
+                    const searchValue = $('#search').val();
+                    const url = '{{ route('user.index') }}';
+
+                    if (searchValue.trim() !== '') {
+                        params.search = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    const queryString = Object.keys(params).map(key => key + '=' + params[key]);
+
+                    const finalUrl = url + '?' + queryString.join('&');
+                    window.location.href = finalUrl;
+                }
+
+                // =============================================================================================
+
+                // Handle click on delete button
                 $('.delete').click(function() {
                     const id = $(this).data('id');
                     const name = $(this).data('name');

@@ -13,161 +13,1074 @@ class CompanySeeder extends Seeder
     public function run(): void
     {
         DB::table('companies')->insert([
-            ['name' => 'PT Acset Indonusa Tbk', 'parent_company_id' =>  2, 'business_line_id' => 4],
-            ['name' => 'PT Advics Manufacturing Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT. Agro Menara Rachmat', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Agro Nusa Abadi (ANA)', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT. Astragraphia Tbk', 'parent_company_id' =>  1, 'business_line_id' => 2],
-            ['name' => 'PT Akashi Wahana Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Akebono Brake Astra Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Tunggal Perkasa Plantation (TPP)', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Astra Agro Lestari 1', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Astra Sedaya Finance', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT. Astra Daihatsu Motor - Karawang Assy Plant', 'parent_company_id' =>  6, 'business_line_id' => 3],
-            ['name' => 'PT. Astra Daihatsu Motor - Engine Plant', 'parent_company_id' =>  6, 'business_line_id' => 3],
-            ['name' => 'PT. Astra Daihatsu Motor - Casting Plant', 'parent_company_id' =>  6, 'business_line_id' => 3],
-            ['name' => 'PT. Astra Daihatsu Motor - Head Office', 'parent_company_id' =>  6, 'business_line_id' => 3],
-            ['name' => 'PT. Astra Daihatsu Motor - Parts Center', 'parent_company_id' =>  6, 'business_line_id' => 3],
-            ['name' => 'PT. Astra Daihatsu Motor - Sunter Assy Plants', 'parent_company_id' =>  6, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant 2 Pegangsaan', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant 3 Cikarang', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant 3A Cikarang', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant 4 Karawang', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant 5 Karawang', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant DMD', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant PQE', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant TSD', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Plant PC', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra Honda Motor - Head Office (Plant 1)', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Astra International Tbk -  Honda Sales Operation (HSO)', 'parent_company_id' =>  10, 'business_line_id' => 3],
-            ['name' => 'PT Astra International Tbk -   Astraworld (AWSO)', 'parent_company_id' =>  10, 'business_line_id' => 3],
-            ['name' => 'PT Astra International Tbk - Head Office', 'parent_company_id' =>  10, 'business_line_id' => 8],
-            ['name' => 'PT Astra International Tbk - Toyota Sales Operations (TSO)', 'parent_company_id' =>  10, 'business_line_id' => 3],
-            ['name' => 'PT Astra International Tbk -  Daihatsu Sales Operations (DSO)', 'parent_company_id' =>  10, 'business_line_id' => 3],
-            ['name' => 'PT Astra International Tbk - BMW Sales Operations (BSO)', 'parent_company_id' =>  10, 'business_line_id' => 3],
-            ['name' => 'PT Astra International Tbk - UD Trucks Sales Operations (UD SO)', 'parent_company_id' =>  10, 'business_line_id' => 3],
-            ['name' => 'PT Astra International Tbk - Isuzu Sales Operations (ISO)', 'parent_company_id' =>  10, 'business_line_id' => 3],
-            ['name' => 'PT Astra Juoku Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Astra Komponen Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Astra Nippon Gasket Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Astra Otoparts Tbk - Head Office', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Astra Otoparts - Divisi Nusa Metal', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Astra Tol Nusantara', 'parent_company_id' =>  10, 'business_line_id' => 6],
-            ['name' => 'PT Autoplastik Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT. Bhadra Cemerlang', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Bhadra Sukses', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Borneo Indah Marjaya', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Cakung Permata Nusa', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Century Batteries Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Chuhatsu Indonesia', 'parent_company_id' =>  12, 'business_line_id' => 3],
-            ['name' => 'PT Cipta Agro Nusantara', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Denso Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT DIC Astra Chemicals', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Ekadura Indonesia', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Evoluzione Tyres', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Federal Izumi Manufacturing', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Federal Nittan Industries', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Gaya Motor', 'parent_company_id' =>  10, 'business_line_id' => 3],
-            ['name' => 'PT Gemala Kempa Daya', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT GS Battery', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Gunung Sejahtera Dua Indah', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Gunung Sejahtera Ibu Pertiwi', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Gunung Sejahtera Puti Pesona', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Gunung Sejahtera Yoli Makmur', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Indonesia Nippon Seiki', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Inti Ganda Perdana', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Inti Pantja Press Industries', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Isuzu Astra Motor Indonesia', 'parent_company_id' =>  15, 'business_line_id' => 3],
-            ['name' => 'PT Kalimantan Prima Persada', 'parent_company_id' =>  8, 'business_line_id' => 4],
-            ['name' => 'PT Karya Tanah Subur', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Karyanusa Eka Daya', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Kayaba Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Kimia Tirta Utama', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Komatsu Marketing and Support Indonesia (KMSI)', 'parent_company_id' =>  2, 'business_line_id' => 4],
-            ['name' => 'PT Komatsu Indonesia', 'parent_company_id' =>  2, 'business_line_id' => 4],
-            ['name' => 'PT Komatsu Reman Asia', 'parent_company_id' =>  2, 'business_line_id' => 4],
-            ['name' => 'Koperasi Astra International', 'parent_company_id' =>  10, 'business_line_id' => 9],
-            ['name' => 'PT Lestari Tani Teladan', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Letawa', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Lintas Marga Sedaya', 'parent_company_id' =>  9, 'business_line_id' => 6],
-            ['name' => 'PT Mamuang', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Marga Harjaya Infrastruktur', 'parent_company_id' =>  9, 'business_line_id' => 6],
-            ['name' => 'PT Marga Mandalasakti', 'parent_company_id' =>  7, 'business_line_id' => 6],
-            ['name' => 'PT Nirmala Agro Lestari', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Nusa Keihin Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Palma Plantasindo', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Pamapersada Nusantara', 'parent_company_id' =>  8, 'business_line_id' => 4],
-            ['name' => 'PT Pasangkayu', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Perkebunan Lembah Bhakti', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Perkebunan Lembah Bhakti 2', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Persada Bina Nusantara Abadi', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Persada Dinamika Lestari', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'Astratech', 'parent_company_id' =>  10, 'business_line_id' => 9],
-            ['name' => 'PT. Samadista karya', 'parent_company_id' =>  17, 'business_line_id' => 7],
-            ['name' => 'PT Tokai Toyota Auto Body Extrusion', 'parent_company_id' =>  12, 'business_line_id' => 3],
-            ['name' => 'PT Serasi Autoraya', 'parent_company_id' =>  14, 'business_line_id' => 6],
-            ['name' => 'PT Resin Plating Technology', 'parent_company_id' =>  12, 'business_line_id' => 3],
-            ['name' => 'PT Rimbunan Alam Sentosa', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Sari Aditya Loka 1', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Sari Aditya Loka 2', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Sari Lembah Subur', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Sawit Asahan Indah', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Showa Indonesia Manufacturing', 'parent_company_id' =>  18, 'business_line_id' => 3],
-            ['name' => 'PT SKF Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Subur Abadi Plantations', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Subur Agro Makmur', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Sugity Creatives', 'parent_company_id' =>  12, 'business_line_id' => 3],
-            ['name' => 'PT Sukses Tani Nusasubur', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Sumber Kharisma Persada', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Surya Indah Nusantara Pagi', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Suryaraya Lestari 1', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Suryaraya Lestari 2', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Suryaraya Rubberindo Industries', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Tanjung Sarana Lestari', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT TD Automotive Compressor Indonesia', 'parent_company_id' =>  12, 'business_line_id' => 3],
-            ['name' => 'PT Tjahja Sakti Motor', 'parent_company_id' =>  18, 'business_line_id' => 3],
-            ['name' => 'PT Topy Palingda', 'parent_company_id' =>  18, 'business_line_id' => 3],
-            ['name' => 'PT Toyota Astra Motor', 'parent_company_id' =>  13, 'business_line_id' => 3],
-            ['name' => 'PT Toyota Motor Manufacturing Indonesia', 'parent_company_id' =>  12, 'business_line_id' => 3],
-            ['name' => 'TRAC Astra Rent Car', 'parent_company_id' =>  14, 'business_line_id' => 6],
-            ['name' => 'PT Traktor Nusantara', 'parent_company_id' =>  2, 'business_line_id' => 4],
-            ['name' => 'PT Tribuana Mas', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT Tunggal Perkasa Plantations', 'parent_company_id' =>  3, 'business_line_id' => 5],
-            ['name' => 'PT United Tractors', 'parent_company_id' =>  2, 'business_line_id' => 4],
-            ['name' => 'Yayasan Amaliah Astra', 'parent_company_id' =>  10, 'business_line_id' => 9],
-            ['name' => 'PT Yutaka Manufacturing Indonesia', 'parent_company_id' =>  18, 'business_line_id' => 3],
-            ['name' => 'PT. Hitachi Astemo', 'parent_company_id' =>  18, 'business_line_id' => 3],
-            ['name' => 'PT AT Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Aisin Indonesia', 'parent_company_id' =>  4, 'business_line_id' => 3],
-            ['name' => 'PT Astra Digital Internasional', 'parent_company_id' =>  10, 'business_line_id' => 2],
-            ['name' => 'PT Fuji Technica Indonesia', 'parent_company_id' =>  18, 'business_line_id' => 3],
-            ['name' => 'PT Pulogadung Pawitra Laksana', 'parent_company_id' =>  18, 'business_line_id' => 3],
-            ['name' => 'PT Federal International Finance', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Asuransi Jiwa Astra', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Astra Mitra Ventura', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Astra Multi Finance', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Asuransi Astra Buana', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Cipta Sedaya Digital Indonesia', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Sedaya Multi Investama', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Toyota Astra Financial Services', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Menara Astra', 'parent_company_id' =>  17, 'business_line_id' => 7],
-            ['name' => 'PT Brahmayasa Bahtera', 'parent_company_id' =>  17, 'business_line_id' => 7],
-            ['name' => 'PT Samadista Karya', 'parent_company_id' =>  17, 'business_line_id' => 7],
-            ['name' => 'PT Astra Digital Mobil (OLXmobbi)', 'parent_company_id' =>  14, 'business_line_id' => 6],
-            ['name' => 'PT Surya Arta Nusantara Finance (SANF)', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Komatsu Astra Finance', 'parent_company_id' =>  5, 'business_line_id' => 1],
-            ['name' => 'PT Serasi Mitra Mobil', 'parent_company_id' =>  14, 'business_line_id' => 6],
-            ['name' => 'PT Pakoakuina', 'parent_company_id' =>  18, 'business_line_id' => 3],
-            ['name' => 'PT Harmoni Mitra Utama', 'parent_company_id' =>  2, 'business_line_id' => 4],
-            ['name' => 'PT United Tractors Pandu Engeneering', 'parent_company_id' =>  2, 'business_line_id' => 4],
-            ['name' => 'Yayasan Insan Mulia Pama', 'parent_company_id' =>  8, 'business_line_id' => 9],
-            ['name' => 'PT Sigap Prima Astrea', 'parent_company_id' =>  19, 'business_line_id' => 9],
-            ['name' => 'Yayasan Dharma Bhakti Astra (YDBA)', 'parent_company_id' =>  10, 'business_line_id' => 9],
-            ['name' => 'Yayasan Pendidikan Astra-Michael D. Ruslim (YPA-MDR)', 'parent_company_id' =>  10, 'business_line_id' => 9],
-            ['name' => 'Yayasan Astra Honda Motor (YAHM)', 'parent_company_id' =>  10, 'business_line_id' => 9],
-            ['name' => 'Yayasan Toyota dan Astra (YTA)', 'parent_company_id' =>  10, 'business_line_id' => 9],
-            ['name' => 'Yayasan Karya Bakti United Tractors (YKBUT)', 'parent_company_id' =>  10, 'business_line_id' => 9],
-            ['name' => 'Yayasan Astra Agro Lestari (YAAL)', 'parent_company_id' =>  10, 'business_line_id' => 9],        
+            [
+                'name' => 'Acset Indonusa Tbk',
+                'parent_company_id' =>  2,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Advics Manufacturing Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Agro Menara Rachmat',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Agro Nusa Abadi (ANA)',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astragraphia Tbk',
+                'parent_company_id' =>  1,
+                'business_line_id' => 2,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Akashi Wahana Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Akebono Brake Astra Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Tunggal Perkasa Plantation (TPP)',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Agro Lestari 1',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Sedaya Finance',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Daihatsu Motor - Karawang Assy Plant',
+                'parent_company_id' =>  6,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Daihatsu Motor - Engine Plant',
+                'parent_company_id' =>  6,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Daihatsu Motor - Casting Plant',
+                'parent_company_id' =>  6,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Daihatsu Motor - Head Office',
+                'parent_company_id' =>  6,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Daihatsu Motor - Parts Center',
+                'parent_company_id' =>  6,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Daihatsu Motor - Sunter Assy Plants',
+                'parent_company_id' =>  6,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant 2 Pegangsaan',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant 3 Cikarang',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant 3A Cikarang',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant 4 Karawang',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant 5 Karawang',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant DMD',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant PQE',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant TSD',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Plant PC',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Honda Motor - Head Office (Plant 1)',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra International Tbk -  Honda Sales Operation (HSO)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra International Tbk -   Astraworld (AWSO)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra International Tbk - Head Office',
+                'parent_company_id' =>  10,
+                'business_line_id' => 8,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra International Tbk - Toyota Sales Operations (TSO)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra International Tbk -  Daihatsu Sales Operations (DSO)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra International Tbk - BMW Sales Operations (BSO)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra International Tbk - UD Trucks Sales Operations (UD SO)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra International Tbk - Isuzu Sales Operations (ISO)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Juoku Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Komponen Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Nippon Gasket Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Otoparts Tbk - Head Office',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Otoparts - Divisi Nusa Metal',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Tol Nusantara',
+                'parent_company_id' =>  10,
+                'business_line_id' => 6,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Autoplastik Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Bhadra Cemerlang',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Bhadra Sukses',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Borneo Indah Marjaya',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Cakung Permata Nusa',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Century Batteries Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Chuhatsu Indonesia',
+                'parent_company_id' =>  12,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Cipta Agro Nusantara',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Denso Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'DIC Astra Chemicals',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Ekadura Indonesia',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Evoluzione Tyres',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Federal Izumi Manufacturing',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Federal Nittan Industries',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Gaya Motor',
+                'parent_company_id' =>  10,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Gemala Kempa Daya',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'GS Battery',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Gunung Sejahtera Dua Indah',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Gunung Sejahtera Ibu Pertiwi',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Gunung Sejahtera Puti Pesona',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Gunung Sejahtera Yoli Makmur',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Indonesia Nippon Seiki',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Inti Ganda Perdana',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Inti Pantja Press Industries',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Isuzu Astra Motor Indonesia',
+                'parent_company_id' =>  15,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kalimantan Prima Persada',
+                'parent_company_id' =>  8,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Karya Tanah Subur',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Karyanusa Eka Daya',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kayaba Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kimia Tirta Utama',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Komatsu Marketing and Support Indonesia (KMSI)',
+                'parent_company_id' =>  2,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Komatsu Indonesia',
+                'parent_company_id' =>  2,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Komatsu Reman Asia',
+                'parent_company_id' =>  2,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Koperasi Astra International',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Lestari Tani Teladan',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            ['name' => 'Letawa', 'parent_company_id' =>  3, 'business_line_id' => 5, 'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())],
+            [
+                'name' => 'Lintas Marga Sedaya',
+                'parent_company_id' =>  9,
+                'business_line_id' => 6,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            ['name' => 'Mamuang', 'parent_company_id' =>  3, 'business_line_id' => 5, 'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())],
+            [
+                'name' => 'Marga Harjaya Infrastruktur',
+                'parent_company_id' =>  9,
+                'business_line_id' => 6,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Marga Mandalasakti',
+                'parent_company_id' =>  7,
+                'business_line_id' => 6,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Nirmala Agro Lestari',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Nusa Keihin Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Palma Plantasindo',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Pamapersada Nusantara',
+                'parent_company_id' =>  8,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Pasangkayu',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Perkebunan Lembah Bhakti',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Perkebunan Lembah Bhakti 2',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Persada Bina Nusantara Abadi',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Persada Dinamika Lestari',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astratech',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Samadista karya',
+                'parent_company_id' =>  17,
+                'business_line_id' => 7,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Tokai Toyota Auto Body Extrusion',
+                'parent_company_id' =>  12,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Serasi Autoraya',
+                'parent_company_id' =>  14,
+                'business_line_id' => 6,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Resin Plating Technology',
+                'parent_company_id' =>  12,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Rimbunan Alam Sentosa',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sari Aditya Loka 1',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sari Aditya Loka 2',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sari Lembah Subur',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sawit Asahan Indah',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Showa Indonesia Manufacturing',
+                'parent_company_id' =>  18,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'SKF Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Subur Abadi Plantations',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Subur Agro Makmur',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sugity Creatives',
+                'parent_company_id' =>  12,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sukses Tani Nusasubur',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sumber Kharisma Persada',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Surya Indah Nusantara Pagi',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Suryaraya Lestari 1',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Suryaraya Lestari 2',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Suryaraya Rubberindo Industries',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Tanjung Sarana Lestari',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'TD Automotive Compressor Indonesia',
+                'parent_company_id' =>  12,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Tjahja Sakti Motor',
+                'parent_company_id' =>  18,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Topy Palingda',
+                'parent_company_id' =>  18,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Toyota Astra Motor',
+                'parent_company_id' =>  13,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Toyota Motor Manufacturing Indonesia',
+                'parent_company_id' =>  12,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'TRAC Astra Rent Car',
+                'parent_company_id' =>  14,
+                'business_line_id' => 6,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Traktor Nusantara',
+                'parent_company_id' =>  2,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Tribuana Mas',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Tunggal Perkasa Plantations',
+                'parent_company_id' =>  3,
+                'business_line_id' => 5,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'United Tractors',
+                'parent_company_id' =>  2,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yayasan Amaliah Astra',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yutaka Manufacturing Indonesia',
+                'parent_company_id' =>  18,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Hitachi Astemo',
+                'parent_company_id' =>  18,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'AT Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Aisin Indonesia',
+                'parent_company_id' =>  4,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Digital Internasional',
+                'parent_company_id' =>  10,
+                'business_line_id' => 2,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Fuji Technica Indonesia',
+                'parent_company_id' =>  18,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Pulogadung Pawitra Laksana',
+                'parent_company_id' =>  18,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Federal International Finance',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Asuransi Jiwa Astra',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Mitra Ventura',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Multi Finance',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Asuransi Astra Buana',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Cipta Sedaya Digital Indonesia',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sedaya Multi Investama',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Toyota Astra Financial Services',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Menara Astra',
+                'parent_company_id' =>  17,
+                'business_line_id' => 7,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Brahmayasa Bahtera',
+                'parent_company_id' =>  17,
+                'business_line_id' => 7,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Astra Digital Mobil (OLXmobbi)',
+                'parent_company_id' =>  14,
+                'business_line_id' => 6,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Surya Arta Nusantara Finance (SANF)',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Komatsu Astra Finance',
+                'parent_company_id' =>  5,
+                'business_line_id' => 1,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Serasi Mitra Mobil',
+                'parent_company_id' =>  14,
+                'business_line_id' => 6,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Pakoakuina',
+                'parent_company_id' =>  18,
+                'business_line_id' => 3,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Harmoni Mitra Utama',
+                'parent_company_id' =>  2,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'United Tractors Pandu Engeneering',
+                'parent_company_id' =>  2,
+                'business_line_id' => 4,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yayasan Insan Mulia Pama',
+                'parent_company_id' =>  8,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sigap Prima Astrea',
+                'parent_company_id' =>  19,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yayasan Dharma Bhakti Astra (YDBA)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yayasan Pendidikan Astra-Michael D. Ruslim (YPA-MDR)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yayasan Astra Honda Motor (YAHM)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yayasan Toyota dan Astra (YTA)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yayasan Karya Bakti United Tractors (YKBUT)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Yayasan Astra Agro Lestari (YAAL)',
+                'parent_company_id' =>  10,
+                'business_line_id' => 9,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
         ]);
     }
 }

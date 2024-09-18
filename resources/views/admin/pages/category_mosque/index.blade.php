@@ -16,9 +16,16 @@
                 </div>
             @endif
 
-            <div class="row">
-                <div class="col-auto">
+            <div class="row align-items-center">
+                <div class="col-sm-6 col-xl-8">
                     <a href="{{ route('categoryMosque.create') }}" class="btn btn-dark rounded-0">Tambah</a>
+                </div>
+
+                <div class="col-sm-6 col-xl-4 mt-3 mt-sm-0">
+                    <form>
+                        <input type="search" name="search" id="search" value="{{ $search }}"
+                            class="form-control" placeholder="Cari kategori">
+                    </form>
                 </div>
             </div>
 
@@ -101,7 +108,43 @@
     @prepend('scripts')
         <script>
             $(document).ready(function() {
-                // Handle click on delet button
+                let debounceTimeout;
+
+                $('#search').on('input keydown', function(e) {
+                    if (e.which !== 13) {
+                        clearTimeout(debounceTimeout);
+
+                        debounceTimeout = setTimeout(function() {
+                            filter();
+                        }, 1000);
+                    }
+                });
+
+                $('#search').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        filter();
+                    }
+                });
+
+                function filter() {
+                    const params = {};
+                    const searchValue = $('#search').val();
+                    const url = '{{ route('categoryMosque.index') }}';
+
+                    if (searchValue.trim() !== '') {
+                        params.search = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    const queryString = Object.keys(params).map(key => key + '=' + params[key]);
+
+                    const finalUrl = url + '?' + queryString.join('&');
+                    window.location.href = finalUrl;
+                }
+
+                // =============================================================================================
+
+                // Handle click on delete button
                 $('.delete').click(function() {
                     const id = $(this).data('id');
                     const name = $(this).data('name');

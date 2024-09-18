@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CommitteeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadNameOne = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -36,18 +36,27 @@ class CommitteeController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $query = User::where('role', 'admin')
-            ->orderBy('updated_at', 'desc')
-            ->latest('created_at');
-
-        $committees = $query->clone()->paginate(10);
+        $search = $request->input('search');
+        $query = User::query()->where('role', 'admin');
 
         $distributions = $query->clone()
             ->with('distributionToCommitte')
             ->has('distributionToCommitte')
+            ->orderBy('updated_at', 'desc')
+            ->latest('created_at')
             ->paginate(10);
 
-        return view('admin.pages.committee.index', compact('theadNameOne', 'theadNametwo', 'committees', 'distributions'));
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(phone_number) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        $committees = $query->clone()->orderBy('updated_at', 'desc')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.committee.index', compact('theadNameOne', 'theadNametwo', 'search', 'committees', 'distributions'));
     }
 
     public function create()

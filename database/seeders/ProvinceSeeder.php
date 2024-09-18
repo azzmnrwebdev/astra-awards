@@ -13,44 +13,196 @@ class ProvinceSeeder extends Seeder
     public function run(): void
     {
         DB::table('provinces')->insert([
-            ['name' => 'Nanggroe Aceh Darussalam'],
-            ['name' => 'Sumatera Utara'],
-            ['name' => 'Sumatera Selatan'],
-            ['name' => 'Sumatera Barat'],
-            ['name' => 'Bengkulu'],
-            ['name' => 'Riau'],
-            ['name' => 'Kepulauan Riau'],
-            ['name' => 'Jambi'],
-            ['name' => 'Lampung'],
-            ['name' => 'Bangka Belitung'],
-            ['name' => 'Kalimantan Barat'],
-            ['name' => 'Kalimantan Timur'],
-            ['name' => 'Kalimantan Selatan'],
-            ['name' => 'Kalimantan Tengah'],
-            ['name' => 'Kalimantan Utara'],
-            ['name' => 'Banten'],
-            ['name' => 'DKI Jakarta'],
-            ['name' => 'Jawa Barat'],
-            ['name' => 'Jawa Tengah'],
-            ['name' => 'Jawa Timur'],
-            ['name' => 'Daerah Istimewa Yogyakarta'],
-            ['name' => 'Bali'],
-            ['name' => 'Nusa Tenggara Timur'],
-            ['name' => 'Nusa Tenggara Barat'],
-            ['name' => 'Gorontalo'],
-            ['name' => 'Sulawesi Barat'],
-            ['name' => 'Sulawesi Tengah'],
-            ['name' => 'Sulawesi Utara'],
-            ['name' => 'Sulawesi Tenggara'],
-            ['name' => 'Sulawesi Selatan'],
-            ['name' => 'Maluku Utara'],
-            ['name' => 'Maluku'],
-            ['name' => 'Papua'],
-            ['name' => 'Papua Barat'],
-            ['name' => 'Papua Tengah'],
-            ['name' => 'Papua Pegunungan'],
-            ['name' => 'Papua Selatan'],
-            ['name' => 'Papua Barat Daya'],
+            [
+                'name' => 'Nanggroe Aceh Darussalam',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sumatera Utara',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sumatera Selatan',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sumatera Barat',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Bengkulu',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Riau',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kepulauan Riau',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Jambi',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Lampung',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Bangka Belitung',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kalimantan Barat',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kalimantan Timur',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kalimantan Selatan',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kalimantan Tengah',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Kalimantan Utara',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Banten',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'DKI Jakarta',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Jawa Barat',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Jawa Tengah',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Jawa Timur',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Daerah Istimewa Yogyakarta',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Bali',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Nusa Tenggara Timur',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Nusa Tenggara Barat',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Gorontalo',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sulawesi Barat',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sulawesi Tengah',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sulawesi Utara',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sulawesi Tenggara',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Sulawesi Selatan',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Maluku Utara',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Maluku',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Papua',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Papua Barat',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Papua Tengah',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Papua Pegunungan',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Papua Selatan',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Papua Barat Daya',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
         ]);
     }
 }

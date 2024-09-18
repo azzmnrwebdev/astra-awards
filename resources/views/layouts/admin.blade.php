@@ -89,6 +89,14 @@
             margin-right: 1.5rem;
         }
 
+        .sidebar-input input.form-control {
+            border: none;
+        }
+
+        .sidebar-input input.form-control:focus {
+            outline: none;
+        }
+
         .sidebar-nav {
             padding: 0;
         }
@@ -221,6 +229,10 @@
 
             #sidebar.collapsed~.main {
                 margin-left: 0;
+            }
+
+            .sidebar-logo a {
+                text-align: center;
             }
         }
 

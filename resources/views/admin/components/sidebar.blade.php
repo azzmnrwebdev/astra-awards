@@ -5,7 +5,7 @@
     </div>
 
     <div class="sidebar-input mb-4">
-        <input type="text" class="form-control" placeholder="Cari menu">
+        <input type="search" class="form-control" placeholder="Cari menu">
     </div>
 
     <ul class="sidebar-nav h-100 overflow-y-scroll">

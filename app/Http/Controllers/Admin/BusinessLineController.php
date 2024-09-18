@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class BusinessLineController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -18,9 +18,16 @@ class BusinessLineController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $businessLines = BusinessLine::orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $query = BusinessLine::query();
+        $search = $request->input('search');
 
-        return view('admin.pages.business_line.index', compact('theadName', 'businessLines'));
+        if (!empty($search)) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        $businessLines = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.business_line.index', compact('theadName', 'search', 'businessLines'));
     }
 
     public function create()

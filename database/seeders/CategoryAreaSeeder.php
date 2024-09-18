@@ -13,9 +13,21 @@ class CategoryAreaSeeder extends Seeder
     public function run(): void
     {
         DB::table('category_areas')->insert([
-            ['name' => 'Area Site'],
-            ['name' => 'Area Pabrik'],
-            ['name' => 'Area Kantor Pusat & Cabang'],
+            [
+                'name' => 'Area Site',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Area Pabrik',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
+            [
+                'name' => 'Area Kantor Pusat & Cabang',
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ],
         ]);
     }
 }

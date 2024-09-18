@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryMosqueController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -20,9 +20,16 @@ class CategoryMosqueController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $categories = CategoryMosque::orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $query = CategoryMosque::query();
+        $search = $request->input('search');
 
-        return view('admin.pages.category_mosque.index', compact('theadName', 'categories'));
+        if (!empty($search)) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        $categories = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.category_mosque.index', compact('theadName', 'search', 'categories'));
     }
 
     public function create()

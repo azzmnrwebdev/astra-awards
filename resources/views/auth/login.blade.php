@@ -21,7 +21,7 @@
                         </div>
                     @endif
 
-                    <form class="row g-3" action="{{ route('loginAct') }}" method="POST">
+                    <form class="row align-items-center g-3" action="{{ route('loginAct') }}" method="POST">
                         @csrf
 
                         {{-- email --}}

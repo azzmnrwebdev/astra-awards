@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ProvinceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -19,9 +19,16 @@ class ProvinceController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $provinces = Province::orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $query = Province::query();
+        $search = $request->input('search');
 
-        return view('admin.pages.province.index', compact('theadName', 'provinces'));
+        if (!empty($search)) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        $provinces = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.province.index', compact('theadName', 'search', 'provinces'));
     }
 
     public function create()
