@@ -5,12 +5,8 @@
             <div class="container-fluid py-4">
                 {{-- belum selesai --}}
                 @if (auth()->check() && auth()->user()->hasRole('user'))
-                    <h1 class="display-6 text-white fw-bold">Halo {{ auth()->user()->name }},</h1>
-                    <p class="col-md-8 text-white fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Laudantium,
-                        animi ea ut facere culpa recusandae doloremque fuga natus reiciendis fugiat nemo. Nostrum,
-                        adipisci
-                        numquam. Mollitia rem nam architecto aliquid.</p>
+                    <h1 class="display-6 text-white fw-bold">Assalamu'alaikum {{ auth()->user()->name }},</h1>
+                    <p class="col-md-8 text-white fs-5">Terima kasih telah berpartisipasi pada Amaliah Astra Awards. Untuk selanjutnya silakan untuk mengisi formulir dan melampirkan berkas/dokumen pendukung pada 5 Pilar Penilaian.</p>
 
                     <a href="{{ route('form.index') }}" class="btn btn-primary btn-lg">Mulai Sekarang</a>
                 @endif
