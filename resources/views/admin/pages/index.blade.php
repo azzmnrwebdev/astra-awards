@@ -1,7 +1,7 @@
 <x-admin title="Dashboard">
     @if (auth()->check() && auth()->user()->hasRole('admin'))
         <center>
-            <h4 class="mb-5 fw-semibold d-inline-flex text-uppercase">Pendaftaran Amaliah Astra Award 2024</h4>
+            <h4 class="mb-5 fw-semibold d-inline-flex text-uppercase">Rekapitulasi Amaliah Astra Award 2024</h4>
         </center>
     @else
         {{-- Jumbroton --}}

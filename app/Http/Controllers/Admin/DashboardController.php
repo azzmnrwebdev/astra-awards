@@ -18,10 +18,13 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $totalCompany = Company::count();
-        $totalProvince = Province::count();
+        $arrCompany = Company::select('companies.id')->join('mosques', 'companies.id', '=', 'mosques.company_id')->groupBy('companies.id')->get();
+        $totalCompany = $arrCompany->count();
+        $arrProvince = Province::select('provinces.id')->join('cities', 'provinces.id', '=', 'cities.province_id')->join('mosques', 'cities.id', '=', 'mosques.city_id')->groupBy('provinces.id')->get();
+        $totalProvince = $arrProvince->count();
         $timeline = Timeline::latest()->first();
-        $totalBusinessLine = BusinessLine::count();
+        $arrBusinessLine = BusinessLine::select('business_lines.id')->join('companies', 'business_lines.id', '=', 'companies.business_line_id')->join('mosques', 'companies.id', '=', 'mosques.company_id')->groupBy('business_lines.id')->get();
+        $totalBusinessLine = $arrBusinessLine->count();
         $totalDKM = User::with(['mosque'])->where('role', 'user')->count();
 
         $provinces = Province::all();
