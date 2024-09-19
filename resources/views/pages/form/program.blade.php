@@ -85,541 +85,540 @@
                 @endif
 
                 @if (auth()->check() && auth()->user()->hasRole('user'))
-                <form action="{{ route('form.programAct') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+                    <form action="{{ route('form.programAct') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
 
-                    <input type="hidden" name="id" value="{{ $pillarThree->id ?? '' }}">
+                        <input type="hidden" name="id" value="{{ $pillarThree->id ?? '' }}">
                 @endif
 
-                    <div class="col mb-4">
-                        <div class="card h-100 border-0 shadow rounded-4">
-                            <div class="card-body p-4">
-                                @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    <form id="systemAssessment"
-                                        action="{{ route('system_assessment.pillarThreeAct', ['user' => $pillarThree->mosque->user->id, 'action' => 'penilaian']) }}"
+                <div class="col mb-4">
+                    <div class="card h-100 border-0 shadow rounded-4">
+                        <div class="card-body p-4">
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                <form id="systemAssessment"
+                                    action="{{ route('system_assessment.pillarThreeAct', ['user' => $pillarThree->mosque->user->id, 'action' => 'penilaian']) }}"
+                                    method="POST">
+                                    @csrf
+
+                                    <input type="hidden" name="id" value="{{ $systemAssessment->id ?? '' }}">
+                                    <input type="hidden" name="pillar_three_id" value="{{ $pillarThree->id }}">
+
+                                    <input type="hidden" name="pillar_three_question_one">
+                                    <input type="hidden" name="pillar_three_question_two">
+                                    <input type="hidden" name="pillar_three_question_three">
+                                    <input type="hidden" name="pillar_three_question_four[]">
+                                    <input type="hidden" name="pillar_three_question_five">
+                                    <input type="hidden" name="pillar_three_question_six[]">
+
+                                    <button type="submit" class="btn btn-primary mb-4">Tampilkan Nilai</button>
+                                </form>
+                            @endif
+
+                            <h5 class="card-title fw-bold mb-3">Program Sosial yang dikelola DKM</h5>
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_three_id ?? '')
+                                    <form
+                                        action="{{ route('committe_assessment.pillarThreeAct', ['user' => $pillarThree->mosque->user->id, 'action' => 'penilaian']) }}"
                                         method="POST">
                                         @csrf
 
-                                        <input type="hidden" name="id" value="{{ $systemAssessment->id ?? '' }}">
                                         <input type="hidden" name="pillar_three_id" value="{{ $pillarThree->id }}">
-
-                                        <input type="hidden" name="pillar_three_question_one">
-                                        <input type="hidden" name="pillar_three_question_two">
-                                        <input type="hidden" name="pillar_three_question_three">
-                                        <input type="hidden" name="pillar_three_question_four[]">
-                                        <input type="hidden" name="pillar_three_question_five">
-                                        <input type="hidden" name="pillar_three_question_six[]">
-
-                                        <button type="submit" class="btn btn-primary mb-4">Tampilkan Nilai</button>
-                                    </form>
                                 @endif
+                            @endif
 
-                                <h5 class="card-title fw-bold mb-3">Program Sosial yang dikelola DKM</h5>
+                            {{-- Pertanyaan 1 --}}
+                            <div class="mb-3">
+                                <label for="question_one" class="form-label">1. Bentuk Program Sosial yang Dikelola
+                                    oleh
+                                    DKM</label>
+                                @foreach (['Bantuan sosial sesekali, dilaksanakan insidental (ex. Bantuan bencana).', 'Bantuan sosial di momen-momen tertentu (ex. Santunan di PHBI dll).', 'Bantuan sosial dan program pemberdayaan (program non pemberdayaan masih mendominasi).', 'Program pemberdayaan 4 pilar (pendidikan, ekonomi, lingkungan dan kesehatan).'] as $option)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_one"
+                                            value="{{ $option }}" id="question_one{{ $loop->index + 1 }}"
+                                            data-index="{{ $loop->index + 1 }}"
+                                            {{ old('question_one', $pillarThree->question_one ?? '') == $option ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_one{{ $loop->index + 1 }}">
+                                            {{ $option }}
+                                        </label>
+                                    </div>
+                                @endforeach
 
-                                @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    @if ($systemAssessment->pillar_three_id ?? '')
-                                        <form
-                                            action="{{ route('committe_assessment.pillarThreeAct', ['user' => $pillarThree->mosque->user->id, 'action' => 'penilaian']) }}"
-                                            method="POST">
-                                            @csrf
-
-                                            <input type="hidden" name="pillar_three_id" value="{{ $pillarThree->id }}">
-                                    @endif
-                                @endif 
-
-                                {{-- Pertanyaan 1 --}}
-                                <div class="mb-3">
-                                    <label for="question_one" class="form-label">1. Bentuk Program Sosial yang Dikelola
-                                        oleh
-                                        DKM</label>
-                                    @foreach (['Bantuan sosial sesekali, dilaksanakan insidental (ex. Bantuan bencana).', 'Bantuan sosial di momen-momen tertentu (ex. Santunan di PHBI dll).', 'Bantuan sosial dan program pemberdayaan (program non pemberdayaan masih mendominasi).', 'Program pemberdayaan 4 pilar (pendidikan, ekonomi, lingkungan dan kesehatan).'] as $option)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="question_one"
-                                                value="{{ $option }}" id="question_one{{ $loop->index + 1 }}"
-                                                data-index="{{ $loop->index + 1 }}"
-                                                {{ old('question_one', $pillarThree->question_one ?? '') == $option ? 'checked' : '' }}
-                                                @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                            <label class="form-check-label" for="question_one{{ $loop->index + 1 }}">
-                                                {{ $option }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-
-                                    @error('question_one')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
-
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        @if ($systemAssessment->pillar_three_id ?? '')
-                                            <p class="card-text mb-0 mt-2 fw-medium">
-                                                Penilaian
-                                                Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_one == null ? 'N/A' : $systemAssessment->pillar_three_question_one . ' Poin' }}
-                                            </p>
-                                            <p class="card-text fw-medium text-danger">
-                                                @if ($systemAssessment->pillar_three_question_one == null)
-                                                    *) Formula tidak tersedia untuk kondisi jawaban
-                                                @endif
-                                            </p>
-
-                                            <div class="mb-3 row">
-                                                <label for="committee_pillar_three_question_one"
-                                                    class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
-                                                    Panitia:</label>
-                                                <div class="col-md-8 col-xl-9">
-                                                    <select name="committee_pillar_three_question_one"
-                                                        id="committee_pillar_three_question_one" class="form-select">
-                                                        @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_one)
-                                                            <option value="">-- Pilih Nilai --</option>
-                                                        @endif
-
-                                                        <option value="1"
-                                                            {{ old('committee_pillar_three_question_one', $committeeAssessment->pillar_three_question_one ?? '') == 1 ? 'selected' : '' }}>
-                                                            1</option>
-                                                        <option value="3"
-                                                            {{ old('committee_pillar_three_question_one', $committeeAssessment->pillar_three_question_one ?? '') == 3 ? 'selected' : '' }}>
-                                                            3</option>
-                                                        <option value="7"
-                                                            {{ old('committee_pillar_three_question_one', $committeeAssessment->pillar_three_question_one ?? '') == 7 ? 'selected' : '' }}>
-                                                            7</option>
-                                                        <option value="9"
-                                                            {{ old('committee_pillar_three_question_one', $committeeAssessment->pillar_three_question_one ?? '') == 9 ? 'selected' : '' }}>
-                                                            9</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endif
-                                </div>
+                                @error('question_one')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_three_id ?? '')
+                                    <p class="card-text mb-0 mt-2 fw-medium">
+                                        Penilaian
+                                        Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_one == null ? 'N/A' : $systemAssessment->pillar_three_question_one . ' Poin' }}
+                                    </p>
+                                    <p class="card-text fw-medium text-danger">
+                                        @if ($systemAssessment->pillar_three_question_one == null)
+                                            *) Formula tidak tersedia untuk kondisi jawaban
+                                        @endif
+                                    </p>
+
+                                    <div class="mb-3 row">
+                                        <label for="committee_pillar_three_question_one"
+                                            class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
+                                            Panitia:</label>
+                                        <div class="col-md-8 col-xl-9">
+                                            <select name="committee_pillar_three_question_one"
+                                                id="committee_pillar_three_question_one" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_one)
+                                                    <option value="">-- Pilih Nilai --</option>
+                                                @endif
+
+                                                <option value="1"
+                                                    {{ old('committee_pillar_three_question_one', $committeeAssessment->pillar_three_question_one ?? '') == 1 ? 'selected' : '' }}>
+                                                    1</option>
+                                                <option value="3"
+                                                    {{ old('committee_pillar_three_question_one', $committeeAssessment->pillar_three_question_one ?? '') == 3 ? 'selected' : '' }}>
+                                                    3</option>
+                                                <option value="7"
+                                                    {{ old('committee_pillar_three_question_one', $committeeAssessment->pillar_three_question_one ?? '') == 7 ? 'selected' : '' }}>
+                                                    7</option>
+                                                <option value="9"
+                                                    {{ old('committee_pillar_three_question_one', $committeeAssessment->pillar_three_question_one ?? '') == 9 ? 'selected' : '' }}>
+                                                    9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                     </div>
+                </div>
 
-                    <div class="col mb-4">
-                        <div class="card h-100 border-0 shadow rounded-4">
-                            <div class="card-body p-4">
-                                <h5 class="card-title fw-bold mb-3">Informasi Penerima Manfaat</h5>
+                <div class="col mb-4">
+                    <div class="card h-100 border-0 shadow rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">Informasi Penerima Manfaat</h5>
 
-                                {{-- Pertanyaan 2 --}}
-                                <div class="mb-3">
-                                    <label for="question_two" class="form-label">2. Penerima Manfaat Program
-                                        Sosial</label>
-                                    @foreach (['Belum ada Penerima Manfaat.', 'Ring 1 perusahaan.', 'Ring 1 dan di luar Ring 1 Perusahaan.'] as $option)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="question_two"
-                                                value="{{ $option }}" id="question_two{{ $loop->index + 1 }}"
-                                                data-index="{{ $loop->index + 1 }}"
-                                                {{ old('question_two', $pillarThree->question_two ?? '') == $option ? 'checked' : '' }}
-                                                @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                            <label class="form-check-label" for="question_two{{ $loop->index + 1 }}">
-                                                {{ $option }}
-                                            </label>
-                                        </div>
-                                    @endforeach
+                            {{-- Pertanyaan 2 --}}
+                            <div class="mb-3">
+                                <label for="question_two" class="form-label">2. Penerima Manfaat Program
+                                    Sosial</label>
+                                @foreach (['Belum ada Penerima Manfaat.', 'Ring 1 perusahaan.', 'Ring 1 dan di luar Ring 1 Perusahaan.'] as $option)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="question_two"
+                                            value="{{ $option }}" id="question_two{{ $loop->index + 1 }}"
+                                            data-index="{{ $loop->index + 1 }}"
+                                            {{ old('question_two', $pillarThree->question_two ?? '') == $option ? 'checked' : '' }}
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_two{{ $loop->index + 1 }}">
+                                            {{ $option }}
+                                        </label>
+                                    </div>
+                                @endforeach
 
-                                    @error('question_two')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
+                                @error('question_two')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
+                            </div>
 
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        @if ($systemAssessment->pillar_three_id ?? '')
-                                            <p class="card-text mb-0 mt-2 fw-medium">
-                                                Penilaian
-                                                Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_two == null ? 'N/A' : $systemAssessment->pillar_three_question_two . ' Poin' }}
-                                            </p>
-                                            <p class="card-text fw-medium text-danger">
-                                                @if ($systemAssessment->pillar_three_question_two == null)
-                                                    *) Formula tidak tersedia untuk kondisi jawaban
-                                                @endif
-                                            </p>
-
-                                            <div class="mb-3 row">
-                                                <label for="committee_pillar_three_question_two"
-                                                    class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
-                                                    Panitia:</label>
-                                                <div class="col-md-8 col-xl-9">
-                                                    <select name="committee_pillar_three_question_two"
-                                                        id="committee_pillar_three_question_two" class="form-select">
-                                                        @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_two)
-                                                            <option value="">-- Pilih Nilai --</option>
-                                                        @endif
-
-                                                        <option value="1"
-                                                            {{ old('committee_pillar_three_question_two', $committeeAssessment->pillar_three_question_two ?? '') == 1 ? 'selected' : '' }}>
-                                                            1</option>
-                                                        <option value="3"
-                                                            {{ old('committee_pillar_three_question_two', $committeeAssessment->pillar_three_question_two ?? '') == 3 ? 'selected' : '' }}>
-                                                            3</option>
-                                                        <option value="7"
-                                                            {{ old('committee_pillar_three_question_two', $committeeAssessment->pillar_three_question_two ?? '') == 7 ? 'selected' : '' }}>
-                                                            7</option>
-                                                        <option value="9"
-                                                            {{ old('committee_pillar_three_question_two', $committeeAssessment->pillar_three_question_two ?? '') == 9 ? 'selected' : '' }}>
-                                                            9</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_three_id ?? '')
+                                    <p class="card-text mb-0 mt-2 fw-medium">
+                                        Penilaian
+                                        Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_two == null ? 'N/A' : $systemAssessment->pillar_three_question_two . ' Poin' }}
+                                    </p>
+                                    <p class="card-text fw-medium text-danger">
+                                        @if ($systemAssessment->pillar_three_question_two == null)
+                                            *) Formula tidak tersedia untuk kondisi jawaban
                                         @endif
-                                    @endif
-                                </div>
+                                    </p>
 
-                                {{-- Pertanyaan 3 --}}
-                                <div class="mb-3">
-                                    <label for="beneficiaries_count" class="form-label">3. Jumlah Penerima
-                                        Manfaat</label>
-                                    <select class="form-select" name="question_three"
-                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                        @foreach (['Belum ada', 'Kurang dari 100', '100 sampai 1000', 'Lebih dari 1000'] as $key => $option)
-                                            <option value="{{ $option }}" data-index="{{ $key + 1 }}"
-                                                {{ old('question_three', $pillarThree->question_three ?? '') == $option ? 'selected' : '' }}>
-                                                {{ $option }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('question_three')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
-
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        @if ($systemAssessment->pillar_three_id ?? '')
-                                            <p class="card-text mb-0 mt-2 fw-medium">
-                                                Penilaian
-                                                Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_three == null ? 'N/A' : $systemAssessment->pillar_three_question_three . ' Poin' }}
-                                            </p>
-                                            <p class="card-text fw-medium text-danger">
-                                                @if ($systemAssessment->pillar_three_question_three == null)
-                                                    *) Formula tidak tersedia untuk kondisi jawaban
+                                    <div class="mb-3 row">
+                                        <label for="committee_pillar_three_question_two"
+                                            class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
+                                            Panitia:</label>
+                                        <div class="col-md-8 col-xl-9">
+                                            <select name="committee_pillar_three_question_two"
+                                                id="committee_pillar_three_question_two" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_two)
+                                                    <option value="">-- Pilih Nilai --</option>
                                                 @endif
-                                            </p>
 
-                                            <div class="mb-3 row">
-                                                <label for="committee_pillar_three_question_three"
-                                                    class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
-                                                    Panitia:</label>
-                                                <div class="col-md-8 col-xl-9">
-                                                    <select name="committee_pillar_three_question_three"
-                                                        id="committee_pillar_three_question_three" class="form-select">
-                                                        @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_three)
-                                                            <option value="">-- Pilih Nilai --</option>
-                                                        @endif
-
-                                                        <option value="1"
-                                                            {{ old('committee_pillar_three_question_three', $committeeAssessment->pillar_three_question_three ?? '') == 1 ? 'selected' : '' }}>
-                                                            1</option>
-                                                        <option value="3"
-                                                            {{ old('committee_pillar_three_question_three', $committeeAssessment->pillar_three_question_three ?? '') == 3 ? 'selected' : '' }}>
-                                                            3</option>
-                                                        <option value="7"
-                                                            {{ old('committee_pillar_three_question_three', $committeeAssessment->pillar_three_question_three ?? '') == 7 ? 'selected' : '' }}>
-                                                            7</option>
-                                                        <option value="9"
-                                                            {{ old('committee_pillar_three_question_three', $committeeAssessment->pillar_three_question_three ?? '') == 9 ? 'selected' : '' }}>
-                                                            9</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endif
-                                </div>
-
-                                {{-- Pertanyaan 4 --}}
-                                <div class="mb-3">
-                                    <label for="question_four" class="form-label">4. Sumber Pembiayaan</label>
-                                    @foreach (['Kotak amal masjid.', 'Sumbangan jamaah atau karyawan via transfer.', 'Sumbangan dari perusahaan.', 'Sumbangan via digital (QRIS dll).', 'Sumbangan via payroll.'] as $option)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="question_four[]"
-                                                value="{{ $option }}" id="question_four{{ $loop->index + 1 }}"
-                                                data-index="{{ $loop->index + 1 }}"
-                                                {{ in_array($option, (array) old('question_four', json_decode($pillarThree->question_four ?? '[]', true) ?? '')) ? 'checked' : '' }}
-                                                @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                            <label class="form-check-label"
-                                                for="question_four{{ $loop->index + 1 }}">
-                                                {{ $option }}
-                                            </label>
+                                                <option value="1"
+                                                    {{ old('committee_pillar_three_question_two', $committeeAssessment->pillar_three_question_two ?? '') == 1 ? 'selected' : '' }}>
+                                                    1</option>
+                                                <option value="3"
+                                                    {{ old('committee_pillar_three_question_two', $committeeAssessment->pillar_three_question_two ?? '') == 3 ? 'selected' : '' }}>
+                                                    3</option>
+                                                <option value="7"
+                                                    {{ old('committee_pillar_three_question_two', $committeeAssessment->pillar_three_question_two ?? '') == 7 ? 'selected' : '' }}>
+                                                    7</option>
+                                                <option value="9"
+                                                    {{ old('committee_pillar_three_question_two', $committeeAssessment->pillar_three_question_two ?? '') == 9 ? 'selected' : '' }}>
+                                                    9</option>
+                                            </select>
                                         </div>
-                                    @endforeach
+                                    </div>
+                                @endif
+                            @endif
 
+                            {{-- Pertanyaan 3 --}}
+                            <div class="mb-3">
+                                <label for="question_three" class="form-label">3. Jumlah Penerima
+                                    Manfaat</label>
+                                <select class="form-select" name="question_three" id="question_three"
+                                    @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                    @foreach (['Belum ada', 'Kurang dari 100', '100 sampai 1000', 'Lebih dari 1000'] as $key => $option)
+                                        <option value="{{ $option }}" data-index="{{ $key + 1 }}"
+                                            {{ old('question_three', $pillarThree->question_three ?? '') == $option ? 'selected' : '' }}>
+                                            {{ $option }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('question_three')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
+                            </div>
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_three_id ?? '')
+                                    <p class="card-text mb-0 mt-2 fw-medium">
+                                        Penilaian
+                                        Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_three == null ? 'N/A' : $systemAssessment->pillar_three_question_three . ' Poin' }}
+                                    </p>
+                                    <p class="card-text fw-medium text-danger">
+                                        @if ($systemAssessment->pillar_three_question_three == null)
+                                            *) Formula tidak tersedia untuk kondisi jawaban
+                                        @endif
+                                    </p>
+
+                                    <div class="mb-3 row">
+                                        <label for="committee_pillar_three_question_three"
+                                            class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
+                                            Panitia:</label>
+                                        <div class="col-md-8 col-xl-9">
+                                            <select name="committee_pillar_three_question_three"
+                                                id="committee_pillar_three_question_three" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_three)
+                                                    <option value="">-- Pilih Nilai --</option>
+                                                @endif
+
+                                                <option value="1"
+                                                    {{ old('committee_pillar_three_question_three', $committeeAssessment->pillar_three_question_three ?? '') == 1 ? 'selected' : '' }}>
+                                                    1</option>
+                                                <option value="3"
+                                                    {{ old('committee_pillar_three_question_three', $committeeAssessment->pillar_three_question_three ?? '') == 3 ? 'selected' : '' }}>
+                                                    3</option>
+                                                <option value="7"
+                                                    {{ old('committee_pillar_three_question_three', $committeeAssessment->pillar_three_question_three ?? '') == 7 ? 'selected' : '' }}>
+                                                    7</option>
+                                                <option value="9"
+                                                    {{ old('committee_pillar_three_question_three', $committeeAssessment->pillar_three_question_three ?? '') == 9 ? 'selected' : '' }}>
+                                                    9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+
+                            {{-- Pertanyaan 4 --}}
+                            <div class="mb-3">
+                                <label for="question_four" class="form-label">4. Sumber Pembiayaan</label>
+                                @foreach (['Kotak amal masjid.', 'Sumbangan jamaah atau karyawan via transfer.', 'Sumbangan dari perusahaan.', 'Sumbangan via digital (QRIS dll).', 'Sumbangan via payroll.'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_four[]"
-                                            value="custom" id="question_four6" data-index="6"
-                                            {{ in_array('custom', (array) old('question_four', json_decode($pillarThree->question_four ?? '[]', true) ?? '')) ? 'checked' : '' }}
+                                            value="{{ $option }}" id="question_four{{ $loop->index + 1 }}"
+                                            data-index="{{ $loop->index + 1 }}"
+                                            {{ in_array($option, (array) old('question_four', json_decode($pillarThree->question_four ?? '[]', true) ?? '')) ? 'checked' : '' }}
                                             @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                        <label class="form-check-label w-100" for="question_four6">
-                                            <input type="text" class="form-control" id="option_four"
-                                                name="option_four"
-                                                value="{{ old('option_four', $pillarThree->option_four ?? '') }}"
-                                                @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_four{{ $loop->index + 1 }}">
+                                            {{ $option }}
                                         </label>
                                     </div>
+                                @endforeach
 
-                                    @error('question_four')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
-
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        @if ($systemAssessment->pillar_three_id ?? '')
-                                            <p class="card-text mb-0 mt-2 fw-medium">
-                                                Penilaian
-                                                Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_four == null ? 'N/A' : $systemAssessment->pillar_three_question_four . ' Poin' }}
-                                            </p>
-                                            <p class="card-text fw-medium text-danger">
-                                                @if ($systemAssessment->pillar_three_question_four == null)
-                                                    *) Formula tidak tersedia untuk kondisi jawaban
-                                                @endif
-                                            </p>
-
-                                            <div class="mb-3 row">
-                                                <label for="committee_pillar_three_question_four"
-                                                    class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
-                                                    Panitia:</label>
-                                                <div class="col-md-8 col-xl-9">
-                                                    <select name="committee_pillar_three_question_four"
-                                                        id="committee_pillar_three_question_four" class="form-select">
-                                                        @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_four)
-                                                            <option value="">-- Pilih Nilai --</option>
-                                                        @endif
-
-                                                        <option value="1"
-                                                            {{ old('committee_pillar_three_question_four', $committeeAssessment->pillar_three_question_four ?? '') == 1 ? 'selected' : '' }}>
-                                                            1</option>
-                                                        <option value="3"
-                                                            {{ old('committee_pillar_three_question_four', $committeeAssessment->pillar_three_question_four ?? '') == 3 ? 'selected' : '' }}>
-                                                            3</option>
-                                                        <option value="7"
-                                                            {{ old('committee_pillar_three_question_four', $committeeAssessment->pillar_three_question_four ?? '') == 7 ? 'selected' : '' }}>
-                                                            7</option>
-                                                        <option value="9"
-                                                            {{ old('committee_pillar_three_question_four', $committeeAssessment->pillar_three_question_four ?? '') == 9 ? 'selected' : '' }}>
-                                                            9</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endif
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="question_four[]"
+                                        value="custom" id="question_four6" data-index="6"
+                                        {{ in_array('custom', (array) old('question_four', json_decode($pillarThree->question_four ?? '[]', true) ?? '')) ? 'checked' : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                    <label class="form-check-label w-100" for="question_four6">
+                                        <input type="text" class="form-control" id="option_four"
+                                            name="option_four"
+                                            value="{{ old('option_four', $pillarThree->option_four ?? '') }}"
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                    </label>
                                 </div>
 
-                                @if (auth()->check() && auth()->user()->hasRole('user'))
-                                    <div
-                                        class="{{ $pillarThree && $pillarThree->file_question_four ? 'mb-2' : 'mb-0' }}">
-                                        <label for="file_question_four" class="form-label fw-medium">Dokumen
-                                            Pendukung</label>
-                                        <input class="form-control" type="file" id="file_question_four"
-                                            name="file_question_four">
-
-                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
-                                            izinkan.</div>
-
-                                        @error('file_question_four')
-                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                        @enderror
-                                    </div>
-                                @endif
-
-                                @if ($pillarThree && $pillarThree->file_question_four)
-                                    <div class="mb-0">
-                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                            <label class="form-label fw-medium d-block">Dokumen Pendukung</label>
-                                        @endif
-
-                                        <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-bs-toggle="modal" data-bs-target="#documentModal"
-                                            data-url="{{ url('/' . ltrim($pillarThree->file_question_four, '/')) }}">
-                                            Lihat Dokumen
-                                        </button>
-                                    </div>
-                                @endif
+                                @error('question_four')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
+
+                            @if (auth()->check() && auth()->user()->hasRole('user'))
+                                <div class="{{ $pillarThree && $pillarThree->file_question_four ? 'mb-2' : 'mb-0' }}">
+                                    <label for="file_question_four" class="form-label fw-medium">Dokumen
+                                        Pendukung</label>
+                                    <input class="form-control" type="file" id="file_question_four"
+                                        name="file_question_four">
+
+                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                        izinkan.</div>
+
+                                    @error('file_question_four')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+                            @endif
+
+                            @if ($pillarThree && $pillarThree->file_question_four)
+                                <div class="@if (auth()->check() && auth()->user()->hasRole('admin')) mb-3 @endif">
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        <label class="form-label fw-medium d-block">Dokumen Pendukung</label>
+                                    @endif
+
+                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                        data-bs-toggle="modal" data-bs-target="#documentModal"
+                                        data-url="{{ url('/' . ltrim($pillarThree->file_question_four, '/')) }}">
+                                        Lihat Dokumen
+                                    </button>
+                                </div>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_three_id ?? '')
+                                    <p class="card-text mb-0 mt-2 fw-medium">
+                                        Penilaian
+                                        Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_four == null ? 'N/A' : $systemAssessment->pillar_three_question_four . ' Poin' }}
+                                    </p>
+                                    <p class="card-text fw-medium text-danger">
+                                        @if ($systemAssessment->pillar_three_question_four == null)
+                                            *) Formula tidak tersedia untuk kondisi jawaban
+                                        @endif
+                                    </p>
+
+                                    <div class="row">
+                                        <label for="committee_pillar_three_question_four"
+                                            class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
+                                            Panitia:</label>
+                                        <div class="col-md-8 col-xl-9">
+                                            <select name="committee_pillar_three_question_four"
+                                                id="committee_pillar_three_question_four" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_four)
+                                                    <option value="">-- Pilih Nilai --</option>
+                                                @endif
+
+                                                <option value="1"
+                                                    {{ old('committee_pillar_three_question_four', $committeeAssessment->pillar_three_question_four ?? '') == 1 ? 'selected' : '' }}>
+                                                    1</option>
+                                                <option value="3"
+                                                    {{ old('committee_pillar_three_question_four', $committeeAssessment->pillar_three_question_four ?? '') == 3 ? 'selected' : '' }}>
+                                                    3</option>
+                                                <option value="7"
+                                                    {{ old('committee_pillar_three_question_four', $committeeAssessment->pillar_three_question_four ?? '') == 7 ? 'selected' : '' }}>
+                                                    7</option>
+                                                <option value="9"
+                                                    {{ old('committee_pillar_three_question_four', $committeeAssessment->pillar_three_question_four ?? '') == 9 ? 'selected' : '' }}>
+                                                    9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                     </div>
+                </div>
 
-                    <div class="col">
-                        <div class="card h-100 border-0 shadow rounded-4">
-                            <div class="card-body p-4">
-                                <h5 class="card-title fw-bold mb-3">Sustainability DKM</h5>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">Sustainability DKM</h5>
 
-                                {{-- Pertanyaan 5 --}}
-                                <div class="mb-3">
-                                    <label for="question_five" class="form-label">5. Program Sustainability di
-                                        DKM</label>
-                                    <textarea class="form-control" name="question_five" rows="5"
-                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>{{ old('question_five', $pillarThree->question_five ?? '') }}</textarea>
+                            {{-- Pertanyaan 5 --}}
+                            <div class="mb-3">
+                                <label for="question_five" class="form-label">5. Program Sustainability di
+                                    DKM</label>
+                                <textarea class="form-control" name="question_five" rows="5"
+                                    @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>{{ old('question_five', $pillarThree->question_five ?? '') }}</textarea>
 
-                                    @error('question_five')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
+                                @error('question_five')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
+                            </div>
 
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        @if ($systemAssessment->pillar_three_id ?? '')
-                                            <p class="card-text mb-0 mt-2 fw-medium">
-                                                Penilaian
-                                                Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_five == null ? 'N/A' : $systemAssessment->pillar_three_question_five . ' Poin' }}
-                                            </p>
-                                            <p class="card-text fw-medium text-danger">
-                                                @if ($systemAssessment->pillar_three_question_five == null)
-                                                    *) Formula tidak tersedia untuk kondisi jawaban
-                                                @endif
-                                            </p>
-
-                                            <div class="mb-3 row">
-                                                <label for="committee_pillar_three_question_five"
-                                                    class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
-                                                    Panitia:</label>
-                                                <div class="col-md-8 col-xl-9">
-                                                    <select name="committee_pillar_three_question_five"
-                                                        id="committee_pillar_three_question_five" class="form-select">
-                                                        @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_five)
-                                                            <option value="">-- Pilih Nilai --</option>
-                                                        @endif
-
-                                                        <option value="1"
-                                                            {{ old('committee_pillar_three_question_five', $committeeAssessment->pillar_three_question_five ?? '') == 1 ? 'selected' : '' }}>
-                                                            1</option>
-                                                        <option value="3"
-                                                            {{ old('committee_pillar_three_question_five', $committeeAssessment->pillar_three_question_five ?? '') == 3 ? 'selected' : '' }}>
-                                                            3</option>
-                                                        <option value="7"
-                                                            {{ old('committee_pillar_three_question_five', $committeeAssessment->pillar_three_question_five ?? '') == 7 ? 'selected' : '' }}>
-                                                            7</option>
-                                                        <option value="9"
-                                                            {{ old('committee_pillar_three_question_five', $committeeAssessment->pillar_three_question_five ?? '') == 9 ? 'selected' : '' }}>
-                                                            9</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_three_id ?? '')
+                                    <p class="card-text mb-0 mt-2 fw-medium">
+                                        Penilaian
+                                        Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_five == null ? 'N/A' : $systemAssessment->pillar_three_question_five . ' Poin' }}
+                                    </p>
+                                    <p class="card-text fw-medium text-danger">
+                                        @if ($systemAssessment->pillar_three_question_five == null)
+                                            *) Formula tidak tersedia untuk kondisi jawaban
                                         @endif
-                                    @endif
-                                </div>
+                                    </p>
 
-                                {{-- Pertanyaan 6 --}}
-                                <div class="mb-3">
-                                    <label for="question_six" class="form-label">6. Jelaskan dengan Sebutkan Program
-                                        yang
-                                        sesuai dengan Astra
-                                        Sustainability Aspiration</label>
-                                    @foreach (['Hemat Air.', 'Hemat Listrik.', 'Pengelolaan sampah.'] as $option)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="question_six[]"
-                                                value="{{ $option }}" id="question_six{{ $loop->index + 1 }}"
-                                                data-index="{{ $loop->index + 1 }}"
-                                                {{ in_array($option, (array) old('question_six', json_decode($pillarThree->question_six ?? '[]', true) ?? '')) ? 'checked' : '' }}
-                                                @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                            <label class="form-check-label" for="question_six{{ $loop->index + 1 }}">
-                                                {{ $option }}
-                                            </label>
+                                    <div class="mb-3 row">
+                                        <label for="committee_pillar_three_question_five"
+                                            class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
+                                            Panitia:</label>
+                                        <div class="col-md-8 col-xl-9">
+                                            <select name="committee_pillar_three_question_five"
+                                                id="committee_pillar_three_question_five" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_five)
+                                                    <option value="">-- Pilih Nilai --</option>
+                                                @endif
+
+                                                <option value="1"
+                                                    {{ old('committee_pillar_three_question_five', $committeeAssessment->pillar_three_question_five ?? '') == 1 ? 'selected' : '' }}>
+                                                    1</option>
+                                                <option value="3"
+                                                    {{ old('committee_pillar_three_question_five', $committeeAssessment->pillar_three_question_five ?? '') == 3 ? 'selected' : '' }}>
+                                                    3</option>
+                                                <option value="7"
+                                                    {{ old('committee_pillar_three_question_five', $committeeAssessment->pillar_three_question_five ?? '') == 7 ? 'selected' : '' }}>
+                                                    7</option>
+                                                <option value="9"
+                                                    {{ old('committee_pillar_three_question_five', $committeeAssessment->pillar_three_question_five ?? '') == 9 ? 'selected' : '' }}>
+                                                    9</option>
+                                            </select>
                                         </div>
-                                    @endforeach
+                                    </div>
+                                @endif
+                            @endif
 
+                            {{-- Pertanyaan 6 --}}
+                            <div class="mb-3">
+                                <label for="question_six" class="form-label">6. Jelaskan dengan Sebutkan Program
+                                    yang
+                                    sesuai dengan Astra
+                                    Sustainability Aspiration</label>
+                                @foreach (['Hemat Air.', 'Hemat Listrik.', 'Pengelolaan sampah.'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_six[]"
-                                            value="custom" id="question_six4" data-index="4"
-                                            {{ in_array('custom', (array) old('question_six', json_decode($pillarThree->question_six ?? '[]', true) ?? '')) ? 'checked' : '' }}
+                                            value="{{ $option }}" id="question_six{{ $loop->index + 1 }}"
+                                            data-index="{{ $loop->index + 1 }}"
+                                            {{ in_array($option, (array) old('question_six', json_decode($pillarThree->question_six ?? '[]', true) ?? '')) ? 'checked' : '' }}
                                             @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                        <label class="form-check-label w-100" for="question_six4">
-                                            <input type="text" class="form-control" id="option_six"
-                                                name="option_six" placeholder="Lainnya.."
-                                                value="{{ old('option_six', $pillarThree->option_six ?? '') }}"
-                                                @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        <label class="form-check-label" for="question_six{{ $loop->index + 1 }}">
+                                            {{ $option }}
                                         </label>
                                     </div>
+                                @endforeach
 
-                                    @error('question_six')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
-
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        @if ($systemAssessment->pillar_three_id ?? '')
-                                            <p class="card-text mb-0 mt-2 fw-medium">
-                                                Penilaian
-                                                Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_six == null ? 'N/A' : $systemAssessment->pillar_three_question_six . ' Poin' }}
-                                            </p>
-                                            <p class="card-text fw-medium text-danger">
-                                                @if ($systemAssessment->pillar_three_question_six == null)
-                                                    *) Formula tidak tersedia untuk kondisi jawaban
-                                                @endif
-                                            </p>
-
-                                            <div class="mb-3 row">
-                                                <label for="committee_pillar_three_question_six"
-                                                    class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
-                                                    Panitia:</label>
-                                                <div class="col-md-8 col-xl-9">
-                                                    <select name="committee_pillar_three_question_six"
-                                                        id="committee_pillar_three_question_six" class="form-select">
-                                                        @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_six)
-                                                            <option value="">-- Pilih Nilai --</option>
-                                                        @endif
-
-                                                        <option value="1"
-                                                            {{ old('committee_pillar_three_question_six', $committeeAssessment->pillar_three_question_six ?? '') == 1 ? 'selected' : '' }}>
-                                                            1</option>
-                                                        <option value="3"
-                                                            {{ old('committee_pillar_three_question_six', $committeeAssessment->pillar_three_question_six ?? '') == 3 ? 'selected' : '' }}>
-                                                            3</option>
-                                                        <option value="7"
-                                                            {{ old('committee_pillar_three_question_six', $committeeAssessment->pillar_three_question_six ?? '') == 7 ? 'selected' : '' }}>
-                                                            7</option>
-                                                        <option value="9"
-                                                            {{ old('committee_pillar_three_question_six', $committeeAssessment->pillar_three_question_six ?? '') == 9 ? 'selected' : '' }}>
-                                                            9</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endif
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="question_six[]"
+                                        value="custom" id="question_six4" data-index="4"
+                                        {{ in_array('custom', (array) old('question_six', json_decode($pillarThree->question_six ?? '[]', true) ?? '')) ? 'checked' : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                    <label class="form-check-label w-100" for="question_six4">
+                                        <input type="text" class="form-control" id="option_six" name="option_six"
+                                            placeholder="Lainnya.."
+                                            value="{{ old('option_six', $pillarThree->option_six ?? '') }}"
+                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                    </label>
                                 </div>
 
-                                @if (auth()->check() && auth()->user()->hasRole('user'))
-                                    <div class="{{ $pillarThree && $pillarThree->file_question_six ? 'mb-2' : 'mb-3 mb-md-4' }}">
-                                        <label for="file_question_six" class="form-label fw-medium">Upload dokumen
-                                            poster,
-                                            foto screen shoot dan lain-lain yang menunjukkan bukti Astra Sustainability
-                                            Aspiration</label>
-                                        <input class="form-control" type="file" id="file_question_six"
-                                            name="file_question_six">
-
-                                        <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
-                                            izinkan.</div>
-
-                                        @error('file_question_six')
-                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                        @enderror
-                                    </div>
-                                @endif
-
-                                @if ($pillarThree && $pillarThree->file_question_six)
-                                    <div class="mb-3">
-                                        @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                            <label class="form-label fw-medium d-block">Dokumen poster, foto screen
-                                                shoot dan lain-lain yang menunjukkan bukti Astra Sustainability
-                                                Aspiration</label>
-                                        @endif
-
-                                        <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                            data-bs-toggle="modal" data-bs-target="#documentModal"
-                                            data-url="{{ url('/' . ltrim($pillarThree->file_question_six, '/')) }}">
-                                            Lihat Dokumen
-                                        </button>
-                                    </div>
-                                @endif
-
-                                @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    @if ($systemAssessment->pillar_three_id ?? '')
-                                        <div class="text-end">
-                                            <button type="submit" class="btn btn-warning">Ubah Nilai</button>
-                                        </div>
-
-                                        </form>
-                                    @endif
-                                @endif
-
-                                @if (auth()->check() && auth()->user()->hasRole('user'))
-                                    <div class="text-end">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                    </div>
-                                @endif
+                                @error('question_six')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
                             </div>
+
+                            @if (auth()->check() && auth()->user()->hasRole('user'))
+                                <div
+                                    class="{{ $pillarThree && $pillarThree->file_question_six ? 'mb-2' : 'mb-3 mb-md-4' }}">
+                                    <label for="file_question_six" class="form-label fw-medium">Upload dokumen
+                                        poster,
+                                        foto screen shoot dan lain-lain yang menunjukkan bukti Astra Sustainability
+                                        Aspiration</label>
+                                    <input class="form-control" type="file" id="file_question_six"
+                                        name="file_question_six">
+
+                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                        izinkan.</div>
+
+                                    @error('file_question_six')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+                            @endif
+
+                            @if ($pillarThree && $pillarThree->file_question_six)
+                                <div class="mb-3">
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        <label class="form-label fw-medium d-block">Dokumen poster, foto screen
+                                            shoot dan lain-lain yang menunjukkan bukti Astra Sustainability
+                                            Aspiration</label>
+                                    @endif
+
+                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                        data-bs-toggle="modal" data-bs-target="#documentModal"
+                                        data-url="{{ url('/' . ltrim($pillarThree->file_question_six, '/')) }}">
+                                        Lihat Dokumen
+                                    </button>
+                                </div>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_three_id ?? '')
+                                    <p class="card-text mb-0 mt-2 fw-medium">
+                                        Penilaian
+                                        Sistem:&nbsp;{{ $systemAssessment->pillar_three_question_six == null ? 'N/A' : $systemAssessment->pillar_three_question_six . ' Poin' }}
+                                    </p>
+                                    <p class="card-text fw-medium text-danger">
+                                        @if ($systemAssessment->pillar_three_question_six == null)
+                                            *) Formula tidak tersedia untuk kondisi jawaban
+                                        @endif
+                                    </p>
+
+                                    <div class="mb-4 row">
+                                        <label for="committee_pillar_three_question_six"
+                                            class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
+                                            Panitia:</label>
+                                        <div class="col-md-8 col-xl-9">
+                                            <select name="committee_pillar_three_question_six"
+                                                id="committee_pillar_three_question_six" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_three_question_six)
+                                                    <option value="">-- Pilih Nilai --</option>
+                                                @endif
+
+                                                <option value="1"
+                                                    {{ old('committee_pillar_three_question_six', $committeeAssessment->pillar_three_question_six ?? '') == 1 ? 'selected' : '' }}>
+                                                    1</option>
+                                                <option value="3"
+                                                    {{ old('committee_pillar_three_question_six', $committeeAssessment->pillar_three_question_six ?? '') == 3 ? 'selected' : '' }}>
+                                                    3</option>
+                                                <option value="7"
+                                                    {{ old('committee_pillar_three_question_six', $committeeAssessment->pillar_three_question_six ?? '') == 7 ? 'selected' : '' }}>
+                                                    7</option>
+                                                <option value="9"
+                                                    {{ old('committee_pillar_three_question_six', $committeeAssessment->pillar_three_question_six ?? '') == 9 ? 'selected' : '' }}>
+                                                    9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_three_id ?? '')
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-warning">Ubah Nilai</button>
+                                    </div>
+
+                                    </form>
+                                @endif
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('user'))
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            @endif
                         </div>
                     </div>
+                </div>
                 </form>
             </div>
         </div>
