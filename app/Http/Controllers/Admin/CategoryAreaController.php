@@ -10,17 +10,25 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryAreaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
             ['class' => 'text-start py-3', 'label' => 'Nama'],
+            ['class' => 'text-center py-3', 'label' => 'Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $categories = CategoryArea::orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $query = CategoryArea::query();
+        $search = $request->input('search');
 
-        return view('admin.pages.category_area.index', compact('theadName', 'categories'));
+        if (!empty($search)) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        $categories = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.category_area.index', compact('theadName', 'search', 'categories'));
     }
 
     public function create()

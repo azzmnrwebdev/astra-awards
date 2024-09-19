@@ -26,7 +26,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center px-4">
                             <div class="lh-base me-3">
                                 <h5 class="card-title fw-semibold mb-1">{{ $totalDKM }}</h5>
-                                <p class="card-text mb-0 lh-sm">Total Pendaftar</p>
+                                <p class="card-text mb-0 lh-sm">Total Peserta</p>
                             </div>
                             <i class="bi bi-people-fill fs-1" style="color: #0077B6;"></i>
                         </div>
@@ -52,7 +52,7 @@
                         <div class="card-body d-flex justify-content-between align-items-center px-4">
                             <div class="lh-base me-3">
                                 <h5 class="card-title fw-semibold mb-1">{{ $totalBusinessLine }}</h5>
-                                <p class="card-text mb-0 lh-sm">Total Lini Bisnis</p>
+                                <p class="card-text mb-0 lh-sm">Total Lini Bisnis, Yayasan & Koperasi, Head Office</p>
                             </div>
                             <i class="bi bi-briefcase-fill fs-1" style="color: #0077B6;"></i>
                         </div>
@@ -127,7 +127,7 @@
                 {{-- Lini Bisnis --}}
                 <div class="card border-0 bg-transparent">
                     <h5 class="card-header fw-medium py-3 text-bg-dark text-center">
-                        Lini Bisnis
+                        Lini Bisnis, Yayasan & Koperasi, Head Office
                     </h5>
 
                     <ul class="list-group overflow-x-hidden rounded-0 border-bottom rounded-bottom">

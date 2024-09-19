@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -25,12 +25,24 @@ class UserController extends Controller
             ['class' => 'text-start py-3', 'label' => 'Email'],
             ['class' => 'text-center py-3', 'label' => 'Nomor Ponsel'],
             ['class' => 'text-center py-3', 'label' => 'Status'],
+            ['class' => 'text-center py-3', 'label' => 'Tanggal Bergabung'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $users = User::where('role', 'user')->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $search = $request->input('search');
+        $query = User::query()->where('role', 'user');
 
-        return view('admin.pages.user.index', compact('theadName', 'users'));
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(phone_number) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        $users = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.user.index', compact('theadName', 'search', 'users'));
     }
 
     public function show(User $user)

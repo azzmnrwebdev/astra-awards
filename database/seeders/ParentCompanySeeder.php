@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,24 +14,114 @@ class ParentCompanySeeder extends Seeder
     public function run(): void
     {
         DB::table('parent_companies')->insert([
-            ['id' => 2, 'name' =>  'PT. United Tractors  Tbk'],
-            ['id' => 3, 'name' =>  'PT Astra Agro Lestari Tbk'],
-            ['id' => 1, 'name' =>  'PT. Astragraphia Tbk'],
-            ['id' => 4, 'name' =>  'PT Astra Otoparts Tbk'],
-            ['id' => 5, 'name' =>  'Astra Financial'],
-            ['id' => 6, 'name' =>  'PT Astra Daihatsu Motor'],
-            ['id' => 7, 'name' =>  'PT Astra Infra Toll Road'],
-            ['id' => 8, 'name' =>  'PT. Pamapersada Nusantara'],
-            ['id' => 9, 'name' =>  'PT Astra Tol Nusantara'],
-            ['id' => 10, 'name' =>  'PT Astra International Tbk'],
-            ['id' => 12, 'name' =>  'PT Toyota Motor Manufacturing Indonesia'],
-            ['id' => 13, 'name' =>  'PT Toyota Astra Motor'],
-            ['id' => 14, 'name' =>  'PT. Serasi Autoraya (SERA)'],
-            ['id' => 15, 'name' =>  'PT Astra Honda Motor'],
-            ['id' => 16, 'name' =>  'Head Office'],
-            ['id' => 17, 'name' =>  'Astra Property'],
-            ['id' => 18, 'name' =>  'PT Astra Motor'],
-            ['id' => 19, 'name' =>  'Koperasi Astra International'],
+            [
+                'id' => 2,
+                'name' =>  'United Tractors  Tbk',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 3,
+                'name' =>  'Astra Agro Lestari Tbk',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 1,
+                'name' =>  'Astragraphia Tbk',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 4,
+                'name' =>  'Astra Otoparts Tbk',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 5,
+                'name' =>  'Astra Financial',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 6,
+                'name' =>  'Astra Daihatsu Motor',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 7,
+                'name' =>  'Astra Infra Toll Road',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 8,
+                'name' =>  'Pamapersada Nusantara',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 9,
+                'name' =>  'Astra Tol Nusantara',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 10,
+                'name' =>  'Astra International Tbk',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 12,
+                'name' =>  'Toyota Motor Manufacturing Indonesia',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 13,
+                'name' =>  'Toyota Astra Motor',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 14,
+                'name' =>  'Serasi Autoraya (SERA)',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 15,
+                'name' =>  'Astra Honda Motor',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 16,
+                'name' =>  'Head Office',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 17,
+                'name' =>  'Astra Property',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 18,
+                'name' =>  'Astra Motor',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
+            [
+                'id' => 19,
+                'name' =>  'Koperasi Astra International',
+                'created_at' => Carbon::now()->toDateTimeString(),
+                'updated_at' => Carbon::now()->toDateTimeString()
+            ],
         ]);
     }
 }

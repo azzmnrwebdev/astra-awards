@@ -16,9 +16,16 @@
                 </div>
             @endif
 
-            <div class="row">
-                <div class="col-auto">
+            <div class="row align-items-center">
+                <div class="col-sm-6 col-xl-8">
                     <a href="{{ route('categoryArea.create') }}" class="btn btn-dark rounded-0">Tambah</a>
+                </div>
+
+                <div class="col-sm-6 col-xl-4 mt-3 mt-sm-0">
+                    <form>
+                        <input type="search" name="search" id="search" value="{{ $search }}"
+                            class="form-control" placeholder="Cari kategori">
+                    </form>
                 </div>
             </div>
 
@@ -37,6 +44,7 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $categories->firstItem() }}</td>
                                 <td class="text-start py-3">{{ $item->name }}</td>
+                                <td class="text-center py-3">{{ count($item->mosque) }}</td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('categoryArea.edit', ['categoryArea' => $item->id]) }}"
                                         class="text-dark align-middle @if (empty(count($item->mosque))) me-3 @endif"><i
@@ -53,7 +61,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="4" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -99,11 +107,48 @@
     @prepend('scripts')
         <script>
             $(document).ready(function() {
-                // Handle click on delet button
+                let debounceTimeout;
+
+                $('#search').on('input keydown', function(e) {
+                    if (e.which !== 13) {
+                        clearTimeout(debounceTimeout);
+
+                        debounceTimeout = setTimeout(function() {
+                            filter();
+                        }, 1000);
+                    }
+                });
+
+                $('#search').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        filter();
+                    }
+                });
+
+                function filter() {
+                    const params = {};
+                    const searchValue = $('#search').val();
+                    const url = '{{ route('categoryArea.index') }}';
+
+                    if (searchValue.trim() !== '') {
+                        params.search = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    const queryString = Object.keys(params).map(key => key + '=' + params[key]);
+
+                    const finalUrl = url + '?' + queryString.join('&');
+                    window.location.href = finalUrl;
+                }
+
+                // =============================================================================================
+
+                // Handle click on delete button
                 $('.delete').click(function() {
                     const id = $(this).data('id');
                     const name = $(this).data('name');
-                    const deleteUrl = "{{ route('categoryArea.destroy', ['categoryArea' => ':id']) }}".replace(':id',
+                    const deleteUrl = "{{ route('categoryArea.destroy', ['categoryArea' => ':id']) }}".replace(
+                        ':id',
                         id);
 
                     $('#deleteForm').attr('action', deleteUrl);

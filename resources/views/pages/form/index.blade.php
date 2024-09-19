@@ -11,35 +11,35 @@
                 <a href="{{ route('form.relationship') }}"
                     class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        Formulir Hubungan DKM dengan YAA
+                        Hubungan DKM dengan YAA
                     </div>
                 </a>
 
                 <a href="{{ route('form.managementRelationship') }}"
                     class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah
+                        Hubungan Manajemen Perusahaan dengan DKM dan Jamaah
                     </div>
                 </a>
 
                 <a href="{{ route('form.program') }}"
                     class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        Formulir Program Sosial
+                        Program Sosial
                     </div>
                 </a>
 
                 <a href="{{ route('form.administration') }}"
                     class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        Formulir Administrasi dan Keuangan
+                        Administrasi dan Keuangan
                     </div>
                 </a>
 
                 <a href="{{ route('form.infrastructure') }}"
                     class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        Formulir Peribadahan dan Infrastruktur
+                        Peribadahan dan Infrastruktur
                     </div>
                 </a>
             </ul>
@@ -51,7 +51,7 @@
                 <div class="col">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-4">Formulir Hubungan DKM dengan YAA</h5>
+                            <h5 class="card-title fw-bold mb-4">Hubungan DKM dengan YAA</h5>
 
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap align-middle mb-0">
@@ -127,7 +127,7 @@
                 <div class="col">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-4">Formulir Hubungan Manajemen Perusahaan dengan DKM dan
+                            <h5 class="card-title fw-bold mb-4">Hubungan Manajemen Perusahaan dengan DKM dan
                                 Jamaah</h5>
 
                             <div class="table-responsive">
@@ -204,7 +204,7 @@
                 <div class="col">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-4">Formulir Program Sosial</h5>
+                            <h5 class="card-title fw-bold mb-4">Program Sosial</h5>
 
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap align-middle mb-0">
@@ -281,7 +281,7 @@
                 <div class="col">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-4">Formulir Administrasi dan Keuangan</h5>
+                            <h5 class="card-title fw-bold mb-4">Administrasi dan Keuangan</h5>
 
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap align-middle mb-0">
@@ -357,7 +357,7 @@
                 <div class="col">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-3">Formulir Peribadahan dan Infrastruktur</h5>
+                            <h5 class="card-title fw-bold mb-3">Peribadahan dan Infrastruktur</h5>
 
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap align-middle mb-0">

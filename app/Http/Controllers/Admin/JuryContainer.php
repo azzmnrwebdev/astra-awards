@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class JuryContainer extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -23,12 +23,24 @@ class JuryContainer extends Controller
             ['class' => 'text-start py-3', 'label' => 'Email'],
             ['class' => 'text-center py-3', 'label' => 'Nomor Ponsel'],
             ['class' => 'text-center py-3', 'label' => 'Status'],
+            ['class' => 'text-center py-3', 'label' => 'Tanggal Bergabung'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $juries = User::where('role', 'jury')->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $search = $request->input('search');
+        $query = User::query()->where('role', 'jury');
 
-        return view('admin.pages.jury.index', compact('theadName', 'juries'));
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhereRaw('LOWER(phone_number) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+        $juries = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.jury.index', compact('theadName', 'search', 'juries'));
     }
 
     public function create()

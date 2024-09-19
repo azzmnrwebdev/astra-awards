@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CityController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -20,9 +20,23 @@ class CityController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $cities = City::orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $query = City::query();
+        $provinces = Province::all();
 
-        return view('admin.pages.city.index', compact('theadName', 'cities'));
+        $search = $request->input('search');
+        $provinceId = $request->input('province_id');
+
+        if (!empty($search)) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        if (!empty($provinceId)) {
+            $query->where('province_id', $provinceId);
+        }
+
+        $cities = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.city.index', compact('theadName', 'search', 'provinceId', 'provinces', 'cities'));
     }
 
     public function create()

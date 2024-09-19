@@ -3,7 +3,8 @@
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
             <div class="card border-0 shadow" style="border-radius: 20px;">
                 <div class="card-body p-5">
-                    <h2 style="margin-bottom: 1.5rem; font-weight: 700;">Masuk</h2>
+                    <div class="row justify-content-center align-items-center"><img src="{{ asset('images/logo-login.png') }}" alt="Logo" width="200"></div>
+                    <h2 style="margin-bottom: 1.5rem; margin-top: 1.5rem; font-weight: 700;">Masuk</h2>
                     <h5 class="card-title mb-3" style="font-weight: 600;">Assalamu'alaikum Wr Wb 👋</h5>
 
                     {{-- Alert Success --}}
@@ -20,7 +21,7 @@
                         </div>
                     @endif
 
-                    <form class="row g-3" action="{{ route('loginAct') }}" method="POST">
+                    <form class="row align-items-center g-3" action="{{ route('loginAct') }}" method="POST">
                         @csrf
 
                         {{-- email --}}

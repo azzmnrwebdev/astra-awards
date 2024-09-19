@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-white sticky-top" style="border-bottom: 2px solid rgb(0 0 0 / 0.05)">
     <div class="container">
         <a class="navbar-brand" href="{{ route('information') }}">
-            <img src="{{ asset('images/logo.jpg') }}" alt="Logo" width="150">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" width="150">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

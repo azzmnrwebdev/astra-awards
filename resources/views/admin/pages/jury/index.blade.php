@@ -16,9 +16,16 @@
                 </div>
             @endif
 
-            <div class="row">
-                <div class="col-auto">
+            <div class="row align-items-center">
+                <div class="col-sm-6 col-xl-8">
                     <a href="{{ route('jury.create') }}" class="btn btn-dark rounded-0">Tambah</a>
+                </div>
+
+                <div class="col-sm-6 col-xl-4 mt-3 mt-sm-0">
+                    <form>
+                        <input type="search" name="search" id="search" value="{{ $search }}"
+                            class="form-control" placeholder="Cari juri">
+                    </form>
                 </div>
             </div>
 
@@ -45,7 +52,16 @@
                                 <td class="text-start py-3">{{ $item->name }}</td>
                                 <td class="text-start py-3">{{ $item->email }}</td>
                                 <td class="text-center py-3">{{ $item->phone_number ?? '-' }}</td>
-                                <td class="text-center py-3">{{ $item->status ? 'Aktif' : 'Tidal Aktif' }}</td>
+                                <td class="text-center py-3">
+                                    @if ($item->status === 1)
+                                        <span class="badge text-bg-success">Aktif</span>
+                                    @else
+                                        <span class="badge text-bg-danger">Tidak Aktif</span>
+                                    @endif
+                                </td>
+                                <td class="text-center py-3">
+                                    {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}
+                                </td>
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
                                     <td class="text-center py-3">
                                         @if (Auth::user()->email !== $item->email)
@@ -66,9 +82,9 @@
                         @empty
                             <tr>
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                                    <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                                 @else
-                                    <td colspan="5" class="text-center py-3">Data tidak ditemukan</td>
+                                    <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
                                 @endif
                             </tr>
                         @endforelse
@@ -118,6 +134,43 @@
     @prepend('scripts')
         <script>
             $(document).ready(function() {
+                let debounceTimeout;
+
+                $('#search').on('input keydown', function(e) {
+                    if (e.which !== 13) {
+                        clearTimeout(debounceTimeout);
+
+                        debounceTimeout = setTimeout(function() {
+                            filter();
+                        }, 1000);
+                    }
+                });
+
+                $('#search').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        filter();
+                    }
+                });
+
+                function filter() {
+                    const params = {};
+                    const searchValue = $('#search').val();
+                    const url = '{{ route('jury.index') }}';
+
+                    if (searchValue.trim() !== '') {
+                        params.search = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    const queryString = Object.keys(params).map(key => key + '=' + params[key]);
+
+                    const finalUrl = url + '?' + queryString.join('&');
+                    window.location.href = finalUrl;
+                }
+
+                // =============================================================================================
+
+                // Handle click on delete button
                 $('.delete').click(function() {
                     const id = $(this).data('id');
                     const name = $(this).data('name');
