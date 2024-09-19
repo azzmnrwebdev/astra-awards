@@ -17,17 +17,29 @@
             @endif
 
             <div class="row justify-content-end">
-                <div class="col-sm-6 col-xl-4">
-                    <form>
-                        <input type="search" name="search" id="search" value="{{ $search }}"
-                            class="form-control" placeholder="Cari peserta">
+                <div class="col-sm-8 col-xl-6">
+                    <form class="row g-2">
+                        <div class="col-sm-6">
+                            <select name="status" id="status" class="form-select">
+                                <option value="">Semua Status</option>
+                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>
+                                    Tidak Aktif
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
+                                class="form-control" placeholder="Cari peserta">
+                        </div>
                     </form>
                 </div>
             </div>
 
             <div class="table-responsive mt-4">
                 <table class="table table-hover text-nowrap align-middle mb-0">
-                    <thead class="border-top border-start border-end">
+                    <thead class="border-top border-start border-end table-primary">
                         <tr>
                             @foreach ($theadName as $index => $thead)
                                 <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
@@ -124,7 +136,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#search').on('input keydown', function(e) {
+                $('#pencarian, #status').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -134,7 +146,7 @@
                     }
                 });
 
-                $('#search').on('keypress', function(e) {
+                $('#pencarian').on('keypress', function(e) {
                     if (e.which == 13) {
                         e.preventDefault();
                         filter();
@@ -143,11 +155,16 @@
 
                 function filter() {
                     const params = {};
-                    const searchValue = $('#search').val();
+                    const searchValue = $('#pencarian').val();
+                    const statusValue = $('#status').val();
                     const url = '{{ route('user.index') }}';
 
                     if (searchValue.trim() !== '') {
-                        params.search = searchValue.trim().replace(/ /g, '+');
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    if (statusValue !== '') {
+                        params.status = statusValue;
                     }
 
                     const queryString = Object.keys(params).map(key => key + '=' + params[key]);

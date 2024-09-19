@@ -23,7 +23,7 @@
 
                 <div class="col-sm-6 col-xl-4 mt-3 mt-sm-0">
                     <form>
-                        <input type="search" name="search" id="search" value="{{ $search }}"
+                        <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                             class="form-control" placeholder="Cari panitia">
                     </form>
                 </div>
@@ -31,7 +31,7 @@
 
             <div class="table-responsive mt-4">
                 <table class="table table-hover text-nowrap align-middle mb-0">
-                    <thead class="border-top border-start border-end">
+                    <thead class="border-top border-start border-end table-primary">
                         <tr>
                             @foreach ($theadNameOne as $thead)
                                 <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
@@ -119,7 +119,7 @@
 
             <div class="table-responsive mt-2">
                 <table class="table table-hover text-nowrap align-middle mb-0">
-                    <thead class="border-top border-start border-end">
+                    <thead class="border-top border-start border-end table-primary">
                         <tr>
                             @foreach ($theadNametwo as $thead)
                                 <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
@@ -193,7 +193,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#search').on('input keydown', function(e) {
+                $('#pencarian').on('input keydown', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -203,7 +203,7 @@
                     }
                 });
 
-                $('#search').on('keypress', function(e) {
+                $('#pencarian').on('keypress', function(e) {
                     if (e.which == 13) {
                         e.preventDefault();
                         filter();
@@ -212,11 +212,11 @@
 
                 function filter() {
                     const params = {};
-                    const searchValue = $('#search').val();
+                    const searchValue = $('#pencarian').val();
                     const url = '{{ route('committee.index') }}';
 
                     if (searchValue.trim() !== '') {
-                        params.search = searchValue.trim().replace(/ /g, '+');
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
                     }
 
                     const queryString = Object.keys(params).map(key => key + '=' + params[key]);

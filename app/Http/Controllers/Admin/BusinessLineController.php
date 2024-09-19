@@ -19,7 +19,7 @@ class BusinessLineController extends Controller
         ];
 
         $query = BusinessLine::query();
-        $search = $request->input('search');
+        $search = $request->input('pencarian');
 
         if (!empty($search)) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);

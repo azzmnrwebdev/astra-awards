@@ -19,7 +19,7 @@ class ParentCompanyController extends Controller
         ];
 
         $query = ParentCompany::query();
-        $search = $request->input('search');
+        $search = $request->input('pencarian');
 
         if (!empty($search)) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);

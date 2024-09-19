@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CompanyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -23,9 +23,29 @@ class CompanyController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $companies = Company::with(['parentCompany', 'businessLine', 'mosque'])->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        $businessLines = BusinessLine::all();
+        $parentCompanies = ParentCompany::all();
 
-        return view('admin.pages.company.index', compact('theadName', 'companies'));
+        $search = $request->input('pencarian');
+        $businessLineId = $request->input('lini_bisnis');
+        $parentCompanyId = $request->input('induk_perusahaan');
+        $query = Company::with(['parentCompany', 'businessLine', 'mosque']);
+
+        if ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        if ($parentCompanyId) {
+            $query->where('parent_company_id', $parentCompanyId);
+        }
+
+        if ($businessLineId) {
+            $query->where('business_line_id', $businessLineId);
+        }
+
+        $companies = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+
+        return view('admin.pages.company.index', compact('theadName', 'search', 'businessLineId', 'parentCompanyId', 'parentCompanies', 'businessLines', 'companies'));
     }
 
     public function create()

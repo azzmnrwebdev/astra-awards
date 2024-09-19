@@ -21,7 +21,7 @@ class CategoryMosqueController extends Controller
         ];
 
         $query = CategoryMosque::query();
-        $search = $request->input('search');
+        $search = $request->input('pencarian');
 
         if (!empty($search)) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);

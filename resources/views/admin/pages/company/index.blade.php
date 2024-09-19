@@ -17,14 +17,47 @@
             @endif
 
             <div class="row">
-                <div class="col-auto">
+                <div class="col-12">
                     <a href="{{ route('company.create') }}" class="btn btn-dark rounded-0">Tambah</a>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <form class="row g-3">
+                        <div class="col-12">
+                            <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
+                                class="form-control" placeholder="Cari perusahaan">
+                        </div>
+
+                        <div class="col-sm-6">
+                            <select name="induk_perusahaan" id="induk_perusahaan" class="form-select">
+                                <option value="">Semua Induk Perusahaan</option>
+                                @foreach ($parentCompanies as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ $parentCompanyId == $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <select name="lini_bisnis" id="lini_bisnis" class="form-select">
+                                <option value="">Semua Lini Bisnis</option>
+                                @foreach ($businessLines as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ $businessLineId == $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
                 </div>
             </div>
 
             <div class="table-responsive mt-4">
                 <table class="table table-hover text-nowrap align-middle mb-0">
-                    <thead class="border-top border-start border-end">
+                    <thead class="border-top border-start border-end table-primary">
                         <tr>
                             @foreach ($theadName as $thead)
                                 <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
@@ -101,7 +134,53 @@
     @prepend('scripts')
         <script>
             $(document).ready(function() {
-                // Handle click on delet button
+                let debounceTimeout;
+
+                $('#pencarian, #induk_perusahaan, #lini_bisnis').on('input keydown change', function(e) {
+                    if (e.which !== 13) {
+                        clearTimeout(debounceTimeout);
+
+                        debounceTimeout = setTimeout(function() {
+                            filter();
+                        }, 1000);
+                    }
+                });
+
+                $('#pencarian').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        filter();
+                    }
+                });
+
+                function filter() {
+                    const params = {};
+                    const searchValue = $('#pencarian').val();
+                    const parentCompanyId = $('#induk_perusahaan').val();
+                    const businessLineId = $('#lini_bisnis').val();
+                    const url = '{{ route('company.index') }}';
+
+                    if (searchValue.trim() !== '') {
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    if (parentCompanyId !== '') {
+                        params.induk_perusahaan = parentCompanyId;
+                    }
+
+                    if (businessLineId !== '') {
+                        params.lini_bisnis = businessLineId;
+                    }
+
+                    const queryString = Object.keys(params).map(key => key + '=' + params[key]);
+
+                    const finalUrl = url + '?' + queryString.join('&');
+                    window.location.href = finalUrl;
+                }
+
+                // =============================================================================================
+
+                // Handle click on delete button
                 $('.delete').click(function() {
                     const id = $(this).data('id');
                     const name = $(this).data('name');

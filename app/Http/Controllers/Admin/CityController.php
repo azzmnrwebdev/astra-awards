@@ -23,14 +23,14 @@ class CityController extends Controller
         $query = City::query();
         $provinces = Province::all();
 
-        $search = $request->input('search');
-        $provinceId = $request->input('province_id');
+        $search = $request->input('pencarian');
+        $provinceId = $request->input('provinsi');
 
-        if (!empty($search)) {
+        if ($search) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
         }
 
-        if (!empty($provinceId)) {
+        if ($provinceId) {
             $query->where('province_id', $provinceId);
         }
 

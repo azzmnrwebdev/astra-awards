@@ -22,9 +22,9 @@
                 </div>
 
                 <div class="col-sm-8 col-xl-6 mt-3 mt-sm-0">
-                    <form class="row g-2">
+                    <form class="row g-3">
                         <div class="col-sm-6">
-                            <select name="province_id" id="province_id" class="form-select">
+                            <select name="provinsi" id="provinsi" class="form-select">
                                 <option value="">Semua Provinsi</option>
                                 @foreach ($provinces as $item)
                                     <option value="{{ $item->id }}"
@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <input type="search" name="search" id="search" value="{{ $search }}"
+                            <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                                 class="form-control" placeholder="Cari kota/kabupaten">
                         </div>
                     </form>
@@ -45,7 +45,7 @@
 
             <div class="table-responsive mt-4">
                 <table class="table table-hover text-nowrap align-middle mb-0">
-                    <thead class="border-top border-start border-end">
+                    <thead class="border-top border-start border-end table-primary">
                         <tr>
                             @foreach ($theadName as $thead)
                                 <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
@@ -123,7 +123,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#search, #province_id').on('input keydown change', function(e) {
+                $('#pencarian, #provinsi').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -133,7 +133,7 @@
                     }
                 });
 
-                $('#search').on('keypress', function(e) {
+                $('#pencarian').on('keypress', function(e) {
                     if (e.which == 13) {
                         e.preventDefault();
                         filter();
@@ -142,16 +142,16 @@
 
                 function filter() {
                     const params = {};
-                    const searchValue = $('#search').val();
-                    const provinceId = $('#province_id').val();
+                    const searchValue = $('#pencarian').val();
+                    const provinceId = $('#provinsi').val();
                     const url = '{{ route('city.index') }}';
 
-                    if (searchValue.trim() !== '') {
-                        params.search = searchValue.trim().replace(/ /g, '+');
+                    if (provinceId !== '') {
+                        params.provinsi = provinceId;
                     }
 
-                    if (provinceId !== '') {
-                        params.province_id = provinceId;
+                    if (searchValue.trim() !== '') {
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
                     }
 
                     const queryString = Object.keys(params).map(key => key + '=' + params[key]);

@@ -27,7 +27,7 @@ class JuryContainer extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $search = $request->input('search');
+        $search = $request->input('pencarian');
         $query = User::query()->where('role', 'jury');
 
         if (!empty($search)) {

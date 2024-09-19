@@ -29,7 +29,8 @@ class UserController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $search = $request->input('search');
+        $search = $request->input('pencarian');
+        $status = $request->input('status');
         $query = User::query()->where('role', 'user');
 
         if (!empty($search)) {
@@ -40,9 +41,13 @@ class UserController extends Controller
             });
         }
 
+        if ($status !== null) {
+            $query->where('status', $status);
+        }
+
         $users = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
 
-        return view('admin.pages.user.index', compact('theadName', 'search', 'users'));
+        return view('admin.pages.user.index', compact('theadName', 'search', 'status', 'users'));
     }
 
     public function show(User $user)
