@@ -705,7 +705,7 @@
                                 @endif
 
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    @if ($systemAssessment->pillar_two_id ?? '')
+                                    @if ($systemAssessment->pillar_five_id ?? '')
                                         <div class="text-end">
                                             <button type="submit" class="btn btn-warning">Ubah Nilai</button>
                                         </div>

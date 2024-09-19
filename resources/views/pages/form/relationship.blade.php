@@ -123,11 +123,11 @@
                             <label for="question_two" class="form-label">1. Divisi Sosial Religi</label>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status_divisi" id="belumAda" value="belum_ada" checked>
+                                    <input class="form-check-input" type="radio" name="status_divisiSR" id="belumAda" value="belum_ada" checked>
                                     <label class="form-check-label" for="belumAda">Belum Ada</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status_divisi" id="ada" value="ada">
+                                    <input class="form-check-input" type="radio" name="status_divisiSR" id="ada" value="ada">
                                     <label class="form-check-label" for="ada">Ada</label>
                                 </div>
                             </div>
@@ -239,17 +239,15 @@
                                 <label for="question_three" class="form-label">2. Divisi Layanan Amal</label>
     
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="status_divisi" id="belumAda2" value="belum_ada" checked>
-                                        <label class="form-check-label" for="belumAda">Belum Ada</label>
+                                        <input class="form-check-input" type="radio" name="status_divisiLA" id="belumAda2" value="belum_ada2" checked>
+                                        <label class="form-check-label" for="belumAda2">Belum Ada</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="status_divisi" id="ada2" value="ada">
-                                        <label class="form-check-label" for="ada">Ada</label>
+                                        <input class="form-check-input" type="radio" name="status_divisiLA" id="ada2" value="ada2">
+                                        <label class="form-check-label" for="ada2">Ada</label>
                                     </div>
-                                </div>
                             </div>
                             <div class="mb-3" id="checkboxContainer2">
-                                <label for="question_three" class="form-label">2. Divisi Layanan Amal</label>
                                 @foreach (['Payroll Zakat/Sedekah', 'Kurban', 'Sinergi Event & Kegiatan Lainnya'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_three[]"
@@ -354,7 +352,18 @@
 
                             <!-- Pertanyaan 3 -->
                             <div class="mb-3">
-                                <label class="form-label">3. Divisi Kemitraan</label>
+                                <label class="form-label" for="question_four">3. Divisi Kemitraan</label>
+    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status_divisiK" id="belumAda3" value="belum_ada3" checked>
+                                        <label class="form-check-label" for="belumAda3">Belum Ada</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status_divisiK" id="ada3" value="ada3">
+                                        <label class="form-check-label" for="ada3">Ada</label>
+                                    </div>
+                            </div>
+                            <div class="mb-3" id="checkboxContainer3">
                                 @foreach (['Perawatan AC', 'Umroh', 'Aqiqah', 'Kegiatan Sinergi lainnya'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_four[]"
@@ -369,9 +378,9 @@
                                         {{-- Kondisi untuk "Kegiatan Sinergi lainnya" --}}
                                         @if ($option === 'Kegiatan Sinergi lainnya')
                                             <input type="text" class="form-control mt-2" id="option_four"
-                                                name="option_four" placeholder="Kegiatan Sinergi lainnya" required
+                                                name="option_four" placeholder="Kegiatan Sinergi lainnya"
                                                 value="{{ old('option_four', $pillarTwo->option_four ?? '') }}"
-                                                style="display: none;" {{-- Disembunyikan secara default --}}
+                                                {{-- Disembunyikan secara default --}}
                                                 @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                         @endif
                                     </div>
@@ -470,6 +479,17 @@
                             <!-- Pertanyaan 4 -->
                             <div class="mb-3">
                                 <label class="form-label">4. Divisi Administrasi & Keuangan</label>
+    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status_divisiAK" id="belumAda4" value="belum_ada4" checked>
+                                        <label class="form-check-label" for="belumAda4">Belum Ada</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status_divisiAK" id="ada4" value="ada4">
+                                        <label class="form-check-label" for="ada4">Ada</label>
+                                    </div>
+                            </div>
+                            <div class="mb-3" id="checkboxContainer4">
                                 @foreach (['Sudah menggunakan Sistem Aplikasi Keuangan Online YAA', 'Berbagi Informasi di Amaliah.id'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_five[]"
@@ -486,6 +506,7 @@
                                 @error('question_five')
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
                                 @enderror
+                            </div>
 
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
                                     @if ($systemAssessment->pillar_two_id ?? '')
@@ -527,7 +548,6 @@
                                         </div>
                                     @endif
                                 @endif
-                            </div>
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_two_id ?? '')
@@ -575,27 +595,6 @@
     {{-- Custom Javascript --}}
     @prepend('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const kegiatanLainnyaCheckbox = document.querySelector('input[value="Kegiatan Sinergi lainnya"]');
-                const optionFourInput = document.getElementById('option_four');
-
-                if (kegiatanLainnyaCheckbox) {
-                    // Cek apakah "Kegiatan Sinergi lainnya" sudah dicentang saat halaman dimuat
-                    if (kegiatanLainnyaCheckbox.checked) {
-                        optionFourInput.style.display = 'block'; // Tampilkan input jika sudah dicentang
-                    }
-
-                    // Tambah event listener untuk menampilkan/menyembunyikan input saat dicentang
-                    kegiatanLainnyaCheckbox.addEventListener('change', function () {
-                        if (this.checked) {
-                            optionFourInput.style.display = 'block';
-                        } else {
-                            optionFourInput.style.display = 'none';
-                        }
-                    });
-                }
-            });
-
             document.addEventListener('DOMContentLoaded', function() {
                 const selectedRadio1 = $('input[name="question_one"]:checked');
                 const selectedCheckbox1 = $('input[name="question_two[]"]:checked');
@@ -694,15 +693,38 @@
                         documentContent.html('<p>File format tidak didukung.</p>');
                     }
                 });
-            });
 
-            document.addEventListener('DOMContentLoaded', function() {
+                // //pertanyaan 3 textarea
+                // const kegiatanLainnyaCheckbox = document.querySelector('input[value="Kegiatan Sinergi lainnya"]');
+
+                // if (kegiatanLainnyaCheckbox) {
+                //     // Cek apakah "Kegiatan Sinergi lainnya" sudah dicentang saat halaman dimuat
+                //     if (kegiatanLainnyaCheckbox.checked) {
+                //         optionFourInput.style.display = 'block'; // Tampilkan input jika sudah dicentang
+                //         optionFourInput.required = true; // Tambahkan atribut required
+                //     }
+
+                //     // Tambah event listener untuk menampilkan/menyembunyikan input saat dicentang
+                //     kegiatanLainnyaCheckbox.addEventListener('change', function () {
+                //         if (this.checked) {
+                //             optionFourInput.style.display = 'block';
+                //             optionFourInput.required = true; // Tambahkan atribut required jika checkbox dicentang
+                //         } else {
+                //             optionFourInput.style.display = 'none';
+                //             optionFourInput.required = false; // Hapus atribut required jika checkbox tidak dicentang
+                //         }
+                //     });
+                // }
+
+
+                //radio button checkbox
+                // Pertanyaan 1
                 const checkboxContainer = document.getElementById('checkboxContainer');
                 const radioBelumAda = document.getElementById('belumAda');
                 const radioAda = document.getElementById('ada');
 
-                // Function to toggle checkbox visibility
-                function toggleCheckbox() {
+                // Function to toggle checkbox visibility for Pertanyaan 1
+                function toggleCheckbox1() {
                     if (radioAda.checked) {
                         checkboxContainer.style.display = 'block';
                     } else {
@@ -710,33 +732,78 @@
                     }
                 }
 
-                // Event listeners
-                radioBelumAda.addEventListener('change', toggleCheckbox);
-                radioAda.addEventListener('change', toggleCheckbox);
+                // Event listeners for Pertanyaan 1
+                radioBelumAda.addEventListener('change', toggleCheckbox1);
+                radioAda.addEventListener('change', toggleCheckbox1);
 
-                // Initial check
-                toggleCheckbox();
+                // Initial check for Pertanyaan 1
+                toggleCheckbox1();
 
+                // Pertanyaan 2
                 const checkboxContainer2 = document.getElementById('checkboxContainer2');
                 const radioBelumAda2 = document.getElementById('belumAda2');
                 const radioAda2 = document.getElementById('ada2');
 
-                // Function to toggle checkbox visibility
-                function toggleCheckbox() {
-                    if (radioAda.checked) {
+                // Function to toggle checkbox visibility for Pertanyaan 2
+                function toggleCheckbox2() {
+                    if (radioAda2.checked) {
                         checkboxContainer2.style.display = 'block';
                     } else {
                         checkboxContainer2.style.display = 'none';
                     }
                 }
 
-                // Event listeners
-                radioBelumAda2.addEventListener('change', toggleCheckbox);
-                radioAda2.addEventListener('change', toggleCheckbox);
+                // Event listeners for Pertanyaan 2
+                radioBelumAda2.addEventListener('change', toggleCheckbox2);
+                radioAda2.addEventListener('change', toggleCheckbox2);
 
-                // Initial check
-                toggleCheckbox();
+                // Initial check for Pertanyaan 2
+                toggleCheckbox2();
+
+                // Pertanyaan 3
+                const checkboxContainer3 = document.getElementById('checkboxContainer3');
+                const radioBelumAda3 = document.getElementById('belumAda3');
+                const radioAda3 = document.getElementById('ada3');
+
+                // Function to toggle checkbox visibility for Pertanyaan 2
+                function toggleCheckbox3() {
+                    if (radioAda3.checked) {
+                        checkboxContainer3.style.display = 'block';
+                    } else {
+                        checkboxContainer3.style.display = 'none';
+                    }
+                }
+
+                // Event listeners for Pertanyaan 2
+                radioBelumAda3.addEventListener('change', toggleCheckbox3);
+                radioAda3.addEventListener('change', toggleCheckbox3);
+
+                // Initial check for Pertanyaan 2
+                toggleCheckbox3();
+
+                // Pertanyaan 4
+                const checkboxContainer4 = document.getElementById('checkboxContainer4');
+                const radioBelumAda4 = document.getElementById('belumAda4');
+                const radioAda4 = document.getElementById('ada4');
+
+                // Function to toggle checkbox visibility for Pertanyaan 2
+                function toggleCheckbox4() {
+                    if (radioAda4.checked) {
+                        checkboxContainer4.style.display = 'block';
+                    } else {
+                        checkboxContainer4.style.display = 'none';
+                    }
+                }
+
+                // Event listeners for Pertanyaan 2
+                radioBelumAda4.addEventListener('change', toggleCheckbox4);
+                radioAda4.addEventListener('change', toggleCheckbox4);
+
+                // Initial check for Pertanyaan 2
+                toggleCheckbox4();
             });
+
+
         </script>
     @endprepend
 </x-user>
