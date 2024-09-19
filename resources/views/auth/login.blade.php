@@ -1,9 +1,10 @@
 <x-guest title="Masuk">
-    <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="row justify-content-center align-items-center min-vh-100 @if (Session('success') || Session('error') || $errors->has('email') || $errors->has('password')) py-5 @endif">
         <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
             <div class="card border-0 shadow" style="border-radius: 20px;">
                 <div class="card-body p-5">
-                    <div class="row justify-content-center align-items-center"><img src="{{ asset('images/logo-login.png') }}" alt="Logo" width="200"></div>
+                    <div class="row justify-content-center align-items-center"><img
+                            src="{{ asset('images/logo-login.png') }}" alt="Logo" width="200"></div>
                     <h2 style="margin-bottom: 1.5rem; margin-top: 1.5rem; font-weight: 700;">Masuk</h2>
                     <h5 class="card-title mb-3" style="font-weight: 600;">Assalamu'alaikum Wr Wb 👋</h5>
 
