@@ -18,7 +18,6 @@ class SystemAssessment extends Model
         'pillar_one_question_four',
         'pillar_one_question_five',
         'pillar_two_id',
-        'pillar_two_question_one',
         'pillar_two_question_two',
         'pillar_two_question_three',
         'pillar_two_question_four',

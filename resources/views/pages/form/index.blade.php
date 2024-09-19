@@ -83,8 +83,7 @@
                                                 <td class="text-center py-3">
                                                     @if ($item->mosque->pillarTwo->committeeAssessmnet->pillar_two_id ?? '')
                                                         @if (
-                                                            $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_one &&
-                                                                $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two &&
+                                                            $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two &&
                                                                 $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three &&
                                                                 $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four &&
                                                                 $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five)

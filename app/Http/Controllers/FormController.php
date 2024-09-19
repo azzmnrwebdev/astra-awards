@@ -155,7 +155,6 @@ class FormController extends Controller
     public function relationshipAct(Request $request)
     {
         if (
-            !$request->input('question_one') &&
             !$request->input('question_two') &&
             !$request->input('question_three') &&
             !$request->input('question_four') &&
@@ -165,7 +164,6 @@ class FormController extends Controller
         }
 
         $rules = [
-            'question_one' => 'string',
             'file_question_two' => 'file|mimes:zip',
             'file_question_three' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
@@ -178,73 +176,115 @@ class FormController extends Controller
         }
 
         $mosque = Auth::user()->mosque;
+
+        $isQuestionTwo = $request->input('status_divisiSR');
+        $isQuestionThree = $request->input('status_divisiLA');
+        $isQuestionFour = $request->input('status_divisiK');
+        $isQuestionFive = $request->input('status_divisiAK');
+
         $questionTwo = $request->input('question_two', []);
         $questionThree = $request->input('question_three', []);
         $questionFour = $request->input('question_four', []);
+
         $optionTwoValue = $request->input('option_two', '');
         $optionThreeValue = $request->input('option_three', '');
         $optionFourValue = $request->input('option_four', '');
 
-        if (empty($questionTwo)) {
-            $questionTwo = null;
-        } else {
-            if (!empty($optionTwoValue)) {
-                if (!in_array('custom', $questionTwo)) {
-                    $questionTwo[] = 'custom';
-                }
+        if ($isQuestionTwo === "ada") {
+            if (empty($questionTwo)) {
+                $questionTwo = null;
             } else {
-                $questionTwo = array_filter($questionTwo, function ($value) {
-                    return $value !== 'custom';
-                });
-            }
+                if (!empty($optionTwoValue)) {
+                    if (!in_array('custom', $questionTwo)) {
+                        $questionTwo[] = 'custom';
+                        $optionTwoValue = $request->input('option_two');
+                    }
+                } else {
+                    $questionTwo = array_filter($questionTwo, function ($value) {
+                        return $value !== 'custom';
+                    });
+                }
 
-            $questionTwo = json_encode($questionTwo);
+                $questionTwo = json_encode($questionTwo);
+            }
+        } else {
+            $questionTwo = [
+                "Belum Ada"
+            ];
+
+            $optionTwoValue = null;
         }
 
-        if (empty($questionThree)) {
-            $questionThree = null;
-        } else {
-            if (!empty($optionThreeValue)) {
-                if (!in_array('custom', $questionThree)) {
-                    $questionThree[] = 'custom';
-                }
+        if ($isQuestionThree === "ada") {
+            if (empty($questionThree)) {
+                $questionThree = null;
             } else {
-                $questionThree = array_filter($questionThree, function ($value) {
-                    return $value !== 'custom';
-                });
-            }
+                if (!empty($optionThreeValue)) {
+                    if (!in_array('custom', $questionThree)) {
+                        $questionThree[] = 'custom';
+                        $optionThreeValue = $request->input('option_three');
+                    }
+                } else {
+                    $questionThree = array_filter($questionThree, function ($value) {
+                        return $value !== 'custom';
+                    });
+                }
 
-            $questionThree = json_encode($questionThree);
+                $questionThree = json_encode($questionThree);
+            }
+        } else {
+            $questionThree = [
+                "Belum Ada"
+            ];
+
+            $optionThreeValue = null;
         }
 
-        if (empty($questionFour)) {
-            $questionFour = null;
-        } else {
-            if (!empty($optionFourValue)) {
-                if (!in_array('custom', $questionFour)) {
-                    $questionFour[] = 'custom';
-                }
+        if ($isQuestionFour === "ada") {
+            if (empty($questionFour)) {
+                $questionFour = null;
             } else {
-                $questionFour = array_filter($questionFour, function ($value) {
-                    return $value !== 'custom';
-                });
-            }
+                if (!empty($optionFourValue)) {
+                    if (!in_array('custom', $questionFour)) {
+                        $questionFour[] = 'custom';
+                        $optionFourValue = $request->input('option_four');
+                    }
+                } else {
+                    $questionFour = array_filter($questionFour, function ($value) {
+                        return $value !== 'custom';
+                    });
+                }
 
-            $questionFour = json_encode($questionFour);
+                $questionFour = json_encode($questionFour);
+            }
+        } else {
+            $questionFour = [
+                "Belum Ada"
+            ];
+
+            $optionFourValue = null;
+        }
+
+        $questionFive = null;
+        if ($isQuestionFive === "ada") {
+            $questionFive = json_encode($request->input('question_five'));
+        } else {
+            $questionFive = [
+                "Belum Ada"
+            ];
         }
 
         $pillarTwo = PillarTwo::updateOrCreate(
             ['id' => $request->input('id')],
             [
                 'mosque_id' => $mosque->id,
-                'question_one' => $request->input('question_one'),
                 'question_two' => $questionTwo,
-                'option_two' => $request->input('option_two') ?? null,
+                'option_two' => $optionTwoValue,
                 'question_three' => $questionThree,
-                'option_three' => $request->input('option_three') ?? null,
+                'option_three' => $optionThreeValue,
                 'question_four' => $questionFour,
-                'option_four' => $request->input('option_four') ?? null,
-                'question_five' => json_encode($request->input('question_five')),
+                'option_four' => $optionFourValue,
+                'question_five' => $questionFive,
             ]
         );
 

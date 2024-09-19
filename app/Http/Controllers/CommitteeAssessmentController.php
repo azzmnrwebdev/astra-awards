@@ -92,7 +92,6 @@ class CommitteeAssessmentController extends Controller
     public function pillarTwoAct(Request $request)
     {
         if (
-            !$request->input('committee_pillar_two_question_one') &&
             !$request->input('committee_pillar_two_question_two') &&
             !$request->input('committee_pillar_two_question_three') &&
             !$request->input('committee_pillar_two_question_four') &&
@@ -102,7 +101,6 @@ class CommitteeAssessmentController extends Controller
         }
 
         $data = [
-            'pillar_two_question_one' => $request->input('committee_pillar_two_question_one'),
             'pillar_two_question_two' => $request->input('committee_pillar_two_question_two'),
             'pillar_two_question_three' => $request->input('committee_pillar_two_question_three'),
             'pillar_two_question_four' => $request->input('committee_pillar_two_question_four'),
@@ -110,11 +108,10 @@ class CommitteeAssessmentController extends Controller
         ];
 
         $questionMapping = [
-            'pillar_two_question_one' => '1',
-            'pillar_two_question_two' => '2',
-            'pillar_two_question_three' => '3',
-            'pillar_two_question_four' => '4',
-            'pillar_two_question_five' => '5',
+            'pillar_two_question_two' => '1',
+            'pillar_two_question_three' => '2',
+            'pillar_two_question_four' => '3',
+            'pillar_two_question_five' => '4',
         ];
 
         $updatedQuestions = [];

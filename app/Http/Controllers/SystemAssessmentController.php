@@ -35,13 +35,6 @@ class SystemAssessmentController extends Controller
 
     public function pillarTwoAct(Request $request)
     {
-        $nilaiMappingRadio4 = [
-            1 => 1,
-            2 => 3,
-            3 => 7,
-            4 => 9,
-        ];
-
         $nilaiMappingCheckbox4 = [
             '' => 1,
             '3' => 3,
@@ -84,7 +77,6 @@ class SystemAssessmentController extends Controller
 
         $data = [
             'pillar_two_id' => $request->input('pillar_two_id'),
-            'pillar_two_question_one' => $nilaiMappingRadio4[$request->input('pillar_two_question_one')] ?? null,
             'pillar_two_question_two' => $resultQuestionTwo,
             'pillar_two_question_three' => $resultQuestionThree,
             'pillar_two_question_four' => $resultQuestionFour,

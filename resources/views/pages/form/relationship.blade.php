@@ -95,7 +95,6 @@
                                     <input type="hidden" name="id" value="{{ $systemAssessment->id ?? '' }}">
                                     <input type="hidden" name="pillar_two_id" value="{{ $pillarTwo->id }}">
 
-                                    <input type="hidden" name="pillar_two_question_one">
                                     <input type="hidden" name="pillar_two_question_two[]">
                                     <input type="hidden" name="pillar_two_question_three[]">
                                     <input type="hidden" name="pillar_two_question_four[]">
@@ -124,12 +123,16 @@
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiSR" id="belumAda"
-                                        value="belum_ada">
+                                        value="belum_ada"
+                                        {{ $pillarTwo ? (in_array('Belum Ada', (array) old('status_divisiSR', json_decode($pillarTwo->question_two ?? '[]', true) ?? '')) ? 'checked' : '') : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="belumAda">Belum Ada</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiSR"
-                                        id="ada" value="ada">
+                                        id="ada" value="ada"
+                                        {{ $pillarTwo ? (!in_array('Belum Ada', (array) old('status_divisiSR', json_decode($pillarTwo->question_two ?? '[]', true) ?? '')) ? 'checked' : '') : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="ada">Ada</label>
                                 </div>
                             </div>
@@ -243,12 +246,16 @@
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiLA"
-                                        id="belumAda2" value="belum_ada2">
+                                        id="belumAda2" value="belum_ada"
+                                        {{ $pillarTwo ? in_array('Belum Ada', (array) old('status_divisiLA', json_decode($pillarTwo->question_three ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="belumAda2">Belum Ada</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiLA"
-                                        id="ada2" value="ada2">
+                                        id="ada2" value="ada"
+                                        {{ $pillarTwo ? !in_array('Belum Ada', (array) old('status_divisiLA', json_decode($pillarTwo->question_three ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="ada2">Ada</label>
                                 </div>
                             </div>
@@ -361,12 +368,16 @@
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiK"
-                                        id="belumAda3" value="belum_ada3">
+                                        id="belumAda3" value="belum_ada"
+                                        {{ $pillarTwo ? in_array('Belum Ada', (array) old('status_divisiK', json_decode($pillarTwo->question_four ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="belumAda3">Belum Ada</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiK"
-                                        id="ada3" value="ada3">
+                                        id="ada3" value="ada"
+                                        {{ $pillarTwo ? !in_array('Belum Ada', (array) old('status_divisiK', json_decode($pillarTwo->question_four ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="ada3">Ada</label>
                                 </div>
                             </div>
@@ -474,12 +485,16 @@
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiAK"
-                                        id="belumAda4" value="belum_ada4" checked>
+                                        id="belumAda4" value="belum_ada"
+                                        {{ $pillarTwo ? in_array('Belum Ada', (array) old('status_divisiAK', json_decode($pillarTwo->question_five ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="belumAda4">Belum Ada</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiAK"
-                                        id="ada4" value="ada4">
+                                        id="ada4" value="ada"
+                                        {{ $pillarTwo ? !in_array('Belum Ada', (array) old('status_divisiAK', json_decode($pillarTwo->question_five ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="ada4">Ada</label>
                                 </div>
                             </div>
@@ -590,19 +605,12 @@
     @prepend('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const selectedRadio1 = $('input[name="question_one"]:checked');
                 const selectedCheckbox1 = $('input[name="question_two[]"]:checked');
                 const selectedCheckbox2 = $('input[name="question_three[]"]:checked');
                 const selectedCheckbox3 = $('input[name="question_four[]"]:checked');
                 const selectedCheckbox4 = $('input[name="question_five[]"]:checked');
 
                 // Jawaban 1
-                if (selectedRadio1.length) {
-                    const index = selectedRadio1.data('index');
-                    $('input[name="pillar_two_question_one"]').val(index);
-                }
-
-                // Jawaban 2
                 if (selectedCheckbox1.length) {
                     let indexes = [];
                     selectedCheckbox1.each(function() {
@@ -612,7 +620,7 @@
                     $('input[name="pillar_two_question_two[]"]').val(indexes.join(','));
                 }
 
-                // Jawaban 3
+                // Jawaban 2
                 if (selectedCheckbox2.length) {
                     let indexes = [];
                     selectedCheckbox2.each(function() {
@@ -622,7 +630,7 @@
                     $('input[name="pillar_two_question_three[]"]').val(indexes.join(','));
                 }
 
-                // Jawaban 4
+                // Jawaban 3
                 if (selectedCheckbox3.length) {
                     let indexes = [];
                     selectedCheckbox3.each(function() {
@@ -632,7 +640,7 @@
                     $('input[name="pillar_two_question_four[]"]').val(indexes.join(','));
                 }
 
-                // Jawaban 5
+                // Jawaban 4
                 if (selectedCheckbox4.length) {
                     let indexes = [];
                     selectedCheckbox4.each(function() {
