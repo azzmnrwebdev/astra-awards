@@ -300,9 +300,42 @@
                                 @enderror
                             </div>
 
+                            @if ($pillarOne && $pillarOne->file_question_two_three)
+                                <div class="mb-3">
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        <label class="form-label fw-medium d-block">Dokumen
+                                            penunjang
+                                            lainnya(foto & notulensi rapat,dll)</label>
+                                    @endif
+
+                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                        data-bs-toggle="modal" data-bs-target="#documentModal"
+                                        data-url="{{ url('/' . ltrim($pillarOne->file_question_two_three, '/')) }}">
+                                        Lihat Dokumen
+                                    </button>
+                                </div>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('user'))
+                                <div class="{{ $pillarOne && $pillarOne->file_question_two_three ? 'mb-2' : 'mb-3' }}">
+                                    <label for="file_question_two_three" class="form-label fw-medium">Dokumen
+                                        penunjang
+                                        lainnya(foto & notulensi rapat,dll)</label>
+                                    <input class="form-control" type="file" id="file_question_two_three"
+                                        name="file_question_two_three">
+
+                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                        izinkan.</div>
+
+                                    @error('file_question_two_three')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+                            @endif
+
                             @if (auth()->check() && auth()->user()->hasRole('user'))
                                 <div class="{{ $pillarOne && $pillarOne->file_question_two_one ? 'mb-2' : 'mb-3' }}">
-                                    <label for="file_question_two_one" class="form-label fw-medium">Dokumen SK
+                                    <label for="file_question_two_one" class="form-label fw-medium">3. Dokumen SK
                                         kepengurusan
                                         DKM
                                         dari manajemen</label>
@@ -322,7 +355,7 @@
                             @if ($pillarOne && $pillarOne->file_question_two_one)
                                 <div class="mb-3">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        <label class="form-label fw-medium d-block">Dokumen SK
+                                        <label class="form-label fw-medium d-block">3. Dokumen SK
                                             kepengurusan
                                             DKM
                                             dari manajemen</label>
@@ -338,7 +371,7 @@
 
                             @if (auth()->check() && auth()->user()->hasRole('user'))
                                 <div class="{{ $pillarOne && $pillarOne->file_question_two_two ? 'mb-2' : 'mb-3' }}">
-                                    <label for="file_question_two_two" class="form-label fw-medium">Dokumen
+                                    <label for="file_question_two_two" class="form-label fw-medium">4. Dokumen
                                         program
                                         kerja
                                         dan anggaran yang sudah disetujui oleh manajemen</label>
@@ -357,7 +390,7 @@
                             @if ($pillarOne && $pillarOne->file_question_two_two)
                                 <div class="mb-3">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        <label class="form-label fw-medium d-block">Dokumen
+                                        <label class="form-label fw-medium d-block">4. Dokumen
                                             program
                                             kerja
                                             dan anggaran yang sudah disetujui oleh manajemen</label>
@@ -366,40 +399,6 @@
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
                                         data-url="{{ url('/' . ltrim($pillarOne->file_question_two_two, '/')) }}">
-                                        Lihat Dokumen
-                                    </button>
-                                </div>
-                            @endif
-
-                            @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div
-                                    class="{{ $pillarOne && $pillarOne->file_question_two_three ? 'mb-2' : 'mb-0' }}">
-                                    <label for="file_question_two_three" class="form-label fw-medium">Dokumen
-                                        penunjang
-                                        lainnya(foto & notulensi rapat,dll)</label>
-                                    <input class="form-control" type="file" id="file_question_two_three"
-                                        name="file_question_two_three">
-
-                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
-                                        izinkan.</div>
-
-                                    @error('file_question_two_three')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
-                                </div>
-                            @endif
-
-                            @if ($pillarOne && $pillarOne->file_question_two_three)
-                                <div class="mb-0">
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        <label class="form-label fw-medium d-block">Dokumen
-                                            penunjang
-                                            lainnya(foto & notulensi rapat,dll)</label>
-                                    @endif
-
-                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                        data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($pillarOne->file_question_two_three, '/')) }}">
                                         Lihat Dokumen
                                     </button>
                                 </div>
@@ -456,7 +455,7 @@
 
                             {{-- Pertanyaan 3 --}}
                             <div class="mb-3">
-                                <label for="question_three" class="form-label fw-medium">3. Media Interaksi dan
+                                <label for="question_three" class="form-label fw-medium">5. Media Interaksi dan
                                     Komunikasi dengan Jamaah(mading atau medsos)</label>
 
                                 <div class="form-check">
@@ -578,16 +577,16 @@
 
                             {{-- Pertanyaan 4 --}}
                             <div class="mb-3">
-                                <label for="question_four" class="form-label fw-medium">4. Memiliki Grup WhatsApp
+                                <label for="question_four" class="form-label fw-medium">6. Memiliki Grup WhatsApp
                                     Jamaah</label>
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="question_four"
-                                        value="Update per minggu" id="question_four1" data-index="1"
-                                        {{ old('question_four', $pillarOne->question_four ?? '') == 'Update per minggu' ? 'checked' : '' }}
+                                        value="Belum ada grup" id="question_four1" data-index="1"
+                                        {{ old('question_four', $pillarOne->question_four ?? '') == 'Belum ada grup' ? 'checked' : '' }}
                                         @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="question_four1">
-                                        Update per minggu
+                                        Belum ada grup WhatsApp
                                     </label>
                                 </div>
 
@@ -703,7 +702,7 @@
 
                             {{-- Pertanyaan 5 --}}
                             <div class="mb-3">
-                                <label for="question_five" class="form-label fw-medium">5. Program Pembinaan
+                                <label for="question_five" class="form-label fw-medium">7. Program Pembinaan
                                     Keagamaan
                                     Untuk Jamaah</label>
 
