@@ -273,13 +273,8 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarThree = $user->mosque->pillarThree;
 
-            $systemAssessment = SystemAssessment::with(['pillarThree'])->first();
+            $systemAssessment = SystemAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
-
-            if ($systemAssessment) {
-                $totalValue = $systemAssessment->pillar_three_question_one + $systemAssessment->pillar_three_question_two + $systemAssessment->pillar_three_question_three + $systemAssessment->pillar_three_question_four + $systemAssessment->pillar_three_question_five + $systemAssessment->pillar_three_question_six;
-                return view('pages.form.program', compact('user', 'pillarThree', 'systemAssessment', 'committeeAssessment', 'totalValue'));
-            }
 
             return view('pages.form.program', compact('user', 'pillarThree', 'systemAssessment', 'committeeAssessment'));
         }
@@ -392,13 +387,8 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarFour = $user->mosque->pillarFour;
 
-            $systemAssessment = SystemAssessment::with(['pillarFour'])->first();
+            $systemAssessment = SystemAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
-
-            if ($systemAssessment) {
-                $totalValue = $systemAssessment->pillar_four_question_one + $systemAssessment->pillar_four_question_two + $systemAssessment->pillar_four_question_three + $systemAssessment->pillar_four_question_four + $systemAssessment->pillar_four_question_five;
-                return view('pages.form.administration', compact('user', 'pillarFour', 'systemAssessment', 'committeeAssessment', 'totalValue'));
-            }
 
             return view('pages.form.administration', compact('user', 'pillarFour', 'systemAssessment', 'committeeAssessment'));
         }
@@ -472,13 +462,8 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarFive = $user->mosque->pillarFive;
 
-            $systemAssessment = SystemAssessment::with(['pillarFive'])->first();
+            $systemAssessment = SystemAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
-
-            if ($systemAssessment) {
-                $totalValue = $systemAssessment->pillar_five_question_one + $systemAssessment->pillar_five_question_two + $systemAssessment->pillar_five_question_three + $systemAssessment->pillar_five_question_four + $systemAssessment->pillar_five_question_five;
-                return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment', 'committeeAssessment', 'totalValue'));
-            }
 
             return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment', 'committeeAssessment'));
         }
