@@ -120,69 +120,18 @@
 
                             <!-- Pertanyaan 1 -->
                             <div class="mb-3">
-                                <label for="question_one" class="form-label">1. Kerjasama dengan YAA</label>
-                                @foreach (['Belum ada', 'Ada, hanya menjadi peserta kegiatan YAA', 'Ada, kerjasama dengan salah satu Divisi di YAA (Sosial Religi, Layanan Amal, Kemitraan)', 'Ada, kerjasama dengan seluruh Divisi YAA'] as $option)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="question_one"
-                                            value="{{ $option }}" id="question_one{{ $loop->index + 1 }}"
-                                            data-index="{{ $loop->index + 1 }}"
-                                            {{ old('question_one', $pillarTwo->question_one ?? '') == $option ? 'checked' : '' }}
-                                            @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                        <label class="form-check-label" for="question_one{{ $loop->index + 1 }}">
-                                            {{ $option }}
-                                        </label>
-                                    </div>
-                                @endforeach
+                            <label for="question_two" class="form-label">1. Divisi Sosial Religi</label>
 
-                                @error('question_one')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-
-                                @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    @if ($systemAssessment->pillar_two_id ?? '')
-                                        <p class="card-text mb-0 mt-2 fw-medium">
-                                            Penilaian
-                                            Sistem:&nbsp;{{ $systemAssessment->pillar_two_question_one == null ? 'N/A' : $systemAssessment->pillar_two_question_one . ' Poin' }}
-                                        </p>
-                                        <p class="card-text fw-medium text-danger">
-                                            @if ($systemAssessment->pillar_two_question_one == null)
-                                                *) Formula tidak tersedia untuk kondisi jawaban
-                                            @endif
-                                        </p>
-
-                                        <div class="mb-3 row">
-                                            <label for="committee_pillar_two_question_one"
-                                                class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
-                                                Panitia:</label>
-                                            <div class="col-md-8 col-xl-9">
-                                                <select name="committee_pillar_two_question_one"
-                                                    id="committee_pillar_two_question_one" class="form-select">
-                                                    @if (!$committeeAssessment || !$committeeAssessment->pillar_two_question_one)
-                                                        <option value="">-- Pilih Nilai --</option>
-                                                    @endif
-
-                                                    <option value="1"
-                                                        {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 1 ? 'selected' : '' }}>
-                                                        1</option>
-                                                    <option value="3"
-                                                        {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 3 ? 'selected' : '' }}>
-                                                        3</option>
-                                                    <option value="7"
-                                                        {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 7 ? 'selected' : '' }}>
-                                                        7</option>
-                                                    <option value="9"
-                                                        {{ old('committee_pillar_two_question_one', $committeeAssessment->pillar_two_question_one ?? '') == 9 ? 'selected' : '' }}>
-                                                        9</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endif
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status_divisi" id="belumAda" value="belum_ada" checked>
+                                    <label class="form-check-label" for="belumAda">Belum Ada</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status_divisi" id="ada" value="ada">
+                                    <label class="form-check-label" for="ada">Ada</label>
+                                </div>
                             </div>
-
-                            <!-- Pertanyaan 2 -->
-                            <div class="mb-3">
-                                <label for="question_two" class="form-label">2. Divisi Sosial Religi</label>
+                            <div class="mb-3" id="checkboxContainer">
                                 @foreach (['Astra Gema Islami', 'Amaliah Astra Awards', 'Workshop/Seminar/Diskusi/Pelatihan Masjid Astra'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_two[]"
@@ -285,9 +234,22 @@
                                 @endif
                             @endif
 
-                            <!-- Pertanyaan 3 -->
+                            <!-- Pertanyaan 2 -->
                             <div class="mb-3">
-                                <label for="question_three" class="form-label">3. Divisi Layanan Amal</label>
+                                <label for="question_three" class="form-label">2. Divisi Layanan Amal</label>
+    
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status_divisi" id="belumAda2" value="belum_ada" checked>
+                                        <label class="form-check-label" for="belumAda">Belum Ada</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="status_divisi" id="ada2" value="ada">
+                                        <label class="form-check-label" for="ada">Ada</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3" id="checkboxContainer2">
+                                <label for="question_three" class="form-label">2. Divisi Layanan Amal</label>
                                 @foreach (['Payroll Zakat/Sedekah', 'Kurban', 'Sinergi Event & Kegiatan Lainnya'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_three[]"
@@ -390,10 +352,10 @@
                                 @endif
                             @endif
 
-                            <!-- Pertanyaan 4 -->
+                            <!-- Pertanyaan 3 -->
                             <div class="mb-3">
-                                <label class="form-label">4. Divisi Kemitraan</label>
-                                @foreach (['Perawatan AC', 'Umroh', 'Aqiqah dan Kegiatan Sinergi lainnya'] as $option)
+                                <label class="form-label">3. Divisi Kemitraan</label>
+                                @foreach (['Perawatan AC', 'Umroh', 'Aqiqah', 'Kegiatan Sinergi lainnya'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_four[]"
                                             value="{{ $option }}" id="question_four{{ $loop->index + 1 }}"
@@ -403,10 +365,20 @@
                                         <label class="form-check-label" for="question_four{{ $loop->index + 1 }}">
                                             {{ $option }}
                                         </label>
+
+                                        {{-- Kondisi untuk "Kegiatan Sinergi lainnya" --}}
+                                        @if ($option === 'Kegiatan Sinergi lainnya')
+                                            <input type="text" class="form-control mt-2" id="option_four"
+                                                name="option_four" placeholder="Kegiatan Sinergi lainnya" required
+                                                value="{{ old('option_four', $pillarTwo->option_four ?? '') }}"
+                                                style="display: none;" {{-- Disembunyikan secara default --}}
+                                                @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
+                                        @endif
                                     </div>
                                 @endforeach
 
-                                <div class="form-check">
+
+                                {{-- <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="question_four[]"
                                         value="custom" id="question_four4" data-index="4"
                                         {{ in_array('custom', (array) old('question_four', json_decode($pillarTwo->question_four ?? '[]', true) ?? '')) ? 'checked' : '' }}
@@ -417,7 +389,7 @@
                                             value="{{ old('option_four', $pillarTwo->option_four ?? '') }}"
                                             @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     </label>
-                                </div>
+                                </div> --}}
 
                                 @error('question_four')
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
@@ -495,9 +467,9 @@
                                 @endif
                             @endif
 
-                            <!-- Pertanyaan 5 -->
+                            <!-- Pertanyaan 4 -->
                             <div class="mb-3">
-                                <label class="form-label">5. Divisi Administrasi & Keuangan</label>
+                                <label class="form-label">4. Divisi Administrasi & Keuangan</label>
                                 @foreach (['Sudah menggunakan Sistem Aplikasi Keuangan Online YAA', 'Berbagi Informasi di Amaliah.id'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_five[]"
@@ -603,6 +575,27 @@
     {{-- Custom Javascript --}}
     @prepend('scripts')
         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const kegiatanLainnyaCheckbox = document.querySelector('input[value="Kegiatan Sinergi lainnya"]');
+                const optionFourInput = document.getElementById('option_four');
+
+                if (kegiatanLainnyaCheckbox) {
+                    // Cek apakah "Kegiatan Sinergi lainnya" sudah dicentang saat halaman dimuat
+                    if (kegiatanLainnyaCheckbox.checked) {
+                        optionFourInput.style.display = 'block'; // Tampilkan input jika sudah dicentang
+                    }
+
+                    // Tambah event listener untuk menampilkan/menyembunyikan input saat dicentang
+                    kegiatanLainnyaCheckbox.addEventListener('change', function () {
+                        if (this.checked) {
+                            optionFourInput.style.display = 'block';
+                        } else {
+                            optionFourInput.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
             document.addEventListener('DOMContentLoaded', function() {
                 const selectedRadio1 = $('input[name="question_one"]:checked');
                 const selectedCheckbox1 = $('input[name="question_two[]"]:checked');
@@ -701,6 +694,48 @@
                         documentContent.html('<p>File format tidak didukung.</p>');
                     }
                 });
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const checkboxContainer = document.getElementById('checkboxContainer');
+                const radioBelumAda = document.getElementById('belumAda');
+                const radioAda = document.getElementById('ada');
+
+                // Function to toggle checkbox visibility
+                function toggleCheckbox() {
+                    if (radioAda.checked) {
+                        checkboxContainer.style.display = 'block';
+                    } else {
+                        checkboxContainer.style.display = 'none';
+                    }
+                }
+
+                // Event listeners
+                radioBelumAda.addEventListener('change', toggleCheckbox);
+                radioAda.addEventListener('change', toggleCheckbox);
+
+                // Initial check
+                toggleCheckbox();
+
+                const checkboxContainer2 = document.getElementById('checkboxContainer2');
+                const radioBelumAda2 = document.getElementById('belumAda2');
+                const radioAda2 = document.getElementById('ada2');
+
+                // Function to toggle checkbox visibility
+                function toggleCheckbox() {
+                    if (radioAda.checked) {
+                        checkboxContainer2.style.display = 'block';
+                    } else {
+                        checkboxContainer2.style.display = 'none';
+                    }
+                }
+
+                // Event listeners
+                radioBelumAda2.addEventListener('change', toggleCheckbox);
+                radioAda2.addEventListener('change', toggleCheckbox);
+
+                // Initial check
+                toggleCheckbox();
             });
         </script>
     @endprepend
