@@ -130,10 +130,13 @@
                         Lini Bisnis, Yayasan & Koperasi, Head Office
                     </h5>
 
-                    <ul class="list-group overflow-x-hidden rounded-0 border-bottom rounded-bottom">
+                    <div class="list-group overflow-x-hidden rounded-0 border-bottom rounded-bottom">
                         @foreach ($businessLines as $businessLine)
-                            <li
-                                class="list-group-item d-flex justify-content-between align-items-center border-top-0 border-bottom-0">
+                            <button type="button"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-top-0 border-bottom-0"
+                                data-bs-toggle="modal" data-bs-target="#userByBusinessLineModal"
+                                data-business-line-id="{{ $businessLine->id }}"
+                                data-business-line-name="{{ $businessLine->name }}">
                                 <div class="me-auto pe-4" style="flex: 1; min-width: 0;">
                                     <div style="overflow-wrap: break-word;">
                                         {{ $businessLine->name }}
@@ -141,9 +144,9 @@
                                 </div>
 
                                 <span>{{ $businessLine->mosque_count === 0 ? '-' : $businessLine->mosque_count }}</span>
-                            </li>
+                            </button>
                         @endforeach
-                    </ul>
+                    </div>
                 </div>
             </div>
 
@@ -490,6 +493,25 @@
         </div>
     </div>
 
+    {{-- Modal DKM By Business Line --}}
+    <div class="modal fade" id="userByBusinessLineModal" tabindex="-1"
+        aria-labelledby="userByBusinessLineModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="userByBusinessLineModalLabel">
+                        Daftar Peserta Berdasarkan Lini Bisnis, Yayasan & Koperasi, Head Office
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Modal body will be filled by AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Modal DKM By Province --}}
     <div class="modal fade" id="userByProvinceModal" tabindex="-1" aria-labelledby="userByProvinceModalLabel"
         aria-hidden="true">
@@ -645,6 +667,132 @@
 
                 // =============================================================================================
 
+                $('#userByBusinessLineModal').on('show.bs.modal', function(event) {
+                    const modal = $(this);
+                    const button = $(event.relatedTarget);
+                    const businessLineId = button.data('business-line-id');
+                    const businessLineName = button.data('business-line-name');
+                    const modalBody = modal.find('.modal-body');
+                    let originalData = [];
+
+                    modalBody.empty();
+                    modalBody.html('<div id="loading" class="text-center py-4 fs-5">Memuat data...</div>');
+
+                    $.ajax({
+                        url: '/api/users-by-business-line/' + businessLineId,
+                        method: 'GET',
+                        success: function(data) {
+                            console.log(data);
+
+                            originalData = data;
+                            modalBody.empty();
+
+                            var table = `
+                                <h5 class="card-title fw-semibold mb-1">${businessLineName}</h5>
+                                <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
+
+                                <div class="row align-items-center">
+                                    <div class="col-lg-6 col-xl-8">
+                                        <a href="#" id="downloadPdfButtonBusinessLine" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                    </div>
+
+                                    <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
+                                        <form>
+                                            <input type="search" name="search" id="searchBusinessLine" value=""
+                                                class="form-control" placeholder="Cari peserta/masjid">
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive mt-4">
+                                    <table class="table table-hover text-nowrap align-middle mb-0">
+                                        <thead class="border-top border-start border-end table-primary">
+                                            <tr>
+                                                <th class="text-center py-3">No</th>
+                                                <th class="text-center py-3">Logo</th>
+                                                <th class="text-start py-3">Nama Peserta</th>
+                                                <th class="text-center py-3">Nama Masjid/Musala</th>
+                                                <th class="text-start py-3">Induk Perusahaan</th>
+                                                <th class="text-start py-3">Perusahaan</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="border-start border-end"></tbody>
+                                    </table>
+                                </div>
+                            `;
+
+                            modalBody.append(table);
+
+                            function renderTable(dataToRender) {
+                                const tbody = modalBody.find('tbody');
+                                tbody.empty();
+
+                                if (dataToRender.length > 0) {
+                                    $.each(dataToRender, function(index, mosqueData) {
+                                        const user = mosqueData.user;
+                                        const logoPath = `/storage/${mosqueData.logo}`;
+
+                                        tbody.append(`
+                                            <tr>
+                                                <td class="text-center py-3">${index + 1}</td>
+                                                <td class="text-center py-3">
+                                                    <img src="${logoPath}" alt="Logo" style="width: 100px;">
+                                                </td>
+                                                <td class="text-start py-3">${user.name}</td>
+                                                <td class="text-center py-3">${mosqueData.name}</td>
+                                                <td class="text-start py-3">${mosqueData.company.parent_company.name}</td>
+                                                <td class="text-start py-3">${mosqueData.company.name}</td>
+                                            </tr>
+                                        `);
+                                    });
+                                } else {
+                                    tbody.append(`
+                                        <tr>
+                                            <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                                        </tr>
+                                    `);
+                                }
+                            }
+
+                            renderTable(originalData);
+
+                            $('#searchBusinessLine').on('input', function() {
+                                const searchValue = $(this).val().toLowerCase();
+                                const filteredData = originalData.filter(mosqueData =>
+                                    mosqueData.user.name.toLowerCase().includes(
+                                        searchValue) ||
+                                    mosqueData.name.toLowerCase().includes(searchValue)
+                                );
+
+                                renderTable(filteredData);
+                            });
+
+                            $('#downloadPdfButtonBusinessLine').on('click', function(event) {
+                                const modal = $('#userByBusinessLineModal');
+
+                                if (originalData.length === 0) {
+                                    modal.modal('hide');
+                                    alert(
+                                        'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
+                                    );
+
+                                    return;
+                                }
+
+                                modal.modal('hide');
+                            });
+                        },
+                        error: function() {
+                            modalBody.html(
+                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data</div>'
+                            );
+                        }
+                    });
+                });
+
+                // =============================================================================================
+
                 $('#userByProvinceModal').on('show.bs.modal', function(event) {
                     const modal = $(this);
                     const button = $(event.relatedTarget);
@@ -669,12 +817,12 @@
 
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-xl-8">
-                                        <a href="#" id="downloadPdfButton" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="#" id="downloadPdfButtonProvince" class="btn btn-danger rounded-0">Unduh PDF</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
                                         <form>
-                                            <input type="search" name="search" id="search" value=""
+                                            <input type="search" name="search" id="searchProvince" value=""
                                                 class="form-control" placeholder="Cari peserta/masjid">
                                         </form>
                                     </div>
@@ -731,7 +879,7 @@
 
                             renderTable(originalData);
 
-                            $('#search').on('input', function() {
+                            $('#searchProvince').on('input', function() {
                                 const searchValue = $(this).val().toLowerCase();
                                 const filteredData = originalData.filter(mosqueData =>
                                     mosqueData.user.name.toLowerCase().includes(
@@ -742,12 +890,14 @@
                                 renderTable(filteredData);
                             });
 
-                            $('#downloadPdfButton').on('click', function(event) {
+                            $('#downloadPdfButtonProvince').on('click', function(event) {
                                 const modal = $('#userByProvinceModal');
 
                                 if (originalData.length === 0) {
                                     modal.modal('hide');
-                                    alert('Data tidak tersedia. Unduh PDF tidak dapat dilakukan.');
+                                    alert(
+                                        'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
+                                    );
 
                                     return;
                                 }

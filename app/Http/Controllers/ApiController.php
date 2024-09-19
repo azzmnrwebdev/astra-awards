@@ -37,4 +37,13 @@ class ApiController extends Controller
 
         return response()->json($mosques);
     }
+
+    public function getUsersByBusinessLine($businessLineId)
+    {
+        $mosques = Mosque::with(['user', 'company', 'company.businessLine', 'company.parentCompany'])->whereHas('company', function ($query) use ($businessLineId) {
+            $query->where('business_line_id', $businessLineId);
+        })->get();
+
+        return response()->json($mosques);
+    }
 }
