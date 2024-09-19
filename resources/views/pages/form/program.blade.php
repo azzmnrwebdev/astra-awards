@@ -268,7 +268,7 @@
                                         Manfaat</label>
                                     <select class="form-select" name="question_three"
                                         @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
-                                        @foreach (['0', 'Kurang dari 100', '100 sampai 1000', 'Lebih dari 1000'] as $key => $option)
+                                        @foreach (['Belum ada', 'Kurang dari 100', '100 sampai 1000', 'Lebih dari 1000'] as $key => $option)
                                             <option value="{{ $option }}" data-index="{{ $key + 1 }}"
                                                 {{ old('question_three', $pillarThree->question_three ?? '') == $option ? 'selected' : '' }}>
                                                 {{ $option }}
@@ -516,7 +516,7 @@
                                             @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                         <label class="form-check-label w-100" for="question_six4">
                                             <input type="text" class="form-control" id="option_six"
-                                                name="option_six"
+                                                name="option_six" placeholder="Lainnya.."
                                                 value="{{ old('option_six', $pillarThree->option_six ?? '') }}"
                                                 @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                         </label>
@@ -569,8 +569,7 @@
                                 </div>
 
                                 @if (auth()->check() && auth()->user()->hasRole('user'))
-                                    <div
-                                        class="{{ $pillarThree && $pillarThree->file_question_six ? 'mb-2' : 'mb-3 mb-md-4' }}">
+                                    <div class="{{ $pillarThree && $pillarThree->file_question_six ? 'mb-2' : 'mb-3 mb-md-4' }}">
                                         <label for="file_question_six" class="form-label fw-medium">Upload dokumen
                                             poster,
                                             foto screen shoot dan lain-lain yang menunjukkan bukti Astra Sustainability
@@ -604,7 +603,7 @@
                                 @endif
 
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    @if ($systemAssessment->pillar_two_id ?? '')
+                                    @if ($systemAssessment->pillar_three_id ?? '')
                                         <div class="text-end">
                                             <button type="submit" class="btn btn-warning">Ubah Nilai</button>
                                         </div>

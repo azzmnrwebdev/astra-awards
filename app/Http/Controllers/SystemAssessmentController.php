@@ -182,7 +182,7 @@ class SystemAssessmentController extends Controller
             'pillar_four_id' => $request->input('pillar_four_id'),
             'pillar_four_question_one' => $nilaiMappingRadio2[$request->input('pillar_four_question_one')] ?? null,
             'pillar_four_question_two' => $nilaiMappingRadio2[$request->input('pillar_four_question_two')] ?? null,
-            'pillar_four_question_three' => $request->input('pillar_four_question_three'),
+            'pillar_four_question_three' => $nilaiMappingRadio4[$request->input('pillar_four_question_three')] ?? null,
             'pillar_four_question_four' => $nilaiMappingRadio4[$request->input('pillar_four_question_four')] ?? null,
             'pillar_four_question_five' => $nilaiMappingRadio2[$request->input('pillar_four_question_five')] ?? null,
         ];
