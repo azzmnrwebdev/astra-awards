@@ -25,7 +25,7 @@ class HomeController extends Controller
 
         // Pillar One
         $pillarOne = PillarOne::where('mosque_id', $mosque->id)->first();
-        $pillarOneFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
+        $pillarOneFields = ['question_one', 'question_two', 'file_question_two_one', 'file_question_two_two', 'question_three', 'question_four', 'question_five'];
 
         $pillarOneCompleted = 0;
         $totalFields = count($pillarOneFields);
@@ -43,7 +43,7 @@ class HomeController extends Controller
 
         // Pillar Two
         $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->first();
-        $pillarTwoFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
+        $pillarTwoFields = ['question_two', 'question_three', 'question_four', 'question_five'];
 
         $pillarTwoCompleted = 0;
         $totalFields = count($pillarTwoFields);

@@ -164,7 +164,9 @@
                                                                 $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two &&
                                                                 $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three &&
                                                                 $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four &&
-                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five)
+                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five &&
+                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six &&
+                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven)
                                                             <span class="badge rounded-pill text-bg-success">
                                                                 Sudah
                                                             </span>

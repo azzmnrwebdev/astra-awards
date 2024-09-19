@@ -16,7 +16,9 @@ class CommitteeAssessmentController extends Controller
             !$request->input('committee_pillar_one_question_two') &&
             !$request->input('committee_pillar_one_question_three') &&
             !$request->input('committee_pillar_one_question_four') &&
-            !$request->input('committee_pillar_one_question_five')
+            !$request->input('committee_pillar_one_question_five') &&
+            !$request->input('committee_pillar_one_question_six') &&
+            !$request->input('committee_pillar_one_question_seven')
         ) {
             return redirect()->back()->with('error', 'Harus menilai setidaknya salah satu bidang data.');
         }
@@ -27,6 +29,8 @@ class CommitteeAssessmentController extends Controller
             'pillar_one_question_three' => $request->input('committee_pillar_one_question_three'),
             'pillar_one_question_four' => $request->input('committee_pillar_one_question_four'),
             'pillar_one_question_five' => $request->input('committee_pillar_one_question_five'),
+            'pillar_one_question_six' => $request->input('committee_pillar_one_question_six'),
+            'pillar_one_question_seven' => $request->input('committee_pillar_one_question_seven'),
         ];
 
         $questionMapping = [
@@ -35,6 +39,8 @@ class CommitteeAssessmentController extends Controller
             'pillar_one_question_three' => '3',
             'pillar_one_question_four' => '4',
             'pillar_one_question_five' => '5',
+            'pillar_one_question_six' => '6',
+            'pillar_one_question_seven' => '7',
         ];
 
         $updatedQuestions = [];
@@ -190,7 +196,7 @@ class CommitteeAssessmentController extends Controller
 
         $updatedQuestions = [];
         $newlyUpdatedQuestions = [];
-        $formName = "Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah";
+        $formName = "Formulir Program Sosial";
         $committeeAssessment = CommitteeAssessment::where('pillar_three_id', $request->input('pillar_three_id'))->first();
 
         if ($committeeAssessment) {
@@ -256,15 +262,15 @@ class CommitteeAssessmentController extends Controller
 
         $questionMapping = [
             'pillar_four_question_one' => '1',
-            'pillar_four_question_two' => '2',
-            'pillar_four_question_three' => '3',
-            'pillar_four_question_four' => '4',
+            'pillar_four_question_two' => '3',
+            'pillar_four_question_three' => '4',
+            'pillar_four_question_four' => '2',
             'pillar_four_question_five' => '5',
         ];
 
         $updatedQuestions = [];
         $newlyUpdatedQuestions = [];
-        $formName = "Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah";
+        $formName = "Formulir Administrasi dan Keuangan";
         $committeeAssessment = CommitteeAssessment::where('pillar_four_id', $request->input('pillar_four_id'))->first();
 
         if ($committeeAssessment) {
@@ -338,7 +344,7 @@ class CommitteeAssessmentController extends Controller
 
         $updatedQuestions = [];
         $newlyUpdatedQuestions = [];
-        $formName = "Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah";
+        $formName = "Formulir Peribadahan dan Infrastruktur";
         $committeeAssessment = CommitteeAssessment::where('pillar_five_id', $request->input('pillar_five_id'))->first();
 
         if ($committeeAssessment) {

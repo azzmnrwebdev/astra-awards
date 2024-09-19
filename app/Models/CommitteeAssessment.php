@@ -17,6 +17,8 @@ class CommitteeAssessment extends Model
         'pillar_one_question_three',
         'pillar_one_question_four',
         'pillar_one_question_five',
+        'pillar_one_question_six',
+        'pillar_one_question_seven',
         'pillar_two_id',
         'pillar_two_question_one',
         'pillar_two_question_two',

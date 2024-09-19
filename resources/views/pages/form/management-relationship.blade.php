@@ -300,27 +300,13 @@
                                 @enderror
                             </div>
 
-                            @if ($pillarOne && $pillarOne->file_question_two_three)
-                                <div class="mb-3">
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        <label class="form-label fw-medium d-block">Dokumen
-                                            penunjang
-                                            lainnya(foto & notulensi rapat,dll)</label>
-                                    @endif
-
-                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                        data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($pillarOne->file_question_two_three, '/')) }}">
-                                        Lihat Dokumen
-                                    </button>
-                                </div>
-                            @endif
-
                             @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div class="{{ $pillarOne && $pillarOne->file_question_two_three ? 'mb-2' : 'mb-3' }}">
+                                <div
+                                    class="{{ $pillarOne && $pillarOne->file_question_two_three ? 'mb-2' : 'mb-3' }}">
                                     <label for="file_question_two_three" class="form-label fw-medium">Dokumen
                                         penunjang
                                         lainnya(foto & notulensi rapat,dll)</label>
+
                                     <input class="form-control" type="file" id="file_question_two_three"
                                         name="file_question_two_three">
 
@@ -333,72 +319,17 @@
                                 </div>
                             @endif
 
-                            @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div class="{{ $pillarOne && $pillarOne->file_question_two_one ? 'mb-2' : 'mb-3' }}">
-                                    <label for="file_question_two_one" class="form-label fw-medium">3. Dokumen SK
-                                        kepengurusan
-                                        DKM
-                                        dari manajemen</label>
-
-                                    <input class="form-control" type="file" id="file_question_two_one"
-                                        name="file_question_two_one">
-
-                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
-                                        izinkan.</div>
-
-                                    @error('file_question_two_one')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
-                                </div>
-                            @endif
-
-                            @if ($pillarOne && $pillarOne->file_question_two_one)
+                            @if ($pillarOne && $pillarOne->file_question_two_three)
                                 <div class="mb-3">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        <label class="form-label fw-medium d-block">3. Dokumen SK
-                                            kepengurusan
-                                            DKM
-                                            dari manajemen</label>
+                                        <label class="form-label fw-medium d-block">Dokumen
+                                            penunjang
+                                            lainnya(foto & notulensi rapat,dll)</label>
                                     @endif
 
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($pillarOne->file_question_two_one, '/')) }}">
-                                        Lihat Dokumen
-                                    </button>
-                                </div>
-                            @endif
-
-                            @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div class="{{ $pillarOne && $pillarOne->file_question_two_two ? 'mb-2' : 'mb-3' }}">
-                                    <label for="file_question_two_two" class="form-label fw-medium">4. Dokumen
-                                        program
-                                        kerja
-                                        dan anggaran yang sudah disetujui oleh manajemen</label>
-                                    <input class="form-control" type="file" id="file_question_two_two"
-                                        name="file_question_two_two">
-
-                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
-                                        izinkan.</div>
-
-                                    @error('file_question_two_two')
-                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                    @enderror
-                                </div>
-                            @endif
-
-                            @if ($pillarOne && $pillarOne->file_question_two_two)
-                                <div class="mb-3">
-                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        <label class="form-label fw-medium d-block">4. Dokumen
-                                            program
-                                            kerja
-                                            dan anggaran yang sudah disetujui oleh manajemen</label>
-                                    @endif
-
-                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                        data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($pillarOne->file_question_two_two, '/')) }}">
+                                        data-url="{{ url('/' . ltrim($pillarOne->file_question_two_three, '/')) }}">
                                         Lihat Dokumen
                                     </button>
                                 </div>
@@ -416,7 +347,7 @@
                                         @endif
                                     </p>
 
-                                    <div class="row">
+                                    <div class="row mb-3">
                                         <label for="committee_pillar_one_question_two"
                                             class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
                                             Panitia:</label>
@@ -444,6 +375,144 @@
                                     </div>
                                 @endif
                             @endif
+
+                            {{-- Pertanyaan 3 --}}
+                            <div class="{{ $pillarOne && $pillarOne->file_question_two_one ? 'mb-2' : 'mb-3' }}">
+                                <label for="file_question_two_one" class="form-label fw-medium">3. Dokumen SK
+                                    kepengurusan
+                                    DKM
+                                    dari manajemen</label>
+
+                                @if (auth()->check() && auth()->user()->hasRole('user'))
+                                    <input class="form-control" type="file" id="file_question_two_one"
+                                        name="file_question_two_one">
+
+                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                        izinkan.</div>
+                                @endif
+
+                                @error('file_question_two_one')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
+                            </div>
+
+                            @if ($pillarOne && $pillarOne->file_question_two_one)
+                                <div class="mb-3">
+                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                        data-bs-toggle="modal" data-bs-target="#documentModal"
+                                        data-url="{{ url('/' . ltrim($pillarOne->file_question_two_one, '/')) }}">
+                                        Lihat Dokumen
+                                    </button>
+                                </div>
+                            @else
+                                @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                    <div class="mb-3">
+                                        <p class="card-text fw-medium text-danger">
+                                            *) Tidak ada dokumen yang di unggah
+                                        </p>
+                                    </div>
+                                @endif
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_one_id ?? '')
+                                    <div class="row mb-3">
+                                        <label for="committee_pillar_one_question_three"
+                                            class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
+                                            Panitia:</label>
+                                        <div class="col-md-8 col-xl-9">
+                                            <select name="committee_pillar_one_question_three"
+                                                id="committee_pillar_one_question_three" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_one_question_three)
+                                                    <option value="">-- Pilih Nilai --</option>
+                                                @endif
+
+                                                <option value="1"
+                                                    {{ old('committee_pillar_one_question_three', $committeeAssessment->pillar_one_question_three ?? '') == 1 ? 'selected' : '' }}>
+                                                    1</option>
+                                                <option value="3"
+                                                    {{ old('committee_pillar_one_question_three', $committeeAssessment->pillar_one_question_three ?? '') == 3 ? 'selected' : '' }}>
+                                                    3</option>
+                                                <option value="7"
+                                                    {{ old('committee_pillar_one_question_three', $committeeAssessment->pillar_one_question_three ?? '') == 7 ? 'selected' : '' }}>
+                                                    7</option>
+                                                <option value="9"
+                                                    {{ old('committee_pillar_one_question_three', $committeeAssessment->pillar_one_question_three ?? '') == 9 ? 'selected' : '' }}>
+                                                    9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+
+                            {{-- Pertanyaan 4 --}}
+                            <div class="{{ $pillarOne && $pillarOne->file_question_two_two ? 'mb-2' : 'mb-3' }}">
+                                <label for="file_question_two_two" class="form-label fw-medium">4. Dokumen
+                                    program
+                                    kerja
+                                    dan anggaran yang sudah disetujui oleh manajemen</label>
+
+                                @if (auth()->check() && auth()->user()->hasRole('user'))
+                                    <input class="form-control" type="file" id="file_question_two_two"
+                                        name="file_question_two_two">
+
+                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                        izinkan.</div>
+                                @endif
+
+                                @error('file_question_two_two')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
+                            </div>
+
+                            @if ($pillarOne && $pillarOne->file_question_two_two)
+                                <div class="mb-3">
+                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                        data-bs-toggle="modal" data-bs-target="#documentModal"
+                                        data-url="{{ url('/' . ltrim($pillarOne->file_question_two_two, '/')) }}">
+                                        Lihat Dokumen
+                                    </button>
+                                </div>
+                            @else
+                                @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                    <div class="mb-3">
+                                        <p class="card-text fw-medium text-danger">
+                                            *) Tidak ada dokumen yang di unggah
+                                        </p>
+                                    </div>
+                                @endif
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                @if ($systemAssessment->pillar_one_id ?? '')
+                                    <div class="row mb-3">
+                                        <label for="committee_pillar_one_question_four"
+                                            class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
+                                            Panitia:</label>
+                                        <div class="col-md-8 col-xl-9">
+                                            <select name="committee_pillar_one_question_four"
+                                                id="committee_pillar_one_question_four" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_one_question_four)
+                                                    <option value="">-- Pilih Nilai --</option>
+                                                @endif
+
+                                                <option value="1"
+                                                    {{ old('committee_pillar_one_question_four', $committeeAssessment->pillar_one_question_four ?? '') == 1 ? 'selected' : '' }}>
+                                                    1</option>
+                                                <option value="3"
+                                                    {{ old('committee_pillar_one_question_four', $committeeAssessment->pillar_one_question_four ?? '') == 3 ? 'selected' : '' }}>
+                                                    3</option>
+                                                <option value="7"
+                                                    {{ old('committee_pillar_one_question_four', $committeeAssessment->pillar_one_question_four ?? '') == 7 ? 'selected' : '' }}>
+                                                    7</option>
+                                                <option value="9"
+                                                    {{ old('committee_pillar_one_question_four', $committeeAssessment->pillar_one_question_four ?? '') == 9 ? 'selected' : '' }}>
+                                                    9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -453,7 +522,7 @@
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-3">Interaksi DKM dengan Jamaah</h5>
 
-                            {{-- Pertanyaan 3 --}}
+                            {{-- Pertanyaan 5 --}}
                             <div class="mb-3">
                                 <label for="question_three" class="form-label fw-medium">5. Media Interaksi dan
                                     Komunikasi dengan Jamaah(mading atau medsos)</label>
@@ -547,27 +616,27 @@
                                     </p>
 
                                     <div class="mb-3 row">
-                                        <label for="committee_pillar_one_question_three"
+                                        <label for="committee_pillar_one_question_five"
                                             class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
                                             Panitia:</label>
                                         <div class="col-md-8 col-xl-9">
-                                            <select name="committee_pillar_one_question_three"
-                                                id="committee_pillar_one_question_three" class="form-select">
-                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_one_question_three)
+                                            <select name="committee_pillar_one_question_five"
+                                                id="committee_pillar_one_question_five" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_one_question_five)
                                                     <option value="">-- Pilih Nilai --</option>
                                                 @endif
 
                                                 <option value="1"
-                                                    {{ old('committee_pillar_one_question_three', $committeeAssessment->pillar_one_question_three ?? '') == 1 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_five', $committeeAssessment->pillar_one_question_five ?? '') == 1 ? 'selected' : '' }}>
                                                     1</option>
                                                 <option value="3"
-                                                    {{ old('committee_pillar_one_question_three', $committeeAssessment->pillar_one_question_three ?? '') == 3 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_five', $committeeAssessment->pillar_one_question_five ?? '') == 3 ? 'selected' : '' }}>
                                                     3</option>
                                                 <option value="7"
-                                                    {{ old('committee_pillar_one_question_three', $committeeAssessment->pillar_one_question_three ?? '') == 7 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_five', $committeeAssessment->pillar_one_question_five ?? '') == 7 ? 'selected' : '' }}>
                                                     7</option>
                                                 <option value="9"
-                                                    {{ old('committee_pillar_one_question_three', $committeeAssessment->pillar_one_question_three ?? '') == 9 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_five', $committeeAssessment->pillar_one_question_five ?? '') == 9 ? 'selected' : '' }}>
                                                     9</option>
                                             </select>
                                         </div>
@@ -575,7 +644,7 @@
                                 @endif
                             @endif
 
-                            {{-- Pertanyaan 4 --}}
+                            {{-- Pertanyaan 6 --}}
                             <div class="mb-3">
                                 <label for="question_four" class="form-label fw-medium">6. Memiliki Grup WhatsApp
                                     Jamaah</label>
@@ -672,27 +741,27 @@
                                     </p>
 
                                     <div class="mb-3 row">
-                                        <label for="committee_pillar_one_question_four"
+                                        <label for="committee_pillar_one_question_six"
                                             class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
                                             Panitia:</label>
                                         <div class="col-md-8 col-xl-9">
-                                            <select name="committee_pillar_one_question_four"
-                                                id="committee_pillar_one_question_four" class="form-select">
-                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_one_question_four)
+                                            <select name="committee_pillar_one_question_six"
+                                                id="committee_pillar_one_question_six" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_one_question_six)
                                                     <option value="">-- Pilih Nilai --</option>
                                                 @endif
 
                                                 <option value="1"
-                                                    {{ old('committee_pillar_one_question_four', $committeeAssessment->pillar_one_question_four ?? '') == 1 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_six', $committeeAssessment->pillar_one_question_six ?? '') == 1 ? 'selected' : '' }}>
                                                     1</option>
                                                 <option value="3"
-                                                    {{ old('committee_pillar_one_question_four', $committeeAssessment->pillar_one_question_four ?? '') == 3 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_six', $committeeAssessment->pillar_one_question_six ?? '') == 3 ? 'selected' : '' }}>
                                                     3</option>
                                                 <option value="7"
-                                                    {{ old('committee_pillar_one_question_four', $committeeAssessment->pillar_one_question_four ?? '') == 7 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_six', $committeeAssessment->pillar_one_question_six ?? '') == 7 ? 'selected' : '' }}>
                                                     7</option>
                                                 <option value="9"
-                                                    {{ old('committee_pillar_one_question_four', $committeeAssessment->pillar_one_question_four ?? '') == 9 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_six', $committeeAssessment->pillar_one_question_six ?? '') == 9 ? 'selected' : '' }}>
                                                     9</option>
                                             </select>
                                         </div>
@@ -700,7 +769,7 @@
                                 @endif
                             @endif
 
-                            {{-- Pertanyaan 5 --}}
+                            {{-- Pertanyaan 7 --}}
                             <div class="mb-3">
                                 <label for="question_five" class="form-label fw-medium">7. Program Pembinaan
                                     Keagamaan
@@ -796,27 +865,27 @@
                                     </p>
 
                                     <div class="mb-4 row">
-                                        <label for="committee_pillar_one_question_five"
+                                        <label for="committee_pillar_one_question_seven"
                                             class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
                                             Panitia:</label>
                                         <div class="col-md-8 col-xl-9">
-                                            <select name="committee_pillar_one_question_five"
-                                                id="committee_pillar_one_question_five" class="form-select">
-                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_one_question_five)
+                                            <select name="committee_pillar_one_question_seven"
+                                                id="committee_pillar_one_question_seven" class="form-select">
+                                                @if (!$committeeAssessment || !$committeeAssessment->pillar_one_question_seven)
                                                     <option value="">-- Pilih Nilai --</option>
                                                 @endif
 
                                                 <option value="1"
-                                                    {{ old('committee_pillar_one_question_five', $committeeAssessment->pillar_one_question_five ?? '') == 1 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_seven', $committeeAssessment->pillar_one_question_seven ?? '') == 1 ? 'selected' : '' }}>
                                                     1</option>
                                                 <option value="3"
-                                                    {{ old('committee_pillar_one_question_five', $committeeAssessment->pillar_one_question_five ?? '') == 3 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_seven', $committeeAssessment->pillar_one_question_seven ?? '') == 3 ? 'selected' : '' }}>
                                                     3</option>
                                                 <option value="7"
-                                                    {{ old('committee_pillar_one_question_five', $committeeAssessment->pillar_one_question_five ?? '') == 7 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_seven', $committeeAssessment->pillar_one_question_seven ?? '') == 7 ? 'selected' : '' }}>
                                                     7</option>
                                                 <option value="9"
-                                                    {{ old('committee_pillar_one_question_five', $committeeAssessment->pillar_one_question_five ?? '') == 9 ? 'selected' : '' }}>
+                                                    {{ old('committee_pillar_one_question_seven', $committeeAssessment->pillar_one_question_seven ?? '') == 9 ? 'selected' : '' }}>
                                                     9</option>
                                             </select>
                                         </div>
