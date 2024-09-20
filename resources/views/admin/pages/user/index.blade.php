@@ -114,7 +114,7 @@
                         <div id="deleteModalMessage" class="alert alert-info" role="alert"></div>
 
                         <div class="mb-3"><input type="text" class="form-control" name="name_confirmation"
-                                id="name_confirmation" placeholder="Masukan nama panitia" required /></div>
+                                id="name_confirmation" placeholder="Masukan nama peserta" required /></div>
 
                         <div class="text-end">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
