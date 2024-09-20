@@ -437,7 +437,7 @@
 
                             {{-- Pertanyaan 5 --}}
                             <div class="mb-3">
-                                <label for="question_five" class="form-label">5. Program Sustainability di
+                                <label for="question_five" class="form-label">5. Program Keberlanjutan (Sustainability) di
                                     DKM</label>
                                 <textarea class="form-control" name="question_five" rows="5"
                                     @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>{{ old('question_five', $pillarThree->question_five ?? '') }}</textarea>
@@ -490,10 +490,7 @@
 
                             {{-- Pertanyaan 6 --}}
                             <div class="mb-3">
-                                <label for="question_six" class="form-label">6. Jelaskan dengan Sebutkan Program
-                                    yang
-                                    sesuai dengan Astra
-                                    Sustainability Aspiration</label>
+                                <label for="question_six" class="form-label">6. Program yang terkait keberlanjutan (sustainability)</label>
                                 @foreach (['Hemat Air.', 'Hemat Listrik.', 'Pengelolaan sampah.'] as $option)
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="question_six[]"
