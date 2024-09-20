@@ -2,6 +2,7 @@
 /node_modules
 /public/build
 /public/hot
+/public/images/timeline/timeline.png
 /public/storage
 /storage/*.key
 /vendor

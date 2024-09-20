@@ -12,7 +12,6 @@ use App\Models\CategoryArea;
 use Illuminate\Http\Request;
 use App\Models\CategoryMosque;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
@@ -121,44 +120,49 @@ class DashboardController extends Controller
         return redirect()->back()->with('success', 'Data berhasil disimpan');
     }
 
-    private function createImage($text1, $text2, $text3) {
-        
-        $image = imagecreatefrompng(Storage::disk('local')->path('public/timeline/timeline-ori.png'));
+    private function createImage($text1, $text2, $text3)
+    {
+
+        $image = imagecreatefrompng(public_path('images/timeline/timeline-ori.png'));
 
         $textColor = imagecolorallocate($image, 0, 0, 0);
 
-        $fontPath = Storage::disk('local')->path('public/timeline/summer.otf');
-        $fontSize = 55; 
+        $fontSize = 55;
+        $fontPath = public_path('images/timeline/summer.otf');
 
         $arrText = [
             [
                 'x' => 400,
                 'y' => 125,
                 'text' => date_format(date_create('2024-09-06'), 'd F o'),
-            ],[
+            ],
+            [
                 'x' => 810,
                 'y' => 320,
                 'text' => $text1,
-            ],[
+            ],
+            [
                 'x' => 1400,
                 'y' => 125,
                 'text' => $text2,
-            ],[
+            ],
+            [
                 'x' => 1900,
                 'y' => 410,
                 'text' => $text3,
-            ],[
+            ],
+            [
                 'x' => 2570,
                 'y' => 620,
                 'text' => date_format(date_create('2025-01-01'), 'F o'),
             ],
         ];
 
-        foreach($arrText as $item) {
+        foreach ($arrText as $item) {
             imagettftext($image, $fontSize, 0, $item['x'], $item['y'], $textColor, $fontPath, $item['text']);
-        };       
-        
-        imagepng($image, Storage::disk('local')->path('public/timeline/timeline.png'));
-        imagedestroy($image);        
+        };
+
+        imagepng($image, public_path('images/timeline/timeline.png'));
+        imagedestroy($image);
     }
 }

@@ -206,7 +206,7 @@
 
             <div class="table-responsive mt-3">
                 <div style="text-align: center;">
-                    <img src="{{ asset('storage/timeline/timeline.png') }}" alt="Timeline" width="800">
+                    <img src="{{ asset('images/timeline/timeline.png') }}" alt="Timeline" width="800">
                 </div>
             </div>
 
