@@ -7,4 +7,5 @@ use App\Http\Controllers\ApiController;
 Route::get('cities/{provinceId}', [ApiController::class, 'getCities']);
 Route::get('companies', [ApiController::class, 'getCompanies']);
 Route::get('users-by-province/{provinceId}', [ApiController::class, 'getUsersByProvince']);
-Route::get('users-by-business-line/{businessLineId}', [ApiController::class, 'getUsersByBusinessLine']); //
+Route::get('users-by-business-line/{businessLineId}', [ApiController::class, 'getUsersByBusinessLine']);
+Route::get('users-by-category/{categoryAreaId}/{categoryMosqueId}', [ApiController::class, 'getUsersByCategory']);

@@ -46,4 +46,12 @@ class ApiController extends Controller
 
         return response()->json($mosques);
     }
+
+    public function getUsersByCategory($categoryAreaId, $categoryMosqueId)
+    {
+        $mosques = Mosque::with(['user', 'categoryArea', 'categoryMosque'])->where('category_area_id', $categoryAreaId)
+            ->where('category_mosque_id', $categoryMosqueId)->get();
+
+        return response()->json($mosques);
+    }
 }

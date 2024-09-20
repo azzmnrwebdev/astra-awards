@@ -106,7 +106,16 @@
                                         @endphp
 
                                         <td class="text-center py-3">
-                                            {{ $count === 0 ? '-' : $count }}
+                                            @if ($count === 0)
+                                                -
+                                            @else
+                                                <button type="button" class="border-0 p-0 bg-transparent"
+                                                    data-bs-toggle="modal" data-bs-target="#userByCategoryModal"
+                                                    data-category-area-id="{{ $area->id }}"
+                                                    data-category-mosque-id="{{ $mosque->id }}"
+                                                    data-category-area-name="{{ $area->name }}"
+                                                    data-category-mosque-name="{{ $mosque->name }}">{{ $count }}</button>
+                                            @endif
                                         </td>
                                     @endforeach
                                 </tr>
@@ -493,6 +502,25 @@
         </div>
     </div>
 
+    {{-- Modal DKM By Category Area & Category Mosque --}}
+    <div class="modal fade" id="userByCategoryModal" tabindex="-1" aria-labelledby="userByCategoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="userByCategoryModalLabel">
+                        Daftar Peserta Berdasarkan Kategori Area & Kategori Masjid
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Modal body will be filled by AJAX -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Modal DKM By Business Line --}}
     <div class="modal fade" id="userByBusinessLineModal" tabindex="-1"
         aria-labelledby="userByBusinessLineModalLabel" aria-hidden="true">
@@ -667,6 +695,134 @@
 
                 // =============================================================================================
 
+                $('#userByCategoryModal').on('show.bs.modal', function(event) {
+                    const modal = $(this);
+                    const button = $(event.relatedTarget);
+                    const categoryAreaId = button.data('category-area-id');
+                    const categoryAreaName = button.data('category-area-name');
+                    const categoryMosqueId = button.data('category-mosque-id');
+                    const categoryMosqueName = button.data('category-mosque-name');
+                    const modalBody = modal.find('.modal-body');
+                    let originalData = [];
+
+                    modalBody.empty();
+                    modalBody.html('<div id="loading" class="text-center py-4 fs-5">Memuat data...</div>');
+
+                    $.ajax({
+                        url: '/api/users-by-category/' + categoryAreaId + '/' + categoryMosqueId,
+                        method: 'GET',
+                        success: function(data) {
+                            console.log(data);
+
+                            originalData = data;
+                            modalBody.empty();
+
+                            var table = `
+                                <h5 class="card-title fw-semibold mb-1">${categoryAreaName} - ${categoryMosqueName}</h5>
+                                <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
+
+                                <div class="row align-items-center">
+                                    <div class="col-lg-6 col-xl-8">
+                                        <a href="#" id="downloadPdfButtonCategory" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                    </div>
+
+                                    <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
+                                        <form>
+                                            <input type="search" name="search" id="searchCategory" value=""
+                                                class="form-control" placeholder="Cari peserta/masjid">
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive mt-4">
+                                    <table class="table table-hover text-nowrap align-middle mb-0">
+                                        <thead class="border-top border-start border-end table-primary">
+                                            <tr>
+                                                <th class="text-center py-3">No</th>
+                                                <th class="text-center py-3">Logo</th>
+                                                <th class="text-start py-3">Nama Peserta</th>
+                                                <th class="text-center py-3">Nama Masjid/Musala</th>
+                                                <th class="text-center py-3">Kategori Masjid</th>
+                                                <th class="text-center py-3">Kategori Area</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="border-start border-end"></tbody>
+                                    </table>
+                                </div>
+                            `;
+
+                            modalBody.append(table);
+
+                            function renderTable(dataToRender) {
+                                const tbody = modalBody.find('tbody');
+                                tbody.empty();
+
+                                if (dataToRender.length > 0) {
+                                    $.each(dataToRender, function(index, mosqueData) {
+                                        const user = mosqueData.user;
+                                        const logoPath = `/storage/${mosqueData.logo}`;
+
+                                        tbody.append(`
+                                            <tr>
+                                                <td class="text-center py-3">${index + 1}</td>
+                                                <td class="text-center py-3">
+                                                    <img src="${logoPath}" alt="Logo" style="width: 100px;">
+                                                </td>
+                                                <td class="text-start py-3">${user.name}</td>
+                                                <td class="text-center py-3">${mosqueData.name}</td>
+                                                <td class="text-center py-3">${mosqueData.category_mosque.name}</td>
+                                                <td class="text-center py-3">${mosqueData.category_area.name}</td>
+                                            </tr>
+                                        `);
+                                    });
+                                } else {
+                                    tbody.append(`
+                                        <tr>
+                                            <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                                        </tr>
+                                    `);
+                                }
+                            }
+
+                            renderTable(originalData);
+
+                            $('#searchCategory').on('input', function() {
+                                const searchValue = $(this).val().toLowerCase();
+                                const filteredData = originalData.filter(mosqueData =>
+                                    mosqueData.user.name.toLowerCase().includes(
+                                        searchValue) ||
+                                    mosqueData.name.toLowerCase().includes(searchValue)
+                                );
+
+                                renderTable(filteredData);
+                            });
+
+                            $('#downloadPdfButtonCategory').on('click', function(event) {
+                                const modal = $('#userByCategoryModal');
+
+                                if (originalData.length === 0) {
+                                    modal.modal('hide');
+                                    alert(
+                                        'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
+                                    );
+
+                                    return false;
+                                }
+
+                                modal.modal('hide');
+                            });
+                        },
+                        error: function() {
+                            modalBody.html(
+                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data</div>'
+                            );
+                        }
+                    });
+                });
+
+                // =============================================================================================
+
                 $('#userByBusinessLineModal').on('show.bs.modal', function(event) {
                     const modal = $(this);
                     const button = $(event.relatedTarget);
@@ -682,8 +838,6 @@
                         url: '/api/users-by-business-line/' + businessLineId,
                         method: 'GET',
                         success: function(data) {
-                            console.log(data);
-
                             originalData = data;
                             modalBody.empty();
 
@@ -777,7 +931,7 @@
                                         'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
                                     );
 
-                                    return;
+                                    return false;
                                 }
 
                                 modal.modal('hide');
@@ -899,7 +1053,7 @@
                                         'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
                                     );
 
-                                    return;
+                                    return false;
                                 }
 
                                 modal.modal('hide');
