@@ -22,7 +22,8 @@ class UserController extends Controller
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
             ['class' => 'text-start py-3', 'label' => 'Nama'],
-            ['class' => 'text-start py-3', 'label' => 'Email'],
+            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
+            //['class' => 'text-start py-3', 'label' => 'Email'],
             ['class' => 'text-center py-3', 'label' => 'Nomor Ponsel'],
             ['class' => 'text-center py-3', 'label' => 'Status'],
             ['class' => 'text-center py-3', 'label' => 'Tanggal Bergabung'],
@@ -31,21 +32,32 @@ class UserController extends Controller
 
         $search = $request->input('pencarian');
         $status = $request->input('status');
-        $query = User::query()->where('role', 'user');
-
+        $query = User::query()  
+            ->select('users.*', 'companies.name as perusahaan')
+            ->join('mosques', 'users.id', '=', 'mosques.user_id')
+            ->join('companies', 'mosques.company_id', '=', 'companies.id')
+            ->where('users.role', 'user');
+        
         if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
-                    ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%'])
-                    ->orWhereRaw('LOWER(phone_number) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
+            if ($status == 2) {
+                $query->whereRaw('LOWER(companies.name) LIKE ?', ['%' . strtolower($search) . '%']);
+            } else {
+                $query->where(function ($q) use ($search) {
+                    $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
+                        ->orWhereRaw('LOWER(users.email) LIKE ?', ['%' . strtolower($search) . '%'])
+                        ->orWhereRaw('LOWER(users.phone_number) LIKE ?', ['%' . strtolower($search) . '%']);
+                });    
+            }
         }
 
         if ($status !== null) {
-            $query->where('status', $status);
+            if ($status != 2)
+                $query->where('users.status', $status);
         }
 
-        $users = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);
+        //dd($query->tosql());
+
+        $users = $query->orderByDesc('users.updated_at')->latest('users.created_at')->paginate(10);
 
         return view('admin.pages.user.index', compact('theadName', 'search', 'status', 'users'));
     }

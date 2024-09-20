@@ -26,6 +26,7 @@
                                 <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>
                                     Tidak Aktif
                                 </option>
+                                <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Perusahaan</option>
                             </select>
                         </div>
 
@@ -52,7 +53,8 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $users->firstItem() }}</td>
                                 <td class="text-start py-3">{{ $item->name }}</td>
-                                <td class="text-start py-3">{{ $item->email }}</td>
+                                <td class="text-start py-3">{{ $item->perusahaan }}</td>
+                                {{--  <td class="text-start py-3">{{ $item->email }}</td>--}}
                                 <td class="text-center py-3">{{ $item->phone_number ?? '-' }}</td>
                                 <td class="text-center py-3">
                                     @if ($item->status === 1)
