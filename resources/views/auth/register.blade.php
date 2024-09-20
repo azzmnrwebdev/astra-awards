@@ -269,7 +269,7 @@
                             {{-- Kapasitas Jamaah Masjid/Musala --}}
                             <div class="col-lg-6">
                                 <label for="capacity" class="form-label fw-medium">Kapasitas Jamaah
-                                    Masjid/Musala</label>
+                                    Masjid/Musala Saat Sholat Jum’at</label>
                                 <input type="number" min="10"
                                     class="form-control @error('capacity') is-invalid @enderror" id="capacity"
                                     name="capacity" placeholder="Masukan kapasitas tempat ibadah"
