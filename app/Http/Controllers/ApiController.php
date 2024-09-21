@@ -31,7 +31,7 @@ class ApiController extends Controller
 
     public function getUsersByProvince($provinceId)
     {
-        $mosques = Mosque::with(['user', 'city'])->whereHas('city', function ($query) use ($provinceId) {
+        $mosques = Mosque::with(['user', 'company', 'city'])->whereHas('city', function ($query) use ($provinceId) {
             $query->where('province_id', $provinceId);
         })->get();
 
@@ -49,8 +49,10 @@ class ApiController extends Controller
 
     public function getUsersByCategory($categoryAreaId, $categoryMosqueId)
     {
-        $mosques = Mosque::with(['user', 'categoryArea', 'categoryMosque'])->where('category_area_id', $categoryAreaId)
-            ->where('category_mosque_id', $categoryMosqueId)->get();
+        $mosques = Mosque::with(['user', 'company', 'categoryArea', 'categoryMosque'])
+            ->where('category_area_id', $categoryAreaId)
+            ->where('category_mosque_id', $categoryMosqueId)
+            ->get();
 
         return response()->json($mosques);
     }

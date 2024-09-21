@@ -16,23 +16,38 @@
                 </div>
             @endif
 
-            <div class="row justify-content-end">
-                <div class="col-sm-8 col-xl-6">
-                    <form class="row g-2">
+            <div class="row">
+                {{-- <div class="col-12">
+                    <a href="#" class="btn btn-danger rounded-0">Unduh PDF</a>
+                </div> --}}
+
+                <div class="col-12">
+                    <form class="row g-3">
                         <div class="col-sm-6">
-                            <select name="status" id="status" class="form-select">
-                                <option value="">Semua Status</option>
-                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Aktif</option>
-                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>
-                                    Tidak Aktif
-                                </option>
-                                <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Perusahaan</option>
+                            <select name="perusahaan" id="perusahaan" class="form-select">
+                                <option value="">Semua Perusahaan</option>
+                                @foreach ($companies as $item)
+                                    <option value="{{ $item->id }}" {{ $companyId == $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="col-sm-6">
+                            <select name="status" id="status" class="form-select">
+                                <option value="">Semua Status Akun</option>
+                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Aktif</option>
+                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>
+                                    Tidak Aktif
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
-                                class="form-control" placeholder="Cari peserta">
+                                class="form-control" placeholder="Cari peserta?">
+                            <div class="form-text">Kata kunci bisa berdasarkan nama, nomor ponsel atau perusahaan.</div>
                         </div>
                     </form>
                 </div>
@@ -53,8 +68,7 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $users->firstItem() }}</td>
                                 <td class="text-start py-3">{{ $item->name }}</td>
-                                <td class="text-start py-3">{{ $item->perusahaan }}</td>
-                                {{--  <td class="text-start py-3">{{ $item->email }}</td>--}}
+                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">{{ $item->phone_number ?? '-' }}</td>
                                 <td class="text-center py-3">
                                     @if ($item->status === 1)
@@ -138,7 +152,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#pencarian, #status').on('input keydown change', function(e) {
+                $('#pencarian, #perusahaan, #status').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -157,16 +171,21 @@
 
                 function filter() {
                     const params = {};
-                    const searchValue = $('#pencarian').val();
+                    const companyValue = $('#perusahaan').val();
                     const statusValue = $('#status').val();
+                    const searchValue = $('#pencarian').val();
                     const url = '{{ route('user.index') }}';
 
-                    if (searchValue.trim() !== '') {
-                        params.pencarian = searchValue.trim().replace(/ /g, '+');
+                    if (companyValue !== '') {
+                        params.perusahaan = companyValue;
                     }
 
                     if (statusValue !== '') {
                         params.status = statusValue;
+                    }
+
+                    if (searchValue.trim() !== '') {
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
                     }
 
                     const queryString = Object.keys(params).map(key => key + '=' + params[key]);
@@ -187,7 +206,7 @@
 
                     $('#deleteForm').attr('action', deleteUrl);
                     $('#deleteModalMessage').html(
-                        `Menghapus akun pengguna akan mengakibatkan hilangnya semua data yang terkait dengan akun, Setelah akun dihapus, data yang terkait tidak dapat dipulihkan.<br><br>
+                        `Menghapus akun peserta akan mengakibatkan hilangnya semua data yang terkait dengan akun, Setelah akun dihapus, data yang terkait tidak dapat dipulihkan.<br><br>
                         Untuk melanjutkan penghapusan akun, silakan ketik <b>'${name}'</b> di bawah ini sebagai bentuk konfirmasi hapus akun:`
                     );
                     $('#deleteModal').modal('show');

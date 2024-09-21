@@ -23,15 +23,15 @@ class CityController extends Controller
         $query = City::query();
         $provinces = Province::all();
 
-        $search = $request->input('pencarian');
         $provinceId = $request->input('provinsi');
-
-        if ($search) {
-            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-        }
+        $search = $request->input('pencarian');
 
         if ($provinceId) {
             $query->where('province_id', $provinceId);
+        }
+
+        if ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
         }
 
         $cities = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);

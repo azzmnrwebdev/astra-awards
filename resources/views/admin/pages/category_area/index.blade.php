@@ -24,7 +24,7 @@
                 <div class="col-sm-6 col-xl-4 mt-3 mt-sm-0">
                     <form>
                         <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
-                            class="form-control" placeholder="Cari kategori">
+                            class="form-control" placeholder="Cari kategori?">
                     </form>
                 </div>
             </div>

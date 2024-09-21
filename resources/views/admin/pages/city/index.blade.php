@@ -37,7 +37,7 @@
 
                         <div class="col-sm-6">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
-                                class="form-control" placeholder="Cari kota/kabupaten">
+                                class="form-control" placeholder="Cari kota/kabupaten?">
                         </div>
                     </form>
                 </div>
@@ -123,7 +123,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#pencarian, #provinsi').on('input keydown change', function(e) {
+                $('#provinsi, #pencarian').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -142,8 +142,8 @@
 
                 function filter() {
                     const params = {};
-                    const searchValue = $('#pencarian').val();
                     const provinceId = $('#provinsi').val();
+                    const searchValue = $('#pencarian').val();
                     const url = '{{ route('city.index') }}';
 
                     if (provinceId !== '') {

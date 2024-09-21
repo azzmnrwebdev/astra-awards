@@ -31,16 +31,16 @@ class CompanyController extends Controller
         $parentCompanyId = $request->input('induk_perusahaan');
         $query = Company::with(['parentCompany', 'businessLine', 'mosque']);
 
-        if ($search) {
-            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+        if ($businessLineId) {
+            $query->where('business_line_id', $businessLineId);
         }
 
         if ($parentCompanyId) {
             $query->where('parent_company_id', $parentCompanyId);
         }
 
-        if ($businessLineId) {
-            $query->where('business_line_id', $businessLineId);
+        if ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
         }
 
         $companies = $query->orderByDesc('updated_at')->latest('created_at')->paginate(10);

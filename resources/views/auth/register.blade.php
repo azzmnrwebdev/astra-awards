@@ -5,11 +5,7 @@
             <div class="card border-0 shadow mb-4" style="border-radius: 20px;">
                 <div class="card-body p-5">
                     <h5 class="card-title mb-3" style="font-weight: 600;">Timeline Kegiatan</h5>
-                    <div class="table-responsive">
-                        <div style="text-align: center;">
-                            <img src="{{ asset('images/timeline/timeline.png') }}" alt="Timeline" width="800">
-                        </div>
-                    </div>
+                    <img src="{{ asset('images/timeline/timeline.png') }}" alt="Timeline" class="img-fluid">
                 </div>
             </div>
 
@@ -99,8 +95,7 @@
                                         name="password_confirmation" placeholder="Masukan konfirmasi password">
 
                                     <span class="input-group-text">
-                                        <i class="bi bi-eye" id="toggle-password-confirm"
-                                            style="cursor: pointer;"></i>
+                                        <i class="bi bi-eye" id="toggle-password-confirm" style="cursor: pointer;"></i>
                                     </span>
                                 </div>
                             </div>
@@ -247,10 +242,12 @@
 
                             {{-- Lini Bisnis --}}
                             <div class="col-lg-6">
-                                <label for="business_line_id" class="form-label fw-medium">Lini Bisnis, Yayasan & Koperasi, Head Office</label>
+                                <label for="business_line_id" class="form-label fw-medium">Lini Bisnis, Yayasan &
+                                    Koperasi, Head Office</label>
                                 <select class="form-select @error('business_line_id') is-invalid @enderror"
                                     id="business_line_id" name="business_line_id">
-                                    <option value="">-- Pilih Lini Bisnis, Yayasan & Koperasi, Head Office --</option>
+                                    <option value="">-- Pilih Lini Bisnis, Yayasan & Koperasi, Head Office --
+                                    </option>
                                     @foreach ($businessLines as $item)
                                         <option value="{{ $item->id }}"
                                             {{ old('business_line_id') == $item->id ? 'selected' : '' }}>

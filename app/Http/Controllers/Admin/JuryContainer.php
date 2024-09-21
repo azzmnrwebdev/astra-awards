@@ -30,7 +30,7 @@ class JuryContainer extends Controller
         $search = $request->input('pencarian');
         $query = User::query()->where('role', 'jury');
 
-        if (!empty($search)) {
+        if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
                     ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%'])

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistributionController;
 use App\Http\Controllers\Admin\JuryContainer;
 use App\Http\Controllers\Admin\ParentCompanyController;
+use App\Http\Controllers\Admin\PDFController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\UserController;
@@ -116,6 +117,8 @@ Route::middleware('auth')->group(function () {
 
     // Route Admin
     Route::middleware([CheckRolesMiddleware::class . ':admin'])->prefix('dashboard')->group(function () {
+        Route::get('export-pdf-users-by-province/{provinceId}', [PDFController::class, 'getUsersByProvince'])->name('export_pdf.get_users_by_province');
+
         Route::prefix('kategori-area')->group(function () {
             Route::get('/', [CategoryAreaController::class, 'index'])->name('categoryArea.index');
             Route::get('tambah', [CategoryAreaController::class, 'create'])->name('categoryArea.create');

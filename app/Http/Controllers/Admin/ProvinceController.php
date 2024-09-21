@@ -22,7 +22,7 @@ class ProvinceController extends Controller
         $query = Province::query();
         $search = $request->input('pencarian');
 
-        if (!empty($search)) {
+        if ($search) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
         }
 

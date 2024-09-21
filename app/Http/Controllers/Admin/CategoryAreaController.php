@@ -22,7 +22,7 @@ class CategoryAreaController extends Controller
         $query = CategoryArea::query();
         $search = $request->input('pencarian');
 
-        if (!empty($search)) {
+        if ($search) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
         }
 

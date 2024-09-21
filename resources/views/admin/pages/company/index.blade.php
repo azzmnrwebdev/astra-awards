@@ -23,9 +23,16 @@
 
                 <div class="col-12 mt-3">
                     <form class="row g-3">
-                        <div class="col-12">
-                            <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
-                                class="form-control" placeholder="Cari perusahaan">
+                        <div class="col-sm-6">
+                            <select name="lini_bisnis" id="lini_bisnis" class="form-select">
+                                <option value="">Semua Lini Bisnis</option>
+                                @foreach ($businessLines as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ $businessLineId == $item->id ? 'selected' : '' }}>
+                                        {{ $item->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="col-sm-6">
@@ -40,16 +47,9 @@
                             </select>
                         </div>
 
-                        <div class="col-sm-6">
-                            <select name="lini_bisnis" id="lini_bisnis" class="form-select">
-                                <option value="">Semua Lini Bisnis</option>
-                                @foreach ($businessLines as $item)
-                                    <option value="{{ $item->id }}"
-                                        {{ $businessLineId == $item->id ? 'selected' : '' }}>
-                                        {{ $item->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <div class="col-12">
+                            <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
+                                class="form-control" placeholder="Cari perusahaan?">
                         </div>
                     </form>
                 </div>
@@ -136,7 +136,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#pencarian, #induk_perusahaan, #lini_bisnis').on('input keydown change', function(e) {
+                $('#lini_bisnis, #induk_perusahaan, #pencarian').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -155,21 +155,21 @@
 
                 function filter() {
                     const params = {};
-                    const searchValue = $('#pencarian').val();
-                    const parentCompanyId = $('#induk_perusahaan').val();
                     const businessLineId = $('#lini_bisnis').val();
+                    const parentCompanyId = $('#induk_perusahaan').val();
+                    const searchValue = $('#pencarian').val();
                     const url = '{{ route('company.index') }}';
 
-                    if (searchValue.trim() !== '') {
-                        params.pencarian = searchValue.trim().replace(/ /g, '+');
+                    if (businessLineId !== '') {
+                        params.lini_bisnis = businessLineId;
                     }
 
                     if (parentCompanyId !== '') {
                         params.induk_perusahaan = parentCompanyId;
                     }
 
-                    if (businessLineId !== '') {
-                        params.lini_bisnis = businessLineId;
+                    if (searchValue.trim() !== '') {
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
                     }
 
                     const queryString = Object.keys(params).map(key => key + '=' + params[key]);

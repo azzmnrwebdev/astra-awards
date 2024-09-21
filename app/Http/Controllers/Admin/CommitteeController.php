@@ -46,7 +46,7 @@ class CommitteeController extends Controller
             ->latest('created_at')
             ->paginate(10);
 
-        if (!empty($search)) {
+        if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
                     ->orWhereRaw('LOWER(email) LIKE ?', ['%' . strtolower($search) . '%'])

@@ -28,7 +28,7 @@
                                 <h5 class="card-title fw-semibold mb-1">{{ $totalDKM }}</h5>
                                 <p class="card-text mb-0 lh-sm">Total Peserta</p>
                             </div>
-                            <i class="bi bi-people-fill fs-1" style="color: #0077B6;"></i>
+                            <i class="bi bi-people-fill fs-1" style="color: #004ea2;"></i>
                         </div>
                     </div>
                 </a>
@@ -41,7 +41,7 @@
                                 <h5 class="card-title fw-semibold mb-1">{{ $totalCompany }}</h5>
                                 <p class="card-text mb-0 lh-sm">Total Perusahaan</p>
                             </div>
-                            <i class="bi bi-building fs-1" style="color: #0077B6;"></i>
+                            <i class="bi bi-building fs-1" style="color: #004ea2;"></i>
                         </div>
                     </div>
                 </a>
@@ -54,7 +54,7 @@
                                 <h5 class="card-title fw-semibold mb-1">{{ $totalBusinessLine }}</h5>
                                 <p class="card-text mb-0 lh-sm">Total Lini Bisnis, Yayasan & Koperasi, Head Office</p>
                             </div>
-                            <i class="bi bi-briefcase-fill fs-1" style="color: #0077B6;"></i>
+                            <i class="bi bi-briefcase-fill fs-1" style="color: #004ea2;"></i>
                         </div>
                     </div>
                 </a>
@@ -67,7 +67,7 @@
                                 <h5 class="card-title fw-semibold mb-1">{{ $totalProvince }}</h5>
                                 <p class="card-text mb-0 lh-sm">Total Provinsi</p>
                             </div>
-                            <i class="bi bi-geo-alt-fill fs-1" style="color: #0077B6;"></i>
+                            <i class="bi bi-geo-alt-fill fs-1" style="color: #004ea2;"></i>
                         </div>
                     </div>
                 </a>
@@ -204,15 +204,11 @@
                 </div>
             @endif
 
-            <div class="table-responsive mt-3">
-                <div style="text-align: center;">
-                    <img src="{{ asset('images/timeline/timeline.png') }}" alt="Timeline" width="800">
-                </div>
-            </div>
+            <img src="{{ asset('images/timeline/timeline.png') }}" alt="Timeline" class="img-fluid my-3">
 
             @if (auth()->check() && auth()->user()->hasRole('admin'))
                 {{-- form --}}
-                <form action="{{ route('dashboardAct') }}" method="POST" class="mt-4">
+                <form action="{{ route('dashboardAct') }}" method="POST">
                     @csrf
 
                     <input type="hidden" name="id" value="{{ $timeline->id ?? '' }}">
@@ -621,7 +617,7 @@
                             originalData = data;
                             modalBody.empty();
 
-                            var table = `
+                            const table = `
                                 <h5 class="card-title fw-semibold mb-1">${categoryAreaName} - ${categoryMosqueName}</h5>
                                 <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
 
@@ -633,7 +629,7 @@
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
                                         <form>
                                             <input type="search" name="search" id="searchCategory" value=""
-                                                class="form-control" placeholder="Cari peserta/masjid">
+                                                class="form-control" placeholder="Cari peserta/masjid?">
                                         </form>
                                     </div>
                                 </div>
@@ -642,9 +638,9 @@
                                     <table class="table table-hover text-nowrap align-middle mb-0">
                                         <thead class="border-top border-start border-end table-primary">
                                             <tr>
-                                                <th class="text-center py-3">No</th>
                                                 <th class="text-center py-3">Logo</th>
                                                 <th class="text-start py-3">Nama Peserta</th>
+                                                <th class="text-center py-3">Perusahaan</th>
                                                 <th class="text-center py-3">Nama Masjid/Musala</th>
                                                 <th class="text-center py-3">Kategori Masjid</th>
                                                 <th class="text-center py-3">Kategori Area</th>
@@ -669,11 +665,11 @@
 
                                         tbody.append(`
                                             <tr>
-                                                <td class="text-center py-3">${index + 1}</td>
                                                 <td class="text-center py-3">
                                                     <img src="${logoPath}" alt="Logo" style="width: 100px;">
                                                 </td>
                                                 <td class="text-start py-3">${user.name}</td>
+                                                <td class="text-center py-3">${mosqueData.company.name}</td>
                                                 <td class="text-center py-3">${mosqueData.name}</td>
                                                 <td class="text-center py-3">${mosqueData.category_mosque.name}</td>
                                                 <td class="text-center py-3">${mosqueData.category_area.name}</td>
@@ -745,7 +741,7 @@
                             originalData = data;
                             modalBody.empty();
 
-                            var table = `
+                            const table = `
                                 <h5 class="card-title fw-semibold mb-1">${businessLineName}</h5>
                                 <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
 
@@ -757,7 +753,7 @@
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
                                         <form>
                                             <input type="search" name="search" id="searchBusinessLine" value=""
-                                                class="form-control" placeholder="Cari peserta/masjid">
+                                                class="form-control" placeholder="Cari peserta/masjid?">
                                         </form>
                                     </div>
                                 </div>
@@ -766,12 +762,11 @@
                                     <table class="table table-hover text-nowrap align-middle mb-0">
                                         <thead class="border-top border-start border-end table-primary">
                                             <tr>
-                                                <th class="text-center py-3">No</th>
                                                 <th class="text-center py-3">Logo</th>
                                                 <th class="text-start py-3">Nama Peserta</th>
                                                 <th class="text-center py-3">Nama Masjid/Musala</th>
-                                                <th class="text-start py-3">Induk Perusahaan</th>
-                                                <th class="text-start py-3">Perusahaan</th>
+                                                <th class="text-center py-3">Induk Perusahaan</th>
+                                                <th class="text-center py-3">Perusahaan</th>
                                             </tr>
                                         </thead>
 
@@ -793,14 +788,13 @@
 
                                         tbody.append(`
                                             <tr>
-                                                <td class="text-center py-3">${index + 1}</td>
                                                 <td class="text-center py-3">
                                                     <img src="${logoPath}" alt="Logo" style="width: 100px;">
                                                 </td>
                                                 <td class="text-start py-3">${user.name}</td>
                                                 <td class="text-center py-3">${mosqueData.name}</td>
-                                                <td class="text-start py-3">${mosqueData.company.parent_company.name}</td>
-                                                <td class="text-start py-3">${mosqueData.company.name}</td>
+                                                <td class="text-center py-3">${mosqueData.company.parent_company.name}</td>
+                                                <td class="text-center py-3">${mosqueData.company.name}</td>
                                             </tr>
                                         `);
                                     });
@@ -869,19 +863,23 @@
                             originalData = data;
                             modalBody.empty();
 
-                            var table = `
+                            const pdfUrl =
+                                "{{ route('export_pdf.get_users_by_province', ['provinceId' => 'PLACEHOLDER']) }}"
+                                .replace('PLACEHOLDER', provinceId);
+
+                            const table = `
                                 <h5 class="card-title fw-semibold mb-1">Provinsi ${provinceName}</h5>
                                 <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
 
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-xl-8">
-                                        <a href="#" id="downloadPdfButtonProvince" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="${pdfUrl}" id="downloadPdfButtonProvince" class="btn btn-danger rounded-0">Unduh PDF</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
                                         <form>
                                             <input type="search" name="search" id="searchProvince" value=""
-                                                class="form-control" placeholder="Cari peserta/masjid">
+                                                class="form-control" placeholder="Cari peserta/masjid?">
                                         </form>
                                     </div>
                                 </div>
@@ -890,9 +888,9 @@
                                     <table class="table table-hover text-nowrap align-middle mb-0">
                                         <thead class="border-top border-start border-end table-primary">
                                             <tr>
-                                                <th class="text-center py-3">No</th>
                                                 <th class="text-center py-3">Logo</th>
                                                 <th class="text-start py-3">Nama Peserta</th>
+                                                <th class="text-center py-3">Perusahaan</th>
                                                 <th class="text-center py-3">Nama Masjid/Musala</th>
                                                 <th class="text-center py-3">Kota/Kabupaten</th>
                                             </tr>
@@ -916,11 +914,11 @@
 
                                         tbody.append(`
                                             <tr>
-                                                <td class="text-center py-3">${index + 1}</td>
                                                 <td class="text-center py-3">
                                                     <img src="${logoPath}" alt="Logo" style="width: 100px;">
                                                 </td>
                                                 <td class="text-start py-3">${user.name}</td>
+                                                <td class="text-center py-3">${mosqueData.company.name}</td>
                                                 <td class="text-center py-3">${mosqueData.name}</td>
                                                 <td class="text-center py-3">${mosqueData.city.name}</td>
                                             </tr>
