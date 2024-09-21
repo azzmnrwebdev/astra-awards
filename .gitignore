@@ -3,6 +3,7 @@
 /public/build
 /public/hot
 /public/images/timeline/timeline.png
+/public/fonts/
 /public/storage
 /storage/*.key
 /vendor

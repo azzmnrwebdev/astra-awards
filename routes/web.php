@@ -118,6 +118,7 @@ Route::middleware('auth')->group(function () {
     // Route Admin
     Route::middleware([CheckRolesMiddleware::class . ':admin'])->prefix('dashboard')->group(function () {
         Route::get('export-pdf-users-by-province/{provinceId}', [PDFController::class, 'getUsersByProvince'])->name('export_pdf.get_users_by_province');
+        Route::get('export-pdf-users-by-business-line/{businessLineId}', [PDFController::class, 'getUsersByBusinessLine'])->name('export_pdf.get_users_by_business_line');
 
         Route::prefix('kategori-area')->group(function () {
             Route::get('/', [CategoryAreaController::class, 'index'])->name('categoryArea.index');

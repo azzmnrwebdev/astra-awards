@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <title>Daftar Peserta Provinsi {{ $province->name }}</title>
+    <title>Daftar Peserta Lini Bisnis {{ $businessLine->name }}</title>
 
     <style>
         @font-face {
@@ -72,7 +72,7 @@
                 </td>
                 <td style="width: 1%; vertical-align: top;font-size: 12px; padding: 0;">:</td>
                 <td style="width: 30%; vertical-align: top; text-transform: uppercase; padding: 0; font-size: 12px;">
-                    Laporan Peserta Yang Sudah Terdaftar Di Sistem Berdasarkan Provinsi {{ $province->name }}
+                    Laporan Peserta Yang Sudah Terdaftar Di Sistem Berdasarkan Lini Bisnis {{ $businessLine->name }}
                 </td>
             </tr>
             <tr>
@@ -87,19 +87,19 @@
 
     <h3 style="font-weight: 800; text-align: center; line-height: 20px;">
         <span style="display: block;">Laporan Peserta Yang Sudah Terdaftar Di Sistem Berdasarkan</span>
-        Provinsi {{ $province->name }}
+        Lini Bisnis {{ $businessLine->name }}
     </h3>
 
     <table id="table">
         <thead>
             <tr>
-                <th style="text-align: center;">Kota/Kabupaten</th>
+                <th style="text-align: center;">Perusahaan</th>
                 <th style="text-align: center;">Jumlah</th>
             </tr>
         </thead>
 
         <tbody>
-            @foreach ($province->city as $item)
+            @foreach ($businessLine->company as $item)
                 <tr>
                     <td style="text-align: center;">{{ $item->name }}</td>
                     <td style="text-align: center;">{{ count($item->mosque) }}</td>
@@ -107,8 +107,8 @@
             @endforeach
 
             @php
-                $totalMosques = $province->city->sum(function ($city) {
-                    return count($city->mosque);
+                $totalMosques = $businessLine->company->sum(function ($company) {
+                    return count($company->mosque);
                 });
             @endphp
 
@@ -125,9 +125,9 @@
                 <th style="text-align: center;">No</th>
                 <th style="text-align: center;">Logo</th>
                 <th style="text-align: center;">Nama Peserta</th>
-                <th style="text-align: center;">Perusahaan</th>
                 <th style="text-align: center;">Nama Masjid/Musala</th>
-                <th style="text-align: center;">Kota/Kabupaten</th>
+                <th style="text-align: center;">Induk Perusahaan</th>
+                <th style="text-align: center;">Perusahaan</th>
             </tr>
         </thead>
 
@@ -148,9 +148,9 @@
                         @endif
                     </td>
                     <td style="text-align: center;">{{ $item->user->name }}</td>
-                    <td style="text-align: center;">{{ $item->company->name }}</td>
                     <td style="text-align: center;">{{ $item->name }}</td>
-                    <td style="text-align: center;">{{ $item->city->name }}</td>
+                    <td style="text-align: center;">{{ $item->company->parentCompany->name }}</td>
+                    <td style="text-align: center;">{{ $item->company->name }}</td>
                 </tr>
             @endforeach
         </tbody>

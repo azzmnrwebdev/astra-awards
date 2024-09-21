@@ -741,13 +741,17 @@
                             originalData = data;
                             modalBody.empty();
 
+                            const pdfUrl =
+                                "{{ route('export_pdf.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
+                                .replace('PLACEHOLDER', businessLineId);
+
                             const table = `
                                 <h5 class="card-title fw-semibold mb-1">${businessLineName}</h5>
                                 <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
 
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-xl-8">
-                                        <a href="#" id="downloadPdfButtonBusinessLine" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="${pdfUrl}" id="downloadPdfButtonBusinessLine" class="btn btn-danger rounded-0">Unduh PDF</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
