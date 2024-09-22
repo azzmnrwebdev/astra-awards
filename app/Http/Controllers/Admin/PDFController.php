@@ -7,8 +7,8 @@ use Carbon\Carbon;
 use App\Models\Mosque;
 use App\Models\Province;
 use iio\libmergepdf\Merger;
-use App\Http\Controllers\Controller;
 use App\Models\BusinessLine;
+use App\Http\Controllers\Controller;
 
 class PDFController extends Controller
 {
@@ -21,14 +21,14 @@ class PDFController extends Controller
         })->get();
 
         $data = [
-            'date' => Carbon::now()->toDateString(),
-            'province' => $province,
             'mosques' => $mosques,
+            'province' => $province,
+            'date' => Carbon::now()->toDateString(),
         ];
 
-        $provinceName = str_replace(' ', '-', $province->name);
+        $provinceName = str_replace([' ', '-'], [',', ''], $province->name);
 
-        $pdfPortrait = PDF::loadView('admin.pdf.users-by-province-cover', $data)
+        $pdfPortrait = PDF::loadView('admin.pdf.users-by-province-cover', ['province' => $province])
             ->setPaper('a4', 'portrait')
             ->setOption([
                 'fontDir' => public_path('/fonts'),
@@ -65,21 +65,21 @@ class PDFController extends Controller
 
     public function getUsersByBusinessLine($businessLineId)
     {
-        $businessLine = BusinessLine::with(['company'])->findOrFail($businessLineId);
+        $businessLine = BusinessLine::with(['company'])->find($businessLineId);
 
         $mosques = Mosque::with(['user', 'company', 'company.businessLine', 'company.parentCompany'])->whereHas('company', function ($query) use ($businessLineId) {
             $query->where('business_line_id', $businessLineId);
         })->get();
 
         $data = [
-            'date' => Carbon::now()->toDateString(),
-            'businessLine' => $businessLine,
             'mosques' => $mosques,
+            'businessLine' => $businessLine,
+            'date' => Carbon::now()->toDateString(),
         ];
 
-        $businessLineName = str_replace(' ', '-', $businessLine->name);
+        $businessLineName = str_replace([' ', '-'], [',', ''], $businessLine->name);
 
-        $pdfPortrait = PDF::loadView('admin.pdf.users-by-business-line-cover', $data)
+        $pdfPortrait = PDF::loadView('admin.pdf.users-by-business-line-cover', ['businessLine' => $businessLine])
             ->setPaper('a4', 'portrait')
             ->setOption([
                 'fontDir' => public_path('/fonts'),

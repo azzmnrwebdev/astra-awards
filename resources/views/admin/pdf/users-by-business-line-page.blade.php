@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <title>Daftar Peserta Lini Bisnis {{ $businessLine->name }}</title>
+    <title>Daftar Peserta Lini Bisnis, Yayasan & Koperasi, Head Office {{ $businessLine->name }}</title>
 
     <style>
         @font-face {
@@ -72,7 +72,8 @@
                 </td>
                 <td style="width: 1%; vertical-align: top;font-size: 12px; padding: 0;">:</td>
                 <td style="width: 30%; vertical-align: top; text-transform: uppercase; padding: 0; font-size: 12px;">
-                    Laporan Peserta Yang Sudah Terdaftar Di Sistem Berdasarkan Lini Bisnis {{ $businessLine->name }}
+                    Laporan Peserta Yang Sudah Terdaftar Di Sistem Berdasarkan Lini Bisnis, Yayasan & Koperasi, Head
+                    Office {{ $businessLine->name }}
                 </td>
             </tr>
             <tr>
@@ -87,7 +88,7 @@
 
     <h3 style="font-weight: 800; text-align: center; line-height: 20px;">
         <span style="display: block;">Laporan Peserta Yang Sudah Terdaftar Di Sistem Berdasarkan</span>
-        Lini Bisnis {{ $businessLine->name }}
+        Lini Bisnis , Yayasan & Koperasi, Head Office {{ $businessLine->name }}
     </h3>
 
     <table id="table">
