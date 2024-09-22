@@ -167,6 +167,7 @@ class FormController extends Controller
             'file_question_two' => 'file|mimes:zip',
             'file_question_three' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_five' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -291,6 +292,7 @@ class FormController extends Controller
         $pillarTwo->file_question_two = $this->handleFileUpdate($request, 'file_question_two', $pillarTwo->file_question_two, 'pillarTwos');
         $pillarTwo->file_question_three = $this->handleFileUpdate($request, 'file_question_three', $pillarTwo->file_question_three, 'pillarTwos');
         $pillarTwo->file_question_four = $this->handleFileUpdate($request, 'file_question_four', $pillarTwo->file_question_four, 'pillarTwos');
+        $pillarTwo->file_question_five = $this->handleFileUpdate($request, 'file_question_five', $pillarTwo->file_question_five, 'pillarTwos');
 
         $pillarTwo->save();
 

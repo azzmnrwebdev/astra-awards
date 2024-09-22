@@ -247,14 +247,14 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiLA"
                                         id="belumAda2" value="belum_ada"
-                                        {{ $pillarTwo ? in_array('Belum Ada', (array) old('status_divisiLA', json_decode($pillarTwo->question_three ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        {{ $pillarTwo ? (in_array('Belum Ada', (array) old('status_divisiLA', json_decode($pillarTwo->question_three ?? '[]', true) ?? '')) ? 'checked' : '') : '' }}
                                         @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="belumAda2">Belum Ada</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiLA"
                                         id="ada2" value="ada"
-                                        {{ $pillarTwo ? !in_array('Belum Ada', (array) old('status_divisiLA', json_decode($pillarTwo->question_three ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        {{ $pillarTwo ? (!in_array('Belum Ada', (array) old('status_divisiLA', json_decode($pillarTwo->question_three ?? '[]', true) ?? '')) ? 'checked' : '') : '' }}
                                         @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="ada2">Ada</label>
                                 </div>
@@ -369,14 +369,14 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiK"
                                         id="belumAda3" value="belum_ada"
-                                        {{ $pillarTwo ? in_array('Belum Ada', (array) old('status_divisiK', json_decode($pillarTwo->question_four ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        {{ $pillarTwo ? (in_array('Belum Ada', (array) old('status_divisiK', json_decode($pillarTwo->question_four ?? '[]', true) ?? '')) ? 'checked' : '') : '' }}
                                         @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="belumAda3">Belum Ada</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiK"
                                         id="ada3" value="ada"
-                                        {{ $pillarTwo ? !in_array('Belum Ada', (array) old('status_divisiK', json_decode($pillarTwo->question_four ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        {{ $pillarTwo ? (!in_array('Belum Ada', (array) old('status_divisiK', json_decode($pillarTwo->question_four ?? '[]', true) ?? '')) ? 'checked' : '') : '' }}
                                         @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="ada3">Ada</label>
                                 </div>
@@ -486,14 +486,14 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiAK"
                                         id="belumAda4" value="belum_ada"
-                                        {{ $pillarTwo ? in_array('Belum Ada', (array) old('status_divisiAK', json_decode($pillarTwo->question_five ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        {{ $pillarTwo ? (in_array('Belum Ada', (array) old('status_divisiAK', json_decode($pillarTwo->question_five ?? '[]', true) ?? '')) ? 'checked' : '') : '' }}
                                         @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="belumAda4">Belum Ada</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="status_divisiAK"
                                         id="ada4" value="ada"
-                                        {{ $pillarTwo ? !in_array('Belum Ada', (array) old('status_divisiAK', json_decode($pillarTwo->question_five ?? '[]', true) ?? '')) ? 'checked' : '' : '' }}
+                                        {{ $pillarTwo ? (!in_array('Belum Ada', (array) old('status_divisiAK', json_decode($pillarTwo->question_five ?? '[]', true) ?? '')) ? 'checked' : '') : '' }}
                                         @if (auth()->check() && auth()->user()->hasRole('admin')) disabled @endif>
                                     <label class="form-check-label" for="ada4">Ada</label>
                                 </div>
@@ -516,6 +516,36 @@
                                     <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
                                 @enderror
                             </div>
+
+                            @if (auth()->check() && auth()->user()->hasRole('user'))
+                                <div class="{{ $pillarTwo && $pillarTwo->file_question_five ? 'mb-2' : 'mb-3' }}">
+                                    <label for="file_question_five" class="form-label fw-medium">Dokumen
+                                        Pendukung</label>
+                                    <input class="form-control" type="file" id="file_question_five"
+                                        name="file_question_five">
+
+                                    <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
+                                        izinkan.</div>
+
+                                    @error('file_question_five')
+                                        <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                    @enderror
+                                </div>
+                            @endif
+
+                            @if ($pillarTwo && $pillarTwo->file_question_five)
+                                <div class="mb-3">
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        <label class="form-label fw-medium d-block">Dokumen Pendukung</label>
+                                    @endif
+
+                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                        data-bs-toggle="modal" data-bs-target="#documentModal"
+                                        data-url="{{ url('/' . ltrim($pillarTwo->file_question_five, '/')) }}">
+                                        Lihat Dokumen
+                                    </button>
+                                </div>
+                            @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_two_id ?? '')
@@ -696,30 +726,6 @@
                     }
                 });
 
-                // //pertanyaan 3 textarea
-                // const kegiatanLainnyaCheckbox = document.querySelector('input[value="Kegiatan Sinergi lainnya"]');
-
-                // if (kegiatanLainnyaCheckbox) {
-                //     // Cek apakah "Kegiatan Sinergi lainnya" sudah dicentang saat halaman dimuat
-                //     if (kegiatanLainnyaCheckbox.checked) {
-                //         optionFourInput.style.display = 'block'; // Tampilkan input jika sudah dicentang
-                //         optionFourInput.required = true; // Tambahkan atribut required
-                //     }
-
-                //     // Tambah event listener untuk menampilkan/menyembunyikan input saat dicentang
-                //     kegiatanLainnyaCheckbox.addEventListener('change', function () {
-                //         if (this.checked) {
-                //             optionFourInput.style.display = 'block';
-                //             optionFourInput.required = true; // Tambahkan atribut required jika checkbox dicentang
-                //         } else {
-                //             optionFourInput.style.display = 'none';
-                //             optionFourInput.required = false; // Hapus atribut required jika checkbox tidak dicentang
-                //         }
-                //     });
-                // }
-
-
-                //radio button checkbox
                 // Pertanyaan 1
                 const checkboxContainer = document.getElementById('checkboxContainer');
                 const radioBelumAda = document.getElementById('belumAda');
