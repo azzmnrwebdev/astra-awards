@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <title>Daftar Peserta Lini Bisnis {{ $businessLine->name }}</title>
+    <title>Daftar Peserta Lini Bisnis, Yayasan & Koperasi, Head Office : {{ $businessLine->name }}</title>
 
     <style>
         @font-face {
