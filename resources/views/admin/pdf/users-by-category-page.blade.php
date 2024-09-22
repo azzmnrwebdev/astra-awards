@@ -113,18 +113,18 @@
                 @endphp
 
                 <tr>
-                    <td style="text-align: center;">{{ $loop->iteration }}</td>
-                    <td style="text-align: center;">
+                    <td style="text-align: right; vertical-align: top;">{{ $loop->iteration }}</td>
+                    <td style="text-align: center; vertical-align: top;">
                         @if ($imageData)
                             <img src="data:{{ $mimeType }};base64,{{ $imageData }}" alt="Logo Masjid"
                                 style="width: 100px;">
                         @endif
                     </td>
-                    <td style="text-align: center;">{{ $item->user->name }}</td>
-                    <td style="text-align: center;">{{ $item->company->name }}</td>
-                    <td style="text-align: center;">{{ $item->name }}</td>
-                    <td style="text-align: center;">{{ $item->categoryArea->name }}</td>
-                    <td style="text-align: center;">{{ $item->categoryMosque->name }}</td>
+                    <td style="text-align: left; vertical-align: top;">{{ $item->user->name }}</td>
+                    <td style="text-align: left; vertical-align: top;">{{ $item->company->name }}</td>
+                    <td style="text-align: left; vertical-align: top;">{{ $item->name }}</td>
+                    <td style="text-align: left; vertical-align: top;">{{ $item->categoryArea->name }}</td>
+                    <td style="text-align: left; vertical-align: top;">{{ $item->categoryMosque->name }}</td>
                 </tr>
             @endforeach
         </tbody>
