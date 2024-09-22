@@ -409,7 +409,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="userByCategoryModalLabel">
-                        Daftar Peserta Berdasarkan Kategori Area & Kategori Masjid
+                        Daftar Peserta Berdasarkan Kategori Area dan Masjid
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -612,10 +612,18 @@
                         url: '/api/users-by-category/' + categoryAreaId + '/' + categoryMosqueId,
                         method: 'GET',
                         success: function(data) {
-                            console.log(data);
-
                             originalData = data;
                             modalBody.empty();
+
+                            const pdfUrl =
+                                "{{ route('download_pdf.get_users_by_category', ['categoryAreaId' => 'PLACEHOLDER', 'categoryMosqueId' => 'PLACEHOLDER2']) }}"
+                                .replace('PLACEHOLDER', categoryAreaId)
+                                .replace('PLACEHOLDER2', categoryMosqueId);
+
+                            const excelUrl =
+                                "{{ route('download_excel.get_users_by_category', ['categoryAreaId' => 'PLACEHOLDER', 'categoryMosqueId' => 'PLACEHOLDER2']) }}"
+                                .replace('PLACEHOLDER', categoryAreaId)
+                                .replace('PLACEHOLDER2', categoryMosqueId);
 
                             const table = `
                                 <h5 class="card-title fw-semibold mb-1">${categoryAreaName} - ${categoryMosqueName}</h5>
@@ -623,7 +631,8 @@
 
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-xl-8">
-                                        <a href="#" id="downloadPdfButtonCategory" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="${pdfUrl}" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="${excelUrl}" class="btn btn-success rounded-0">Unduh Excel</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
@@ -642,8 +651,8 @@
                                                 <th class="text-start py-3">Nama Peserta</th>
                                                 <th class="text-center py-3">Perusahaan</th>
                                                 <th class="text-center py-3">Nama Masjid/Musala</th>
-                                                <th class="text-center py-3">Kategori Masjid</th>
                                                 <th class="text-center py-3">Kategori Area</th>
+                                                <th class="text-center py-3">Kategori Masjid</th>
                                             </tr>
                                         </thead>
 
@@ -671,8 +680,8 @@
                                                 <td class="text-start py-3">${user.name}</td>
                                                 <td class="text-center py-3">${mosqueData.company.name}</td>
                                                 <td class="text-center py-3">${mosqueData.name}</td>
-                                                <td class="text-center py-3">${mosqueData.category_mosque.name}</td>
                                                 <td class="text-center py-3">${mosqueData.category_area.name}</td>
+                                                <td class="text-center py-3">${mosqueData.category_mosque.name}</td>
                                             </tr>
                                         `);
                                     });
@@ -696,21 +705,6 @@
                                 );
 
                                 renderTable(filteredData);
-                            });
-
-                            $('#downloadPdfButtonCategory').on('click', function(event) {
-                                const modal = $('#userByCategoryModal');
-
-                                if (originalData.length === 0) {
-                                    modal.modal('hide');
-                                    alert(
-                                        'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
-                                    );
-
-                                    return false;
-                                }
-
-                                modal.modal('hide');
                             });
                         },
                         error: function() {
@@ -742,7 +736,11 @@
                             modalBody.empty();
 
                             const pdfUrl =
-                                "{{ route('export_pdf.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
+                                "{{ route('download_pdf.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
+                                .replace('PLACEHOLDER', businessLineId);
+
+                            const excelUrl =
+                                "{{ route('download_excel.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
                                 .replace('PLACEHOLDER', businessLineId);
 
                             const table = `
@@ -752,6 +750,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-xl-8">
                                         <a href="${pdfUrl}" id="downloadPdfButtonBusinessLine" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="${excelUrl}" id="downloadExcelButtonBusinessLine" class="btn btn-success rounded-0">Unduh Excel</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
@@ -838,6 +837,21 @@
 
                                 modal.modal('hide');
                             });
+
+                            $('#downloadExcelButtonBusinessLine').on('click', function(event) {
+                                const modal = $('#userByBusinessLineModal');
+
+                                if (originalData.length === 0) {
+                                    modal.modal('hide');
+                                    alert(
+                                        'Data tidak tersedia. Unduh Excel tidak dapat dilakukan.'
+                                    );
+
+                                    return false;
+                                }
+
+                                modal.modal('hide');
+                            });
                         },
                         error: function() {
                             modalBody.html(
@@ -868,7 +882,11 @@
                             modalBody.empty();
 
                             const pdfUrl =
-                                "{{ route('export_pdf.get_users_by_province', ['provinceId' => 'PLACEHOLDER']) }}"
+                                "{{ route('download_pdf.get_users_by_province', ['provinceId' => 'PLACEHOLDER']) }}"
+                                .replace('PLACEHOLDER', provinceId);
+
+                            const excelUrl =
+                                "{{ route('download_excel.get_users_by_province', ['provinceId' => 'PLACEHOLDER']) }}"
                                 .replace('PLACEHOLDER', provinceId);
 
                             const table = `
@@ -878,6 +896,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-xl-8">
                                         <a href="${pdfUrl}" id="downloadPdfButtonProvince" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="${excelUrl}" id="downloadExcelButtonProvince" class="btn btn-success rounded-0">Unduh Excel</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
@@ -957,6 +976,21 @@
                                     modal.modal('hide');
                                     alert(
                                         'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
+                                    );
+
+                                    return false;
+                                }
+
+                                modal.modal('hide');
+                            });
+
+                            $('#downloadExcelButtonProvince').on('click', function(event) {
+                                const modal = $('#userByProvinceModal');
+
+                                if (originalData.length === 0) {
+                                    modal.modal('hide');
+                                    alert(
+                                        'Data tidak tersedia. Unduh Excel tidak dapat dilakukan.'
                                     );
 
                                     return false;

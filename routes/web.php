@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CommitteeController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DistributionController;
+use App\Http\Controllers\Admin\ExcelController;
 use App\Http\Controllers\Admin\JuryContainer;
 use App\Http\Controllers\Admin\ParentCompanyController;
 use App\Http\Controllers\Admin\PDFController;
@@ -117,8 +118,13 @@ Route::middleware('auth')->group(function () {
 
     // Route Admin
     Route::middleware([CheckRolesMiddleware::class . ':admin'])->prefix('dashboard')->group(function () {
-        Route::get('export-pdf-users-by-province/{provinceId}', [PDFController::class, 'getUsersByProvince'])->name('export_pdf.get_users_by_province');
-        Route::get('export-pdf-users-by-business-line/{businessLineId}', [PDFController::class, 'getUsersByBusinessLine'])->name('export_pdf.get_users_by_business_line');
+        Route::get('pengguna-berdasarkan-kategori-unduh-pdf/{categoryAreaId}/{categoryMosqueId}', [PDFController::class, 'getUsersByCategory'])->name('download_pdf.get_users_by_category');
+        Route::get('pengguna-berdasarkan-provinsi-unduh-pdf/{provinceId}', [PDFController::class, 'getUsersByProvince'])->name('download_pdf.get_users_by_province');
+        Route::get('pengguna-berdasarkan-lini-bisnis-unduh-pdf/{businessLineId}', [PDFController::class, 'getUsersByBusinessLine'])->name('download_pdf.get_users_by_business_line');
+
+        Route::get('pengguna-berdasarkan-kategori-unduh-excel/{categoryAreaId}/{categoryMosqueId}', [ExcelController::class, 'getUsersByCategory'])->name('download_excel.get_users_by_category');
+        Route::get('pengguna-berdasarkan-provinsi-unduh-excel/{provinceId}', [ExcelController::class, 'getUsersByProvince'])->name('download_excel.get_users_by_province');
+        Route::get('pengguna-berdasarkan-lini-bisnis-unduh-excel/{businessLineId}', [ExcelController::class, 'getUsersByBusinessLine'])->name('download_excel.get_users_by_business_line');
 
         Route::prefix('kategori-area')->group(function () {
             Route::get('/', [CategoryAreaController::class, 'index'])->name('categoryArea.index');
