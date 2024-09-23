@@ -154,13 +154,21 @@ class FormController extends Controller
 
     public function relationshipAct(Request $request)
     {
-        if (
-            !$request->input('question_two') &&
-            !$request->input('question_three') &&
-            !$request->input('question_four') &&
-            !$request->input('question_five')
-        ) {
-            return redirect()->back()->with('error', 'Harus mengisi setidaknya salah satu bidang data.');
+        $isAllStatusAda =
+            $request->input('status_divisiSR') === 'ada' &&
+            $request->input('status_divisiLA') === 'ada' &&
+            $request->input('status_divisiK') === 'ada' &&
+            $request->input('status_divisiAK') === 'ada';
+
+        if ($isAllStatusAda) {
+            if (
+                !$request->input('question_two') &&
+                !$request->input('question_three') &&
+                !$request->input('question_four') &&
+                !$request->input('question_five')
+            ) {
+                return redirect()->back()->with('error', 'Harus mengisi setidaknya salah satu bidang data.');
+            }
         }
 
         $rules = [

@@ -24,7 +24,7 @@ use App\Http\Controllers\CommitteeAssessmentController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PresentationController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SystemAssessmentController;
 use App\Http\Middleware\CheckRolesMiddleware;
 use App\Http\Middleware\CheckStatusMiddleware;
@@ -50,9 +50,16 @@ Route::middleware('auth')->group(function () {
     // Route All Role
     Route::middleware([CheckStatusMiddleware::class])->group(function () {
         Route::get('/', [HomeController::class, 'information'])->name('information');
-        Route::get('profile', [ProfileController::class, 'profile'])->name('profile');
-        Route::put('profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
-        Route::put('profile/change-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+
+        Route::prefix('pengaturan')->group(function () {
+            Route::get('pengaturan', [SettingController::class, 'index'])->name('setting.index');
+            Route::get('informasi-akun', [SettingController::class, 'account'])->name('setting.account');
+            Route::put('informasi-akun', [SettingController::class, 'accountAct'])->name('setting.accountAct');
+            Route::get('informasi-umum', [SettingController::class, 'general'])->name('setting.general');
+            Route::put('informasi-umum', [SettingController::class, 'generalAct'])->name('setting.generalAct');
+            Route::get('ganti-kata-sandi', [SettingController::class, 'changePassword'])->name('setting.changePassword');
+            Route::put('ganti-kata-sandi', [SettingController::class, 'changePasswordAct'])->name('setting.changePasswordAct');
+        });
     });
 
     // Route Jury & User

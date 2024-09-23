@@ -47,38 +47,4 @@ class ProfileController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
         }
     }
-
-    public function updatePassword(Request $request)
-    {
-        $userLogin = Auth::user();
-
-        $rules = [
-            'current_password' => 'required|string',
-            'new_password' => 'required|string|min:8|confirmed',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        if (!password_verify($request->input('current_password'), $userLogin->password)) {
-            return redirect()->back()->with('error', 'Kata sandi saat ini salah.');
-        }
-
-        try {
-            $userLogin->update([
-                'password' => Hash::make($request->input('new_password')),
-            ]);
-
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect()->route('login')->with('success', 'Kata sandi berhasil diubah. Silahkan login kembali.');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
-        }
-    }
 }

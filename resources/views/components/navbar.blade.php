@@ -29,7 +29,7 @@
                     </li>
                 @endif
 
-                @if (auth()->check() && auth()->user()->hasRole('jury') || auth()->user()->hasRole('user'))
+                @if ((auth()->check() && auth()->user()->hasRole('jury')) || auth()->user()->hasRole('user'))
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('presentation') ? 'active' : '' }}"
                             href="{{ route('presentation') }}">Presentasi</a>
@@ -45,13 +45,13 @@
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('setting.index') }}">Pengaturan</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
 
                                 <button type="submit" class="border-0 bg-transparent text-dark dropdown-item">
-                                    Keluar
+                                    Keluar Aplikasi
                                 </button>
                             </form>
                         </li>
