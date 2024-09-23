@@ -44,8 +44,8 @@ class UserController extends Controller
             });
         }
 
-        if ($status) {
-            $query->where('status', $status);
+        if ($status !== null) {
+            $query->where('status', (int)$status);
         }
 
         if ($search) {

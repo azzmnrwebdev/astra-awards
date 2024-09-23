@@ -152,7 +152,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#pencarian, #perusahaan, #status').on('input keydown change', function(e) {
+                $('#perusahaan, #pencarian, #status').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
