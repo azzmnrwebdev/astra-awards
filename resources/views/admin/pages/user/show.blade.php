@@ -21,40 +21,118 @@
                 </div>
             @endif
 
-            <h5 class="card-title fw-semibold">Informasi Akun</h5>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <img src="{{ asset('storage/' . $user->mosque->logo) }}" alt="Logo" class="img-fluid">
+                </div>
 
-            <p class="card-text mb-0"><span class="fw-medium">Nama Pengguna:
-                </span>{{ $user->name }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Alamat Email:
-                </span>{{ $user->email }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Nomor Ponsel:
-                </span>{{ $user->phone_number }}</p>
-            <p class="card-text"><span class="fw-medium">Status Pengguna:
-                </span>{{ $user->status ? 'Aktif' : 'Tidak Aktif' }}</p>
+                <div class="col-md-8">
+                    <h5 class="card-title fw-semibold">Informasi Peserta</h5>
 
-            <h5 class="card-title fw-semibold">Informasi Umum</h5>
-
-            <p class="card-text mb-0"><span class="fw-medium">Nama Masjid/Musala:
-                </span>{{ $user->mosque->name }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Kategori Masjid:
-                </span>{{ $user->mosque->categoryMosque->name }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Alamat: </span>{{ $user->mosque->address }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:
-                </span>{{ $user->mosque->city->name }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Provinsi:
-                </span>{{ $user->mosque->city->province->name }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Kapasitas Jamaah:
-                </span>{{ $user->mosque->capacity }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Kategori Area:
-                </span>{{ $user->mosque->categoryArea->name }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Ketua Pengurus DKM:
-                </span>{{ $user->mosque->leader }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Perusahaan:
-                </span>{{ $user->mosque->company->name }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Induk Perusahaan:
-                </span>{{ $user->mosque->company->parentCompany->name }}</p>
-            <p class="card-text mb-0"><span class="fw-medium">Lini Bisnis:
-                </span>{{ $user->mosque->company->businessLine->name }}</p>
+                    <div class="table-responsive">
+                        <table class="table table-borderless text-nowrap">
+                            <tbody>
+                                <tr>
+                                    <td class="px-0 py-1">Nama Lengkap</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Alamat Email</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->email }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Nomor Ponsel</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->phone_number }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Jabatan</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->position }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Status Akun</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">
+                                        @if ($user->status === 1)
+                                            <span class="badge text-bg-success">Aktif</span>
+                                        @else
+                                            <span class="badge text-bg-danger">Tidak Aktif</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Nama Masjid/Musala</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Kategori Masjid/Musala</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->categoryMosque->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Kapasitas Jama'ah</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->capacity }} Jama'ah</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Ketua Pengurus</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->leader }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Email Ketua</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->leader_email }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Nomor Ponsel Ketua</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->leader_phone }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Kategori Area</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->categoryArea->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Perusahaan</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->company->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Induk Perusahaan</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->company->parentCompany->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Lini Bisnis</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->company->businessLine->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Provinsi</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->city->province->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Kota/Kabupaten</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->city->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-0 py-1">Alamat</td>
+                                    <td class="px-1 py-1">:</td>
+                                    <td class="px-0 py-1">{{ $user->mosque->address }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
