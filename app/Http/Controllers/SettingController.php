@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,6 +40,8 @@ class SettingController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        DB::beginTransaction();
+
         try {
             $userLogin->update([
                 'name' => $request->input('name'),
@@ -46,15 +49,31 @@ class SettingController extends Controller
                 'phone_number' => $request->input('phone_number'),
             ]);
 
-            return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
+            if ($userLogin->mosque) {
+                $userLogin->mosque->update([
+                    'position' => $request->input('position'),
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect(route('setting.index'))->with('success', 'Profil berhasil diperbarui.');
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
+            DB::rollBack();
+
+            return redirect(route('setting.index'))->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
         }
     }
 
     public function general()
     {
-        return view('pages.setting.general');
+        $userLogin = Auth::user();
+
+        if ($userLogin->mosque) {
+            $mosque = $userLogin->mosque;
+        }
+
+        return view('pages.setting.general', compact('mosque'));
     }
 
     public function generalAct(Request $request)
