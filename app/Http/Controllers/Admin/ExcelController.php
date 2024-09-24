@@ -8,8 +8,8 @@ use App\Models\CategoryMosque;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersByCategoryExport;
-use App\Exports\UsersByBusinessLineExport;
 use App\Exports\MultipleSheetUsersByProvinceExport;
+use App\Exports\MultipleSheetCompaniesByBusinessLineExport;
 
 class ExcelController extends Controller
 {
@@ -23,11 +23,10 @@ class ExcelController extends Controller
 
     public function getUsersByBusinessLine($businessLineId)
     {
-        $businessLine = BusinessLine::with(['company'])->find($businessLineId);
+        $export = new MultipleSheetCompaniesByBusinessLineExport($businessLineId);
+        $fileName = $export->fileName;
 
-        $businessLineName = str_replace([' ', ','], ['-', ''], $businessLine->name);
-
-        return Excel::download(new UsersByBusinessLineExport($businessLineId), 'Daftar-Peserta-Lini-Bisnis-' . $businessLineName . '.xlsx', \Maatwebsite\Excel\Excel::XLS);
+        return Excel::download($export, $fileName);
     }
 
     public function getUsersByCategory($categoryAreaId, $categoryMosqueId)
