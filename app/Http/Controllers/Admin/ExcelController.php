@@ -32,13 +32,10 @@ class ExcelController extends Controller
 
     public function getUsersByCategory($categoryAreaId, $categoryMosqueId)
     {
-        $categoryArea = CategoryArea::find($categoryAreaId);
-        $categoryMosque = CategoryMosque::find($categoryMosqueId);
+        $export = new UsersByCategoryExport($categoryAreaId, $categoryMosqueId);
+        $fileName = $export->fileName;
 
-        $categoryAreaName = str_replace([' ', ','], ['-', ''], $categoryArea->name);
-        $categoryMosqueName = str_replace([' ', ','], ['-', ''], $categoryMosque->name);
-
-        return Excel::download(new UsersByCategoryExport($categoryAreaId, $categoryMosqueId), 'Daftar-Peserta-Kategori-' . $categoryAreaName . '-dan-' . $categoryMosqueName . '.xlsx', \Maatwebsite\Excel\Excel::XLS);
+        return Excel::download($export, $fileName);
     }
 
     public function getAllUsers()
