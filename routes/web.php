@@ -209,6 +209,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('peserta')->group(function () {
+            Route::get('unduh-excel', [ExcelController::class, 'getAllUsers'])->name('user.download_excel');
             Route::get('/', [UserController::class, 'index'])->name('user.index');
             Route::get('{user}', [UserController::class, 'show'])->name('user.show');
             Route::get('{user}/edit', [UserController::class, 'edit'])->name('user.edit');

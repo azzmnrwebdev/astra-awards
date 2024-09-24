@@ -1,23 +1,7 @@
 <x-user title="Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah"
     name="Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah">
     <div class="container py-4">
-        <div class="row row-cols-1 row-cols-lg-2 g-4">
-            @if (Session('success'))
-                <div class="col-md-10 col-lg-8">
-                    <div class="alert alert-success mb-2" role="alert">
-                        {{ Session('success') }}
-                    </div>
-                </div>
-            @endif
-
-            @if (Session('error'))
-                <div class="col-md-10 col-lg-8">
-                    <div class="alert alert-danger mb-2" role="alert">
-                        {{ Session('error') }}
-                    </div>
-                </div>
-            @endif
-
+        <div class="row row-cols-1 row-cols-lg-2 g-0">
             <div class="col-md-10 col-lg-8">
                 <div class="alert alert-light" role="alert">
                     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
@@ -25,12 +9,31 @@
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="{{ route('form.index') }}"
                                     class="text-decoration-none">Formulir</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Formulir Hubungan Manajemen Perusahaan dengan
+                            <li class="breadcrumb-item active" aria-current="page">Formulir Hubungan Manajemen
+                                Perusahaan dengan
                                 DKM dan Jamaah</li>
                         </ol>
                     </nav>
                 </div>
+            </div>
 
+            @if (Session('success'))
+                <div class="col-md-10 col-lg-8">
+                    <div class="alert alert-success mb-4" role="alert">
+                        {{ Session('success') }}
+                    </div>
+                </div>
+            @endif
+
+            @if (Session('error'))
+                <div class="col-md-10 col-lg-8">
+                    <div class="alert alert-danger mb-4" role="alert">
+                        {{ Session('error') }}
+                    </div>
+                </div>
+            @endif
+
+            <div class="col-md-10 col-lg-8">
                 @if (auth()->check() && auth()->user()->hasRole('admin'))
                     <div class="col mb-4">
                         <div class="card h-100 border-0 shadow rounded-4">

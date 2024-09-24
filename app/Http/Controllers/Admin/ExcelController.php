@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\BusinessLine;
 use App\Models\CategoryArea;
+use App\Exports\UsersExport;
 use App\Models\CategoryMosque;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -38,5 +39,10 @@ class ExcelController extends Controller
         $categoryMosqueName = str_replace([' ', ','], ['-', ''], $categoryMosque->name);
 
         return Excel::download(new UsersByCategoryExport($categoryAreaId, $categoryMosqueId), 'Daftar-Peserta-Kategori-' . $categoryAreaName . '-dan-' . $categoryMosqueName . '.xlsx', \Maatwebsite\Excel\Excel::XLS);
+    }
+
+    public function getAllUsers()
+    {
+        return new UsersExport();
     }
 }
