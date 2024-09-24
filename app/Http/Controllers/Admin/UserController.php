@@ -58,29 +58,6 @@ class UserController extends Controller
             });
         }
 
-        // $query = User::query()
-        //     ->select('users.*', 'companies.name as perusahaan')
-        //     ->join('mosques', 'users.id', '=', 'mosques.user_id')
-        //     ->join('companies', 'mosques.company_id', '=', 'companies.id')
-        //     ->where('users.role', 'user');
-
-        // if (!empty($search)) {
-        //     if ($status == 2) {
-        //         $query->whereRaw('LOWER(companies.name) LIKE ?', ['%' . strtolower($search) . '%']);
-        //     } else {
-        //         $query->where(function ($q) use ($search) {
-        //             $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
-        //                 ->orWhereRaw('LOWER(users.email) LIKE ?', ['%' . strtolower($search) . '%'])
-        //                 ->orWhereRaw('LOWER(users.phone_number) LIKE ?', ['%' . strtolower($search) . '%']);
-        //         });
-        //     }
-        // }
-
-        // if ($status !== null) {
-        //     if ($status != 2)
-        //         $query->where('users.status', $status);
-        // }
-
         $users = $query->orderByDesc('users.updated_at')->latest('users.created_at')->paginate(10);
 
         return view('admin.pages.user.index', compact('theadName', 'companies', 'companyId', 'status', 'search', 'users'));

@@ -19,6 +19,10 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
 {
     use Exportable;
 
+    private $companyId;
+    private $status;
+    private $search;
+
     private $index = 0;
 
     private $fileName = 'Daftar-Peserta-Amaliah-Astra-Awards-2024.xlsx';
@@ -29,9 +33,16 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
         'Content-Type' => 'text/xlsx',
     ];
 
+    public function __construct($companyId = null, $status = null, $search = null)
+    {
+        $this->companyId = $companyId;
+        $this->status = $status;
+        $this->search = $search;
+    }
+
     public function collection()
     {
-        return User::with([
+        $query =  User::with([
             'mosque',
             'mosque.categoryMosque',
             'mosque.categoryArea',
@@ -40,7 +51,29 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
             'mosque.company.businessLine',
             'mosque.city',
             'mosque.city.province',
-        ])->where('role', 'user')->get();
+        ])->where('role', 'user');
+
+        if ($this->companyId) {
+            $query->whereHas('mosque', function ($q) {
+                $q->where('company_id', $this->companyId);
+            });
+        }
+
+        if ($this->status !== null) {
+            $query->where('status', (int)$this->status);
+        }
+
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($this->search) . '%'])
+                    ->orWhereRaw('LOWER(users.phone_number) LIKE ?', ['%' . strtolower($this->search) . '%'])
+                    ->orWhereHas('mosque.company', function ($q2) {
+                        $q2->whereRaw('LOWER(companies.name) LIKE ?', ['%' . strtolower($this->search) . '%']);
+                    });
+            });
+        }
+
+        return $query->get();
     }
 
     public function startCell(): string

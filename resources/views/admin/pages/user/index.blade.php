@@ -18,7 +18,8 @@
 
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('user.download_excel') }}" class="btn btn-success rounded-0">Unduh Excel</a>
+                    <a href="{{ route('user.download_excel', ['perusahaan' => $companyId, 'status' => request('status'), 'pencarian' => $search]) }}"
+                        class="btn btn-success rounded-0">Unduh Excel</a>
                 </div>
 
                 <div class="col-12 mt-3">

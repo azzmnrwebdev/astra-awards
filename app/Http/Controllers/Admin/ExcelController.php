@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\BusinessLine;
-use App\Models\CategoryArea;
+use Illuminate\Http\Request;
 use App\Exports\UsersExport;
-use App\Models\CategoryMosque;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersByCategoryExport;
@@ -38,8 +36,12 @@ class ExcelController extends Controller
         return Excel::download($export, $fileName);
     }
 
-    public function getAllUsers()
+    public function getAllUsers(Request $request)
     {
-        return new UsersExport();
+        $companyId = $request->input('perusahaan');
+        $status = $request->input('status');
+        $search = $request->input('pencarian');
+
+        return new UsersExport($companyId, $status, $search);
     }
 }
