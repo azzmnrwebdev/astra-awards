@@ -20,18 +20,20 @@
                                 @enderror
                             </div>
 
-                            {{-- Position --}}
-                            <div class="mb-3">
-                                <label for="position" class="form-label">Jabatan di DKM</label>
-                                <input type="text" class="form-control @error('position') is-invalid @enderror"
-                                    id="position" name="position"
-                                    value="{{ old('position', $userLogin->mosque->position) }}"
-                                    placeholder="Masukan posisi di DKM">
+                            @if (auth()->check() && auth()->user()->hasRole('user'))
+                                {{-- Position --}}
+                                <div class="mb-3">
+                                    <label for="position" class="form-label">Jabatan di DKM</label>
+                                    <input type="text" class="form-control @error('position') is-invalid @enderror"
+                                        id="position" name="position"
+                                        value="{{ old('position', $userLogin->mosque->position) }}"
+                                        placeholder="Masukan posisi di DKM">
 
-                                @error('position')
-                                    <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
-                                @enderror
-                            </div>
+                                    @error('position')
+                                        <small class="invalid-feedback"><strong>{{ $message }}</strong></small>
+                                    @enderror
+                                </div>
+                            @endif
 
                             {{-- Email --}}
                             <div class="mb-3">

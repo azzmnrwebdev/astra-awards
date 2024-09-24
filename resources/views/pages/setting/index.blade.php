@@ -26,12 +26,14 @@
                         </div>
                     </a>
 
-                    <a href="{{ route('setting.general') }}"
-                        class="list-group-item mb-3 border rounded py-3 text-bg-dark d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            Informasi Umum
-                        </div>
-                    </a>
+                    @if (auth()->check() && auth()->user()->hasRole('user'))
+                        <a href="{{ route('setting.general') }}"
+                            class="list-group-item mb-3 border rounded py-3 text-bg-dark d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                Informasi Umum
+                            </div>
+                        </a>
+                    @endif
 
                     <a href="{{ route('setting.changePassword') }}"
                         class="list-group-item mb-3 border rounded py-3 text-bg-dark d-flex justify-content-between align-items-start">
