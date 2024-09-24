@@ -22,10 +22,14 @@ class UsersByProvinceExport implements FromCollection, Responsable, WithCustomSt
 
     private $index = 0;
     private $provinceId;
+    private $provinceName;
 
     public function __construct($provinceId)
     {
         $this->provinceId = $provinceId;
+
+        $province = Province::find($this->provinceId);
+        $this->provinceName = strtoupper($province->name);
     }
 
     public function collection()
@@ -67,6 +71,10 @@ class UsersByProvinceExport implements FromCollection, Responsable, WithCustomSt
 
     public function styles(Worksheet $sheet)
     {
+        $sheet->mergeCells('B1:F1');
+        $sheet->setCellValue('B1', 'LAPORAN PESERTA YANG SUDAH TERDAFTAR DI SISTEM BERDASARKAN PROVINSI ' . $this->provinceName);
+        $sheet->getRowDimension(1)->setRowHeight(40);
+
         $sheet->getRowDimension(2)->setRowHeight(30);
         $sheet->getStyle('C2:F2')->getAlignment()->setIndent(1);
 
@@ -79,6 +87,10 @@ class UsersByProvinceExport implements FromCollection, Responsable, WithCustomSt
         $sheet->getStyle('B2:F' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
+            'B1:F1' => [
+                'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
+                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+            ],
             'B2:F2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                 'alignment' => ['vertical' => 'center', 'wrapText' => true],
