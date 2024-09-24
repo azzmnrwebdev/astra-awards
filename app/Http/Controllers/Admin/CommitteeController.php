@@ -115,10 +115,20 @@ class CommitteeController extends Controller
             return redirect()->back()->with('error_distribution', 'Jumlah admin minimal 2');
         }
 
-        foreach ($users as $user) {
-            $randomAdmins = $admins->random(2);
+        $adminCount = $admins->count();
+        $index = 0;
 
-            foreach ($randomAdmins as $admin) {
+        foreach ($users as $user) {
+            $assignedAdmins = [];
+
+            for ($i = 0; $i < 2; $i++) {
+                $admin = $admins[$index % $adminCount];
+                $assignedAdmins[] = $admin;
+
+                $index++;
+            }
+
+            foreach ($assignedAdmins as $admin) {
                 $existingDistribution = Distribution::where('user_id', $user->id)
                     ->where('committe_id', $admin->id)
                     ->first();
