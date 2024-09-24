@@ -35,23 +35,38 @@ class SystemAssessmentController extends Controller
 
     public function pillarTwoAct(Request $request)
     {
+
         $nilaiMappingCheckbox4 = [
             '' => 1,
+            '1' => 7,
+            '2' => 7,
             '3' => 3,
-            '1,3' => 7,
-            '1,4' => 3,
-            '2,4' => 3,
-            '3,4' => 3,
-            '2,3' => 7,
             '1,2' => 9,
+            '1,3' => 7,
+            '2,3' => 7,
             '1,2,3' => 9,
-            '2,3,4' => 7,
+            '2,3,4' => 9,
             '1,2,3,4' => 9,
+        ];
+
+        $nilaiMappingCheckboxPertanyaan3 = [
+            '' => 1,
+            '1' => 7,
+            '2' => 7,
+            '3' => 7,
+            '4' => 3,
+            '1,2' => 9,
+            '1,3' => 9,
+            '2,3' => 9,
+            '1,4' => 9,
+            '2,4' => 9,
+            '3,4' => 9,
         ];
 
         $nilaiMappingCheckbox2 = [
             '' => 1,
             '1' => 7,
+            '2' => 7,
             '1,2' => 9,
         ];
 
@@ -68,7 +83,7 @@ class SystemAssessmentController extends Controller
         $questionFour = $request->input('pillar_two_question_four', []);
         sort($questionFour);
         $questionFourKey = implode(',', $questionFour);
-        $resultQuestionFour = $nilaiMappingCheckbox4[$questionFourKey] ?? null;
+        $resultQuestionFour = $nilaiMappingCheckboxPertanyaan3[$questionFourKey] ?? null;
 
         $questionFive = $request->input('pillar_two_question_five', []);
         sort($questionFive);
@@ -106,25 +121,33 @@ class SystemAssessmentController extends Controller
             4 => 9,
         ];
 
-        $nilaiMappingCheckbox4 = [
+        $nilaiMappingCheckbox6 = [
             '' => 1,
             '3' => 3,
+            '1,2' => 3,
             '1,3' => 7,
             '1,4' => 3,
-            '2,4' => 3,
-            '3,4' => 3,
             '2,3' => 7,
-            '1,2' => 9,
+            '2,4' => 3,
+            '3,4' => 7,
+            '5,6' => 9,
             '1,2,3' => 9,
-            '2,3,4' => 7,
+            '2,3,4' => 9,
             '1,2,3,4' => 9,
         ];
 
-        $nilaiMappingCheckbox6 = [
+        $nilaiMappingCheckbox4 = [
             '' => 1,
-            '1,2' => 3,
+            '1' => 3,
+            '2' => 3,
+            '3' => 3,
+            '3' => 3,
+            '1,2' => 7,
             '3,4' => 7,
-            '5,6' => 9,
+            '1,2,3' => 9,
+            '2,3,4' => 9,
+            '1,2,4' => 9,
+            '1,3,4' => 9,
         ];
 
         $questionFour = $request->input('pillar_three_question_four', []);
