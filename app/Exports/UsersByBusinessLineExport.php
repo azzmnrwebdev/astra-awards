@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Mosque;
+use App\Models\BusinessLine;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithStyles;
@@ -21,10 +22,16 @@ class UsersByBusinessLineExport implements FromCollection, Responsable, WithCust
 
     private $index = 0;
     private $businesslineId;
+    private $businessLineName;
+
 
     public function __construct($businesslineId)
     {
         $this->businesslineId = $businesslineId;
+        
+        $businessLine = BusinessLine::find($this->businesslineId);
+        $this->businessLineName = strtoupper($businessLine->name);
+
     }
 
     public function collection()
@@ -66,6 +73,10 @@ class UsersByBusinessLineExport implements FromCollection, Responsable, WithCust
 
     public function styles(Worksheet $sheet)
     {
+        $sheet->mergeCells('B1:F1');
+        $sheet->setCellValue('B1', 'LAPORAN PESERTA YANG SUDAH TERDAFTAR DI SISTEM BERDASARKAN LINI BISNIS, YAYASAN & KOPERASI, HEAD OFFICE ' . $this->businessLineName);
+        $sheet->getRowDimension(1)->setRowHeight(50);
+
         $sheet->getRowDimension(2)->setRowHeight(30);
         $sheet->getStyle('C2:F2')->getAlignment()->setIndent(1);
 
@@ -78,6 +89,10 @@ class UsersByBusinessLineExport implements FromCollection, Responsable, WithCust
         $sheet->getStyle('B2:F' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
+            'B1:F1' => [
+                'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
+                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+            ],
             'B2:F2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                 'alignment' => ['vertical' => 'center', 'wrapText' => true],
