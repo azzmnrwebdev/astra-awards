@@ -17,11 +17,11 @@
             @endif
 
             <div class="row">
-                {{-- <div class="col-12">
-                    <a href="#" class="btn btn-danger rounded-0">Unduh PDF</a>
-                </div> --}}
-
                 <div class="col-12">
+                    <a href="{{ route('user.download_excel') }}" class="btn btn-success rounded-0">Unduh Excel</a>
+                </div>
+
+                <div class="col-12 mt-3">
                     <form class="row g-3">
                         <div class="col-sm-6">
                             <select name="perusahaan" id="perusahaan" class="form-select">

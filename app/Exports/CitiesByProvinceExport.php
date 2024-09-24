@@ -65,6 +65,10 @@ class CitiesByProvinceExport implements FromCollection, Responsable, WithCustomS
 
     public function styles(Worksheet $sheet)
     {
+        $sheet->mergeCells('B1:C1');
+        $sheet->setCellValue('B1', 'LAPORAN JUMLAH PESERTA PER KOTA');
+        $sheet->getRowDimension(1)->setRowHeight(40);
+
         $sheet->getRowDimension(2)->setRowHeight(30);
         $sheet->getStyle('B2:C2')->getAlignment()->setIndent(1);
 
@@ -85,6 +89,10 @@ class CitiesByProvinceExport implements FromCollection, Responsable, WithCustomS
         $sheet->getStyle('B2:C' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
+            'B1:C1' => [
+                'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
+                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+            ],
             'B2:C2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                 'alignment' => ['vertical' => 'center', 'wrapText' => true],

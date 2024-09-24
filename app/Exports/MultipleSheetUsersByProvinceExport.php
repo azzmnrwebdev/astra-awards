@@ -22,8 +22,8 @@ class MultipleSheetUsersByProvinceExport implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            new UsersByProvinceExport($this->provinceId),
             new CitiesByProvinceExport($this->provinceId),
+            new UsersByProvinceExport($this->provinceId),
         ];
     }
 }
