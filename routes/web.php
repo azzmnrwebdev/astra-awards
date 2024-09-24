@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ExcelController;
 use App\Http\Controllers\Admin\JuryContainer;
 use App\Http\Controllers\Admin\ParentCompanyController;
 use App\Http\Controllers\Admin\PDFController;
+use App\Http\Controllers\Admin\PreAssessmentController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\UserController;
@@ -195,6 +196,10 @@ Route::middleware('auth')->group(function () {
             Route::get('{businessLine}/edit', [BusinessLineController::class, 'edit'])->name('business_line.edit');
             Route::put('{businessLine}', [BusinessLineController::class, 'update'])->name('business_line.update');
             Route::delete('{businessLine}', [BusinessLineController::class, 'destroy'])->name('business_line.destroy');
+        });
+
+        Route::prefix('pra-penilaian')->group(function () {
+            Route::get('/', [PreAssessmentController::class, 'index'])->name('pre_assessment.index');
         });
 
         Route::prefix('panitia')->group(function () {

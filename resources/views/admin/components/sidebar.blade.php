@@ -75,6 +75,14 @@
             </li>
 
             <li class="sidebar-item">
+                <a href="{{ route('pre_assessment.index') }}"
+                    class="sidebar-link {{ request()->routeIs('pre_assessment.*') ? 'active' : '' }}">
+                    <i class="bi bi-clipboard-check-fill me-2 fs-5"></i>
+                    Pra Penilaian
+                </a>
+            </li>
+
+            <li class="sidebar-item">
                 <a href="{{ route('committee.index') }}"
                     class="sidebar-link {{ request()->routeIs('committee.*') ? 'active' : '' }}">
                     <i class="bi bi-people-fill me-2 fs-5"></i>
