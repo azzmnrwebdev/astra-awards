@@ -36,11 +36,15 @@ class CitiesByProvinceExport implements FromCollection, Responsable, WithCustomS
             $loweredSearch = strtolower($this->search);
 
             $cities = $cities->filter(function ($city) use ($loweredSearch) {
-                return $city->mosque->contains(function ($mosque) use ($loweredSearch) {
+                $isCityMatch = str_contains(strtolower($city->name), $loweredSearch);
+
+                $isRelatedDataMatch = $city->mosque->contains(function ($mosque) use ($loweredSearch) {
                     return str_contains(strtolower($mosque->name), $loweredSearch) ||
                         str_contains(strtolower($mosque->user->name), $loweredSearch) ||
                         (isset($mosque->company->name) && str_contains(strtolower($mosque->company->name), $loweredSearch));
                 });
+
+                return $isCityMatch || $isRelatedDataMatch;
             });
         }
 
