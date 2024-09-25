@@ -12,9 +12,11 @@ use App\Exports\MultipleSheetCompaniesByBusinessLineExport;
 
 class ExcelController extends Controller
 {
-    public function getUsersByProvince($provinceId)
+    public function getUsersByProvince($provinceId, Request $request)
     {
-        $export = new MultipleSheetUsersByProvinceExport($provinceId);
+        $search = $request->query('search');
+
+        $export = new MultipleSheetUsersByProvinceExport($provinceId, $search);
         $fileName = $export->fileName;
 
         return Excel::download($export, $fileName);

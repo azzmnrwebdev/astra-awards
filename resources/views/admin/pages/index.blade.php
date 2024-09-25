@@ -870,6 +870,7 @@
                     const provinceName = button.data('province-name');
                     const modalBody = modal.find('.modal-body');
                     let originalData = [];
+                    let keyword = '';
 
                     modalBody.empty();
                     modalBody.html('<div id="loading" class="text-center py-4 fs-5">Memuat data...</div>');
@@ -881,28 +882,36 @@
                             originalData = data;
                             modalBody.empty();
 
-                            const pdfUrl =
-                                "{{ route('download_pdf.get_users_by_province', ['provinceId' => 'PLACEHOLDER']) }}"
-                                .replace('PLACEHOLDER', provinceId);
+                            function updateDownloadUrls() {
+                                const pdfUrl =
+                                    "{{ route('download_pdf.get_users_by_province', ['provinceId' => 'PLACEHOLDER']) }}"
+                                    .replace('PLACEHOLDER', provinceId) + '?search=' +
+                                    encodeURIComponent(keyword);
 
-                            const excelUrl =
-                                "{{ route('download_excel.get_users_by_province', ['provinceId' => 'PLACEHOLDER']) }}"
-                                .replace('PLACEHOLDER', provinceId);
+                                const excelUrl =
+                                    "{{ route('download_excel.get_users_by_province', ['provinceId' => 'PLACEHOLDER']) }}"
+                                    .replace('PLACEHOLDER', provinceId) + '?search=' +
+                                    encodeURIComponent(keyword);
+
+                                $('#downloadPdfButtonProvince').attr('href', pdfUrl);
+                                $('#downloadExcelButtonProvince').attr('href', excelUrl);
+                            }
 
                             const table = `
                                 <h5 class="card-title fw-semibold mb-1">Provinsi ${provinceName}</h5>
                                 <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
 
-                                <div class="row align-items-center">
+                                <div class="row">
                                     <div class="col-lg-6 col-xl-8">
-                                        <a href="${pdfUrl}" id="downloadPdfButtonProvince" class="btn btn-danger rounded-0">Unduh PDF</a>
-                                        <a href="${excelUrl}" id="downloadExcelButtonProvince" class="btn btn-success rounded-0">Unduh Excel</a>
+                                        <a href="#" id="downloadPdfButtonProvince" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="#" id="downloadExcelButtonProvince" class="btn btn-success rounded-0">Unduh Excel</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
                                         <form>
                                             <input type="search" name="search" id="searchProvince" value=""
-                                                class="form-control" placeholder="Cari peserta/masjid?">
+                                                class="form-control" placeholder="Cari peserta?">
+                                            <div class="form-text">Kata kunci bisa berdasarkan semuanya.</div>
                                         </form>
                                     </div>
                                 </div>
@@ -957,47 +966,57 @@
                             }
 
                             renderTable(originalData);
+                            updateDownloadUrls();
+
+                            let searchTimeout;
+
+                            function debounceSearch(searchValue) {
+                                clearTimeout(searchTimeout);
+
+                                searchTimeout = setTimeout(function() {
+                                    $.ajax({
+                                        url: '/api/users-by-province/' + provinceId,
+                                        method: 'GET',
+                                        data: {
+                                            search: searchValue
+                                        },
+                                        success: function(data) {
+                                            originalData = data;
+                                            renderTable(originalData);
+                                            $('#searchProvince').val(
+                                                searchValue);
+                                            updateDownloadUrls();
+                                        },
+                                        error: function() {
+                                            modalBody.html(
+                                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data</div>'
+                                            );
+                                        }
+                                    });
+                                }, 1000);
+                            }
 
                             $('#searchProvince').on('input', function() {
                                 const searchValue = $(this).val().toLowerCase();
-                                const filteredData = originalData.filter(mosqueData =>
-                                    mosqueData.user.name.toLowerCase().includes(
-                                        searchValue) ||
-                                    mosqueData.name.toLowerCase().includes(searchValue)
-                                );
-
-                                renderTable(filteredData);
+                                keyword = searchValue;
+                                debounceSearch(searchValue);
                             });
 
-                            $('#downloadPdfButtonProvince').on('click', function(event) {
-                                const modal = $('#userByProvinceModal');
+                            $('#downloadPdfButtonProvince, #downloadExcelButtonProvince').on(
+                                'click',
+                                function(event) {
+                                    const modal = $('#userByProvinceModal');
 
-                                if (originalData.length === 0) {
+                                    if (originalData.length === 0) {
+                                        modal.modal('hide');
+                                        alert(
+                                            'Data tidak tersedia. Unduh tidak dapat dilakukan.'
+                                        );
+                                        return false;
+                                    }
+
                                     modal.modal('hide');
-                                    alert(
-                                        'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
-                                    );
-
-                                    return false;
-                                }
-
-                                modal.modal('hide');
-                            });
-
-                            $('#downloadExcelButtonProvince').on('click', function(event) {
-                                const modal = $('#userByProvinceModal');
-
-                                if (originalData.length === 0) {
-                                    modal.modal('hide');
-                                    alert(
-                                        'Data tidak tersedia. Unduh Excel tidak dapat dilakukan.'
-                                    );
-
-                                    return false;
-                                }
-
-                                modal.modal('hide');
-                            });
+                                });
                         },
                         error: function() {
                             modalBody.html(

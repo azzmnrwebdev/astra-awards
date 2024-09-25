@@ -11,6 +11,7 @@ use App\Models\CategoryArea;
 use App\Models\BusinessLine;
 use App\Models\CategoryMosque;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class PDFController extends Controller
 {
@@ -69,13 +70,32 @@ class PDFController extends Controller
             ->header('Content-Disposition', 'attachment; filename="Daftar-Peserta-Kategori-' . $categoryAreaName . '-dan-' . $categoryMosqueName . '.pdf"');
     }
 
-    public function getUsersByProvince($provinceId)
+    public function getUsersByProvince($provinceId, Request $request)
     {
         $province = Province::with(['city'])->find($provinceId);
 
-        $mosques = Mosque::with(['user', 'city'])->whereHas('city', function ($query) use ($provinceId) {
+        $search = $request->query('search');
+
+        $mosques = Mosque::with(['user', 'company', 'city'])->whereHas('city', function ($query) use ($provinceId) {
             $query->where('province_id', $provinceId);
-        })->get();
+        });
+
+        if (!empty($search)) {
+            $mosques->where(function ($query) use ($search) {
+                $loweredSearch = strtolower($search);
+
+                $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('city', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+        }
+
+        $mosques = $mosques->get();
 
         $data = [
             'mosques' => $mosques,

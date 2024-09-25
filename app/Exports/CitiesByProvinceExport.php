@@ -19,16 +19,30 @@ class CitiesByProvinceExport implements FromCollection, Responsable, WithCustomS
     use Exportable;
 
     private $provinceId;
+    private $search;
 
-    public function __construct($provinceId)
+    public function __construct($provinceId, $search)
     {
         $this->provinceId = $provinceId;
+        $this->search = $search;
     }
 
     public function collection()
     {
         $province = Province::with(['city'])->find($this->provinceId);
         $cities = $province->city;
+
+        if (!empty($this->search)) {
+            $loweredSearch = strtolower($this->search);
+
+            $cities = $cities->filter(function ($city) use ($loweredSearch) {
+                return $city->mosque->contains(function ($mosque) use ($loweredSearch) {
+                    return str_contains(strtolower($mosque->name), $loweredSearch) ||
+                        str_contains(strtolower($mosque->user->name), $loweredSearch) ||
+                        (isset($mosque->company->name) && str_contains(strtolower($mosque->company->name), $loweredSearch));
+                });
+            });
+        }
 
         $totalMosques = $cities->sum(function ($city) {
             return count($city->mosque);

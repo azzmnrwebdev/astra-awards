@@ -23,10 +23,12 @@ class UsersByProvinceExport implements FromCollection, Responsable, WithCustomSt
     private $index = 0;
     private $provinceId;
     private $provinceName;
+    private $search;
 
-    public function __construct($provinceId)
+    public function __construct($provinceId, $search)
     {
         $this->provinceId = $provinceId;
+        $this->search = $search;
 
         $province = Province::find($this->provinceId);
         $this->provinceName = strtoupper($province->name);
@@ -34,10 +36,26 @@ class UsersByProvinceExport implements FromCollection, Responsable, WithCustomSt
 
     public function collection()
     {
-        return Mosque::with(['user', 'city'])
-            ->whereHas('city', function ($query) {
-                $query->where('province_id', $this->provinceId);
-            })->get();
+        $mosques = Mosque::with(['user', 'city'])->whereHas('city', function ($query) {
+            $query->where('province_id', $this->provinceId);
+        });
+
+        if (!empty($this->search)) {
+            $mosques->where(function ($query) {
+                $loweredSearch = strtolower($this->search);
+
+                $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('city', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+        }
+
+        return $mosques->get();
     }
 
     public function startCell(): string

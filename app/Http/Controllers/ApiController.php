@@ -31,9 +31,28 @@ class ApiController extends Controller
 
     public function getUsersByProvince($provinceId)
     {
-        $mosques = Mosque::with(['user', 'company', 'city'])->whereHas('city', function ($query) use ($provinceId) {
+        $search = request()->query('search');
+
+        $query = Mosque::with(['user', 'company', 'city'])->whereHas('city', function ($query) use ($provinceId) {
             $query->where('province_id', $provinceId);
-        })->get();
+        });
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $loweredSearch = strtolower($search);
+
+                $q->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($q2) use ($loweredSearch) {
+                        $q2->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($q3) use ($loweredSearch) {
+                        $q3->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('city', function ($q4) use ($loweredSearch) {
+                        $q4->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+        }
+
+        $mosques = $query->get();
 
         return response()->json($mosques);
     }
