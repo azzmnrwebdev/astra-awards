@@ -223,6 +223,25 @@
             box-shadow: none !important;
         }
 
+        .table-custom th {
+            background-color: #004ea2;
+            color: #f8f9fa;
+        }
+
+        .accordion-button:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #004ea2;
+            color: #f8f9fa;
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23f8f9fa' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e") !important;
+        }
+
         /* Responsive */
         @media (min-width: 992px) {
             .content {

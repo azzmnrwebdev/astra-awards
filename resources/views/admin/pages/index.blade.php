@@ -645,7 +645,7 @@
 
                                 <div class="table-responsive mt-4">
                                     <table class="table table-hover text-nowrap align-middle mb-0">
-                                        <thead class="border-top border-start border-end table-primary">
+                                        <thead class="border-top border-start border-end table-custom">
                                             <tr>
                                                 <th class="text-center py-3">Logo</th>
                                                 <th class="text-start py-3">Nama Peserta</th>
@@ -763,7 +763,7 @@
 
                                 <div class="table-responsive mt-4">
                                     <table class="table table-hover text-nowrap align-middle mb-0">
-                                        <thead class="border-top border-start border-end table-primary">
+                                        <thead class="border-top border-start border-end table-custom">
                                             <tr>
                                                 <th class="text-center py-3">Logo</th>
                                                 <th class="text-start py-3">Nama Peserta</th>
@@ -918,7 +918,7 @@
 
                                 <div class="table-responsive mt-4">
                                     <table class="table table-hover text-nowrap align-middle mb-0">
-                                        <thead class="border-top border-start border-end table-primary">
+                                        <thead class="border-top border-start border-end table-custom">
                                             <tr>
                                                 <th class="text-center py-3">Logo</th>
                                                 <th class="text-start py-3">Nama Peserta</th>
