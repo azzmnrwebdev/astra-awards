@@ -62,14 +62,25 @@ class CommitteeAssessmentController extends Controller
             }
 
             $committeeAssessment->update($data);
+            $committeeAssessmentCommittee = CommitteeAssessmentCommittee::where('committee_assessment_id', $committeeAssessment->id)
+                ->where('user_id', $request->input('user_id'))
+                ->where('committee_id', Auth::id())
+                ->first();
 
-            if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
-                CommitteeAssessmentCommittee::create([
-                    'committee_assessment_id' => $committeeAssessment->id,
-                    'user_id' => $request->input('user_id'),
-                    'committee_id' => Auth::id(),
-                    'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
-                ]);
+            if ($committeeAssessmentCommittee) {
+                $existingPosition = $committeeAssessmentCommittee->position;
+                $newPosition = $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName);
+
+                $committeeAssessmentCommittee->update(['position' => $existingPosition . ', ' . $newPosition]);
+            } else {
+                if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
+                    CommitteeAssessmentCommittee::create([
+                        'committee_assessment_id' => $committeeAssessment->id,
+                        'user_id' => $request->input('user_id'),
+                        'committee_id' => Auth::id(),
+                        'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
+                    ]);
+                }
             }
         } else {
             $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_one_id' => $request->input('pillar_one_id')], $data));
@@ -135,14 +146,25 @@ class CommitteeAssessmentController extends Controller
             }
 
             $committeeAssessment->update($data);
+            $committeeAssessmentCommittee = CommitteeAssessmentCommittee::where('committee_assessment_id', $committeeAssessment->id)
+                ->where('user_id', $request->input('user_id'))
+                ->where('committee_id', Auth::id())
+                ->first();
 
-            if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
-                CommitteeAssessmentCommittee::create([
-                    'committee_assessment_id' => $committeeAssessment->id,
-                    'user_id' => $request->input('user_id'),
-                    'committee_id' => Auth::id(),
-                    'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
-                ]);
+            if ($committeeAssessmentCommittee) {
+                $existingPosition = $committeeAssessmentCommittee->position;
+                $newPosition = $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName);
+
+                $committeeAssessmentCommittee->update(['position' => $existingPosition . ', ' . $newPosition]);
+            } else {
+                if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
+                    CommitteeAssessmentCommittee::create([
+                        'committee_assessment_id' => $committeeAssessment->id,
+                        'user_id' => $request->input('user_id'),
+                        'committee_id' => Auth::id(),
+                        'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
+                    ]);
+                }
             }
         } else {
             $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_two_id' => $request->input('pillar_two_id')], $data));
@@ -214,14 +236,25 @@ class CommitteeAssessmentController extends Controller
             }
 
             $committeeAssessment->update($data);
+            $committeeAssessmentCommittee = CommitteeAssessmentCommittee::where('committee_assessment_id', $committeeAssessment->id)
+                ->where('user_id', $request->input('user_id'))
+                ->where('committee_id', Auth::id())
+                ->first();
 
-            if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
-                CommitteeAssessmentCommittee::create([
-                    'committee_assessment_id' => $committeeAssessment->id,
-                    'user_id' => $request->input('user_id'),
-                    'committee_id' => Auth::id(),
-                    'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
-                ]);
+            if ($committeeAssessmentCommittee) {
+                $existingPosition = $committeeAssessmentCommittee->position;
+                $newPosition = $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName);
+
+                $committeeAssessmentCommittee->update(['position' => $existingPosition . ', ' . $newPosition]);
+            } else {
+                if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
+                    CommitteeAssessmentCommittee::create([
+                        'committee_assessment_id' => $committeeAssessment->id,
+                        'user_id' => $request->input('user_id'),
+                        'committee_id' => Auth::id(),
+                        'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
+                    ]);
+                }
             }
         } else {
             $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_three_id' => $request->input('pillar_three_id')], $data));
@@ -290,14 +323,25 @@ class CommitteeAssessmentController extends Controller
             }
 
             $committeeAssessment->update($data);
+            $committeeAssessmentCommittee = CommitteeAssessmentCommittee::where('committee_assessment_id', $committeeAssessment->id)
+                ->where('user_id', $request->input('user_id'))
+                ->where('committee_id', Auth::id())
+                ->first();
 
-            if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
-                CommitteeAssessmentCommittee::create([
-                    'committee_assessment_id' => $committeeAssessment->id,
-                    'user_id' => $request->input('user_id'),
-                    'committee_id' => Auth::id(),
-                    'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
-                ]);
+            if ($committeeAssessmentCommittee) {
+                $existingPosition = $committeeAssessmentCommittee->position;
+                $newPosition = $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName);
+
+                $committeeAssessmentCommittee->update(['position' => $existingPosition . ', ' . $newPosition]);
+            } else {
+                if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
+                    CommitteeAssessmentCommittee::create([
+                        'committee_assessment_id' => $committeeAssessment->id,
+                        'user_id' => $request->input('user_id'),
+                        'committee_id' => Auth::id(),
+                        'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
+                    ]);
+                }
             }
         } else {
             $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_four_id' => $request->input('pillar_four_id')], $data));
@@ -366,14 +410,25 @@ class CommitteeAssessmentController extends Controller
             }
 
             $committeeAssessment->update($data);
+            $committeeAssessmentCommittee = CommitteeAssessmentCommittee::where('committee_assessment_id', $committeeAssessment->id)
+                ->where('user_id', $request->input('user_id'))
+                ->where('committee_id', Auth::id())
+                ->first();
 
-            if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
-                CommitteeAssessmentCommittee::create([
-                    'committee_assessment_id' => $committeeAssessment->id,
-                    'user_id' => $request->input('user_id'),
-                    'committee_id' => Auth::id(),
-                    'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
-                ]);
+            if ($committeeAssessmentCommittee) {
+                $existingPosition = $committeeAssessmentCommittee->position;
+                $newPosition = $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName);
+
+                $committeeAssessmentCommittee->update(['position' => $existingPosition . ', ' . $newPosition]);
+            } else {
+                if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
+                    CommitteeAssessmentCommittee::create([
+                        'committee_assessment_id' => $committeeAssessment->id,
+                        'user_id' => $request->input('user_id'),
+                        'committee_id' => Auth::id(),
+                        'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
+                    ]);
+                }
             }
         } else {
             $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_five_id' => $request->input('pillar_five_id')], $data));
