@@ -604,6 +604,7 @@
                     const categoryMosqueName = button.data('category-mosque-name');
                     const modalBody = modal.find('.modal-body');
                     let originalData = [];
+                    let keyword = '';
 
                     modalBody.empty();
                     modalBody.html('<div id="loading" class="text-center py-4 fs-5">Memuat data...</div>');
@@ -615,24 +616,32 @@
                             originalData = data;
                             modalBody.empty();
 
-                            const pdfUrl =
-                                "{{ route('download_pdf.get_users_by_category', ['categoryAreaId' => 'PLACEHOLDER', 'categoryMosqueId' => 'PLACEHOLDER2']) }}"
-                                .replace('PLACEHOLDER', categoryAreaId)
-                                .replace('PLACEHOLDER2', categoryMosqueId);
+                            function updateDownloadUrls() {
+                                const pdfUrl = 
+                                    "{{ route('download_pdf.get_users_by_category', ['categoryAreaId' => 'PLACEHOLDER', 'categoryMosqueId' => 'PLACEHOLDER2']) }}"
+                                    .replace('PLACEHOLDER', categoryAreaId)
+                                    .replace('PLACEHOLDER2', categoryMosqueId) 
+                                    + '?search=' + encodeURIComponent(keyword);
 
-                            const excelUrl =
-                                "{{ route('download_excel.get_users_by_category', ['categoryAreaId' => 'PLACEHOLDER', 'categoryMosqueId' => 'PLACEHOLDER2']) }}"
-                                .replace('PLACEHOLDER', categoryAreaId)
-                                .replace('PLACEHOLDER2', categoryMosqueId);
-
+                                const excelUrl = 
+                                    "{{ route('download_excel.get_users_by_category', ['categoryAreaId' => 'PLACEHOLDER', 'categoryMosqueId' => 'PLACEHOLDER2']) }}"
+                                    .replace('PLACEHOLDER', categoryAreaId)
+                                    .replace('PLACEHOLDER2', categoryMosqueId)
+                                    + '?search=' + encodeURIComponent(keyword);
+                                
+                                $('#downloadPdfButtonProvince').attr('href', pdfUrl);
+                                $('#downloadExcelButtonProvince').attr('href', excelUrl);
+                            
+                            }
+                             
                             const table = `
                                 <h5 class="card-title fw-semibold mb-1">${categoryAreaName} - ${categoryMosqueName}</h5>
                                 <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
 
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-xl-8">
-                                        <a href="${pdfUrl}" class="btn btn-danger rounded-0">Unduh PDF</a>
-                                        <a href="${excelUrl}" class="btn btn-success rounded-0">Unduh Excel</a>
+                                        <a href="#" id="downloadPdfButtonProvince" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="#" id="downloadExcelButtonProvince" class="btn btn-success rounded-0">Unduh Excel</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
@@ -695,17 +704,58 @@
                             }
 
                             renderTable(originalData);
+                            updateDownloadUrls();
+
+                            let searchTimeout;
+
+                            function debounceSearch(searchValue) {
+                                clearTimeout(searchTimeout);
+
+                                searchTimeout = setTimeout(function() {
+                                    $.ajax({
+                                        url: '/api/users-by-category/' + categoryAreaId + '/' + categoryMosqueId,
+                                        method: 'GET',
+                                        data: {
+                                            search: searchValue
+                                        },
+                                        success: function(data) {
+                                            originalData = data;
+                                            renderTable(originalData);
+                                            $('#searchCategory').val(
+                                                searchValue);
+                                            updateDownloadUrls();
+                                        },
+                                        error: function() {
+                                            modalBody.html(
+                                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data</div>'
+                                            );
+                                        }
+                                    });
+                                }, 1000);
+                            }
 
                             $('#searchCategory').on('input', function() {
                                 const searchValue = $(this).val().toLowerCase();
-                                const filteredData = originalData.filter(mosqueData =>
-                                    mosqueData.user.name.toLowerCase().includes(
-                                        searchValue) ||
-                                    mosqueData.name.toLowerCase().includes(searchValue)
-                                );
-
-                                renderTable(filteredData);
+                                keyword = searchValue;
+                                debounceSearch(searchValue);
                             });
+
+                            $('#downloadPdfButtonProvince, #downloadExcelButtonProvince').on(
+                                'click',
+                                function(event) {
+                                    const modal = $('#userByCategoryModal');
+
+                                    if (originalData.length === 0) {
+                                        modal.modal('hide');
+                                        alert(
+                                            'Data tidak tersedia. Unduh tidak dapat dilakukan.'
+                                        );
+                                        return false;
+                                    }
+
+                                    modal.modal('hide');
+                                });
+
                         },
                         error: function() {
                             modalBody.html(

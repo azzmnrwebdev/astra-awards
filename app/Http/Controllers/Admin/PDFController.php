@@ -15,15 +15,35 @@ use Illuminate\Http\Request;
 
 class PDFController extends Controller
 {
-    public function getUsersByCategory($categoryAreaId, $categoryMosqueId)
+    public function getUsersByCategory($categoryAreaId, $categoryMosqueId, Request $request)
     {
         $categoryArea = CategoryArea::find($categoryAreaId);
         $categoryMosque = CategoryMosque::find($categoryMosqueId);
 
+        $search = $request->query('search');
+
         $mosques = Mosque::with(['user', 'company', 'categoryArea', 'categoryMosque'])
             ->where('category_area_id', $categoryAreaId)
-            ->where('category_mosque_id', $categoryMosqueId)
-            ->get();
+            ->where('category_mosque_id', $categoryMosqueId);
+        
+            if (!empty($search)) {
+            $mosques->where(function ($query) use ($search) {
+                $loweredSearch = strtolower($search);
+
+                $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('categoryArea', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('categoryMosque', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+        }
+
+        $mosques = $mosques->get();
 
         $data = [
             'mosques' => $mosques,

@@ -89,10 +89,27 @@ class ApiController extends Controller
     {
         $search = request()->query('search');
 
-        $mosques = Mosque::with(['user', 'company', 'categoryArea', 'categoryMosque'])
+        $query = Mosque::with(['user', 'company', 'categoryArea', 'categoryMosque'])
             ->where('category_area_id', $categoryAreaId)
-            ->where('category_mosque_id', $categoryMosqueId)
-            ->get();
+            ->where('category_mosque_id', $categoryMosqueId);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $loweredSearch = strtolower($search);
+
+                $q->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($q2) use ($loweredSearch) {
+                        $q2->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($q3) use ($loweredSearch) {
+                        $q3->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('categoryArea', function ($q4) use ($loweredSearch) {
+                        $q4->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('categoryMosque', function ($q4) use ($loweredSearch) {
+                        $q4->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+        }
+        $mosques = $query->get();
 
         return response()->json($mosques);
     }
