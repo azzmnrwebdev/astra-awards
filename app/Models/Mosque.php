@@ -133,6 +133,6 @@ class Mosque extends Model
             $anyAssessment = true;
         }
 
-        return $anyAssessment ? $totalValue . ' Poin' : '<span class="badge text-bg-danger">Belum dinilai</span>';
+        return $anyAssessment ? $totalValue . ' Poin' : '<span class="badge text-bg-danger">Belum Tersedia</span>';
     }
 }

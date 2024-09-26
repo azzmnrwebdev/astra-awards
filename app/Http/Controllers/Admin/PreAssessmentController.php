@@ -16,6 +16,7 @@ class PreAssessmentController extends Controller
             ['class' => 'text-start py-3', 'label' => 'Nama Peerta'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Status'],
             ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
