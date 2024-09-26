@@ -31,20 +31,60 @@ class PreAssessmentController extends Controller
         $distributions = $user->distributions()->with('committe')->get();
         $committees = $distributions->pluck('committe');
 
-        $assessments = [];
+        $committeeAssessments = CommitteeAssessmentCommittee::with([
+            'committeeAssessment.pillarOne',
+            'committeeAssessment.pillarTwo',
+            'committeeAssessment.pillarThree',
+            'committeeAssessment.pillarFour',
+            'committeeAssessment.pillarFive'
+        ])->where('user_id', $user->id)->get();
 
-        foreach ($committees as $committee) {
-            $committeeAssessments = CommitteeAssessmentCommittee::with([
-                'committeeAssessment.pillarOne',
-                'committeeAssessment.pillarTwo',
-                'committeeAssessment.pillarThree',
-                'committeeAssessment.pillarFour',
-                'committeeAssessment.pillarFive'
-            ])->where('user_id', $user->id)->where('committee_id', $committee->id)->get();
+        $pillarOne = null;
+        $pillarTwo = null;
+        $pillarThree = null;
+        $pillarFour = null;
+        $pillarFive = null;
 
-            $assessments[$committee->id] = $committeeAssessments;
+        $historyAssessmentPillarOnes = [];
+        $historyAssessmentPillarTwos = [];
+        $historyAssessmentPillarThrees = [];
+        $historyAssessmentPillarFours = [];
+        $historyAssessmentPillarFives = [];
+
+        foreach ($committeeAssessments as $assessment) {
+            $position = $assessment->position;
+            $positions = preg_split('/(?<=dinilai,|diubah,)/', $position);
+            $positions = array_map(function ($pos) {
+                return rtrim(trim($pos), ',');
+            }, $positions);
+
+            if (strpos($position, 'Hubungan DKM dengan YAA') !== false) {
+                $pillarTwo = $assessment->committeeAssessment;
+                $historyAssessmentPillarTwos[$assessment->committee_id] = $positions;
+            } elseif (
+                strpos(
+                    $position,
+                    'Hubungan Manajemen Perusahaan dengan DKM dan Jamaah',
+                ) !== false
+            ) {
+                $pillarOne = $assessment->committeeAssessment;
+                $historyAssessmentPillarOnes[$assessment->committee_id] = $positions;
+            } elseif (strpos($position, 'Program Sosial') !== false) {
+                $pillarThree = $assessment->committeeAssessment;
+                $historyAssessmentPillarThrees[$assessment->committee_id] = $positions;
+            } elseif (strpos($position, 'Administrasi dan Keuangan') !== false) {
+                $pillarFour = $assessment->committeeAssessment;
+                $historyAssessmentPillarFours[$assessment->committee_id] = $positions;
+            } elseif (
+                strpos($position, 'Peribadahan dan Infrastruktur') !== false
+            ) {
+                $pillarFive = $assessment->committeeAssessment;
+                $historyAssessmentPillarFives[$assessment->committee_id] = $positions;
+            }
         }
 
-        return view('admin.pages.assessment.pre-assessment-show', compact('user', 'committees', 'assessments'));
+        // dd($historyAssessmentPillarTwos);
+
+        return view('admin.pages.assessment.pre-assessment-show', compact('user', 'committees', 'pillarOne', 'pillarTwo', 'pillarThree', 'pillarFour', 'pillarFive', 'historyAssessmentPillarOnes', 'historyAssessmentPillarTwos', 'historyAssessmentPillarThrees', 'historyAssessmentPillarFours', 'historyAssessmentPillarFives'));
     }
 }
