@@ -68,37 +68,48 @@
                                         <td class="text-start py-3">1. Divisi Sosial Religi
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarTwo->pillar_two_question_two }}
-                                            Poin
+                                            @if ($pillarTwo->pillar_two_question_two)
+                                                {{ $pillarTwo->pillar_two_question_two }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-start py-3">2. Divisi Layanan Amal
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarTwo->pillar_two_question_three }}
-                                            Poin
+                                            @if ($pillarTwo->pillar_two_question_three)
+                                                {{ $pillarTwo->pillar_two_question_three }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-start py-3">3. Divisi Kemitraan</td>
                                         <td class="text-center py-3">
-                                            {{ $pillarTwo->pillar_two_question_four }}
-                                            Poin
+                                            @if ($pillarTwo->pillar_two_question_four)
+                                                {{ $pillarTwo->pillar_two_question_four }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-start py-3">4. Divisi Administrasi &
                                             Keuangan</td>
                                         <td class="text-center py-3">
-                                            {{ $pillarTwo->pillar_two_question_five }}
-                                            Poin
+                                            @if ($pillarTwo->pillar_two_question_five)
+                                                {{ $pillarTwo->pillar_two_question_five }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="2" class="text-center py-3">Tidak ada
-                                            penilaian</td>
+                                        <td colspan="2" class="text-center text-danger py-3">Penilaian belum dilakukan</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -147,8 +158,11 @@
                                             dengan Pengurus DKM
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarOne->pillar_one_question_one }}
-                                            Poin
+                                            @if ($pillarOne->pillar_one_question_one)
+                                                {{ $pillarOne->pillar_one_question_one }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -158,8 +172,11 @@
                                             dengan Manajemen Perusahaan
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarOne->pillar_one_question_two }}
-                                            Poin
+                                            @if ($pillarOne->pillar_one_question_two)
+                                                {{ $pillarOne->pillar_one_question_two }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -168,8 +185,11 @@
                                             DKM
                                             dari manajemen</td>
                                         <td class="text-center py-3">
-                                            {{ $pillarOne->pillar_one_question_three }}
-                                            Poin
+                                            @if ($pillarOne->pillar_one_question_three)
+                                                {{ $pillarOne->pillar_one_question_three }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -179,8 +199,11 @@
                                             dan anggaran yang sudah disetujui oleh manajemen
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarOne->pillar_one_question_four }}
-                                            Poin
+                                            @if ($pillarOne->pillar_one_question_four)
+                                                {{ $pillarOne->pillar_one_question_four }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -188,8 +211,11 @@
                                             Komunikasi dengan Jamaah
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarOne->pillar_one_question_five }}
-                                            Poin
+                                            @if ($pillarOne->pillar_one_question_five)
+                                                {{ $pillarOne->pillar_one_question_five }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -198,8 +224,11 @@
                                             Jamaah
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarOne->pillar_one_question_six }}
-                                            Poin
+                                            @if ($pillarOne->pillar_one_question_six)
+                                                {{ $pillarOne->pillar_one_question_six }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -208,14 +237,16 @@
                                             Untuk Jamaah
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarOne->pillar_one_question_seven }}
-                                            Poin
+                                            @if ($pillarOne->pillar_one_question_seven)
+                                                {{ $pillarOne->pillar_one_question_seven }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="2" class="text-center py-3">Tidak ada
-                                            penilaian</td>
+                                        <td colspan="2" class="text-center text-danger py-3">Penilaian belum dilakukan</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -265,8 +296,11 @@
                                             DKM
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarThree->pillar_three_question_one }}
-                                            Poin
+                                            @if ($pillarThree->pillar_three_question_one)
+                                                {{ $pillarThree->pillar_three_question_one }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -275,24 +309,33 @@
                                             Sosial
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarThree->pillar_three_question_two }}
-                                            Poin
+                                            @if ($pillarThree->pillar_three_question_two)
+                                                {{ $pillarThree->pillar_three_question_two }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-start py-3">3. Jumlah Penerima
                                             Manfaat</td>
                                         <td class="text-center py-3">
-                                            {{ $pillarThree->pillar_three_question_three }}
-                                            Poin
+                                            @if ($pillarThree->pillar_three_question_three)
+                                                {{ $pillarThree->pillar_three_question_three }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-start py-3">4. Sumber Pembiayaan
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarThree->pillar_three_question_four }}
-                                            Poin
+                                            @if ($pillarThree->pillar_three_question_four)
+                                                {{ $pillarThree->pillar_three_question_four }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -302,8 +345,11 @@
                                             DKM
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarThree->pillar_three_question_five }}
-                                            Poin
+                                            @if ($pillarThree->pillar_three_question_five)
+                                                {{ $pillarThree->pillar_three_question_five }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -312,14 +358,16 @@
                                             (sustainability)
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarThree->pillar_three_question_six }}
-                                            Poin
+                                            @if ($pillarThree->pillar_three_question_six)
+                                                {{ $pillarThree->pillar_three_question_six }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="2" class="text-center py-3">Tidak ada
-                                            penilaian</td>
+                                        <td colspan="2" class="text-center text-danger py-3">Penilaian belum dilakukan</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -371,8 +419,11 @@
                                             sudah menggunakan sistem ini?
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFour->pillar_four_question_one }}
-                                            Poin
+                                            @if ($pillarFour->pillar_four_question_one)
+                                                {{ $pillarFour->pillar_four_question_one }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -380,8 +431,11 @@
                                             Masjid/Musala
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFour->pillar_four_question_four }}
-                                            Poin
+                                            @if ($pillarFour->pillar_four_question_four)
+                                                {{ $pillarFour->pillar_four_question_four }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -390,8 +444,11 @@
                                             masjid
                                             dibawah umur 30 tahun?</td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFour->pillar_four_question_two }}
-                                            Poin
+                                            @if ($pillarFour->pillar_four_question_two)
+                                                {{ $pillarFour->pillar_four_question_two }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -400,8 +457,11 @@
                                             pengurus DKM
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFour->pillar_four_question_three }}
-                                            Poin
+                                            @if ($pillarFour->pillar_four_question_three)
+                                                {{ $pillarFour->pillar_four_question_three }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -410,14 +470,16 @@
                                             keuangan Tahunan
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFour->pillar_four_question_five }}
-                                            Poin
+                                            @if ($pillarFour->pillar_four_question_five)
+                                                {{ $pillarFour->pillar_four_question_five }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="2" class="text-center py-3">Tidak ada
-                                            penilaian</td>
+                                        <td colspan="2" class="text-center text-danger py-3">Penilaian belum dilakukan</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -467,8 +529,11 @@
                                             5 waktu berjamaah yang dikelola oleh DKM
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFive->pillar_five_question_one }}
-                                            Poin
+                                            @if ($pillarFive->pillar_five_question_one)
+                                                {{ $pillarFive->pillar_five_question_one }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -477,8 +542,11 @@
                                             di bawah Masjid/Musala
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFive->pillar_five_question_two }}
-                                            Poin
+                                            @if ($pillarFive->pillar_five_question_two)
+                                                {{ $pillarFive->pillar_five_question_two }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -486,8 +554,11 @@
                                             khusus
                                             yang rutin melakukan pekerjaan kebersihan</td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFive->pillar_five_question_three }}
-                                            Poin
+                                            @if ($pillarFive->pillar_five_question_three)
+                                                {{ $pillarFive->pillar_five_question_three }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -495,8 +566,11 @@
                                             kebersihan Masjid/Musala
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFive->pillar_five_question_four }}
-                                            Poin
+                                            @if ($pillarFive->pillar_five_question_four)
+                                                {{ $pillarFive->pillar_five_question_four }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -504,22 +578,22 @@
                                             kebersihan Masjid/Musala secara berkala
                                         </td>
                                         <td class="text-center py-3">
-                                            {{ $pillarFive->pillar_five_question_five }}
-                                            Poin
+                                            @if ($pillarFive->pillar_five_question_five)
+                                                {{ $pillarFive->pillar_five_question_five }} Poin
+                                            @else
+                                                <span class="text-danger">Belum dinilai</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @else
                                     <tr>
-                                        <td colspan="2" class="text-center py-3">Tidak ada
-                                            penilaian</td>
+                                        <td colspan="2" class="text-center text-danger py-3">Penilaian belum dilakukan</td>
                                     </tr>
                                 @endif
                             </tbody>
                         </table>
                     </div>
                 </div>
-
-                {{-- Footer --}}
             @else
                 <div class="alert alert-warning mb-0 fw-medium" role="alert">
                     Belum mendapatkan pembagian panitia
