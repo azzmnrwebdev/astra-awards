@@ -201,7 +201,7 @@ class FormController extends Controller
 
         if ($isQuestionTwo === "ada") {
             if (empty($questionTwo)) {
-                $questionTwo = null;
+                $questionTwo = json_encode(null);
             } else {
                 if (!empty($optionTwoValue)) {
                     if (!in_array('custom', $questionTwo)) {
@@ -217,16 +217,13 @@ class FormController extends Controller
                 $questionTwo = json_encode($questionTwo);
             }
         } else {
-            $questionTwo = [
-                "Belum Ada"
-            ];
-
+            $questionTwo = json_encode(["Belum Ada"]);
             $optionTwoValue = null;
         }
 
         if ($isQuestionThree === "ada") {
             if (empty($questionThree)) {
-                $questionThree = null;
+                $questionThree = json_encode(null);
             } else {
                 if (!empty($optionThreeValue)) {
                     if (!in_array('custom', $questionThree)) {
@@ -242,16 +239,13 @@ class FormController extends Controller
                 $questionThree = json_encode($questionThree);
             }
         } else {
-            $questionThree = [
-                "Belum Ada"
-            ];
-
+            $questionThree = json_encode(["Belum Ada"]);
             $optionThreeValue = null;
         }
 
         if ($isQuestionFour === "ada") {
             if (empty($questionFour)) {
-                $questionFour = null;
+                $questionFour = json_encode(null);
             } else {
                 if (!empty($optionFourValue)) {
                     if (!in_array('custom', $questionFour)) {
@@ -267,10 +261,7 @@ class FormController extends Controller
                 $questionFour = json_encode($questionFour);
             }
         } else {
-            $questionFour = [
-                "Belum Ada"
-            ];
-
+            $questionFour = json_encode(["Belum Ada"]);
             $optionFourValue = null;
         }
 
@@ -278,9 +269,7 @@ class FormController extends Controller
         if ($isQuestionFive === "ada") {
             $questionFive = json_encode($request->input('question_five'));
         } else {
-            $questionFive = [
-                "Belum Ada"
-            ];
+            $questionFive = json_encode(["Belum Ada"]);
         }
 
         $pillarTwo = PillarTwo::updateOrCreate(
