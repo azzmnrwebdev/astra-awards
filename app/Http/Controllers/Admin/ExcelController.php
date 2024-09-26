@@ -22,17 +22,22 @@ class ExcelController extends Controller
         return Excel::download($export, $fileName);
     }
 
-    public function getUsersByBusinessLine($businessLineId)
+    public function getUsersByBusinessLine($businessLineId, Request $request)
     {
-        $export = new MultipleSheetCompaniesByBusinessLineExport($businessLineId);
+        $search = $request->query('search');
+
+        $export = new MultipleSheetCompaniesByBusinessLineExport($businessLineId, $search);
         $fileName = $export->fileName;
 
         return Excel::download($export, $fileName);
     }
 
-    public function getUsersByCategory($categoryAreaId, $categoryMosqueId)
+    public function getUsersByCategory($categoryAreaId, $categoryMosqueId, Request $request)
     {
-        $export = new UsersByCategoryExport($categoryAreaId, $categoryMosqueId);
+        $search = $request->query('search');
+
+
+        $export = new UsersByCategoryExport($categoryAreaId, $categoryMosqueId, $search);
         $fileName = $export->fileName;
 
         return Excel::download($export, $fileName);
@@ -43,6 +48,9 @@ class ExcelController extends Controller
         $companyId = $request->input('perusahaan');
         $status = $request->input('status');
         $search = $request->input('pencarian');
+
+        // $export = new UsersExport($companyId, $status, $search);
+        // $fileName = 'all_users.xlsx';
 
         return new UsersExport($companyId, $status, $search);
     }

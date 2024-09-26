@@ -59,15 +59,36 @@ class ApiController extends Controller
 
     public function getUsersByBusinessLine($businessLineId)
     {
-        $mosques = Mosque::with(['user', 'company', 'company.businessLine', 'company.parentCompany'])->whereHas('company', function ($query) use ($businessLineId) {
+        $search = request()->query('search');
+
+        $query = Mosque::with(['user', 'company', 'company.businessLine', 'company.parentCompany'])->whereHas('company', function ($query) use ($businessLineId) {
             $query->where('business_line_id', $businessLineId);
-        })->get();
+        });
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $loweredSearch = strtolower($search);
+
+                $q->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($q2) use ($loweredSearch) {
+                        $q2->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($q3) use ($loweredSearch) {
+                        $q3->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company.businessLine', function ($q4) use ($loweredSearch) {
+                        $q4->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+        }
+
+        $mosques = $query->get();
 
         return response()->json($mosques);
     }
 
     public function getUsersByCategory($categoryAreaId, $categoryMosqueId)
     {
+        $search = request()->query('search');
+
         $mosques = Mosque::with(['user', 'company', 'categoryArea', 'categoryMosque'])
             ->where('category_area_id', $categoryAreaId)
             ->where('category_mosque_id', $categoryMosqueId)

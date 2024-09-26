@@ -21,25 +21,44 @@ class UsersByBusinessLineExport implements FromCollection, Responsable, WithCust
     use Exportable;
 
     private $index = 0;
-    private $businesslineId;
+    private $businessLineId;
     private $businessLineName;
+    private $search;
 
-
-    public function __construct($businesslineId)
+    public function __construct($businessLineId, $search)
     {
-        $this->businesslineId = $businesslineId;
+        $this->businessLineId = $businessLineId;
+        $this->search = $search;
         
-        $businessLine = BusinessLine::find($this->businesslineId);
+        $businessLine = BusinessLine::find($this->businessLineId);
         $this->businessLineName = strtoupper($businessLine->name);
 
     }
 
     public function collection()
     {
-        return Mosque::with(['user', 'company'])
-            ->whereHas('company', function ($query) {
-                $query->where('business_line_id', $this->businesslineId);
-            })->get();
+        $mosques = Mosque::with(['user', 'company.businessLine'])
+            ->whereHas('company.businessLine', function ($query) {
+                $query->where('business_line_id', $this->businessLineId);
+            });
+        
+        if (!empty($this->search)) {
+            $mosques->where(function ($query) {
+                $loweredSearch = strtolower($this->search);
+
+                $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company.businessLine', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+        }
+
+        return $mosques->get();
+
     }
 
     public function startCell(): string

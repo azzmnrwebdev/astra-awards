@@ -724,6 +724,7 @@
                     const businessLineName = button.data('business-line-name');
                     const modalBody = modal.find('.modal-body');
                     let originalData = [];
+                    let keyword = '';
 
                     modalBody.empty();
                     modalBody.html('<div id="loading" class="text-center py-4 fs-5">Memuat data...</div>');
@@ -735,13 +736,20 @@
                             originalData = data;
                             modalBody.empty();
 
-                            const pdfUrl =
-                                "{{ route('download_pdf.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
-                                .replace('PLACEHOLDER', businessLineId);
+                            function updateDownloadUrls() {
+                                const pdfUrl =
+                                    "{{ route('download_pdf.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
+                                    .replace('PLACEHOLDER', businessLineId)+ '?search=' +
+                                    encodeURIComponent(keyword);
 
-                            const excelUrl =
-                                "{{ route('download_excel.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
-                                .replace('PLACEHOLDER', businessLineId);
+                                const excelUrl =
+                                    "{{ route('download_excel.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
+                                    .replace('PLACEHOLDER', businessLineId)+ '?search=' +
+                                    encodeURIComponent(keyword);
+                                
+                                $('#downloadPdfButtonBusinessLine').attr('href', pdfUrl);
+                                $('#downloadExcelButtonBusinessLine').attr('href', excelUrl);
+                            }
 
                             const table = `
                                 <h5 class="card-title fw-semibold mb-1">${businessLineName}</h5>
@@ -749,14 +757,15 @@
 
                                 <div class="row align-items-center">
                                     <div class="col-lg-6 col-xl-8">
-                                        <a href="${pdfUrl}" id="downloadPdfButtonBusinessLine" class="btn btn-danger rounded-0">Unduh PDF</a>
-                                        <a href="${excelUrl}" id="downloadExcelButtonBusinessLine" class="btn btn-success rounded-0">Unduh Excel</a>
+                                        <a href="#" id="downloadPdfButtonBusinessLine" class="btn btn-danger rounded-0">Unduh PDF</a>
+                                        <a href="#" id="downloadExcelButtonBusinessLine" class="btn btn-success rounded-0">Unduh Excel</a>
                                     </div>
 
                                     <div class="col-lg-6 col-xl-4 mt-3 mt-lg-0">
                                         <form>
                                             <input type="search" name="search" id="searchBusinessLine" value=""
                                                 class="form-control" placeholder="Cari peserta/masjid?">
+                                            <div class="form-text">Kata kunci bisa berdasarkan semuanya.</div>
                                         </form>
                                     </div>
                                 </div>
@@ -811,46 +820,56 @@
                             }
 
                             renderTable(originalData);
+                            updateDownloadUrls();
+
+                            let searchTimeout;
+
+                            function debounceSearch(searchValue) {
+                                clearTimeout(searchTimeout);
+
+                                searchTimeout = setTimeout(function() {
+                                    $.ajax({
+                                        url: '/api/users-by-business-line/' + businessLineId,
+                                        method: 'GET',
+                                        data: {
+                                            search: searchValue
+                                        },
+                                        success: function(data) {
+                                            originalData = data;
+                                            renderTable(originalData);
+                                            $('#searchBusinessLine').val(
+                                                searchValue);
+                                            updateDownloadUrls();
+                                        },
+                                        error: function() {
+                                            modalBody.html(
+                                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data</div>'
+                                            );
+                                        }
+                                    });
+                                }, 1000);
+                            }
 
                             $('#searchBusinessLine').on('input', function() {
                                 const searchValue = $(this).val().toLowerCase();
-                                const filteredData = originalData.filter(mosqueData =>
-                                    mosqueData.user.name.toLowerCase().includes(
-                                        searchValue) ||
-                                    mosqueData.name.toLowerCase().includes(searchValue)
-                                );
-
-                                renderTable(filteredData);
+                                keyword = searchValue;
+                                debounceSearch(searchValue);
                             });
 
-                            $('#downloadPdfButtonBusinessLine').on('click', function(event) {
-                                const modal = $('#userByBusinessLineModal');
+                            $('#downloadPdfButtonBusinessLine, #downloadExcelButtonBusinessLine').on(
+                                'click', 
+                                function(event) {
+                                    const modal = $('#userByBusinessLineModal');
 
-                                if (originalData.length === 0) {
+                                    if (originalData.length === 0) {
+                                        modal.modal('hide');
+                                        alert(
+                                            'Data tidak tersedia. Unduh tidak dapat dilakukan.'
+                                        );
+                                        return false;
+                                    }
+
                                     modal.modal('hide');
-                                    alert(
-                                        'Data tidak tersedia. Unduh PDF tidak dapat dilakukan.'
-                                    );
-
-                                    return false;
-                                }
-
-                                modal.modal('hide');
-                            });
-
-                            $('#downloadExcelButtonBusinessLine').on('click', function(event) {
-                                const modal = $('#userByBusinessLineModal');
-
-                                if (originalData.length === 0) {
-                                    modal.modal('hide');
-                                    alert(
-                                        'Data tidak tersedia. Unduh Excel tidak dapat dilakukan.'
-                                    );
-
-                                    return false;
-                                }
-
-                                modal.modal('hide');
                             });
                         },
                         error: function() {

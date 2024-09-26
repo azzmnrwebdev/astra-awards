@@ -26,11 +26,13 @@ class UsersByCategoryExport implements FromCollection, Responsable, WithCustomSt
     private $categoryMosqueId;
     private $categoryAreaName;
     private $categoryMosqueName;
+    private $search;
 
-    public function __construct($categoryAreaId, $categoryMosqueId)
+    public function __construct($categoryAreaId, $categoryMosqueId, $search)
     {
         $this->categoryMosqueId = $categoryMosqueId;
-        $this->categoryAreaId = $categoryAreaId; // Fix the typo here
+        $this->categoryAreaId = $categoryAreaId;
+        $this->search = $search;
     
         $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
         if ($categoryMosque) {
@@ -51,10 +53,29 @@ class UsersByCategoryExport implements FromCollection, Responsable, WithCustomSt
 
     public function collection()
     {
-        return Mosque::with(['user', 'categoryArea'])
-            ->whereHas('categoryArea', function ($query) {
+        $mosques = Mosque::with(['user', 'categoryArea'])->whereHas('categoryArea', function ($query) {
                 $query->where('category_mosque_id', $this->categoryMosqueId);
-            })->get();
+            });
+
+        if (!empty($this->search)) {
+            $mosques->where(function ($query) {
+                $loweredSearch = strtolower($this->search);
+
+                $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('categoryArea', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('categoryMosque', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+
+            return $mosques->get();
+
+        }
     }
 
     public function startCell(): string

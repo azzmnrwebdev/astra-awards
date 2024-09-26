@@ -2,37 +2,50 @@
 
 namespace App\Exports;
 
-use App\Models\Mosque;
 use App\Models\BusinessLine;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithCustomStartCell;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Contracts\Support\Responsable;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
 class CompaniesByBusinessLineExport implements FromCollection, Responsable, WithCustomStartCell, WithHeadings, WithMapping, ShouldAutoSize, WithStyles, WithTitle
 {
     use Exportable;
 
-    private $businesslineId;
+    private $businessLineId;
+    private $search;
 
-    public function __construct($businesslineId)
+    public function __construct($businessLineId, $search)
     {
-        $this->businesslineId = $businesslineId;
+        $this->businessLineId = $businessLineId;
+        $this->search = $search;
     }
 
     public function collection()
     {
-        $businessline = BusinessLine::with(['company'])->find($this->businesslineId);
-        $companies = $businessline->company;
+        $businessLine = BusinessLine::with(['company'])->find($this->businessLineId);
+        $companies = $businessLine->company;
 
-        $totalMosques = $companies->sum(function ($companies) {
-            return count($companies->mosque);
+        if (!empty($this->search)) {
+            $loweredSearch = strtolower($this->search);
+
+            $companies = $companies->filter(function ($company) use ($loweredSearch) {
+                return $company->mosque->contains(function ($mosque) use ($loweredSearch) {
+                    return str_contains(strtolower($mosque->name), $loweredSearch) ||
+                        str_contains(strtolower($mosque->user->name), $loweredSearch) ||
+                        (isset($mosque->company->name) && str_contains(strtolower($mosque->company->name), $loweredSearch));
+                });
+            });
+        }
+
+        $totalMosques = $companies->sum(function ($company) {
+            return count($company->mosque);
         });
 
         $companies->push((object)[
