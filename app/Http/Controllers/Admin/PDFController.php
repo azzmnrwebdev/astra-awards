@@ -140,13 +140,32 @@ class PDFController extends Controller
             ->header('Content-Disposition', 'attachment; filename="Daftar-Peserta-Provinsi-' . $provinceName . '.pdf"');
     }
 
-    public function getUsersByBusinessLine($businessLineId)
+    public function getUsersByBusinessLine($businessLineId, Request $request)
     {
         $businessLine = BusinessLine::with(['company'])->find($businessLineId);
 
+        $search = $request->query('search');
+
         $mosques = Mosque::with(['user', 'company', 'company.businessLine', 'company.parentCompany'])->whereHas('company', function ($query) use ($businessLineId) {
             $query->where('business_line_id', $businessLineId);
-        })->get();
+        });
+
+        if (!empty($search)) {
+            $mosques->where(function ($query) use ($search) {
+                $loweredSearch = strtolower($search);
+
+                $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%'])
+                    ->orWhereHas('user', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    })->orWhereHas('company.businessLine', function ($query) use ($loweredSearch) {
+                        $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
+                    });
+            });
+        }
+
+        $mosques = $mosques->get();
 
         $data = [
             'mosques' => $mosques,
