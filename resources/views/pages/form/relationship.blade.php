@@ -186,6 +186,7 @@
                                         method="POST">
                                         @csrf
 
+                                        <input type="hidden" name="user_id" value="{{ $user->id }}">
                                         <input type="hidden" name="pillar_two_id" value="{{ $pillarTwo->id }}">
                                 @endif
                             @endif

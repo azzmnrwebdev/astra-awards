@@ -66,6 +66,7 @@ class CommitteeAssessmentController extends Controller
             if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
                 CommitteeAssessmentCommittee::create([
                     'committee_assessment_id' => $committeeAssessment->id,
+                    'user_id' => $request->input('user_id'),
                     'committee_id' => Auth::id(),
                     'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
                 ]);
@@ -81,6 +82,7 @@ class CommitteeAssessmentController extends Controller
 
             CommitteeAssessmentCommittee::create([
                 'committee_assessment_id' => $committeeAssessment->id,
+                'user_id' => $request->input('user_id'),
                 'committee_id' => Auth::id(),
                 'position' => $this->formatPosition($newlyUpdatedQuestions, [], $formName)
             ]);
@@ -137,6 +139,7 @@ class CommitteeAssessmentController extends Controller
             if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
                 CommitteeAssessmentCommittee::create([
                     'committee_assessment_id' => $committeeAssessment->id,
+                    'user_id' => $request->input('user_id'),
                     'committee_id' => Auth::id(),
                     'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
                 ]);
@@ -152,6 +155,7 @@ class CommitteeAssessmentController extends Controller
 
             CommitteeAssessmentCommittee::create([
                 'committee_assessment_id' => $committeeAssessment->id,
+                'user_id' => $request->input('user_id'),
                 'committee_id' => Auth::id(),
                 'position' => $this->formatPosition($newlyUpdatedQuestions, [], $formName)
             ]);
@@ -214,6 +218,7 @@ class CommitteeAssessmentController extends Controller
             if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
                 CommitteeAssessmentCommittee::create([
                     'committee_assessment_id' => $committeeAssessment->id,
+                    'user_id' => $request->input('user_id'),
                     'committee_id' => Auth::id(),
                     'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
                 ]);
@@ -229,6 +234,7 @@ class CommitteeAssessmentController extends Controller
 
             CommitteeAssessmentCommittee::create([
                 'committee_assessment_id' => $committeeAssessment->id,
+                'user_id' => $request->input('user_id'),
                 'committee_id' => Auth::id(),
                 'position' => $this->formatPosition($newlyUpdatedQuestions, [], $formName)
             ]);
@@ -288,6 +294,7 @@ class CommitteeAssessmentController extends Controller
             if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
                 CommitteeAssessmentCommittee::create([
                     'committee_assessment_id' => $committeeAssessment->id,
+                    'user_id' => $request->input('user_id'),
                     'committee_id' => Auth::id(),
                     'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
                 ]);
@@ -303,6 +310,7 @@ class CommitteeAssessmentController extends Controller
 
             CommitteeAssessmentCommittee::create([
                 'committee_assessment_id' => $committeeAssessment->id,
+                'user_id' => $request->input('user_id'),
                 'committee_id' => Auth::id(),
                 'position' => $this->formatPosition($newlyUpdatedQuestions, [], $formName)
             ]);
@@ -362,6 +370,7 @@ class CommitteeAssessmentController extends Controller
             if (!empty($updatedQuestions) || !empty($newlyUpdatedQuestions)) {
                 CommitteeAssessmentCommittee::create([
                     'committee_assessment_id' => $committeeAssessment->id,
+                    'user_id' => $request->input('user_id'),
                     'committee_id' => Auth::id(),
                     'position' => $this->formatPosition($newlyUpdatedQuestions, $updatedQuestions, $formName)
                 ]);
@@ -377,6 +386,7 @@ class CommitteeAssessmentController extends Controller
 
             CommitteeAssessmentCommittee::create([
                 'committee_assessment_id' => $committeeAssessment->id,
+                'user_id' => $request->input('user_id'),
                 'committee_id' => Auth::id(),
                 'position' => $this->formatPosition($newlyUpdatedQuestions, [], $formName)
             ]);

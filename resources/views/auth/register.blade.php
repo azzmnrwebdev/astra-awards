@@ -368,7 +368,7 @@
 
                 <div class="modal-body">
                     <img id="logoPreview" src="" alt="Logo Preview" class="img-fluid d-none" />
-                    <p id="noLogoMessage">Anda belum menggunggah logo masjid/Musala</p>
+                    <p id="noLogoMessage">Anda belum menggunggah logo masjid/musala</p>
                 </div>
             </div>
         </div>

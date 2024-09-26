@@ -45,7 +45,7 @@
 
             <div class="table-responsive mt-4">
                 <table class="table table-hover text-nowrap align-middle mb-0">
-                    <thead class="border-top border-start border-end table-primary">
+                    <thead class="border-top border-start border-end table-custom">
                         <tr>
                             @foreach ($theadName as $thead)
                                 <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>

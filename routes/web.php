@@ -200,6 +200,7 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('pra-penilaian')->group(function () {
             Route::get('/', [PreAssessmentController::class, 'index'])->name('pre_assessment.index');
+            Route::get('{user}', [PreAssessmentController::class, 'show'])->name('pre_assessment.show');
         });
 
         Route::prefix('panitia')->group(function () {

@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasOne(Mosque::class, 'user_id');
     }
 
+    public function distributions()
+    {
+        return $this->hasMany(Distribution::class, 'user_id');
+    }
+
     public function distributionToCommitte()
     {
         return $this->hasMany(Distribution::class, 'committe_id');
