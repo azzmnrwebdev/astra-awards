@@ -73,9 +73,10 @@ class UsersByCategoryExport implements FromCollection, Responsable, WithCustomSt
                     });
             });
 
-            return $mosques->get();
-
         }
+
+        return $mosques->get();
+
     }
 
     public function startCell(): string

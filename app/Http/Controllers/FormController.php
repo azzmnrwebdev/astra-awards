@@ -18,8 +18,59 @@ use Illuminate\Support\Facades\Validator;
 
 class FormController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $theadName = [
+            ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-start py-3', 'label' => 'Nama'],
+            ['class' => 'text-center py-3', 'label' => 'Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Aksi'],
+        ];
+
+        // Initialize query for PillarTwo
+        $pillarTwos = PillarTwo::query();
+        $pillarOnes = PillarOne::query();
+        $pillarThrees = PillarThree::query();
+        $pillarFours = PillarFour::query();
+        $pillarFives = PillarFive::query();   
+        $search = $request->input('search'); // Change to 'search' to match your view
+
+        // Add search condition for each query
+        if ($search) {
+            // Apply search to each query using whereHas for related mosque.user
+            $pillarTwos->whereHas('mosque.user', function($query) use ($search) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+            
+            $pillarOnes->whereHas('mosque.user', function($query) use ($search) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+    
+            $pillarThrees->whereHas('mosque.user', function($query) use ($search) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+    
+            $pillarFours->whereHas('mosque.user', function($query) use ($search) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+    
+            $pillarFives->whereHas('mosque.user', function($query) use ($search) {
+                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        }
+
+    // Get paginated results for each pillar
+    $pillarTwos = $pillarTwos->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
+    $pillarOnes = $pillarOnes->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
+    $pillarThrees = $pillarThrees->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
+    $pillarFours = $pillarFours->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
+    $pillarFives = $pillarFives->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
+
+        return view('pages.form.index', compact('theadName', 'search', 'pillarTwos', 'pillarOnes', 'pillarThrees', 'pillarFours', 'pillarFives'));
+
+
+     
         $userLogin = Auth::user()->id;
         $admin = User::where('id', $userLogin)->where('role', 'admin')->with('distributionToCommitte')->first();
 
