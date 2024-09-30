@@ -20,59 +20,11 @@ class FormController extends Controller
 {
     public function index(Request $request)
     {
-        $theadName = [
-            ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-start py-3', 'label' => 'Nama'],
-            ['class' => 'text-center py-3', 'label' => 'Masjid/Musala'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori Masjid/Musala'],
-            ['class' => 'text-center py-3', 'label' => 'Aksi'],
-        ];
-
-        // Initialize query for PillarTwo
-        $pillarTwos = PillarTwo::query();
-        $pillarOnes = PillarOne::query();
-        $pillarThrees = PillarThree::query();
-        $pillarFours = PillarFour::query();
-        $pillarFives = PillarFive::query();   
-        $search = $request->input('search'); // Change to 'search' to match your view
-
-        // Add search condition for each query
-        if ($search) {
-            // Apply search to each query using whereHas for related mosque.user
-            $pillarTwos->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
-            
-            $pillarOnes->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
-    
-            $pillarThrees->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
-    
-            $pillarFours->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
-    
-            $pillarFives->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
-        }
-
-    // Get paginated results for each pillar
-    $pillarTwos = $pillarTwos->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
-    $pillarOnes = $pillarOnes->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
-    $pillarThrees = $pillarThrees->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
-    $pillarFours = $pillarFours->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
-    $pillarFives = $pillarFives->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
-
-        return view('pages.form.index', compact('theadName', 'search', 'pillarTwos', 'pillarOnes', 'pillarThrees', 'pillarFours', 'pillarFives'));
-
-
-     
         $userLogin = Auth::user()->id;
-        $admin = User::where('id', $userLogin)->where('role', 'admin')->with('distributionToCommitte')->first();
+        $admin = User::where('id', $userLogin)
+            ->where('role', 'admin')
+            ->with('distributionToCommitte')
+            ->first();
 
         $pillarOnes = collect();
         $pillarTwos = collect();
@@ -87,6 +39,17 @@ class FormController extends Controller
                 ->whereIn('id', $userIds)
                 ->with('mosque');
 
+            $search = $request->input('pencarian');
+
+            if ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
+                        ->orWhereHas('mosque', function ($mosqueQuery) use ($search) {
+                            $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        });
+                });
+            }
+
             $pillarOnes = (clone $query)->whereHas('mosque.pillarOne')->paginate(10);
             $pillarTwos = (clone $query)->whereHas('mosque.pillarTwo')->paginate(10);
             $pillarThrees = (clone $query)->whereHas('mosque.pillarThree')->paginate(10);
@@ -94,7 +57,7 @@ class FormController extends Controller
             $pillarFives = (clone $query)->whereHas('mosque.pillarFive')->paginate(10);
         }
 
-        return view('pages.form.index', compact('pillarOnes', 'pillarTwos', 'pillarThrees', 'pillarFours', 'pillarFives'));
+        return view('pages.form.index', compact('search', 'pillarOnes', 'pillarTwos', 'pillarThrees', 'pillarFours', 'pillarFives'));
     }
 
     public function managementRelationship($user = null, $action = null)

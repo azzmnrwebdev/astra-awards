@@ -46,13 +46,14 @@
         @endif
 
         @if (auth()->check() && auth()->user()->hasRole('admin'))
-        <form action="{{ route('form.index') }}" method="GET">
             <div class="row row-cols-1 g-3">
-                <div class="col-sm-6 col-xl-12 mt-3 mt-sm-0">
-                    <form class="mt-3">
-                        <input type="search" name="search" id="search" class="form-control mt-2" placeholder="Cari...">
+                <div class="col mb-4">
+                    <form>
+                        <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
+                            class="form-control" placeholder="Cari peserta?">
                     </form>
                 </div>
+
                 {{-- Formulir 1 --}}
                 <div class="col">
                     <div class="card h-100 border-0 shadow rounded-4">
@@ -114,7 +115,8 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan
+                                                </td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -193,7 +195,8 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan
+                                                </td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -270,7 +273,8 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan
+                                                </td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -346,7 +350,8 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan
+                                                </td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -422,7 +427,8 @@
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                                <td colspan="7" class="text-center py-3">Data tidak ditemukan
+                                                </td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -436,55 +442,48 @@
                     </div>
                 </div>
             </div>
-        </form>
         @endif
     </div>
 
     @prepend('scripts')
-    <script>
-        $(document).ready(function() {
-            let debounceTimeout;
-    
-            // Event listener for input and keydown events on the search field
-            $('#search').on('input keydown', function(e) {
-                if (e.which !== 13) {
-                    clearTimeout(debounceTimeout);
-    
-                    debounceTimeout = setTimeout(function() {
-                        filter(); // Call the filter function after a debounce period
-                    }, 1000);
+        <script>
+            $(document).ready(function() {
+                let debounceTimeout;
+
+                $('#pencarian').on('input keydown change', function(e) {
+                    if (e.which !== 13) {
+                        clearTimeout(debounceTimeout);
+
+                        debounceTimeout = setTimeout(function() {
+                            filter();
+                        }, 1000);
+                    }
+                });
+
+                $('#pencarian').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        filter();
+                    }
+                });
+
+                function filter() {
+                    const params = {};
+                    const searchValue = $('#pencarian').val();
+                    const url = '{{ route('form.index') }}';
+
+                    if (searchValue.trim() !== '') {
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    const queryString = Object.keys(params).map(key => key + '=' + params[key]);
+
+                    const finalUrl = url + '?' + queryString.join('&');
+                    window.location.href = finalUrl;
                 }
             });
-    
-            // Event listener for keypress event specifically for Enter key
-            $('#search').on('keypress', function(e) {
-                if (e.which == 13) {
-                    e.preventDefault(); // Prevent the default action
-                    filter(); // Call the filter function immediately
-                }
-            });
-    
-            // Filter function to handle search query
-            function filter() {
-                const params = {};
-                const searchValue = $('#search').val(); // Get the value from the search input
-                const url = '{{ route('form.index') }}'; // Adjust to your route
-
-                // Handle cases where the search input is empty
-                if (searchValue.trim() !== '') {
-                    params.search = searchValue.trim().replace(/ /g, '+'); // Replace spaces with '+'
-                }
-
-                const queryString = Object.keys(params).map(key => key + '=' + params[key]);
-
-                // If no search term, redirect to the base URL
-                const finalUrl = params.search ? url + '?' + queryString.join('&') : url;
-                window.location.href = finalUrl; // Redirect to the final URL
-            }
-
-        });
-    </script>
+        </script>
     @endprepend
-    
+
 
 </x-user>
