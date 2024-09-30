@@ -111,20 +111,21 @@ class CommitteeController extends Controller
         $users = User::where('role', 'user')->get();
         $admins = User::where('role', 'admin')->get();
 
-        if ($admins->count() < 2) {
-            return redirect()->back()->with('error_distribution', 'Jumlah admin minimal 2');
-        }
-
-        $adminCount = $admins->count();
         $index = 0;
+        $adminCount = $admins->count();
 
         foreach ($users as $user) {
+            $currentAdminCount = Distribution::where('user_id', $user->id)->count();
+
+            if ($currentAdminCount >= 2) {
+                continue;
+            }
+
             $assignedAdmins = [];
 
-            for ($i = 0; $i < 2; $i++) {
+            for ($i = $currentAdminCount; $i < 2; $i++) {
                 $admin = $admins[$index % $adminCount];
                 $assignedAdmins[] = $admin;
-
                 $index++;
             }
 

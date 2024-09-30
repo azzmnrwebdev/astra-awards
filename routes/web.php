@@ -24,6 +24,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CommitteeAssessmentController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JuryAssessmentController;
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SystemAssessmentController;
@@ -66,6 +67,11 @@ Route::middleware('auth')->group(function () {
     // Route Jury & User
     Route::middleware([CheckRolesMiddleware::class . ':jury,user', CheckStatusMiddleware::class])->group(function () {
         Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
+        Route::get('presentasi/{user}/penilaian', [PresentationController::class, 'presentationAssessment'])->name('presentation.assessment')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
+    });
+
+    Route::middleware([CheckRolesMiddleware::class . ':jury', CheckStatusMiddleware::class])->group(function () {
+        Route::post('presentasi/{user}/penilaian', [JuryAssessmentController::class, 'presentationAssessmentAct'])->name('jury_assessment.presentation')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
     });
 
     // Route Admin & User

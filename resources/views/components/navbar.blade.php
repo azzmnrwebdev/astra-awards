@@ -11,7 +11,7 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                @if (auth()->check() && auth()->user()->hasRole('admin'))
+                @if (auth()->check() && auth()->user()->hasRole('admin') || auth()->check() && auth()->user()->hasRole('jury'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
@@ -31,7 +31,7 @@
 
                 @if ((auth()->check() && auth()->user()->hasRole('jury')) || auth()->user()->hasRole('user'))
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('presentation') ? 'active' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('presentation.*') ? 'active' : '' }}"
                             href="{{ route('presentation') }}">Presentasi</a>
                     </li>
                 @endif

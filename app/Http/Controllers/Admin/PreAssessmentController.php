@@ -153,9 +153,29 @@ class PreAssessmentController extends Controller
                 return rtrim(trim($pos), ',');
             }, $positions);
 
+            $formattedPositions = [];
+
+            foreach ($positions as $pos) {
+                if (strpos($pos, 'dinilai') !== false) {
+                    $formattedPositions[] = [
+                        'position' => $pos,
+                        'created_at' => $assessment->created_at
+                    ];
+                } elseif (strpos($pos, 'diubah') !== false) {
+                    $formattedPositions[] = [
+                        'position' => $pos,
+                        'updated_at' => $assessment->updated_at
+                    ];
+                } else {
+                    $formattedPositions[] = [
+                        'position' => $pos
+                    ];
+                }
+            }
+
             if (strpos($position, 'Hubungan DKM dengan YAA') !== false) {
                 $pillarTwo = $assessment->committeeAssessment;
-                $historyAssessmentPillarTwos[$assessment->committee_id] = $positions;
+                $historyAssessmentPillarTwos[$assessment->committee_id] = $formattedPositions;
             } elseif (
                 strpos(
                     $position,
@@ -163,22 +183,20 @@ class PreAssessmentController extends Controller
                 ) !== false
             ) {
                 $pillarOne = $assessment->committeeAssessment;
-                $historyAssessmentPillarOnes[$assessment->committee_id] = $positions;
+                $historyAssessmentPillarOnes[$assessment->committee_id] = $formattedPositions;
             } elseif (strpos($position, 'Program Sosial') !== false) {
                 $pillarThree = $assessment->committeeAssessment;
-                $historyAssessmentPillarThrees[$assessment->committee_id] = $positions;
+                $historyAssessmentPillarThrees[$assessment->committee_id] = $formattedPositions;
             } elseif (strpos($position, 'Administrasi dan Keuangan') !== false) {
                 $pillarFour = $assessment->committeeAssessment;
-                $historyAssessmentPillarFours[$assessment->committee_id] = $positions;
+                $historyAssessmentPillarFours[$assessment->committee_id] = $formattedPositions;
             } elseif (
                 strpos($position, 'Peribadahan dan Infrastruktur') !== false
             ) {
                 $pillarFive = $assessment->committeeAssessment;
-                $historyAssessmentPillarFives[$assessment->committee_id] = $positions;
+                $historyAssessmentPillarFives[$assessment->committee_id] = $formattedPositions;
             }
         }
-
-        // dd($historyAssessmentPillarTwos);
 
         return view('admin.pages.assessment.pre-assessment-show', compact('user', 'committees', 'pillarOne', 'pillarTwo', 'pillarThree', 'pillarFour', 'pillarFive', 'historyAssessmentPillarOnes', 'historyAssessmentPillarTwos', 'historyAssessmentPillarThrees', 'historyAssessmentPillarFours', 'historyAssessmentPillarFives'));
     }
