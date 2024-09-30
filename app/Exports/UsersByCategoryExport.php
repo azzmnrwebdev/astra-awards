@@ -3,9 +3,9 @@
 namespace App\Exports;
 
 use App\Models\Mosque;
-use App\Models\CategoryMosque;
-use App\Models\CategoryArea;
 use Maatwebsite\Excel\Excel;
+use App\Models\CategoryArea;
+use App\Models\CategoryMosque;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -27,35 +27,28 @@ class UsersByCategoryExport implements FromCollection, Responsable, WithCustomSt
     private $categoryAreaName;
     private $categoryMosqueName;
     private $search;
+    public $fileName;
 
     public function __construct($categoryAreaId, $categoryMosqueId, $search)
     {
         $this->categoryMosqueId = $categoryMosqueId;
         $this->categoryAreaId = $categoryAreaId;
         $this->search = $search;
-    
-        $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
-        if ($categoryMosque) {
-            $this->categoryMosqueName = strtoupper($categoryMosque->name);
-        } else {
-            $this->categoryMosqueName = 'UNKNOWN CATEGORY'; // Handle null case
-        }
-    
-        $categoryArea = CategoryArea::find($this->categoryAreaId);
-        if ($categoryArea) {
-            $this->categoryAreaName = strtoupper($categoryArea->name);
-        } else {
-            $this->categoryAreaName = 'UNKNOWN AREA'; // Handle null case
-        }
-    }
 
-    public $fileName = 'users_by_category.xlsx';
+        $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
+        $this->categoryMosqueName = strtoupper($categoryMosque->name);
+
+        $categoryArea = CategoryArea::find($this->categoryAreaId);
+        $this->categoryAreaName = strtoupper($categoryArea->name);
+
+        $this->fileName = 'Daftar-Peserta-Kategori-' . str_replace([' ', ','], ['-', ''], $categoryArea->name) . '-dan-' . str_replace([' ', ','], ['-', ''], $categoryMosque->name) . '.xlsx';
+    }
 
     public function collection()
     {
         $mosques = Mosque::with(['user', 'categoryArea'])->whereHas('categoryArea', function ($query) {
             $query->where('category_mosque_id', $this->categoryMosqueId)
-                  ->where('category_area_id', $this->categoryAreaId);
+                ->where('category_area_id', $this->categoryAreaId);
         });
 
         if (!empty($this->search)) {
@@ -73,11 +66,9 @@ class UsersByCategoryExport implements FromCollection, Responsable, WithCustomSt
                         $query->whereRaw('LOWER(name) like ?', ['%' . $loweredSearch . '%']);
                     });
             });
-
         }
 
         return $mosques->get();
-
     }
 
     public function startCell(): string
