@@ -54,8 +54,9 @@ class UsersByCategoryExport implements FromCollection, Responsable, WithCustomSt
     public function collection()
     {
         $mosques = Mosque::with(['user', 'categoryArea'])->whereHas('categoryArea', function ($query) {
-                $query->where('category_mosque_id', $this->categoryMosqueId);
-            });
+            $query->where('category_mosque_id', $this->categoryMosqueId)
+                  ->where('category_area_id', $this->categoryAreaId);
+        });
 
         if (!empty($this->search)) {
             $mosques->where(function ($query) {

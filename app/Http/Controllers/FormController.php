@@ -25,6 +25,8 @@ class FormController extends Controller
             ['class' => 'text-start py-3', 'label' => 'Nama'],
             ['class' => 'text-center py-3', 'label' => 'Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Kategori Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
+            ['class' => 'text-center py-3', 'label' => 'Penilaian'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
@@ -34,31 +36,78 @@ class FormController extends Controller
         $pillarThrees = PillarThree::query();
         $pillarFours = PillarFour::query();
         $pillarFives = PillarFive::query();   
+
         $search = $request->input('search'); // Change to 'search' to match your view
 
         // Add search condition for each query
         if ($search) {
             // Apply search to each query using whereHas for related mosque.user
-            $pillarTwos->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
+        $pillarTwos->where(function($query) use ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) // Search by name
+                ->orWhereHas('mosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by mosque name
+                })
+                ->orWhereHas('mosque.categoryMosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category mosque
+                })
+                ->orWhereHas('mosque.categoryArea', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category area
+                });
+        });
             
-            $pillarOnes->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
+        $pillarOnes->where(function($query) use ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) // Search by name
+                ->orWhereHas('mosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by mosque name
+                })
+                ->orWhereHas('mosque.categoryMosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category mosque
+                })
+                ->orWhereHas('mosque.categoryArea', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category area
+                });
+        });
+
+        $pillarThrees->where(function($query) use ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) // Search by name
+                ->orWhereHas('mosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by mosque name
+                })
+                ->orWhereHas('mosque.categoryMosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category mosque
+                })
+                ->orWhereHas('mosque.categoryArea', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category area
+                });
+        });
     
-            $pillarThrees->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
+        $pillarFours->where(function($query) use ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) // Search by name
+                ->orWhereHas('mosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by mosque name
+                })
+                ->orWhereHas('mosque.categoryMosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category mosque
+                })
+                ->orWhereHas('mosque.categoryArea', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category area
+                });
+        });
     
-            $pillarFours->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
+        $pillarFives->where(function($query) use ($search) {
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']) // Search by name
+                ->orWhereHas('mosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by mosque name
+                })
+                ->orWhereHas('mosque.categoryMosque', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category mosque
+                })
+                ->orWhereHas('mosque.categoryArea', function($query) use ($search) {
+                    $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']); // Search by category area
+                });
+        });
     
-            $pillarFives->whereHas('mosque.user', function($query) use ($search) {
-                $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-            });
-        }
+    }
 
     // Get paginated results for each pillar
     $pillarTwos = $pillarTwos->orderByDesc('updated_at')->paginate(10)->appends(request()->query());
