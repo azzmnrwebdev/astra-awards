@@ -17,8 +17,8 @@ class Presentation extends Model
         return $this->belongsTo(Mosque::class, 'mosque_id');
     }
 
-    public function juryAssessment()
+    public function startAssessment()
     {
-        return $this->hasOne(JuryAssessment::class, 'presentation_id');
+        return $this->hasOne(StartAssessment::class, 'presentation_id');
     }
 }

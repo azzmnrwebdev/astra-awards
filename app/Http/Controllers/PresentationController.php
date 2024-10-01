@@ -6,6 +6,7 @@ use App\Models\CategoryArea;
 use App\Models\CategoryMosque;
 use App\Models\JuryAssessment;
 use App\Models\Presentation;
+use App\Models\StartAssessment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -103,7 +104,7 @@ class PresentationController extends Controller
     public function presentationAssessment(User $user)
     {
         $presentationId = $user->mosque->presentation->id ?? '';
-        $juryAssessment = JuryAssessment::where('presentation_id', $presentationId)->first();
+        $juryAssessment = StartAssessment::where('presentation_id', $presentationId)->first();
 
         return view('pages.presentation.assessment', compact('user', 'presentationId', 'juryAssessment'));
     }

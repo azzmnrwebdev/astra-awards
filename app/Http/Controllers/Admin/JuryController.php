@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
-class JuryContainer extends Controller
+class JuryController extends Controller
 {
     public function index(Request $request)
     {

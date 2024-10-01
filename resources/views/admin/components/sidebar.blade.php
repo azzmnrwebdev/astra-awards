@@ -81,7 +81,25 @@
                     Pra Penilaian
                 </a>
             </li>
+        @endif
 
+        <li class="sidebar-item">
+            <a href="{{ route('start_assessment.index') }}"
+                class="sidebar-link {{ request()->routeIs('start_assessment.*') ? 'active' : '' }}">
+                <i class="bi bi-clipboard-check-fill me-2 fs-5"></i>
+                Penilaian Awal
+            </a>
+        </li>
+
+        {{-- <li class="sidebar-item">
+                <a href="{{ route('end_assessment.index') }}"
+                    class="sidebar-link {{ request()->routeIs('end_assessment.*') ? 'active' : '' }}">
+                    <i class="bi bi-clipboard-check-fill me-2 fs-5"></i>
+                    Penilaian Akhir
+                </a>
+            </li> --}}
+
+        @if (auth()->check() && auth()->user()->hasRole('admin'))
             <li class="sidebar-item">
                 <a href="{{ route('committee.index') }}"
                     class="sidebar-link {{ request()->routeIs('committee.*') ? 'active' : '' }}">

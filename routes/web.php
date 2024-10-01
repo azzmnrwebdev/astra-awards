@@ -8,14 +8,15 @@ use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CommitteeController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\DistributionController;
+use App\Http\Controllers\Admin\EndAssessmentController;
 use App\Http\Controllers\Admin\ExcelController;
-use App\Http\Controllers\Admin\JuryContainer;
+use App\Http\Controllers\Admin\JuryController;
 use App\Http\Controllers\Admin\ParentCompanyController;
 use App\Http\Controllers\Admin\PDFController;
 use App\Http\Controllers\Admin\PreAssessmentController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\StartAssessmentController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -24,7 +25,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CommitteeAssessmentController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\JuryAssessmentController;
 use App\Http\Controllers\PresentationController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SystemAssessmentController;
@@ -66,12 +66,13 @@ Route::middleware('auth')->group(function () {
 
     // Route Jury & User
     Route::middleware([CheckRolesMiddleware::class . ':jury,user', CheckStatusMiddleware::class])->group(function () {
-        Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
+        Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation.index')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
         Route::get('presentasi/{user}/penilaian', [PresentationController::class, 'presentationAssessment'])->name('presentation.assessment')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
     });
 
+    // Route Jury
     Route::middleware([CheckRolesMiddleware::class . ':jury', CheckStatusMiddleware::class])->group(function () {
-        Route::post('presentasi/{user}/penilaian', [JuryAssessmentController::class, 'presentationAssessmentAct'])->name('jury_assessment.presentation')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
+        Route::post('presentasi/{user}/penilaian', [StartAssessmentController::class, 'presentationAssessmentAct'])->name('jury_assessment.presentation')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
     });
 
     // Route Admin & User
@@ -109,7 +110,7 @@ Route::middleware('auth')->group(function () {
         Route::post('formulir/infrastruktur/{user?}/{action?}/penilaian-panitia', [CommitteeAssessmentController::class, 'pillarFiveAct'])->name('committe_assessment.pillarFiveAct')->middleware([SelectionMiddleware::class]);
     });
 
-    // Route Admin & Jury
+    // Route Dashboard Admin & Jury
     Route::middleware([CheckRolesMiddleware::class . ':admin,jury'])->prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
         Route::post('/', [DashboardController::class, 'dashboardAct'])->name('dashboardAct');
@@ -121,16 +122,25 @@ Route::middleware('auth')->group(function () {
         Route::post('profil-saya/perbarui-password', [AdminProfileController::class, 'updatePassword'])->name('dashboard_profile.update_pass');
 
         Route::prefix('juri')->group(function () {
-            Route::get('/', [JuryContainer::class, 'index'])->name('jury.index');
-            Route::get('tambah', [JuryContainer::class, 'create'])->name('jury.create');
-            Route::post('/', [JuryContainer::class, 'store'])->name('jury.store');
-            Route::get('{jury}/edit', [JuryContainer::class, 'edit'])->name('jury.edit');
-            Route::put('{jury}', [JuryContainer::class, 'update'])->name('jury.update');
-            Route::delete('{jury}', [JuryContainer::class, 'destroy'])->name('jury.destroy');
+            Route::get('/', [JuryController::class, 'index'])->name('jury.index');
+            Route::get('tambah', [JuryController::class, 'create'])->name('jury.create');
+            Route::post('/', [JuryController::class, 'store'])->name('jury.store');
+            Route::get('{jury}/edit', [JuryController::class, 'edit'])->name('jury.edit');
+            Route::put('{jury}', [JuryController::class, 'update'])->name('jury.update');
+            Route::delete('{jury}', [JuryController::class, 'destroy'])->name('jury.destroy');
+        });
+
+        Route::prefix('penilaian-awal')->group(function () {
+            Route::get('/', [StartAssessmentController::class, 'index'])->name('start_assessment.index');
+            Route::get('{user}', [StartAssessmentController::class, 'show'])->name('start_assessment.show');
+        });
+
+        Route::prefix('penilaian-akhir')->group(function () {
+            Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index');
         });
     });
 
-    // Route Admin
+    // Route Dashboard Admin
     Route::middleware([CheckRolesMiddleware::class . ':admin'])->prefix('dashboard')->group(function () {
         Route::get('pengguna-berdasarkan-kategori-unduh-pdf/{categoryAreaId}/{categoryMosqueId}', [PDFController::class, 'getUsersByCategory'])->name('download_pdf.get_users_by_category');
         Route::get('pengguna-berdasarkan-provinsi-unduh-pdf/{provinceId}', [PDFController::class, 'getUsersByProvince'])->name('download_pdf.get_users_by_province');

@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 class MultipleSheetCompaniesByBusinessLineExport implements WithMultipleSheets
 {
     public $fileName;
-    private $businessLineId;    
+    private $businessLineId;
     private $search;
 
     public function __construct($businessLineId, $search)
@@ -18,7 +18,6 @@ class MultipleSheetCompaniesByBusinessLineExport implements WithMultipleSheets
         $this->search = $search;
 
         $businessLine = BusinessLine::find($this->businessLineId);
-        // $businessLine = BusinessLine::with(['company.mosque'])->find($this->businessLineId);
         $this->fileName = 'Daftar-Peserta-Lini-Bisnis-' . str_replace([' ', ','], ['-', ''], $businessLine->name) . '.xlsx';
     }
 
