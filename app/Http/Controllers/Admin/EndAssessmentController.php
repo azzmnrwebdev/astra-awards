@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 
 class EndAssessmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return view('admin.pages.assessment.end-assessment');
     }
 }

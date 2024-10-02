@@ -30,6 +30,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SystemAssessmentController;
 use App\Http\Middleware\CheckRolesMiddleware;
 use App\Http\Middleware\CheckStatusMiddleware;
+use App\Http\Middleware\EndAssessmentMiddleware;
 use App\Http\Middleware\FormDKMMiddleware;
 use App\Http\Middleware\InitialAssessmentMiddleware;
 use App\Http\Middleware\RegisterMiddleware;
@@ -136,7 +137,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('penilaian-akhir')->group(function () {
-            Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index');
+            Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index')->middleware([EndAssessmentMiddleware::class]);
         });
     });
 
