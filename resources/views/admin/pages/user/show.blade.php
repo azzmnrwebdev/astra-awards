@@ -129,76 +129,81 @@
                                     <td class="px-0 py-1">{{ $user->mosque->address }}</td>
                                 </tr>
                                 <tr>
-                                    <table class="table table-hover text-nowrap align-middle mb-0">
-                                        <thead class="border-top border-start border-end table-custom">
+                                    <table class="table table-bordered table-hover text-nowrap align-middle mb-0">
+                                        <thead class="table-custom">
                                             <tr>
-                                                <th class="border border-gray-300 px-4 py-2">Formulir</th>
-                                                <th class="border border-gray-300 px-4 py-2 text-center">Status</th>
+                                                <th class="py-3">Formulir</th>
+                                                <th class="py-3 text-center">Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody class="border-start border-end">
+                                        <tbody>
                                             <tr>
-                                                <td class="border border-gray-300 px-4 py-2">Formulir Hubungan DKM dengan YAA</td>
-                                                <td class="border border-gray-300 px-4 py-2 text-center">
-                                                @if ($pillarOneStatus === 'sudah')
-                                                    <span class="badge text-bg-success">Sudah</span>
-                                                @elseif ($pillarOneStatus === 'sebagian')
-                                                    <span class="badge text-bg-warning">Sebagian</span>
-                                                @else
-                                                    <span class="badge text-bg-danger">Belum</span>
-                                                @endif
+                                                <td class="py-3">Formulir Hubungan DKM
+                                                    dengan YAA</td>
+                                                <td class="py-3 text-center">
+                                                    @if ($pillarOneStatus === 'sudah')
+                                                        <span class="badge text-bg-success">Sudah</span>
+                                                    @elseif ($pillarOneStatus === 'sebagian')
+                                                        <span class="badge text-bg-warning">Sebagian</span>
+                                                    @else
+                                                        <span class="badge text-bg-danger">Belum</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="border border-gray-300 px-4 py-2">Formulir Manajemen Perusahaan dengan DKM dan Jamaah</td>
-                                                <td class="border border-gray-300 px-4 py-2 text-center">
-                                                @if ($pillarTwoStatus === 'sudah')
-                                                    <span class="badge text-bg-success">Sudah</span>
-                                                @elseif ($pillarTwoStatus === 'sebagian')
-                                                    <span class="badge text-bg-warning">Sebagian</span>
-                                                @else
-                                                    <span class="badge text-bg-danger">Belum</span>
-                                                @endif
+                                                <td class="py-3">Formulir Manajemen
+                                                    Perusahaan dengan DKM dan Jamaah</td>
+                                                <td class="py-3 text-center">
+                                                    @if ($pillarTwoStatus === 'sudah')
+                                                        <span class="badge text-bg-success">Sudah</span>
+                                                    @elseif ($pillarTwoStatus === 'sebagian')
+                                                        <span class="badge text-bg-warning">Sebagian</span>
+                                                    @else
+                                                        <span class="badge text-bg-danger">Belum</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="border border-gray-300 px-4 py-2">Formulir Program Sosial</td>
-                                                <td class="border border-gray-300 px-4 py-2 text-center">
-                                                @if ($pillarThreeStatus === 'sudah')
-                                                    <span class="badge text-bg-success">Sudah</span>
-                                                @elseif ($pillarThreeStatus === 'sebagian')
-                                                    <span class="badge text-bg-warning">Sebagian</span>
-                                                @else
-                                                    <span class="badge text-bg-danger">Belum</span>
-                                                @endif
+                                                <td class="py-3">Formulir Program Sosial
+                                                </td>
+                                                <td class="py-3 text-center">
+                                                    @if ($pillarThreeStatus === 'sudah')
+                                                        <span class="badge text-bg-success">Sudah</span>
+                                                    @elseif ($pillarThreeStatus === 'sebagian')
+                                                        <span class="badge text-bg-warning">Sebagian</span>
+                                                    @else
+                                                        <span class="badge text-bg-danger">Belum</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="border border-gray-300 px-4 py-2">Formulir Administrasi dan Keuangan</td>
-                                                <td class="border border-gray-300 px-4 py-2 text-center">
-                                                @if ($pillarFourStatus === 'sudah')
-                                                    <span class="badge text-bg-success">Sudah</span>
-                                                @elseif ($pillarFourStatus === 'sebagian')
-                                                    <span class="badge text-bg-warning">Sebagian</span>
-                                                @else
-                                                    <span class="badge text-bg-danger">Belum</span>
-                                                @endif
+                                                <td class="py-3">Formulir Administrasi dan
+                                                    Keuangan</td>
+                                                <td class="py-3 text-center">
+                                                    @if ($pillarFourStatus === 'sudah')
+                                                        <span class="badge text-bg-success">Sudah</span>
+                                                    @elseif ($pillarFourStatus === 'sebagian')
+                                                        <span class="badge text-bg-warning">Sebagian</span>
+                                                    @else
+                                                        <span class="badge text-bg-danger">Belum</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="border border-gray-300 px-4 py-2">Formulir Peribadahan dan Infrastruktur</td>
-                                                <td class="border border-gray-300 px-4 py-2 text-center">
-                                                @if ($pillarFiveStatus === 'sudah')
-                                                    <span class="badge text-bg-success">Sudah</span>
-                                                @elseif ($pillarFiveStatus === 'sebagian')
-                                                    <span class="badge text-bg-warning">Sebagian</span>
-                                                @else
-                                                    <span class="badge text-bg-danger">Belum</span>
-                                                @endif
+                                                <td class="py-3">Formulir Peribadahan dan
+                                                    Infrastruktur</td>
+                                                <td class="py-3 text-center">
+                                                    @if ($pillarFiveStatus === 'sudah')
+                                                        <span class="badge text-bg-success">Sudah</span>
+                                                    @elseif ($pillarFiveStatus === 'sebagian')
+                                                        <span class="badge text-bg-warning">Sebagian</span>
+                                                    @else
+                                                        <span class="badge text-bg-danger">Belum</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         </tbody>
-                                    </table>                                    
+                                    </table>
                                 </tr>
                             </tbody>
                         </table>
