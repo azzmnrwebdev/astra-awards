@@ -4,18 +4,6 @@
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
-            @if (session('success'))
-                <div class="alert alert-success fw-medium" role="alert">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-danger fw-medium" role="alert">
-                    {{ session('error') }}
-                </div>
-            @endif
-
             {{-- Filter --}}
             <div class="row">
                 <div class="col-12">
@@ -175,7 +163,7 @@
             <div class="card-body p-lg-4">
                 <div class="table-responsive">
                     <table class="table table-hover text-nowrap align-middle mb-0">
-                        <thead class="border-top border-start border-end">
+                        <thead class="border-top border-start border-end table-secondary">
                             <tr>
                                 @foreach ($otherTheadName as $thead)
                                     <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>

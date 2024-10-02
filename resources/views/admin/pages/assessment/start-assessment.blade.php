@@ -4,19 +4,21 @@
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
-            @if (session('success'))
-                <div class="alert alert-success fw-medium" role="alert">
-                    {{ session('success') }}
+            {{-- Filter --}}
+            <div class="row">
+                <div class="col-12">
+                    <form class="row g-3">
+                        <div class="col-12">
+                            <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
+                                class="form-control" placeholder="Cari peserta?">
+                            <div class="form-text">Kata kunci bisa berdasarkan peserta, perusahaan atau masjid/musala.
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            @endif
+            </div>
 
-            @if (session('error'))
-                <div class="alert alert-danger fw-medium" role="alert">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            <div class="table-responsive">
+            <div class="table-responsive mt-4">
                 <table class="table table-hover text-nowrap align-middle mb-0">
                     <thead class="border-top border-start border-end table-custom">
                         <tr>
@@ -76,7 +78,7 @@
             <div class="card-body p-lg-4">
                 <div class="table-responsive">
                     <table class="table table-hover text-nowrap align-middle mb-0">
-                        <thead class="border-top border-start border-end">
+                        <thead class="border-top border-start border-end table-secondary">
                             <tr>
                                 @foreach ($otherTheadName as $thead)
                                     <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
@@ -113,7 +115,39 @@
     @prepend('scripts')
         <script>
             $(document).ready(function() {
-                //
+                let debounceTimeout;
+
+                $('#pencarian').on('input keydown change', function(e) {
+                    if (e.which !== 13) {
+                        clearTimeout(debounceTimeout);
+
+                        debounceTimeout = setTimeout(function() {
+                            filter();
+                        }, 1000);
+                    }
+                });
+
+                $('#pencarian').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        filter();
+                    }
+                });
+
+                function filter() {
+                    const params = {};
+                    const searchValue = $('#pencarian').val();
+                    const url = '{{ route('start_assessment.index') }}';
+
+                    if (searchValue.trim() !== '') {
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    const queryString = Object.keys(params).map(key => key + '=' + params[key]);
+
+                    const finalUrl = url + '?' + queryString.join('&');
+                    window.location.href = finalUrl;
+                }
             });
         </script>
     @endprepend

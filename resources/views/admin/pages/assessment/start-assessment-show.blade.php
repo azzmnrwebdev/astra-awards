@@ -20,7 +20,7 @@
 
             <div class="table-responsive mt-3">
                 <table class="table table-hover text-nowrap align-middle mb-0">
-                    <thead class="border-top border-start border-end table-success">
+                    <thead class="border-top border-start border-end table-custom">
                         <tr>
                             <th class="text-center py-3">Pertanyaan</th>
                             <th class="text-center py-3">File Presentasi</th>

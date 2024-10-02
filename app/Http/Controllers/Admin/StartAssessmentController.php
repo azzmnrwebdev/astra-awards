@@ -29,7 +29,7 @@ class StartAssessmentController extends Controller
         return redirect()->back()->with('success', 'Nilai berhasil disimpan');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
@@ -55,6 +55,7 @@ class StartAssessmentController extends Controller
 
         // Menampilkan semua data pengguna
         $allUsers = collect();
+        $search = $request->input('pencarian');
 
         foreach ($categoryAreas as $area) {
             foreach ($categoryMosques as $mosque) {
@@ -66,6 +67,15 @@ class StartAssessmentController extends Controller
                     'mosque.pillarFive.committeeAssessmnet'
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
+                })->when($search, function ($query) use ($search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
+                            ->orWhereHas('mosque', function ($mosqueQuery) use ($search) {
+                                $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                            })->orWhereHas('mosque.company', function ($companyQuery) use ($search) {
+                                $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                            });
+                    });
                 })->get();
 
                 $users = $users->map(function ($user) {
@@ -165,7 +175,7 @@ class StartAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.start-assessment', compact('theadName', 'otherTheadName', 'paginatedUsers', 'categories'));
+        return view('admin.pages.assessment.start-assessment', compact('theadName', 'otherTheadName', 'search', 'paginatedUsers', 'categories'));
     }
 
     public function show(User $user)
