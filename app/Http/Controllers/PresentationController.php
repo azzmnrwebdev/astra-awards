@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoryArea;
 use App\Models\CategoryMosque;
-use App\Models\JuryAssessment;
 use App\Models\Presentation;
 use App\Models\StartAssessment;
 use App\Models\User;
@@ -16,14 +15,16 @@ use Illuminate\Support\Facades\Validator;
 
 class PresentationController extends Controller
 {
-    public function presentation()
+    public function presentation(Request $request)
     {
         $userLogin = Auth::user();
 
         if ($userLogin->role === "jury") {
-            $allUsers = collect();
             $categoryAreas = CategoryArea::all();
             $categoryMosques = CategoryMosque::all();
+
+            $allUsers = collect();
+            $search = $request->input('pencarian');
 
             foreach ($categoryAreas as $area) {
                 foreach ($categoryMosques as $mosque) {
@@ -36,6 +37,13 @@ class PresentationController extends Controller
                     ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                         $q->where('category_area_id', $area->id)
                             ->where('category_mosque_id', $mosque->id);
+                    })->when($search, function ($query) use ($search) {
+                        $query->where(function ($q) use ($search) {
+                            $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
+                                ->orWhereHas('mosque', function ($mosqueQuery) use ($search) {
+                                    $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                                });
+                        });
                     })->get();
 
                     $users = $users->map(function ($user) {
@@ -85,6 +93,8 @@ class PresentationController extends Controller
 
                         $user->totalNilai = $totalValue;
                         return $user;
+                    })->filter(function ($user) {
+                        return $user->totalNilai > 0;
                     });
 
                     $topUsers = $users->sortByDesc('totalNilai')->take(5);
@@ -92,7 +102,7 @@ class PresentationController extends Controller
                 }
             }
 
-            return view('pages.presentation.index', compact('allUsers'));
+            return view('pages.presentation.index', compact('search', 'allUsers'));
         }
 
         $mosque = $userLogin->mosque;
@@ -104,9 +114,9 @@ class PresentationController extends Controller
     public function presentationAssessment(User $user)
     {
         $presentationId = $user->mosque->presentation->id ?? '';
-        $juryAssessment = StartAssessment::where('presentation_id', $presentationId)->first();
+        $startAssessment = StartAssessment::where('presentation_id', $presentationId)->first();
 
-        return view('pages.presentation.assessment', compact('user', 'presentationId', 'juryAssessment'));
+        return view('pages.presentation.assessment', compact('user', 'presentationId', 'startAssessment'));
     }
 
     public function presentationAct(Request $request)

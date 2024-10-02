@@ -4,7 +4,7 @@
             enctype="multipart/form-data">
             @csrf
 
-            <input type="hidden" name="id" value="{{ $juryAssessment->id ?? '' }}">
+            <input type="hidden" name="id" value="{{ $startAssessment->id ?? '' }}">
             <input type="hidden" name="presentation_id" value="{{ $presentationId }}">
 
             <div class="row row-cols-1 g-0">
@@ -79,22 +79,22 @@
                                         <select name="presentation_file" id="presentation_file" class="form-select">
                                             @if (
                                                 !$user->mosque->presentation ||
-                                                    !$user->mosque->presentation->juryAssessment ||
-                                                    !$user->mosque->presentation->juryAssessment->presentation_file)
+                                                    !$user->mosque->presentation->startAssessment ||
+                                                    !$user->mosque->presentation->startAssessment->presentation_file)
                                                 <option value="">-- Pilih Nilai --</option>
                                             @endif
 
                                             <option value="1"
-                                                {{ old('presentation_file', $user->mosque->presentation->juryAssessment->presentation_file ?? '') == 1 ? 'selected' : '' }}>
+                                                {{ old('presentation_file', $user->mosque->presentation->startAssessment->presentation_file ?? '') == 1 ? 'selected' : '' }}>
                                                 1</option>
                                             <option value="3"
-                                                {{ old('presentation_file', $user->mosque->presentation->juryAssessment->presentation_file ?? '') == 3 ? 'selected' : '' }}>
+                                                {{ old('presentation_file', $user->mosque->presentation->startAssessment->presentation_file ?? '') == 3 ? 'selected' : '' }}>
                                                 3</option>
                                             <option value="7"
-                                                {{ old('presentation_file', $user->mosque->presentation->juryAssessment->presentation_file ?? '') == 7 ? 'selected' : '' }}>
+                                                {{ old('presentation_file', $user->mosque->presentation->startAssessment->presentation_file ?? '') == 7 ? 'selected' : '' }}>
                                                 7</option>
                                             <option value="9"
-                                                {{ old('presentation_file', $user->mosque->presentation->juryAssessment->presentation_file ?? '') == 9 ? 'selected' : '' }}>
+                                                {{ old('presentation_file', $user->mosque->presentation->startAssessment->presentation_file ?? '') == 9 ? 'selected' : '' }}>
                                                 9</option>
                                         </select>
                                     </div>

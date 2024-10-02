@@ -47,7 +47,7 @@
 
         @if (auth()->check() && auth()->user()->hasRole('admin'))
             <div class="row row-cols-1 g-3">
-                <div class="col mb-4">
+                <div class="col mb-2">
                     <form>
                         <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                             class="form-control" placeholder="Cari peserta?">
