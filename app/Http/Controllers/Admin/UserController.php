@@ -71,37 +71,29 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        // Contoh pengambilan mosque_id dari $user jika ada relasinya
         $mosque = Mosque::where('user_id', $user->id)->first();
-    
-        // Jika mosque_id tersedia
+
         if ($mosque) {
-            // Pilar 1
             $pillarOne = PillarOne::where('mosque_id', $mosque->id)->first();
             $pillarOneFields = ['question_one', 'question_two', 'file_question_two_one', 'file_question_two_two', 'question_three', 'question_four', 'question_five'];
             $pillarOneStatus = $this->getPillarStatus($pillarOne, $pillarOneFields);
-    
-            // Pilar 2
+
             $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->first();
             $pillarTwoFields = ['question_two', 'question_three', 'question_four', 'question_five'];
             $pillarTwoStatus = $this->getPillarStatus($pillarTwo, $pillarTwoFields);
-    
-            // Pilar 3
+
             $pillarThree = PillarThree::where('mosque_id', $mosque->id)->first();
             $pillarThreeFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'question_six'];
             $pillarThreeStatus = $this->getPillarStatus($pillarThree, $pillarThreeFields);
-    
-            // Pilar 4
+
             $pillarFour = PillarFour::where('mosque_id', $mosque->id)->first();
             $pillarFourFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
             $pillarFourStatus = $this->getPillarStatus($pillarFour, $pillarFourFields);
-    
-            // Pilar 5
+
             $pillarFive = PillarFive::where('mosque_id', $mosque->id)->first();
             $pillarFiveFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
             $pillarFiveStatus = $this->getPillarStatus($pillarFive, $pillarFiveFields);
-    
-            // Kirim data ke view
+
             return view('admin.pages.user.show', compact(
                 'user',
                 'pillarOneStatus',
@@ -111,26 +103,25 @@ class UserController extends Controller
                 'pillarFiveStatus'
             ));
         } else {
-            // Jika tidak ada mosque yang terkait dengan user
             return view('admin.pages.user.show', compact('user'))->with('error', 'Mosque data not found for this user.');
         }
     }
-    
+
     private function getPillarStatus($pillar, $fields)
     {
         if (!$pillar) {
             return 'belum';
         }
-    
+
         $completedFields = 0;
         $totalFields = count($fields);
-    
+
         foreach ($fields as $field) {
             if (!empty($pillar->$field)) {
                 $completedFields++;
             }
         }
-    
+
         if ($completedFields === 0) {
             return 'belum';
         } elseif ($completedFields === $totalFields) {
@@ -139,7 +130,6 @@ class UserController extends Controller
             return 'sebagian';
         }
     }
-    
 
     public function edit(User $user)
     {

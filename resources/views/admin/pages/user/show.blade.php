@@ -141,9 +141,9 @@
                                                 <td class="py-3">Formulir Hubungan DKM
                                                     dengan YAA</td>
                                                 <td class="py-3 text-center">
-                                                    @if ($pillarOneStatus === 'sudah')
+                                                    @if ($pillarTwoStatus === 'sudah')
                                                         <span class="badge text-bg-success">Sudah</span>
-                                                    @elseif ($pillarOneStatus === 'sebagian')
+                                                    @elseif ($pillarTwoStatus === 'sebagian')
                                                         <span class="badge text-bg-warning">Sebagian</span>
                                                     @else
                                                         <span class="badge text-bg-danger">Belum</span>
@@ -154,9 +154,9 @@
                                                 <td class="py-3">Formulir Manajemen
                                                     Perusahaan dengan DKM dan Jamaah</td>
                                                 <td class="py-3 text-center">
-                                                    @if ($pillarTwoStatus === 'sudah')
+                                                    @if ($pillarOneStatus === 'sudah')
                                                         <span class="badge text-bg-success">Sudah</span>
-                                                    @elseif ($pillarTwoStatus === 'sebagian')
+                                                    @elseif ($pillarOneStatus === 'sebagian')
                                                         <span class="badge text-bg-warning">Sebagian</span>
                                                     @else
                                                         <span class="badge text-bg-danger">Belum</span>
