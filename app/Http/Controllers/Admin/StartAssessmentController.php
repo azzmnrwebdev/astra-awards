@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\CategoryArea;
 use Illuminate\Http\Request;
+use App\Models\CategoryMosque;
 use App\Models\StartAssessment;
 use App\Http\Controllers\Controller;
-use App\Models\CategoryArea;
-use App\Models\CategoryMosque;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class StartAssessmentController extends Controller
@@ -165,11 +165,11 @@ class StartAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.start_assessment', compact('theadName', 'otherTheadName', 'paginatedUsers', 'categories'));
+        return view('admin.pages.assessment.start-assessment', compact('theadName', 'otherTheadName', 'paginatedUsers', 'categories'));
     }
 
     public function show(User $user)
     {
-        //
+        return view('admin.pages.assessment.start-assessment-show', compact('user'));
     }
 }

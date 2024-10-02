@@ -139,7 +139,13 @@
                                     <span class="badge {{ $badgeClass }}">{{ $status }}</span>
                                 </td>
 
-                                <td class="text-center py-3">{{ $item->mosque->total_pillar_value }}</td>
+                                <td class="text-center py-3">
+                                    @if ($item->mosque->total_pillar_value !== 0)
+                                        {{ $item->mosque->total_pillar_value }}
+                                    @else
+                                        <span class="badge text-bg-danger">Belum Tersedia</span>
+                                    @endif
+                                </td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('pre_assessment.show', ['user' => $item->id]) }}"
                                         class="text-dark align-middle"><i class="bi bi-eye"></i>
