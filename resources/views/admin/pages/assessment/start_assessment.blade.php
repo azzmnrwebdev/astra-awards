@@ -34,33 +34,23 @@
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">
-                                    @if ($item->mosque->presentation)
-                                        @if ($item->mosque->presentation->startAssessment)
-                                            <span class="badge text-bg-success">Sudah Penilaian</span>
-                                        @else
-                                            <span class="badge text-bg-danger">Belum Penilaian</span>
-                                        @endif
+                                    @if ($item->mosque->presentation->startAssessment)
+                                        <span class="badge text-bg-success">Sudah Penilaian</span>
                                     @else
-                                        <span class="badge text-bg-danger">Belum Tersedia</span>
+                                        <span class="badge text-bg-danger">Belum Penilaian</span>
                                     @endif
                                 </td>
 
                                 <td class="text-center py-3">
-                                    @if ($item->mosque->presentation)
-                                        @if ($item->mosque->presentation->startAssessment)
-                                            {{ $item->mosque->presentation->startAssessment->presentation_file }} Poin
-                                        @else
-                                            <span class="badge text-bg-danger">Belum Tersedia</span>
-                                        @endif
+                                    @if ($item->mosque->presentation->startAssessment)
+                                        {{ $item->mosque->presentation->startAssessment->presentation_file }} Poin
                                     @else
                                         <span class="badge text-bg-danger">Belum Tersedia</span>
                                     @endif
                                 </td>
                                 <td class="text-center py-3">
-                                    <a href="#" class="text-dark align-middle"><i class="bi bi-eye"></i>
-
-                                        {{-- <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
-                                        class="text-dark align-middle"><i class="bi bi-eye"></i> --}}
+                                    <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
+                                        class="text-dark align-middle"><i class="bi bi-eye"></i>
                                 </td>
                             </tr>
                         @empty
@@ -103,7 +93,7 @@
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                     <td class="text-center py-3">{{ $item->totalNilai }} Poin</td>
                                     <td class="text-center py-3">
-                                        <a href="{{ route('pre_assessment.show', ['user' => $item->id]) }}"
+                                        <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
                                             class="text-dark align-middle"><i class="bi bi-eye"></i>
                                     </td>
                                 </tr>

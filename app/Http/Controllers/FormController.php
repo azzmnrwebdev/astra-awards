@@ -20,8 +20,8 @@ class FormController extends Controller
 {
     public function index(Request $request)
     {
-        $userLogin = Auth::user()->id;
-        $admin = User::where('id', $userLogin)
+        $userLogin = Auth::user();
+        $admin = User::where('id', $userLogin->id)
             ->where('role', 'admin')
             ->with('distributionToCommitte')
             ->first();
@@ -55,6 +55,10 @@ class FormController extends Controller
             $pillarThrees = (clone $query)->whereHas('mosque.pillarThree')->paginate(10);
             $pillarFours = (clone $query)->whereHas('mosque.pillarFour')->paginate(10);
             $pillarFives = (clone $query)->whereHas('mosque.pillarFive')->paginate(10);
+        }
+
+        if ($userLogin->role !== "admin") {
+            return view('pages.form.index');
         }
 
         return view('pages.form.index', compact('search', 'pillarOnes', 'pillarTwos', 'pillarThrees', 'pillarFours', 'pillarFives'));

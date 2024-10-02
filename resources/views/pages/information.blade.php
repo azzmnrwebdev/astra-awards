@@ -132,7 +132,7 @@
                             </div>
 
                             <div class="mb-0">
-                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link" href="{{ route('presentation') }}">6. Presentasi</a></p>
+                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link" href="{{ route('presentation.index') }}">6. Presentasi</a></p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
                                     aria-valuenow="{{ $presentationCompletion }}" aria-valuemin="0"
                                     aria-valuemax="100">

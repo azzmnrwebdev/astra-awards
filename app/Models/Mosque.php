@@ -94,6 +94,7 @@ class Mosque extends Model
                 $this->pillarOne->committeeAssessmnet->pillar_one_question_five +
                 $this->pillarOne->committeeAssessmnet->pillar_one_question_six +
                 $this->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+
             $anyAssessment = true;
         }
 
@@ -102,6 +103,7 @@ class Mosque extends Model
                 $this->pillarTwo->committeeAssessmnet->pillar_two_question_three +
                 $this->pillarTwo->committeeAssessmnet->pillar_two_question_four +
                 $this->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+
             $anyAssessment = true;
         }
 
@@ -112,6 +114,7 @@ class Mosque extends Model
                 $this->pillarThree->committeeAssessmnet->pillar_three_question_four +
                 $this->pillarThree->committeeAssessmnet->pillar_three_question_five +
                 $this->pillarThree->committeeAssessmnet->pillar_three_question_six;
+
             $anyAssessment = true;
         }
 
@@ -121,6 +124,7 @@ class Mosque extends Model
                 $this->pillarFour->committeeAssessmnet->pillar_four_question_three +
                 $this->pillarFour->committeeAssessmnet->pillar_four_question_four +
                 $this->pillarFour->committeeAssessmnet->pillar_four_question_five;
+
             $anyAssessment = true;
         }
 
@@ -130,9 +134,10 @@ class Mosque extends Model
                 $this->pillarFive->committeeAssessmnet->pillar_five_question_three +
                 $this->pillarFive->committeeAssessmnet->pillar_five_question_four +
                 $this->pillarFive->committeeAssessmnet->pillar_five_question_five;
+
             $anyAssessment = true;
         }
 
-        return $anyAssessment ? $totalValue . ' Poin' : '<span class="badge text-bg-danger">Belum Tersedia</span>';
+        return $anyAssessment ? $totalValue . ' Poin' : $totalValue;
     }
 }

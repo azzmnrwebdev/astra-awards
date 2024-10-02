@@ -139,7 +139,7 @@
                                     <span class="badge {{ $badgeClass }}">{{ $status }}</span>
                                 </td>
 
-                                <td class="text-center py-3">{!! $item->mosque->total_pillar_value !!}</td>
+                                <td class="text-center py-3">{{ $item->mosque->total_pillar_value }}</td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('pre_assessment.show', ['user' => $item->id]) }}"
                                         class="text-dark align-middle"><i class="bi bi-eye"></i>

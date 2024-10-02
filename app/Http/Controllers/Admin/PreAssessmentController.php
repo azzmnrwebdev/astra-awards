@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\CategoryArea;
 use App\Models\CategoryMosque;
+use App\Http\Controllers\Controller;
 use App\Models\CommitteeAssessmentCommittee;
 
 class PreAssessmentController extends Controller
@@ -34,9 +34,17 @@ class PreAssessmentController extends Controller
 
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
-        $search = $request->input('pencarian');
 
-        $query = User::where('role', 'user');
+        // Menampilkan semua data pengguna
+        $query = User::with([
+            'mosque',
+            'mosque.pillarOne',
+            'mosque.pillarTwo',
+            'mosque.pillarThree',
+            'mosque.pillarFour',
+            'mosque.pillarFive'
+        ])->where('role', 'user');
+        $search = $request->input('pencarian');
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -50,8 +58,17 @@ class PreAssessmentController extends Controller
             });
         }
 
+        $query->where(function ($q) {
+            $q->whereHas('mosque.pillarOne')
+                ->orWhereHas('mosque.pillarTwo')
+                ->orWhereHas('mosque.pillarThree')
+                ->orWhereHas('mosque.pillarFour')
+                ->orWhereHas('mosque.pillarFive');
+        });
+
         $users = $query->orderByDesc('users.updated_at')->latest('users.created_at')->paginate(10);
 
+        // Menampilkan 5 data pengguna
         $categories = [];
 
         foreach ($categoryAreas as $area) {
@@ -109,6 +126,8 @@ class PreAssessmentController extends Controller
                     $user->totalNilai = $totalValue;
 
                     return $user;
+                })->filter(function ($user) {
+                    return $user->totalNilai > 0;
                 })->sortByDesc('totalNilai');
 
                 $categories[] = [

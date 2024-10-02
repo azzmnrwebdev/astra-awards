@@ -115,6 +115,8 @@ class StartAssessmentController extends Controller
 
                     $user->totalNilai = $totalValue;
                     return $user;
+                })->filter(function ($user) {
+                    return $user->totalNilai > 0;
                 });
 
                 $topUsers = $users->sortByDesc('totalNilai')->take(5);
@@ -152,6 +154,8 @@ class StartAssessmentController extends Controller
                     $user->totalNilai = $totalValue;
 
                     return $user;
+                })->filter(function ($user) {
+                    return $user->totalNilai > 0;
                 })->sortByDesc('totalNilai');
 
                 $categories[] = [
