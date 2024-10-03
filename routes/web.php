@@ -30,7 +30,8 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SystemAssessmentController;
 use App\Http\Middleware\CheckRolesMiddleware;
 use App\Http\Middleware\CheckStatusMiddleware;
-use App\Http\Middleware\EndAssessmentMiddleware;
+use App\Http\Middleware\EndAssessmentEndMiddleware;
+use App\Http\Middleware\EndAssessmentStartMiddleware;
 use App\Http\Middleware\FormDKMMiddleware;
 use App\Http\Middleware\InitialAssessmentMiddleware;
 use App\Http\Middleware\RegisterMiddleware;
@@ -137,9 +138,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('penilaian-akhir')->group(function () {
-            Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index')->middleware([EndAssessmentMiddleware::class]);
-            Route::get('{user}/nilai-presentasi', [EndAssessmentController::class, 'edit'])->name('end_assessment.edit')->middleware([EndAssessmentMiddleware::class]);
-            Route::put('{user}', [EndAssessmentController::class, 'update'])->name('end_assessment.update')->middleware([EndAssessmentMiddleware::class]);
+            Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index')->middleware([EndAssessmentStartMiddleware::class]);
+            Route::get('{user}/nilai-presentasi', [EndAssessmentController::class, 'edit'])->name('end_assessment.edit')->middleware([EndAssessmentStartMiddleware::class, EndAssessmentEndMiddleware::class]);
+            Route::put('{user}', [EndAssessmentController::class, 'update'])->name('end_assessment.update')->middleware([EndAssessmentStartMiddleware::class, EndAssessmentEndMiddleware::class]);
         });
     });
 
