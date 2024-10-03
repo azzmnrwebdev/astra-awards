@@ -134,7 +134,7 @@ class StartAssessmentController extends Controller
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortBy('totalNilai')->take(5);
+                $topUsers = $users->sortByDesc('totalNilai')->take(5);
                 $allUsers = $allUsers->merge($topUsers);
             }
         }

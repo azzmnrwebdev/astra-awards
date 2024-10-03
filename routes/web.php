@@ -138,8 +138,7 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('penilaian-akhir')->group(function () {
             Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index')->middleware([EndAssessmentMiddleware::class]);
-            Route::get('{user}', [EndAssessmentController::class, 'show'])->name('end_assessment.show')->middleware([EndAssessmentMiddleware::class]);
-            Route::get('{user}/edit-nilai', [EndAssessmentController::class, 'edit'])->name('end_assessment.edit')->middleware([EndAssessmentMiddleware::class]);
+            Route::get('{user}/nilai-presentasi', [EndAssessmentController::class, 'edit'])->name('end_assessment.edit')->middleware([EndAssessmentMiddleware::class]);
             Route::put('{user}', [EndAssessmentController::class, 'update'])->name('end_assessment.update')->middleware([EndAssessmentMiddleware::class]);
         });
     });

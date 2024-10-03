@@ -7,13 +7,23 @@ use App\Http\Controllers\Controller;
 use App\Models\CategoryArea;
 use App\Models\CategoryMosque;
 use App\Models\User;
+use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Validator;
 
 class EndAssessmentController extends Controller
 {
     public function index(Request $request)
     {
         $theadName = [
+            ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-start py-3', 'label' => 'Nama Peserta'],
+            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
+            ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
+        ];
+
+        $otherTheadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
             ['class' => 'text-start py-3', 'label' => 'Nama Peserta'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
@@ -62,7 +72,7 @@ class EndAssessmentController extends Controller
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortBy('totalNilai')->take(5);
+                $topUsers = $users->sortByDesc('totalNilai');
                 $allUsersInEndAssessment = $allUsersInEndAssessment->merge($topUsers);
             }
         }
@@ -128,21 +138,66 @@ class EndAssessmentController extends Controller
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
-        return view('admin.pages.assessment.end-assessment', compact('theadName', 'search', 'usersInEndAssessment', 'usersInStartAssessment'));
-    }
+        // Menampilkan juara 1, 2 dan 3
+        $categories = [];
 
-    public function show(User $user)
-    {
-        //
+        foreach ($categoryAreas as $area) {
+            foreach ($categoryMosques as $mosque) {
+                $topUsers = User::with(['mosque', 'mosque.endAssessment'])
+                    ->whereHas('mosque', function ($q) use ($area, $mosque) {
+                        $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
+                    })->take(3)->get();
+
+                $topUsers = $topUsers->map(function ($user) {
+                    $totalValue = 0;
+
+                    if ($user->mosque->endAssessment) {
+                        $totalValue += $user->mosque->endAssessment->presentation_value;
+                    }
+
+                    $user->totalNilai = $totalValue;
+
+                    return $user;
+                })->filter(function ($user) {
+                    return $user->totalNilai > 0;
+                })->sortByDesc('totalNilai');
+
+                $categories[] = [
+                    'title' => $area->name . ' dan ' . $mosque->name,
+                    'datas' => $topUsers,
+                ];
+            }
+        }
+
+        return view('admin.pages.assessment.end-assessment', compact('theadName', 'otherTheadName', 'search', 'usersInEndAssessment', 'usersInStartAssessment', 'categories'));
     }
 
     public function edit(User $user)
     {
-        //
+        return view('admin.pages.assessment.end-assessment-edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
-        //
+        $rules = [
+            'presentation_value' => 'required|in:1,3,7,9',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            $user->mosque->endAssessment()->updateOrCreate(
+                ['mosque_id' => $user->mosque->id],
+                ['presentation_value' => $request->presentation_value]
+            );
+
+            return redirect(route('end_assessment.index'))->with('success', 'Nilai akhir berhasil disimpan');
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+        }
     }
 }
