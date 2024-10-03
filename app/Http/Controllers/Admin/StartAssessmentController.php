@@ -62,6 +62,7 @@ class StartAssessmentController extends Controller
                 $users = User::with([
                     'mosque',
                     'mosque.company',
+                    'mosque.presentation',
                     'mosque.pillarOne.committeeAssessmnet',
                     'mosque.pillarTwo.committeeAssessmnet',
                     'mosque.pillarThree.committeeAssessmnet',
@@ -69,6 +70,8 @@ class StartAssessmentController extends Controller
                     'mosque.pillarFive.committeeAssessmnet'
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
+                })->where(function ($q) {
+                    $q->whereHas('mosque.presentation');
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
                         $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
