@@ -1,10 +1,115 @@
 <x-admin title="Penilaian Akhir">
-    {{-- Main Content --}}
+    {{-- Penilaian Akhir --}}
     <h4 class="mb-4 fw-semibold d-inline-flex">Manajemen Penilaian Akhir</h4>
+
+    {{-- Filter --}}
+    <div class="card border-0 mb-4" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
+        <div class="card-body p-lg-4">
+            <div class="row">
+                <div class="col-12">
+                    <form class="row g-3">
+                        <div class="col-12">
+                            <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
+                                class="form-control" placeholder="Cari peserta?">
+                            <div class="form-text">Kata kunci bisa berdasarkan peserta, perusahaan atau masjid/musala.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
-            {{--  --}}
+            <div class="table-responsive">
+                <table class="table table-hover text-nowrap align-middle mb-0">
+                    <thead class="border-top border-start border-end table-custom">
+                        <tr>
+                            @foreach ($theadName as $thead)
+                                <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+
+                    <tbody class="border-start border-end">
+                        @forelse ($usersInEndAssessment as $item)
+                            <tr>
+                                <td class="text-center py-3">{{ $loop->index + $usersInEndAssessment->firstItem() }}
+                                </td>
+                                <td class="text-start py-3">{{ $item->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->endAssessment->presentation_value }}</td>
+                                <td class="text-center py-3">
+                                    <a href="{{ route('end_assessment.show', ['user' => $item->id]) }}"
+                                        class="text-dark align-middle"><i class="bi bi-eye"></i></a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Pagination --}}
+            <div class="mt-3">
+                {{ $usersInEndAssessment->appends(request()->query())->links() }}
+            </div>
+        </div>
+    </div>
+
+    {{-- Penilaian Awal --}}
+    <h4 class="mt-4 mb-4 fw-semibold d-inline-flex">Peserta Lolos Penilaian Awal</h4>
+
+    <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
+        <div class="card-body p-lg-4">
+            <div class="table-responsive">
+                <table class="table table-hover text-nowrap align-middle mb-0">
+                    <thead class="border-top border-start border-end table-custom">
+                        <tr>
+                            @foreach ($theadName as $thead)
+                                <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+
+                    <tbody class="border-start border-end">
+                        @forelse ($usersInStartAssessment as $item)
+                            <tr>
+                                <td class="text-center py-3">{{ $loop->index + $usersInStartAssessment->firstItem() }}
+                                </td>
+                                <td class="text-start py-3">{{ $item->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
+                                <td class="text-center py-3">
+                                    {{ $item->mosque->presentation->startAssessment->presentation_file }} Poin
+                                </td>
+                                <td class="text-center py-3">
+                                    @if (auth()->check() && auth()->user()->hasRole('jury'))
+                                        <a href="{{ route('end_assessment.edit', ['user' => $item->id]) }}"
+                                            class="text-dark align-middle"><i class="bi bi-pencil"></i></a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Pagination --}}
+            <div class="mt-3">
+                {{ $usersInStartAssessment->appends(request()->query())->links() }}
+            </div>
         </div>
     </div>
 
@@ -12,7 +117,39 @@
     @prepend('scripts')
         <script>
             $(document).ready(function() {
-                //
+                let debounceTimeout;
+
+                $('#pencarian').on('input keydown change', function(e) {
+                    if (e.which !== 13) {
+                        clearTimeout(debounceTimeout);
+
+                        debounceTimeout = setTimeout(function() {
+                            filter();
+                        }, 1000);
+                    }
+                });
+
+                $('#pencarian').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        filter();
+                    }
+                });
+
+                function filter() {
+                    const params = {};
+                    const searchValue = $('#pencarian').val();
+                    const url = '{{ route('end_assessment.index') }}';
+
+                    if (searchValue.trim() !== '') {
+                        params.pencarian = searchValue.trim().replace(/ /g, '+');
+                    }
+
+                    const queryString = Object.keys(params).map(key => key + '=' + params[key]);
+
+                    const finalUrl = url + '?' + queryString.join('&');
+                    window.location.href = finalUrl;
+                }
             });
         </script>
     @endprepend

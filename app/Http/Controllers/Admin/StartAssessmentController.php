@@ -60,6 +60,8 @@ class StartAssessmentController extends Controller
         foreach ($categoryAreas as $area) {
             foreach ($categoryMosques as $mosque) {
                 $users = User::with([
+                    'mosque',
+                    'mosque.company',
                     'mosque.pillarOne.committeeAssessmnet',
                     'mosque.pillarTwo.committeeAssessmnet',
                     'mosque.pillarThree.committeeAssessmnet',
@@ -129,7 +131,7 @@ class StartAssessmentController extends Controller
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortByDesc('totalNilai')->take(5);
+                $topUsers = $users->sortBy('totalNilai')->take(5);
                 $allUsers = $allUsers->merge($topUsers);
             }
         }

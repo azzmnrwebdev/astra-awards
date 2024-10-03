@@ -157,7 +157,7 @@
 
     {{-- Main Content --}}
     @foreach ($categories as $category)
-        <h4 class="mt-5 mb-4 fw-semibold d-inline-flex">{{ $category['title'] }}</h4>
+        <h4 class="mt-4 mb-4 fw-semibold d-inline-flex">{{ $category['title'] }}</h4>
 
         <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
             <div class="card-body p-lg-4">

@@ -81,6 +81,11 @@ class Mosque extends Model
         return $this->hasOne(Presentation::class, 'mosque_id');
     }
 
+    public function endAssessment()
+    {
+        return $this->hasOne(EndAssessment::class, 'mosque_id');
+    }
+
     public function getTotalPillarValueAttribute()
     {
         $totalValue = 0;
