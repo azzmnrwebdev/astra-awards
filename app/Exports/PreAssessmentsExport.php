@@ -22,9 +22,7 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     use Exportable;
 
     private $categoryAreaId;
-    private $categoryAreaName;
     private $categoryMosqueId;
-    private $categoryMosqueName;
     private $search;
 
     private $index = 0;

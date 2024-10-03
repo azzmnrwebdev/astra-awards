@@ -7,7 +7,8 @@
             {{-- Filter --}}
             <div class="row">
                 <div class="col-12">
-                    <a href="#" class="btn btn-success rounded-0">Unduh Excel</a>
+                    <a href="{{ route('start_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
+                        class="btn btn-success rounded-0">Unduh Excel</a>
                 </div>
 
                 <div class="col-12 mt-3">

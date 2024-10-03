@@ -10,6 +10,7 @@ use App\Exports\PreAssessmentsExport;
 use App\Exports\UsersByCategoryExport;
 use App\Exports\MultipleSheetUsersByProvinceExport;
 use App\Exports\MultipleSheetCompaniesByBusinessLineExport;
+use App\Exports\StartAssessmentsExport;
 
 class ExcelController extends Controller
 {
@@ -68,7 +69,7 @@ class ExcelController extends Controller
         $categoryMosqueId = $request->input('kategori_masjid');
         $search = $request->input('pencarian');
 
-        // return new PreAssessmentsExport($categoryAreaId, $categoryMosqueId, $search);
+        return new StartAssessmentsExport($categoryAreaId, $categoryMosqueId, $search);
     }
 
     public function endAssessments(Request $request)
