@@ -133,11 +133,13 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('penilaian-awal')->group(function () {
+            Route::get('unduh-excel', [ExcelController::class, 'startAssessments'])->name('start_assessment.download_excel');
             Route::get('/', [StartAssessmentController::class, 'index'])->name('start_assessment.index');
             Route::get('{user}', [StartAssessmentController::class, 'show'])->name('start_assessment.show');
         });
 
         Route::prefix('penilaian-akhir')->group(function () {
+            Route::get('unduh-excel', [ExcelController::class, 'endAssessments'])->name('end_assessment.download_excel');
             Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index')->middleware([EndAssessmentStartMiddleware::class]);
             Route::get('{user}/nilai-presentasi', [EndAssessmentController::class, 'edit'])->name('end_assessment.edit')->middleware([EndAssessmentStartMiddleware::class, EndAssessmentEndMiddleware::class]);
             Route::put('{user}', [EndAssessmentController::class, 'update'])->name('end_assessment.update')->middleware([EndAssessmentStartMiddleware::class, EndAssessmentEndMiddleware::class]);
@@ -219,6 +221,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('pra-penilaian')->group(function () {
+            Route::get('unduh-excel', [ExcelController::class, 'preeAssessments'])->name('pre_assessment.download_excel');
             Route::get('/', [PreAssessmentController::class, 'index'])->name('pre_assessment.index');
             Route::get('{user}', [PreAssessmentController::class, 'show'])->name('pre_assessment.show');
         });

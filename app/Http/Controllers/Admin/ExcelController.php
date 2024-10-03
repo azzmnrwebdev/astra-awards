@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PreAssessmentsExport;
 use App\Exports\UsersByCategoryExport;
 use App\Exports\MultipleSheetUsersByProvinceExport;
 use App\Exports\MultipleSheetCompaniesByBusinessLineExport;
@@ -49,9 +50,33 @@ class ExcelController extends Controller
         $status = $request->input('status');
         $search = $request->input('pencarian');
 
-        // $export = new UsersExport($companyId, $status, $search);
-        // $fileName = 'all_users.xlsx';
-
         return new UsersExport($companyId, $status, $search);
+    }
+
+    public function preeAssessments(Request $request)
+    {
+        $categoryAreaId = $request->input('kategori_area');
+        $categoryMosqueId = $request->input('kategori_masjid');
+        $search = $request->input('pencarian');
+
+        return new PreAssessmentsExport($categoryAreaId, $categoryMosqueId, $search);
+    }
+
+    public function startAssessments(Request $request)
+    {
+        $categoryAreaId = $request->input('kategori_area');
+        $categoryMosqueId = $request->input('kategori_masjid');
+        $search = $request->input('pencarian');
+
+        // return new PreAssessmentsExport($categoryAreaId, $categoryMosqueId, $search);
+    }
+
+    public function endAssessments(Request $request)
+    {
+        $categoryAreaId = $request->input('kategori_area');
+        $categoryMosqueId = $request->input('kategori_masjid');
+        $search = $request->input('pencarian');
+
+        // return new PreAssessmentsExport($categoryAreaId, $categoryMosqueId, $search);
     }
 }
