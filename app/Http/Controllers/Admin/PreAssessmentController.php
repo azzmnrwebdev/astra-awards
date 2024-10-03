@@ -35,6 +35,18 @@ class PreAssessmentController extends Controller
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
 
+        // Gabungkan data kategori
+        $combinedData = [];
+
+        foreach ($categoryAreas as $area) {
+            foreach ($categoryMosques as $mosque) {
+                $combinedData[] = [
+                    'label' => $area->name . ' - ' . $mosque->name,
+                    'value' => $area->id . '-' . $mosque->id,
+                ];
+            }
+        }
+
         // Menampilkan semua data pengguna
         $query = User::with([
             'mosque',
@@ -44,7 +56,17 @@ class PreAssessmentController extends Controller
             'mosque.pillarFour',
             'mosque.pillarFive'
         ])->where('role', 'user');
+
+        $categoryAreaId = $request->input('kategori_area');
+        $categoryMosqueId = $request->input('kategori_masjid');
         $search = $request->input('pencarian');
+
+        if ($categoryAreaId && $categoryMosqueId) {
+            $query->whereHas('mosque', function ($q) use ($categoryAreaId, $categoryMosqueId) {
+                $q->where('category_area_id', $categoryAreaId)
+                    ->where('category_mosque_id', $categoryMosqueId);
+            });
+        }
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -66,7 +88,39 @@ class PreAssessmentController extends Controller
                 ->orWhereHas('mosque.pillarFive');
         });
 
-        $users = $query->orderByDesc('users.updated_at')->latest('users.created_at')->paginate(10);
+        if ($categoryAreaId && $categoryMosqueId) {
+            $users = $query->select('users.*')
+                ->leftJoin('mosques', 'mosques.user_id', '=', 'users.id')
+                ->leftJoin('pillar_ones', 'pillar_ones.mosque_id', '=', 'mosques.id')
+                ->leftJoin('pillar_twos', 'pillar_twos.mosque_id', '=', 'mosques.id')
+                ->leftJoin('pillar_threes', 'pillar_threes.mosque_id', '=', 'mosques.id')
+                ->leftJoin('pillar_fours', 'pillar_fours.mosque_id', '=', 'mosques.id')
+                ->leftJoin('pillar_fives', 'pillar_fives.mosque_id', '=', 'mosques.id')
+                ->selectRaw('
+                COALESCE(
+                    (SELECT SUM(pillar_one_question_one + pillar_one_question_two + pillar_one_question_three + pillar_one_question_four + pillar_one_question_five + pillar_one_question_six + pillar_one_question_seven)
+                    FROM committee_assessments WHERE committee_assessments.pillar_one_id = pillar_ones.id), 0)
+                +
+                COALESCE(
+                    (SELECT SUM(pillar_two_question_two + pillar_two_question_three + pillar_two_question_four + pillar_two_question_five)
+                    FROM committee_assessments WHERE committee_assessments.pillar_two_id = pillar_twos.id), 0)
+                +
+                COALESCE(
+                    (SELECT SUM(pillar_three_question_one + pillar_three_question_two + pillar_three_question_three + pillar_three_question_four + pillar_three_question_five + pillar_three_question_six)
+                    FROM committee_assessments WHERE committee_assessments.pillar_three_id = pillar_threes.id), 0)
+                +
+                COALESCE(
+                    (SELECT SUM(pillar_four_question_one + pillar_four_question_two + pillar_four_question_three + pillar_four_question_four + pillar_four_question_five)
+                    FROM committee_assessments WHERE committee_assessments.pillar_four_id = pillar_fours.id), 0)
+                +
+                COALESCE(
+                    (SELECT SUM(pillar_five_question_one + pillar_five_question_two + pillar_five_question_three + pillar_five_question_four + pillar_five_question_five)
+                    FROM committee_assessments WHERE committee_assessments.pillar_five_id = pillar_fives.id), 0)
+                AS totalPillarValue
+            ')->orderByDesc('totalPillarValue')->paginate(10);
+        } else {
+            $users = $query->orderByDesc('users.updated_at')->latest('users.created_at')->paginate(10);
+        }
 
         // Menampilkan 5 data pengguna
         $categories = [];
@@ -137,7 +191,7 @@ class PreAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.pre-assessment', compact('theadName', 'otherTheadName', 'search', 'users', 'categories'));
+        return view('admin.pages.assessment.pre-assessment', compact('theadName', 'otherTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'users', 'categories'));
     }
 
     public function show(User $user)

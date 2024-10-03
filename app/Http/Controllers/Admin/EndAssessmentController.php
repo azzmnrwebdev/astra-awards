@@ -35,10 +35,25 @@ class EndAssessmentController extends Controller
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
 
+        // Gabungkan data kategori
+        $combinedData = [];
+
+        foreach ($categoryAreas as $area) {
+            foreach ($categoryMosques as $mosque) {
+                $combinedData[] = [
+                    'label' => $area->name . ' - ' . $mosque->name,
+                    'value' => $area->id . '-' . $mosque->id,
+                ];
+            }
+        }
+
         $search = $request->input('pencarian');
 
         // Menampilkan semua data pengguna penilaian akhir
         $allUsersInEndAssessment = collect();
+
+        $categoryAreaId = $request->input('kategori_area');
+        $categoryMosqueId = $request->input('kategori_masjid');
 
         foreach ($categoryAreas as $area) {
             foreach ($categoryMosques as $mosque) {
@@ -48,6 +63,11 @@ class EndAssessmentController extends Controller
                     'mosque.endAssessment'
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
+                })->when($categoryAreaId && $categoryMosqueId, function ($query) use ($categoryAreaId, $categoryMosqueId) {
+                    $query->whereHas('mosque', function ($q) use ($categoryAreaId, $categoryMosqueId) {
+                        $q->where('category_area_id', $categoryAreaId)
+                            ->where('category_mosque_id', $categoryMosqueId);
+                    });
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
                         $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
@@ -169,7 +189,7 @@ class EndAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.end-assessment', compact('theadName', 'otherTheadName', 'search', 'usersInEndAssessment', 'usersInStartAssessment', 'categories'));
+        return view('admin.pages.assessment.end-assessment', compact('theadName', 'otherTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'usersInEndAssessment', 'usersInStartAssessment', 'categories'));
     }
 
     public function edit(User $user)

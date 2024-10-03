@@ -7,7 +7,29 @@
         <div class="card-body p-lg-4">
             <div class="row">
                 <div class="col-12">
+                    <a href="#" class="btn btn-success rounded-0">Unduh Excel</a>
+                </div>
+
+                <div class="col-12 mt-3">
                     <form class="row g-3">
+                        <div class="col-12">
+                            <select name="kategori" id="kategori" class="form-select">
+                                <option value="">Semua Kategori</option>
+                                @foreach ($combinedData as $data)
+                                    @php
+                                        [$areaId, $mosqueId] = explode('-', $data['value']);
+                                        $isSelected =
+                                            old('kategori') == $data['value'] ||
+                                            ($categoryAreaId == $areaId && $categoryMosqueId == $mosqueId);
+                                    @endphp
+
+                                    <option value="{{ $data['value'] }}" {{ $isSelected ? 'selected' : '' }}>
+                                        {{ $data['label'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="col-12">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                                 class="form-control" placeholder="Cari peserta?">
@@ -46,7 +68,8 @@
                                 <td class="text-start py-3">{{ $item->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->endAssessment->presentation_value }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->endAssessment->presentation_value }}
+                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -124,7 +147,7 @@
                     <table class="table table-hover text-nowrap align-middle mb-0">
                         <thead class="border-top border-start border-end table-secondary">
                             <tr>
-                                @foreach ($otherTheadName as $thead)
+                                @foreach ($theadName as $thead)
                                     <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
                                 @endforeach
                             </tr>
@@ -138,14 +161,10 @@
                                     <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                     <td class="text-center py-3">{{ $item->totalNilai }} Poin</td>
-                                    <td class="text-center py-3">
-                                        <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
-                                            class="text-dark align-middle"><i class="bi bi-eye"></i>
-                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                                    <td colspan="5" class="text-center py-3">Data tidak ditemukan</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -161,7 +180,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#pencarian').on('input keydown change', function(e) {
+                $('#kategori, #pencarian').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -180,8 +199,16 @@
 
                 function filter() {
                     const params = {};
+                    const categoryId = $('#kategori').val();
                     const searchValue = $('#pencarian').val();
                     const url = '{{ route('end_assessment.index') }}';
+
+                    if (categoryId !== '') {
+                        const [categoryAreaId, categoryMosqueId] = categoryId.split('-');
+
+                        params.kategori_area = categoryAreaId;
+                        params.kategori_masjid = categoryMosqueId;
+                    }
 
                     if (searchValue.trim() !== '') {
                         params.pencarian = searchValue.trim().replace(/ /g, '+');
