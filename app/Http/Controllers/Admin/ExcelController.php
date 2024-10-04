@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\EndAssessmentsExport;
 use Illuminate\Http\Request;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
@@ -78,6 +79,6 @@ class ExcelController extends Controller
         $categoryMosqueId = $request->input('kategori_masjid');
         $search = $request->input('pencarian');
 
-        // return new PreAssessmentsExport($categoryAreaId, $categoryMosqueId, $search);
+        return new EndAssessmentsExport($categoryAreaId, $categoryMosqueId, $search);
     }
 }
