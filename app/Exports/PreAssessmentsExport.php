@@ -97,27 +97,30 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 ->leftJoin('pillar_fours', 'pillar_fours.mosque_id', '=', 'mosques.id')
                 ->leftJoin('pillar_fives', 'pillar_fives.mosque_id', '=', 'mosques.id')
                 ->selectRaw('
-                COALESCE(
-                    (SELECT SUM(pillar_one_question_one + pillar_one_question_two + pillar_one_question_three + pillar_one_question_four + pillar_one_question_five + pillar_one_question_six + pillar_one_question_seven)
-                    FROM committee_assessments WHERE committee_assessments.pillar_one_id = pillar_ones.id), 0)
-                +
-                COALESCE(
-                    (SELECT SUM(pillar_two_question_two + pillar_two_question_three + pillar_two_question_four + pillar_two_question_five)
-                    FROM committee_assessments WHERE committee_assessments.pillar_two_id = pillar_twos.id), 0)
-                +
-                COALESCE(
-                    (SELECT SUM(pillar_three_question_one + pillar_three_question_two + pillar_three_question_three + pillar_three_question_four + pillar_three_question_five + pillar_three_question_six)
-                    FROM committee_assessments WHERE committee_assessments.pillar_three_id = pillar_threes.id), 0)
-                +
-                COALESCE(
-                    (SELECT SUM(pillar_four_question_one + pillar_four_question_two + pillar_four_question_three + pillar_four_question_four + pillar_four_question_five)
-                    FROM committee_assessments WHERE committee_assessments.pillar_four_id = pillar_fours.id), 0)
-                +
-                COALESCE(
-                    (SELECT SUM(pillar_five_question_one + pillar_five_question_two + pillar_five_question_three + pillar_five_question_four + pillar_five_question_five)
-                    FROM committee_assessments WHERE committee_assessments.pillar_five_id = pillar_fives.id), 0)
-                AS totalPillarValue
-            ')->orderBy('totalPillarValue', 'desc')->get();
+                    (
+                        COALESCE(
+                            (SELECT SUM(pillar_one_question_one + pillar_one_question_two + pillar_one_question_three + pillar_one_question_four + pillar_one_question_five + pillar_one_question_six + pillar_one_question_seven)
+                            FROM committee_assessments WHERE committee_assessments.pillar_one_id = pillar_ones.id), 0)
+                        +
+                        COALESCE(
+                            (SELECT SUM(pillar_two_question_two + pillar_two_question_three + pillar_two_question_four + pillar_two_question_five)
+                            FROM committee_assessments WHERE committee_assessments.pillar_two_id = pillar_twos.id), 0)
+                        +
+                        COALESCE(
+                            (SELECT SUM(pillar_three_question_one + pillar_three_question_two + pillar_three_question_three + pillar_three_question_four + pillar_three_question_five + pillar_three_question_six)
+                            FROM committee_assessments WHERE committee_assessments.pillar_three_id = pillar_threes.id), 0)
+                        +
+                        COALESCE(
+                            (SELECT SUM(pillar_four_question_one + pillar_four_question_two + pillar_four_question_three + pillar_four_question_four + pillar_four_question_five)
+                            FROM committee_assessments WHERE committee_assessments.pillar_four_id = pillar_fours.id), 0)
+                        +
+                        COALESCE(
+                            (SELECT SUM(pillar_five_question_one + pillar_five_question_two + pillar_five_question_three + pillar_five_question_four + pillar_five_question_five)
+                            FROM committee_assessments WHERE committee_assessments.pillar_five_id = pillar_fives.id), 0)
+                    ) AS totalPillarValue
+                ')
+                ->orderBy('totalPillarValue', 'desc')
+                ->get();
         } else {
             return $query->orderByDesc('users.updated_at')->latest('users.created_at')->get();
         }
