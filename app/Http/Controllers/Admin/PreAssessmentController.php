@@ -97,7 +97,7 @@ class PreAssessmentController extends Controller
                 ->leftJoin('pillar_fours', 'pillar_fours.mosque_id', '=', 'mosques.id')
                 ->leftJoin('pillar_fives', 'pillar_fives.mosque_id', '=', 'mosques.id')
                 ->selectRaw('
-                COALESCE(
+                (COALESCE(
                     (SELECT SUM(pillar_one_question_one + pillar_one_question_two + pillar_one_question_three + pillar_one_question_four + pillar_one_question_five + pillar_one_question_six + pillar_one_question_seven)
                     FROM committee_assessments WHERE committee_assessments.pillar_one_id = pillar_ones.id), 0)
                 +
@@ -116,7 +116,7 @@ class PreAssessmentController extends Controller
                 COALESCE(
                     (SELECT SUM(pillar_five_question_one + pillar_five_question_two + pillar_five_question_three + pillar_five_question_four + pillar_five_question_five)
                     FROM committee_assessments WHERE committee_assessments.pillar_five_id = pillar_fives.id), 0)
-                AS totalPillarValue
+                ) AS "totalPillarValue"
             ')->orderByDesc('totalPillarValue')->paginate(10);
         } else {
             $users = $query->orderByDesc('users.updated_at')->latest('users.created_at')->paginate(10);
