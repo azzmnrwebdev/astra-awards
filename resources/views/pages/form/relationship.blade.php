@@ -12,6 +12,14 @@
                         </ol>
                     </nav>
                 </div>
+                <div class="d-block p-2">
+                    <nav class="text-end">
+                        <a href="{{ route('form.managementRelationship', ['user' => $user->id]) }}" 
+                           class="btn btn-primary text-light mb-2 mt-0">Selanjutnya
+                           <i class="bi bi-arrow-right" style="margin-left: 1rem; margin-right: 0.5rem"></i>
+                        </a>
+                    </nav>
+                </div>
             </div>
 
             @if (Session('success'))

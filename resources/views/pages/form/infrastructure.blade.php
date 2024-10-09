@@ -14,6 +14,13 @@
                         </ol>
                     </nav>
                 </div>
+                <div class="d-flex justify-content-end gap-2 p-2">
+                    <a href="{{ route('form.administration', ['user' => $user->id]) }}" 
+                        class="btn btn-primary text-light mb-2 mt-0">
+                        <i class="bi bi-arrow-left" style="margin-left: 1rem; margin-right: 0.5rem"></i>
+                        Sebelumnya
+                    </a>
+                </div>
             </div>
 
             @if (Session('success'))
