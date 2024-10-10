@@ -117,7 +117,7 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                         COALESCE(
                             (SELECT SUM(pillar_five_question_one + pillar_five_question_two + pillar_five_question_three + pillar_five_question_four + pillar_five_question_five)
                             FROM committee_assessments AS ca5 WHERE ca5.pillar_five_id = pillar_fives.id), 0)
-                    ) AS totalPillarValue
+                    ) AS "totalPillarValue"
                 ')
                 ->orderBy('totalPillarValue', 'desc')
                 ->get();
