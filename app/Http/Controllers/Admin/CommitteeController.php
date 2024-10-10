@@ -24,7 +24,7 @@ class CommitteeController extends Controller
             ['class' => 'text-start py-3', 'label' => 'Nama'],
             ['class' => 'text-start py-3', 'label' => 'Email'],
             ['class' => 'text-center py-3', 'label' => 'Nomor Ponsel'],
-            ['class' => 'text-center py-3', 'label' => 'Status'],
+            ['class' => 'text-center py-3', 'label' => 'Status Menilai'],
             ['class' => 'text-center py-3', 'label' => 'Tanggal Bergabung'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
@@ -109,7 +109,16 @@ class CommitteeController extends Controller
     public function distribution()
     {
         $users = User::where('role', 'user')->get();
-        $admins = User::where('role', 'admin')->get();
+        $admins = User::where('role', 'admin')
+            ->where('is_committe_assessment', 'yes')
+            ->where(function ($query) {
+                $query->where('email', '!=', 'developer@gmail.com')
+                    ->where('name', '!=', 'Developer');
+            })->get();
+
+        if ($admins->isEmpty()) {
+            return redirect()->back()->with('error_distribution', 'Tidak ada panitia yang tersedia untuk pembagian penilaian.');
+        }
 
         $index = 0;
         $adminCount = $admins->count();
@@ -183,10 +192,13 @@ class CommitteeController extends Controller
         }
 
         try {
+            $isCommitteAssessment = $request->input('is_committe_assessment');
+
             $committee->update([
                 'name' => $request->input('name'),
                 'phone_number' => $request->input('phone_number'),
                 'email' => $request->input('email'),
+                'is_committe_assessment' => $isCommitteAssessment,
             ]);
 
             return redirect(route('committee.index'))->with('success', 'Panitia berhasil diperbarui');

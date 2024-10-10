@@ -67,6 +67,25 @@
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <label for="is_committe_assessment" class="col-md-3 col-xl-2 col-form-label">Diperbolehkan
+                        Menilai?</label>
+
+                    <div class="col-md-9 col-xl-10">
+                        <select class="form-select" id="is_committe_assessment" name="is_committe_assessment">
+                            <option value="">-- Pilih Salah Satu --</option>
+                            <option value="no"
+                                {{ old('is_committe_assessment', $committee->is_committe_assessment) === 'no' ? 'selected' : '' }}>
+                                Tidak
+                            </option>
+                            <option value="yes"
+                                {{ old('is_committe_assessment', $committee->is_committe_assessment) === 'yes' ? 'selected' : '' }}>
+                                Ya, Menilai
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-12 text-end">
                     <button type="submit" class="btn btn-warning">Simpan Perubahan</button>
                 </div>

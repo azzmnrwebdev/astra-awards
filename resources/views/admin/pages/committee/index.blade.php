@@ -47,10 +47,12 @@
                                 <td class="text-start py-3">{{ $item->email }}</td>
                                 <td class="text-center py-3">{{ $item->phone_number ?? '-' }}</td>
                                 <td class="text-center py-3">
-                                    @if ($item->status === 1)
-                                        <span class="badge text-bg-success">Aktif</span>
+                                    @if ($item->is_committe_assessment === 'yes')
+                                        <span class="badge text-bg-success">Bisa Menilai</span>
+                                    @elseif ($item->is_committe_assessment === 'no')
+                                        <span class="badge text-bg-danger">Tidak Bisa</span>
                                     @else
-                                        <span class="badge text-bg-danger">Tidak Aktif</span>
+                                        <span class="badge text-bg-warning">Belum Ditentukan</span>
                                     @endif
                                 </td>
                                 <td class="text-center py-3">
