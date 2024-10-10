@@ -180,6 +180,15 @@ class FormController extends Controller
 
     public function relationshipAct(Request $request)
     {
+        if (
+            !$request->input('status_divisiSR') &&
+            !$request->input('status_divisiLA') &&
+            !$request->input('status_divisiK') &&
+            !$request->input('status_divisiAK')
+        ) {
+            return redirect()->back()->with('error', 'Harus mengisi setidaknya salah satu bidang data.');
+        }
+
         $isAllStatusAda =
             $request->input('status_divisiSR') === 'ada' &&
             $request->input('status_divisiLA') === 'ada' &&
