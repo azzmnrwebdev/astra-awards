@@ -79,12 +79,11 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                     });
                 })->when($this->search, function ($query) {
                     $query->where(function ($q) {
-                        $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($this->search) . '%'])
-                            ->orWhereHas('mosque', function ($mosqueQuery) {
-                                $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($this->search) . '%']);
-                            })->orWhereHas('mosque.company', function ($companyQuery) {
-                                $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($this->search) . '%']);
-                            });
+                        $q->whereHas('mosque', function ($mosqueQuery) {
+                            $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($this->search) . '%']);
+                        })->orWhereHas('mosque.company', function ($companyQuery) {
+                            $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($this->search) . '%']);
+                        });
                     });
                 })->get();
 
@@ -133,6 +132,10 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                         $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
                     }
 
+                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                    }
+
                     $user->totalNilai = $totalValue;
                     return $user;
                 })->filter(function ($user) {
@@ -156,13 +159,64 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
     {
         $this->index++;
 
+        $pillarOneValue = $user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet ? (
+            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one +
+            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two +
+            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three +
+            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four +
+            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five +
+            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six +
+            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven
+        ) : 'Belum Tersedia';
+
+        $pillarTwoValue = $user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet ? (
+            $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two +
+            $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three +
+            $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four +
+            $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five
+        ) : 'Belum Tersedia';
+
+        $pillarThreeValue = $user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet ? (
+            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one +
+            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two +
+            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three +
+            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four +
+            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five +
+            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six
+        ) : 'Belum Tersedia';
+
+        $pillarFourValue = $user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet ? (
+            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one +
+            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two +
+            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three +
+            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four +
+            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five
+        ) : 'Belum Tersedia';
+
+        $pillarFiveValue = $user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet ? (
+            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one +
+            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two +
+            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three +
+            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four +
+            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five
+        ) : 'Belum Tersedia';
+
+        $filePresentationValue = $user->mosque->presentation && $user->mosque->presentation->startAssessment ?
+            $user->mosque->presentation->startAssessment->presentation_file : 'Belum Tersedia';
+
         return [
             $this->index,
             $user->name,
             $user->mosque->company->name,
             $user->mosque->name,
             $user->mosque->presentation->startAssessment ? 'Sudah Penilaian' : 'Belum Penilaian',
-            $user->mosque->presentation->startAssessment ? $user->mosque->presentation->startAssessment->presentation_file . ' Poin' : 'Belum Tersedia',
+            $pillarTwoValue . ' Poin',
+            $pillarOneValue . ' Poin',
+            $pillarThreeValue . ' Poin',
+            $pillarFourValue . ' Poin',
+            $pillarFiveValue . ' Poin',
+            $filePresentationValue . ' Poin',
+            $user->totalNilai . ' Poin',
         ];
     }
 
@@ -174,33 +228,39 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             'PERUSAHAAN',
             'NAMA MASJID/MUSALA',
             'STATUS',
+            'PILAR 1',
+            'PILAR 2',
+            'PILAR 3',
+            'PILAR 4',
+            'PILAR 5',
+            'FILE PRESENTASI',
             'TOTAL NILAI',
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('B1:G1');
+        $sheet->mergeCells('B1:M1');
         $sheet->setCellValue('B1', $this->title);
         $sheet->getRowDimension(1)->setRowHeight(40);
 
         $sheet->getRowDimension(2)->setRowHeight(30);
-        $sheet->getStyle('C2:G2')->getAlignment()->setIndent(1);
+        $sheet->getStyle('C2:M2')->getAlignment()->setIndent(1);
 
         $lastDataRow = $sheet->getHighestRow();
         for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
             $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-            $sheet->getStyle('C' . $rowIndex . ':G' . $rowIndex)->getAlignment()->setIndent(1);
+            $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
         }
 
-        $sheet->getStyle('B2:G' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('B2:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
-            'B1:G1' => [
+            'B1:M1' => [
                 'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
                 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
             ],
-            'B2:G2' => [
+            'B2:M2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                 'alignment' => ['vertical' => 'center', 'wrapText' => true],
                 'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
@@ -211,6 +271,12 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             'E' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             'F' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'I' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'J' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'K' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'L' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'M' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
         ];
     }
 

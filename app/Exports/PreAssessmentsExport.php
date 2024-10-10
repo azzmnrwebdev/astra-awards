@@ -138,6 +138,12 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         $filledPillars = 0;
         $status = 'Belum Penilaian';
 
+        $pillarOneTotal = 'Belum Tersedia';
+        $pillarTwoTotal = 'Belum Tersedia';
+        $pillarThreeTotal = 'Belum Tersedia';
+        $pillarFourTotal = 'Belum Tersedia';
+        $pillarFiveTotal = 'Belum Tersedia';
+
         $pillarOne = $user->mosque->pillarOne;
         $pillarTwo = $user->mosque->pillarTwo;
         $pillarThree = $user->mosque->pillarThree;
@@ -146,69 +152,69 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
         if ($pillarOne && $pillarOne->committeeAssessmnet?->pillar_one_id) {
             $pillarOneAssessment = $pillarOne->committeeAssessmnet;
-            if (
-                $pillarOneAssessment->pillar_one_question_one ||
-                $pillarOneAssessment->pillar_one_question_two ||
-                $pillarOneAssessment->pillar_one_question_three ||
-                $pillarOneAssessment->pillar_one_question_four ||
-                $pillarOneAssessment->pillar_one_question_five ||
-                $pillarOneAssessment->pillar_one_question_six ||
-                $pillarOneAssessment->pillar_one_question_seven
-            ) {
-                $filledPillars++;
-            }
+            $pillarOneTotalValue =
+                $pillarOneAssessment->pillar_one_question_one +
+                $pillarOneAssessment->pillar_one_question_two +
+                $pillarOneAssessment->pillar_one_question_three +
+                $pillarOneAssessment->pillar_one_question_four +
+                $pillarOneAssessment->pillar_one_question_five +
+                $pillarOneAssessment->pillar_one_question_six +
+                $pillarOneAssessment->pillar_one_question_seven;
+
+            $pillarOneTotal = $pillarOneTotalValue > 0 ? $pillarOneTotalValue : 'Belum Tersedia';
+            $filledPillars++;
         }
 
         if ($pillarTwo && $pillarTwo->committeeAssessmnet?->pillar_two_id) {
             $pillarTwoAssessment = $pillarTwo->committeeAssessmnet;
-            if (
-                $pillarTwoAssessment->pillar_two_question_two ||
-                $pillarTwoAssessment->pillar_two_question_three ||
-                $pillarTwoAssessment->pillar_two_question_four ||
-                $pillarTwoAssessment->pillar_two_question_five
-            ) {
-                $filledPillars++;
-            }
+            $pillarTwoTotalValue =
+                $pillarTwoAssessment->pillar_two_question_two +
+                $pillarTwoAssessment->pillar_two_question_three +
+                $pillarTwoAssessment->pillar_two_question_four +
+                $pillarTwoAssessment->pillar_two_question_five;
+
+            $pillarTwoTotal = $pillarTwoTotalValue > 0 ? $pillarTwoTotalValue : 'Belum Tersedia';
+            $filledPillars++;
         }
 
         if ($pillarThree && $pillarThree->committeeAssessmnet?->pillar_three_id) {
             $pillarThreeAssessment = $pillarThree->committeeAssessmnet;
-            if (
-                $pillarThreeAssessment->pillar_three_question_one ||
-                $pillarThreeAssessment->pillar_three_question_two ||
-                $pillarThreeAssessment->pillar_three_question_three ||
-                $pillarThreeAssessment->pillar_three_question_four ||
-                $pillarThreeAssessment->pillar_three_question_five ||
-                $pillarThreeAssessment->pillar_three_question_six
-            ) {
-                $filledPillars++;
-            }
+            $pillarThreeTotalValue =
+                $pillarThreeAssessment->pillar_three_question_one +
+                $pillarThreeAssessment->pillar_three_question_two +
+                $pillarThreeAssessment->pillar_three_question_three +
+                $pillarThreeAssessment->pillar_three_question_four +
+                $pillarThreeAssessment->pillar_three_question_five +
+                $pillarThreeAssessment->pillar_three_question_six;
+
+            $pillarThreeTotal = $pillarThreeTotalValue > 0 ? $pillarThreeTotalValue : 'Belum Tersedia';
+            $filledPillars++;
         }
 
         if ($pillarFour && $pillarFour->committeeAssessmnet?->pillar_four_id) {
             $pillarFourAssessment = $pillarFour->committeeAssessmnet;
-            if (
-                $pillarFourAssessment->pillar_four_question_one ||
-                $pillarFourAssessment->pillar_four_question_two ||
-                $pillarFourAssessment->pillar_four_question_three ||
-                $pillarFourAssessment->pillar_four_question_four ||
-                $pillarFourAssessment->pillar_four_question_five
-            ) {
-                $filledPillars++;
-            }
+            $pillarFourTotalValue =
+                $pillarFourAssessment->pillar_four_question_one +
+                $pillarFourAssessment->pillar_four_question_two +
+                $pillarFourAssessment->pillar_four_question_three +
+                $pillarFourAssessment->pillar_four_question_four +
+                $pillarFourAssessment->pillar_four_question_five;
+
+            $pillarFourTotal = $pillarFourTotalValue > 0 ? $pillarFourTotalValue : 'Belum Tersedia';
+            $filledPillars++;
         }
 
         if ($pillarFive && $pillarFive->committeeAssessmnet?->pillar_five_id) {
             $pillarFiveAssessment = $pillarFive->committeeAssessmnet;
-            if (
-                $pillarFiveAssessment->pillar_five_question_one ||
-                $pillarFiveAssessment->pillar_five_question_two ||
-                $pillarFiveAssessment->pillar_five_question_three ||
-                $pillarFiveAssessment->pillar_five_question_four ||
-                $pillarFiveAssessment->pillar_five_question_five
-            ) {
-                $filledPillars++;
-            }
+            $pillarFiveTotalValue =
+                $pillarFiveAssessment->pillar_five_question_one +
+                $pillarFiveAssessment->pillar_five_question_two +
+                $pillarFiveAssessment->pillar_five_question_three +
+                $pillarFiveAssessment->pillar_five_question_four +
+                $pillarFiveAssessment->pillar_five_question_five;
+
+            $pillarFiveTotal = $pillarFiveTotalValue > 0 ? $pillarFiveTotalValue : 'Belum Tersedia';
+            $filledPillars++;
         }
 
         if ($filledPillars > 0 && $filledPillars < 5) {
@@ -223,7 +229,12 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $user->mosque->company->name,
             $user->mosque->name,
             $status,
-            $user->mosque->total_pillar_value !== 0 ? $user->mosque->total_pillar_value : 'Belum Tersedia',
+            $pillarTwoTotal . ' Poin',
+            $pillarOneTotal . ' Poin',
+            $pillarThreeTotal . ' Poin',
+            $pillarFourTotal . ' Poin',
+            $pillarFiveTotal . ' Poin',
+            $user->mosque->total_pillar_value !== 0 ? $user->mosque->total_pillar_value . ' Poin' : 'Belum Tersedia',
         ];
     }
 
@@ -235,33 +246,38 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             'PERUSAHAAN',
             'NAMA MASJID/MUSALA',
             'STATUS',
+            'PILAR 1',
+            'PILAR 2',
+            'PILAR 3',
+            'PILAR 4',
+            'PILAR 5',
             'TOTAL NILAI',
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('B1:G1');
+        $sheet->mergeCells('B1:L1');
         $sheet->setCellValue('B1', $this->title);
         $sheet->getRowDimension(1)->setRowHeight(40);
 
         $sheet->getRowDimension(2)->setRowHeight(30);
-        $sheet->getStyle('C2:G2')->getAlignment()->setIndent(1);
+        $sheet->getStyle('C2:L2')->getAlignment()->setIndent(1);
 
         $lastDataRow = $sheet->getHighestRow();
         for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
             $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-            $sheet->getStyle('C' . $rowIndex . ':G' . $rowIndex)->getAlignment()->setIndent(1);
+            $sheet->getStyle('C' . $rowIndex . ':L' . $rowIndex)->getAlignment()->setIndent(1);
         }
 
-        $sheet->getStyle('B2:G' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('B2:L' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
-            'B1:G1' => [
+            'B1:L1' => [
                 'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
                 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
             ],
-            'B2:G2' => [
+            'B2:L2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                 'alignment' => ['vertical' => 'center', 'wrapText' => true],
                 'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
@@ -272,6 +288,11 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             'E' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             'F' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'I' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'J' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'K' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'L' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
         ];
     }
 

@@ -34,7 +34,8 @@
                         <div class="col-12">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                                 class="form-control" placeholder="Cari peserta?">
-                            <div class="form-text">Kata kunci bisa berdasarkan peserta, perusahaan atau masjid/musala.
+                            <div class="form-text">Kata kunci bisa berdasarkan nama masjid/musala atau
+                                perusahaan.
                             </div>
                         </div>
                     </form>
@@ -66,10 +67,11 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $usersInEndAssessment->firstItem() }}
                                 </td>
-                                <td class="text-start py-3">{{ $item->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->endAssessment->presentation_value }}
+                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }} -
+                                    {{ $item->mosque->categoryMosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->totalNilai }} Poin
                                 </td>
                             </tr>
                         @empty
@@ -108,11 +110,12 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $usersInStartAssessment->firstItem() }}
                                 </td>
-                                <td class="text-start py-3">{{ $item->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }} -
+                                    {{ $item->mosque->categoryMosque->name }}</td>
                                 <td class="text-center py-3">
-                                    {{ $item->mosque->presentation->startAssessment->presentation_file }} Poin
+                                    {{ $item->totalNilai }} Poin
                                 </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('jury'))
@@ -148,7 +151,7 @@
                     <table class="table table-hover text-nowrap align-middle mb-0">
                         <thead class="border-top border-start border-end table-secondary">
                             <tr>
-                                @foreach ($theadName as $thead)
+                                @foreach ($categoryTheadName as $thead)
                                     <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
                                 @endforeach
                             </tr>
@@ -158,14 +161,13 @@
                             @forelse ($category['datas'] as $item)
                                 <tr>
                                     <td class="text-center py-3">{{ $loop->index + 1 }}</td>
-                                    <td class="text-start py-3">{{ $item->name }}</td>
-                                    <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
+                                    <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                     <td class="text-center py-3">{{ $item->totalNilai }} Poin</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center py-3">Data tidak ditemukan</td>
+                                    <td colspan="4" class="text-center py-3">Data tidak ditemukan</td>
                                 </tr>
                             @endforelse
                         </tbody>

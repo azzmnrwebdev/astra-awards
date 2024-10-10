@@ -34,7 +34,7 @@
                         <div class="col-12">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                                 class="form-control" placeholder="Cari peserta?">
-                            <div class="form-text">Kata kunci bisa berdasarkan peserta, perusahaan atau masjid/musala.
+                            <div class="form-text">Kata kunci bisa berdasarkan nama peserta, masjid/musala atau perusahaan.
                             </div>
                         </div>
                     </form>
@@ -56,8 +56,8 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $users->firstItem() }}</td>
                                 <td class="text-start py-3">{{ $item->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">
                                     @php
                                         $pillarOne = $item->mosque->pillarOne;
@@ -152,7 +152,7 @@
 
                                 <td class="text-center py-3">
                                     @if ($item->mosque->total_pillar_value !== 0)
-                                        {{ $item->mosque->total_pillar_value }}
+                                        {{ $item->mosque->total_pillar_value }} Poin
                                     @else
                                         <span class="badge text-bg-danger">Belum Tersedia</span>
                                     @endif
@@ -199,8 +199,8 @@
                                 <tr>
                                     <td class="text-center py-3">{{ $loop->index + 1 }}</td>
                                     <td class="text-start py-3">{{ $item->name }}</td>
-                                    <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
+                                    <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                     <td class="text-center py-3">{{ $item->totalNilai }} Poin</td>
                                     <td class="text-center py-3">
                                         <a href="{{ route('pre_assessment.show', ['user' => $item->id]) }}"

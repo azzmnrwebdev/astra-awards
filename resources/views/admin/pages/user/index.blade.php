@@ -18,7 +18,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('user.download_excel', ['perusahaan' => $companyId, 'status' => request('status'), 'pencarian' => $search]) }}"
+                    <a href="{{ route('user.download_excel', ['perusahaan' => $companyId, 'status_akun' => request('status_akun'), 'pencarian' => $search]) }}"
                         class="btn btn-success rounded-0">Unduh Excel</a>
                 </div>
 
@@ -26,7 +26,7 @@
                     <form class="row g-3">
                         <div class="col-sm-6">
                             <select name="perusahaan" id="perusahaan" class="form-select">
-                                <option value="">Semua Perusahaan</option>
+                                <option value="">-- Semua Perusahaan --</option>
                                 @foreach ($companies as $item)
                                     <option value="{{ $item->id }}" {{ $companyId == $item->id ? 'selected' : '' }}>
                                         {{ $item->name }}
@@ -36,11 +36,29 @@
                         </div>
 
                         <div class="col-sm-6">
-                            <select name="status" id="status" class="form-select">
-                                <option value="">Semua Status Akun</option>
-                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Aktif</option>
-                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>
+                            <select name="status_akun" id="status_akun" class="form-select">
+                                <option value="">-- Semua Status Akun --</option>
+                                <option value="1" {{ request('status_akun') == '1' ? 'selected' : '' }}>Aktif
+                                </option>
+                                <option value="0" {{ request('status_akun') == '0' ? 'selected' : '' }}>
                                     Tidak Aktif
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <select name="status_formulir" id="status_formulir" class="form-select">
+                                <option value="">-- Semua Status Formulir --</option>
+                                <option value="belum" {{ request('status_formulir') === 'belum' ? 'selected' : '' }}>
+                                    Belum
+                                    Mengisi</option>
+                                <option value="sebagian"
+                                    {{ request('status_formulir') === 'sebagian' ? 'selected' : '' }}>
+                                    Sebagian Formulir
+                                </option>
+                                <option value="lengkap"
+                                    {{ request('status_formulir') === 'lengkap' ? 'selected' : '' }}>
+                                    Semua Formulir
                                 </option>
                             </select>
                         </div>
@@ -79,6 +97,92 @@
                                     @endif
                                 </td>
                                 <td class="text-center py-3">
+                                    @php
+                                        $pillarOne = $item->mosque->pillarOne;
+                                        $pillarTwo = $item->mosque->pillarTwo;
+                                        $pillarThree = $item->mosque->pillarThree;
+                                        $pillarFour = $item->mosque->pillarFour;
+                                        $pillarFive = $item->mosque->pillarFive;
+
+                                        $filledPillars = 0;
+
+                                        if ($pillarOne) {
+                                            if (
+                                                $pillarOne->question_one ||
+                                                $pillarOne->question_two ||
+                                                $pillarOne->question_three ||
+                                                $pillarOne->question_four ||
+                                                $pillarOne->question_five ||
+                                                $pillarOne->file_question_two_one ||
+                                                $pillarOne->file_question_two_two
+                                            ) {
+                                                $filledPillars++;
+                                            }
+                                        }
+
+                                        if ($pillarTwo) {
+                                            if (
+                                                $pillarTwo->question_two ||
+                                                $pillarTwo->question_three ||
+                                                $pillarTwo->question_four ||
+                                                $pillarTwo->question_five
+                                            ) {
+                                                $filledPillars++;
+                                            }
+                                        }
+
+                                        if ($pillarThree) {
+                                            if (
+                                                $pillarThree->question_one ||
+                                                $pillarThree->question_two ||
+                                                $pillarThree->question_three ||
+                                                $pillarThree->question_four ||
+                                                $pillarThree->question_five ||
+                                                $pillarThree->question_six
+                                            ) {
+                                                $filledPillars++;
+                                            }
+                                        }
+
+                                        if ($pillarFour) {
+                                            if (
+                                                $pillarFour->question_one ||
+                                                $pillarFour->question_two ||
+                                                $pillarFour->question_three ||
+                                                $pillarFour->question_four ||
+                                                $pillarFour->question_five
+                                            ) {
+                                                $filledPillars++;
+                                            }
+                                        }
+
+                                        if ($pillarFive) {
+                                            if (
+                                                $pillarFive->question_one ||
+                                                $pillarFive->question_two ||
+                                                $pillarFive->question_three ||
+                                                $pillarFive->question_four ||
+                                                $pillarFive->question_five
+                                            ) {
+                                                $filledPillars++;
+                                            }
+                                        }
+
+                                        if ($filledPillars === 5) {
+                                            $status = 'Semua Formulir';
+                                            $badgeClass = 'text-bg-success';
+                                        } elseif ($filledPillars > 0 && $filledPillars < 5) {
+                                            $status = 'Sebagian Formulir';
+                                            $badgeClass = 'text-bg-warning';
+                                        } else {
+                                            $status = 'Belum Mengisi';
+                                            $badgeClass = 'text-bg-danger';
+                                        }
+                                    @endphp
+
+                                    <span class="badge {{ $badgeClass }}">{{ $status }}</span>
+                                </td>
+                                <td class="text-center py-3">
                                     {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}
                                 </td>
                                 <td class="text-center py-3">
@@ -102,7 +206,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -153,7 +257,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#perusahaan, #pencarian, #status').on('input keydown change', function(e) {
+                $('#perusahaan, #status_akun, #status_formulir, #pencarian').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -173,7 +277,8 @@
                 function filter() {
                     const params = {};
                     const companyValue = $('#perusahaan').val();
-                    const statusValue = $('#status').val();
+                    const statusAccountValue = $('#status_akun').val();
+                    const statusFormValue = $('#status_formulir').val();
                     const searchValue = $('#pencarian').val();
                     const url = '{{ route('user.index') }}';
 
@@ -181,8 +286,12 @@
                         params.perusahaan = companyValue;
                     }
 
-                    if (statusValue !== '') {
-                        params.status = statusValue;
+                    if (statusAccountValue !== '') {
+                        params.status_akun = statusAccountValue;
+                    }
+
+                    if (statusFormValue !== '') {
+                        params.status_formulir = statusFormValue;
                     }
 
                     if (searchValue.trim() !== '') {

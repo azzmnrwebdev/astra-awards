@@ -49,10 +49,10 @@ class ExcelController extends Controller
     public function getAllUsers(Request $request)
     {
         $companyId = $request->input('perusahaan');
-        $status = $request->input('status');
+        $statusAccount = $request->input('status_akun');
         $search = $request->input('pencarian');
 
-        return new UsersExport($companyId, $status, $search);
+        return new UsersExport($companyId, $statusAccount, $search);
     }
 
     public function preeAssessments(Request $request)

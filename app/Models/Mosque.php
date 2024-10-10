@@ -143,6 +143,6 @@ class Mosque extends Model
             $anyAssessment = true;
         }
 
-        return $anyAssessment ? $totalValue . ' Poin' : $totalValue;
+        return $totalValue;
     }
 }

@@ -32,6 +32,7 @@ class UserController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Nomor Ponsel'],
             ['class' => 'text-center py-3', 'label' => 'Status Akun'],
+            ['class' => 'text-center py-3', 'label' => 'Status Formulir'],
             ['class' => 'text-center py-3', 'label' => 'Tanggal Bergabung'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
@@ -39,7 +40,8 @@ class UserController extends Controller
         $companies = Company::all();
 
         $companyId = $request->input('perusahaan');
-        $status = $request->input('status');
+        $statusAccount = $request->input('status_akun');
+        $statusForm = $request->input('status_formulir');
         $search = $request->input('pencarian');
 
         $query = User::with(['mosque.company'])->where('role', 'user');
@@ -50,8 +52,114 @@ class UserController extends Controller
             });
         }
 
-        if ($status !== null) {
-            $query->where('status', (int)$status);
+        if ($statusAccount !== null) {
+            $query->where('status', (int)$statusAccount);
+        }
+
+        if ($statusForm !== null) {
+            if ($statusForm === "belum") {
+                $query->where(function ($q) {
+                    $q->whereDoesntHave('mosque.pillarOne')
+                        ->whereDoesntHave('mosque.pillarTwo')
+                        ->whereDoesntHave('mosque.pillarThree')
+                        ->whereDoesntHave('mosque.pillarFour')
+                        ->whereDoesntHave('mosque.pillarFive');
+                });
+            }
+
+            if ($statusForm === "sebagian") {
+                $query->where(function ($q) {
+                    $q->whereHas('mosque.pillarOne', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_one')
+                                ->orWhereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five')
+                                ->orWhereNotNull('file_question_two_one')
+                                ->orWhereNotNull('file_question_two_two');
+                        });
+                    })->orWhereHas('mosque.pillarTwo', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five');
+                        });
+                    })->orWhereHas('mosque.pillarThree', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_one')
+                                ->orWhereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five')
+                                ->orWhereNotNull('question_six');
+                        });
+                    })->orWhereHas('mosque.pillarFour', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_one')
+                                ->orWhereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five');
+                        });
+                    })->orWhereHas('mosque.pillarFive', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_one')
+                                ->orWhereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five');
+                        });
+                    });
+                });
+            }
+
+            if ($statusForm === "lengkap") {
+                $query->whereHas('mosque.pillarOne', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five')
+                            ->whereNotNull('file_question_two_one')
+                            ->whereNotNull('file_question_two_two');
+                    });
+                })->whereHas('mosque.pillarTwo', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    });
+                })->whereHas('mosque.pillarThree', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five')
+                            ->whereNotNull('question_six');
+                    });
+                })->whereHas('mosque.pillarFour', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    });
+                })->whereHas('mosque.pillarFive', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    });
+                });
+            }
         }
 
         if ($search) {
@@ -66,7 +174,7 @@ class UserController extends Controller
 
         $users = $query->orderByDesc('users.updated_at')->latest('users.created_at')->paginate(10);
 
-        return view('admin.pages.user.index', compact('theadName', 'companies', 'companyId', 'status', 'search', 'users'));
+        return view('admin.pages.user.index', compact('theadName', 'companies', 'companyId', 'search', 'users'));
     }
 
     public function show(User $user)

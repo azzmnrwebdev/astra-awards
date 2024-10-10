@@ -20,7 +20,7 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
     use Exportable;
 
     private $companyId;
-    private $status;
+    private $statusAccount;
     private $search;
 
     private $index = 0;
@@ -33,10 +33,10 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
         'Content-Type' => 'text/xlsx',
     ];
 
-    public function __construct($companyId = null, $status = null, $search = null)
+    public function __construct($companyId = null, $statusAccount = null, $search = null)
     {
         $this->companyId = $companyId;
-        $this->status = $status;
+        $this->statusAccount = $statusAccount;
         $this->search = $search;
     }
 
@@ -59,8 +59,8 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
             });
         }
 
-        if ($this->status !== null) {
-            $query->where('status', (int)$this->status);
+        if ($this->statusAccount !== null) {
+            $query->where('status', (int)$this->statusAccount);
         }
 
         if ($this->search) {

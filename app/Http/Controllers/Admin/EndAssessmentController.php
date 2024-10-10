@@ -17,19 +17,26 @@ class EndAssessmentController extends Controller
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-start py-3', 'label' => 'Nama Peserta'],
-            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori'],
             ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
         ];
 
         $otherTheadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-start py-3', 'label' => 'Nama Peserta'],
-            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori'],
             ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
+        ];
+
+        $categoryTheadName = [
+            ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
+            ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
         ];
 
         $categoryAreas = CategoryArea::all();
@@ -70,12 +77,11 @@ class EndAssessmentController extends Controller
                     });
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
-                        $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
-                            ->orWhereHas('mosque', function ($mosqueQuery) use ($search) {
-                                $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                            })->orWhereHas('mosque.company', function ($companyQuery) use ($search) {
-                                $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                            });
+                        $q->whereHas('mosque', function ($mosqueQuery) use ($search) {
+                            $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        })->orWhereHas('mosque.company', function ($companyQuery) use ($search) {
+                            $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        });
                     });
                 })->get();
 
@@ -86,7 +92,11 @@ class EndAssessmentController extends Controller
                         $totalValue += $user->mosque->endAssessment->presentation_value;
                     }
 
-                    $user->totalNilai = $totalValue;
+                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                    }
+
+                    $user->totalNilai = $totalValue + $user->mosque->total_pillar_value;
                     return $user;
                 })->filter(function ($user) {
                     return $user->totalNilai > 0;
@@ -120,12 +130,11 @@ class EndAssessmentController extends Controller
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
-                        $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
-                            ->orWhereHas('mosque', function ($mosqueQuery) use ($search) {
-                                $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                            })->orWhereHas('mosque.company', function ($companyQuery) use ($search) {
-                                $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                            });
+                        $q->whereHas('mosque', function ($mosqueQuery) use ($search) {
+                            $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        })->orWhereHas('mosque.company', function ($companyQuery) use ($search) {
+                            $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        });
                     });
                 })->get();
 
@@ -136,7 +145,7 @@ class EndAssessmentController extends Controller
                         $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
                     }
 
-                    $user->totalNilai = $totalValue;
+                    $user->totalNilai = $totalValue + $user->mosque->total_pillar_value;
 
                     return $user;
                 })->filter(function ($user) {
@@ -189,7 +198,7 @@ class EndAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.end-assessment', compact('theadName', 'otherTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'usersInEndAssessment', 'usersInStartAssessment', 'categories'));
+        return view('admin.pages.assessment.end-assessment', compact('theadName', 'otherTheadName', 'categoryTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'usersInEndAssessment', 'usersInStartAssessment', 'categories'));
     }
 
     public function edit(User $user)
