@@ -14,13 +14,6 @@
                         </ol>
                     </nav>
                 </div>
-                <div class="d-flex justify-content-end gap-2 p-2">
-                    <a href="{{ route('form.administration', ['user' => $user->id]) }}" 
-                        class="btn btn-primary text-light mb-2 mt-0">
-                        <i class="bi bi-arrow-left" style="margin-left: 1rem; margin-right: 0.5rem"></i>
-                        Sebelumnya
-                    </a>
-                </div>
             </div>
 
             @if (Session('success'))
@@ -775,7 +768,8 @@
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_five_id ?? '')
-                                    <div class="text-end">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="{{ route('form.administration', ['user' => $pillarFive->mosque->user->id, 'action' => 'penilaian']) }}" class="btn btn-outline-dark">Selanjutnya</a>
                                         <button type="submit" class="btn btn-warning">Ubah Nilai</button>
                                     </div>
 
@@ -784,7 +778,8 @@
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div class="text-end">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{{ route('form.administration') }}" class="btn btn-outline-dark">Sebelumnya</a>
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                 </div>
                             @endif

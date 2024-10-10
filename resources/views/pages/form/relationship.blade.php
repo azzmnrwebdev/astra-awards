@@ -12,14 +12,6 @@
                         </ol>
                     </nav>
                 </div>
-                <div class="d-block p-2">
-                    <nav class="text-end">
-                        <a href="{{ route('form.managementRelationship', ['user' => $user->id]) }}" 
-                           class="btn btn-primary text-light mb-2 mt-0">Selanjutnya
-                           <i class="bi bi-arrow-right" style="margin-left: 1rem; margin-right: 0.5rem"></i>
-                        </a>
-                    </nav>
-                </div>
             </div>
 
             @if (Session('success'))
@@ -672,8 +664,9 @@
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_two_id ?? '')
-                                    <div class="text-end">
+                                    <div class="d-flex justify-content-between align-items-center">
                                         <button type="submit" class="btn btn-warning">Ubah Nilai</button>
+                                        <a href="{{ route('form.managementRelationship', ['user' => $pillarTwo->mosque->user->id, 'action' => 'penilaian']) }}" class="btn btn-outline-dark">Selanjutnya</a>
                                     </div>
 
                                     </form>
@@ -681,8 +674,9 @@
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div class="text-end">
+                                <div class="d-flex justify-content-between align-items-center">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
+                                    <a href="{{ route('form.managementRelationship') }}" class="btn btn-outline-dark">Selanjutnya</a>
                                 </div>
                             @endif
                         </div>

@@ -80,6 +80,10 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarOne = $user->mosque->pillarOne;
 
+            if (!$pillarOne) {
+                return redirect()->back()->with('error', 'Peserta belum mengisi formulir Hubungan DKM dengan YAA');
+            }
+
             $systemAssessment = SystemAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
 
@@ -162,6 +166,10 @@ class FormController extends Controller
         } else {
             $user = User::where('id', $user)->first();
             $pillarTwo = $user->mosque->pillarTwo;
+
+            if (!$pillarTwo) {
+                return redirect()->back()->with('error', 'Peserta belum mengisi formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah');
+            }
 
             $systemAssessment = SystemAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
@@ -330,6 +338,10 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarThree = $user->mosque->pillarThree;
 
+            if (!$pillarThree) {
+                return redirect()->back()->with('error', 'Peserta belum mengisi formulir Program Sosial');
+            }
+
             $systemAssessment = SystemAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
 
@@ -444,6 +456,10 @@ class FormController extends Controller
             $user = User::where('id', $user)->first();
             $pillarFour = $user->mosque->pillarFour;
 
+            if (!$pillarFour) {
+                return redirect()->back()->with('error', 'Peserta belum mengisi formulir Administrasi dan Keuangan');
+            }
+
             $systemAssessment = SystemAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
 
@@ -518,6 +534,10 @@ class FormController extends Controller
         } else {
             $user = User::where('id', $user)->first();
             $pillarFive = $user->mosque->pillarFive;
+
+            if (!$pillarFive) {
+                return redirect()->back()->with('error', 'Peserta belum mengisi formulir Peribadahan dan Infrastruktur');
+            }
 
             $systemAssessment = SystemAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
             $committeeAssessment = CommitteeAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();

@@ -13,17 +13,6 @@
                         </ol>
                     </nav>
                 </div>
-                <div class="d-flex justify-content-end gap-2 p-2">
-                    <a href="{{ route('form.program', ['user' => $user->id]) }}" 
-                        class="btn btn-primary text-light mb-2 mt-0">
-                        <i class="bi bi-arrow-left" style="margin-left: 1rem; margin-right: 0.5rem"></i>
-                        Sebelumnya
-                    </a>
-                    <a href="{{ route('form.infrastructure', ['user' => $user->id]) }}" 
-                        class="btn btn-primary text-light mb-2 mt-0">Selanjutnya
-                        <i class="bi bi-arrow-right" style="margin-left: 1rem; margin-right: 0.5rem"></i>
-                    </a>
-                </div>
             </div>
 
             @if (Session('success'))
@@ -719,8 +708,17 @@
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_four_id ?? '')
-                                    <div class="text-end">
+                                    <div class="mb-4 text-end">
                                         <button type="submit" class="btn btn-warning">Ubah Nilai</button>
+                                    </div>
+
+                                    <hr/>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="{{ route('form.program', ['user' => $pillarFour->mosque->user->id, 'action' => 'penilaian']) }}"
+                                            class="btn btn-outline-dark">Sebelumnya</a>
+                                        <a href="{{ route('form.infrastructure', ['user' => $pillarFour->mosque->user->id, 'action' => 'penilaian']) }}"
+                                            class="btn btn-outline-dark">Selanjutnya</a>
                                     </div>
 
                                     </form>
@@ -728,8 +726,17 @@
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div class="text-end">
+                                <div class="mb-4 text-end">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+
+                                <hr/>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{{ route('form.program') }}"
+                                        class="btn btn-outline-dark">Sebelumnya</a>
+                                    <a href="{{ route('form.infrastructure') }}"
+                                        class="btn btn-outline-dark">Selanjutnya</a>
                                 </div>
                             @endif
                         </div>
