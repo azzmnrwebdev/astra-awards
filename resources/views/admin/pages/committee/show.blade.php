@@ -38,10 +38,10 @@
                                     <img src="{{ asset('storage/' . $item->mosque->logo) }}" alt="Logo"
                                         style="width: 150px;">
                                 </td>
-                                <td class="text-start py-3">{{ $item->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                             </tr>
                         @empty
                             <tr>

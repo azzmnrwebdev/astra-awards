@@ -67,16 +67,16 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $usersInEndAssessment->firstItem() }}
                                 </td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }} -
-                                    {{ $item->mosque->categoryMosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->totalNilai }} Poin
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -110,13 +110,10 @@
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $usersInStartAssessment->firstItem() }}
                                 </td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }} -
-                                    {{ $item->mosque->categoryMosque->name }}</td>
-                                <td class="text-center py-3">
-                                    {{ $item->totalNilai }} Poin
-                                </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('jury'))
                                         <a href="{{ route('end_assessment.edit', ['user' => $item->id]) }}"

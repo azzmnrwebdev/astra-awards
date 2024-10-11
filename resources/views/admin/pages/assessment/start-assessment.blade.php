@@ -56,10 +56,10 @@
                         @forelse ($paginatedUsers as $item)
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $paginatedUsers->firstItem() }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }} -
-                                    {{ $item->mosque->categoryMosque->name }}</td>
                                 <td class="text-center py-3">
                                     @if ($item->mosque->presentation->startAssessment)
                                         <span class="badge text-bg-success">Sudah Penilaian</span>
@@ -82,7 +82,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>

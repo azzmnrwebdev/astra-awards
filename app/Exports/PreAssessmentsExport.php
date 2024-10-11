@@ -226,15 +226,15 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         return [
             $this->index,
             $user->name,
-            $user->mosque->company->name,
             $user->mosque->name,
+            $user->mosque->company->name,
             $status,
-            $pillarTwoTotal . ' Poin',
-            $pillarOneTotal . ' Poin',
-            $pillarThreeTotal . ' Poin',
-            $pillarFourTotal . ' Poin',
-            $pillarFiveTotal . ' Poin',
-            $user->mosque->total_pillar_value !== 0 ? $user->mosque->total_pillar_value . ' Poin' : 'Belum Tersedia',
+            $pillarTwoTotal,
+            $pillarOneTotal,
+            $pillarThreeTotal,
+            $pillarFourTotal,
+            $pillarFiveTotal,
+            $user->mosque->total_pillar_value !== 0 ? $user->mosque->total_pillar_value : 'Belum Tersedia',
         ];
     }
 
@@ -243,14 +243,14 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         return [
             'NO',
             'NAMA LENGKAP',
-            'PERUSAHAAN',
             'NAMA MASJID/MUSALA',
+            'PERUSAHAAN',
             'STATUS',
-            'PILAR 1',
-            'PILAR 2',
-            'PILAR 3',
-            'PILAR 4',
-            'PILAR 5',
+            'HUBUNGAN DENGAN YAYASAN AMALIAH ASTRA',
+            'HUBUNGAN MANAJEMEN PERUSAHAAN DENGAN DKM & JAMAAH',
+            'PROGRAM SOSIAL',
+            'ADMINISTRASI & KEUANGAN',
+            'PERIBADAHAN & INFRASTRUKTUR',
             'TOTAL NILAI',
         ];
     }

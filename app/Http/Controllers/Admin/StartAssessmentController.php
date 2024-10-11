@@ -33,9 +33,10 @@ class StartAssessmentController extends Controller
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori'],
             ['class' => 'text-center py-3', 'label' => 'Status'],
             ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],

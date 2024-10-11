@@ -15,7 +15,8 @@ class PreAssessmentController extends Controller
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-start py-3', 'label' => 'Nama Peserta'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Status'],
@@ -25,7 +26,6 @@ class PreAssessmentController extends Controller
 
         $otherTheadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-start py-3', 'label' => 'Nama Peserta'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Total Nilai'],

@@ -55,7 +55,8 @@
                         @forelse ($users as $item)
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $users->firstItem() }}</td>
-                                <td class="text-start py-3">{{ $item->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">
@@ -164,7 +165,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -209,7 +210,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                                    <td colspan="5" class="text-center py-3">Data tidak ditemukan</td>
                                 </tr>
                             @endforelse
                         </tbody>
