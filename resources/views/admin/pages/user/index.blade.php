@@ -108,12 +108,12 @@
 
                                         if ($pillarOne) {
                                             if (
-                                                $pillarOne->question_one ||
-                                                $pillarOne->question_two ||
-                                                $pillarOne->question_three ||
-                                                $pillarOne->question_four ||
-                                                $pillarOne->question_five ||
-                                                $pillarOne->file_question_two_one ||
+                                                $pillarOne->question_one &&
+                                                $pillarOne->question_two &&
+                                                $pillarOne->question_three &&
+                                                $pillarOne->question_four &&
+                                                $pillarOne->question_five &&
+                                                $pillarOne->file_question_two_one &&
                                                 $pillarOne->file_question_two_two
                                             ) {
                                                 $filledPillars++;
@@ -122,9 +122,9 @@
 
                                         if ($pillarTwo) {
                                             if (
-                                                $pillarTwo->question_two ||
-                                                $pillarTwo->question_three ||
-                                                $pillarTwo->question_four ||
+                                                $pillarTwo->question_two &&
+                                                $pillarTwo->question_three &&
+                                                $pillarTwo->question_four &&
                                                 $pillarTwo->question_five
                                             ) {
                                                 $filledPillars++;
@@ -133,11 +133,11 @@
 
                                         if ($pillarThree) {
                                             if (
-                                                $pillarThree->question_one ||
-                                                $pillarThree->question_two ||
-                                                $pillarThree->question_three ||
-                                                $pillarThree->question_four ||
-                                                $pillarThree->question_five ||
+                                                $pillarThree->question_one &&
+                                                $pillarThree->question_two &&
+                                                $pillarThree->question_three &&
+                                                $pillarThree->question_four &&
+                                                $pillarThree->question_five &&
                                                 $pillarThree->question_six
                                             ) {
                                                 $filledPillars++;
@@ -146,10 +146,10 @@
 
                                         if ($pillarFour) {
                                             if (
-                                                $pillarFour->question_one ||
-                                                $pillarFour->question_two ||
-                                                $pillarFour->question_three ||
-                                                $pillarFour->question_four ||
+                                                $pillarFour->question_one &&
+                                                $pillarFour->question_two &&
+                                                $pillarFour->question_three &&
+                                                $pillarFour->question_four &&
                                                 $pillarFour->question_five
                                             ) {
                                                 $filledPillars++;
@@ -158,10 +158,10 @@
 
                                         if ($pillarFive) {
                                             if (
-                                                $pillarFive->question_one ||
-                                                $pillarFive->question_two ||
-                                                $pillarFive->question_three ||
-                                                $pillarFive->question_four ||
+                                                $pillarFive->question_one &&
+                                                $pillarFive->question_two &&
+                                                $pillarFive->question_three &&
+                                                $pillarFive->question_four &&
                                                 $pillarFive->question_five
                                             ) {
                                                 $filledPillars++;
