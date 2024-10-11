@@ -112,6 +112,40 @@ class UserController extends Controller
                                 ->orWhereNotNull('question_five');
                         });
                     });
+                })->where(function ($q) {
+                    $q->whereDoesntHave('mosque.pillarOne', function ($q1) {
+                        $q1->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five')
+                            ->whereNotNull('file_question_two_one')
+                            ->whereNotNull('file_question_two_two');
+                    })->orWhereDoesntHave('mosque.pillarTwo', function ($q1) {
+                        $q1->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    })->orWhereDoesntHave('mosque.pillarThree', function ($q1) {
+                        $q1->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five')
+                            ->whereNotNull('question_six');
+                    })->orWhereDoesntHave('mosque.pillarFour', function ($q1) {
+                        $q1->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    })->orWhereDoesntHave('mosque.pillarFive', function ($q1) {
+                        $q1->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    });
                 });
             }
 
