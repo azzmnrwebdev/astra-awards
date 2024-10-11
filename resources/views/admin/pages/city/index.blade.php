@@ -25,7 +25,7 @@
                     <form class="row g-3">
                         <div class="col-sm-6">
                             <select name="provinsi" id="provinsi" class="form-select">
-                                <option value="">Semua Provinsi</option>
+                                <option value="">-- Semua Provinsi --</option>
                                 @foreach ($provinces as $item)
                                     <option value="{{ $item->id }}"
                                         {{ $provinceId == $item->id ? 'selected' : '' }}>

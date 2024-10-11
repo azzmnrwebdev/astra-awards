@@ -25,7 +25,7 @@
                     <form class="row g-3">
                         <div class="col-sm-6">
                             <select name="lini_bisnis" id="lini_bisnis" class="form-select">
-                                <option value="">Semua Lini Bisnis</option>
+                                <option value="">-- Semua Lini Bisnis --</option>
                                 @foreach ($businessLines as $item)
                                     <option value="{{ $item->id }}"
                                         {{ $businessLineId == $item->id ? 'selected' : '' }}>
@@ -37,7 +37,7 @@
 
                         <div class="col-sm-6">
                             <select name="induk_perusahaan" id="induk_perusahaan" class="form-select">
-                                <option value="">Semua Induk Perusahaan</option>
+                                <option value="">-- Semua Induk Perusahaan --</option>
                                 @foreach ($parentCompanies as $item)
                                     <option value="{{ $item->id }}"
                                         {{ $parentCompanyId == $item->id ? 'selected' : '' }}>

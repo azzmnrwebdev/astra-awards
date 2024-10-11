@@ -15,7 +15,7 @@
                     <form class="row g-3">
                         <div class="col-12">
                             <select name="kategori" id="kategori" class="form-select">
-                                <option value="">Semua Kategori</option>
+                                <option value="">-- Semua Kategori --</option>
                                 @foreach ($combinedData as $data)
                                     @php
                                         [$areaId, $mosqueId] = explode('-', $data['value']);
