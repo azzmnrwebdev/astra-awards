@@ -15,53 +15,44 @@ class EndAssessmentController extends Controller
 {
     public function index(Request $request)
     {
-        $theadName = [
-            ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
-            ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
-            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
-            ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
-        ];
-
-        $otherTheadName = [
-            ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
-            ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
-            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
-            ['class' => 'text-center py-3', 'label' => 'Aksi'],
-        ];
-
-        $categoryTheadName = [
-            ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
-            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
-            ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
-        ];
-
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
 
+        $endAssessmentTheadNames = $this->getTheadName([
+            'No',
+            'Kategori',
+            'Kategori Area',
+            'Nama Masjid/Musala',
+            'Perusahaan',
+            'Total Nilai',
+        ]);
+
+        $startAssessmentTheadNames = $this->getTheadName([
+            'No',
+            'Kategori',
+            'Kategori Area',
+            'Nama Masjid/Musala',
+            'Perusahaan',
+            'Aksi',
+        ]);
+
+        $categoryTheadNames = $this->getTheadName([
+            'No',
+            'Nama Masjid/Musala',
+            'Perusahaan',
+            'Total Nilai',
+        ]);
+
         // Gabungkan data kategori
-        $combinedData = [];
+        $combinedData = $this->getCombinedCategoryData($categoryAreas, $categoryMosques);
 
-        foreach ($categoryAreas as $area) {
-            foreach ($categoryMosques as $mosque) {
-                $combinedData[] = [
-                    'label' => $area->name . ' - ' . $mosque->name,
-                    'value' => $area->id . '-' . $mosque->id,
-                ];
-            }
-        }
-
+        // Ambil input filter dari request
+        $categoryAreaId = $request->input('kategori_area');
+        $categoryMosqueId = $request->input('kategori_masjid');
         $search = $request->input('pencarian');
 
         // Menampilkan semua data pengguna penilaian akhir
-        $allUsersInEndAssessment = collect();
-
-        $categoryAreaId = $request->input('kategori_area');
-        $categoryMosqueId = $request->input('kategori_masjid');
+        $endAssessmentUsers = collect();
 
         foreach ($categoryAreas as $area) {
             foreach ($categoryMosques as $mosque) {
@@ -95,40 +86,85 @@ class EndAssessmentController extends Controller
 
                     if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
                         $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+
+                        if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+                        }
+
+                        if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+                        }
+
+                        if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+                        }
+
+                        if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+                        }
+
+                        if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
+                        }
                     }
 
-                    $user->totalNilai = $totalValue + $user->mosque->total_pillar_value;
+                    $user->totalNilai = $totalValue;
                     return $user;
                 })->filter(function ($user) {
                     return $user->totalNilai > 0;
                 });
 
                 $topUsers = $users->sortByDesc('totalNilai');
-                $allUsersInEndAssessment = $allUsersInEndAssessment->merge($topUsers);
+                $endAssessmentUsers = $endAssessmentUsers->merge($topUsers);
             }
         }
 
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $usersInEndAssessment = new LengthAwarePaginator(
-            $allUsersInEndAssessment->forPage($currentPage, $perPage),
-            $allUsersInEndAssessment->count(),
+        $endAssessmentAllUsers = new LengthAwarePaginator(
+            $endAssessmentUsers->forPage($currentPage, $perPage),
+            $endAssessmentUsers->count(),
             $perPage,
             $currentPage,
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
         );
 
         // Menampilkan semua data pengguna penilaian awal
-        $allUsersInStartAssessment = collect();
+        $startAssessmentUsers = collect();
 
         foreach ($categoryAreas as $area) {
             foreach ($categoryMosques as $mosque) {
                 $users = User::with([
                     'mosque',
                     'mosque.company',
+                    'mosque.presentation',
                     'mosque.presentation.startAssessment'
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
+                })->where(function ($q) {
+                    $q->whereHas('mosque.presentation');
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
                         $q->whereHas('mosque', function ($mosqueQuery) use ($search) {
@@ -144,9 +180,51 @@ class EndAssessmentController extends Controller
 
                     if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
                         $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+
+                        if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+                        }
+
+                        if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+                        }
+
+                        if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+                        }
+
+                        if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+                        }
+
+                        if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
+                        }
                     }
 
-                    $user->totalNilai = $totalValue + $user->mosque->total_pillar_value;
+                    $user->totalNilai = $totalValue;
 
                     return $user;
                 })->filter(function ($user) {
@@ -154,15 +232,15 @@ class EndAssessmentController extends Controller
                 });
 
                 $topUsers = $users->sortByDesc('totalNilai');
-                $allUsersInStartAssessment = $allUsersInStartAssessment->merge($topUsers);
+                $startAssessmentUsers = $startAssessmentUsers->merge($topUsers);
             }
         }
 
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $usersInStartAssessment = new LengthAwarePaginator(
-            $allUsersInStartAssessment->forPage($currentPage, $perPage),
-            $allUsersInStartAssessment->count(),
+            $startAssessmentUsers->forPage($currentPage, $perPage),
+            $startAssessmentUsers->count(),
             $perPage,
             $currentPage,
             ['path' => LengthAwarePaginator::resolveCurrentPath()]
@@ -199,7 +277,7 @@ class EndAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.end-assessment', compact('theadName', 'otherTheadName', 'categoryTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'usersInEndAssessment', 'usersInStartAssessment', 'categories'));
+        return view('admin.pages.assessment.end-assessment', compact('endAssessmentTheadNames', 'startAssessmentTheadNames', 'categoryTheadNames', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'endAssessmentAllUsers', 'usersInStartAssessment', 'categories'));
     }
 
     public function edit(User $user)
@@ -229,5 +307,33 @@ class EndAssessmentController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
         }
+    }
+
+    // Kebutuhan Method Index
+    private function getTheadName(array $labels)
+    {
+        $thead = [];
+
+        foreach ($labels as $label) {
+            $thead[] = ['class' => 'text-center py-3', 'label' => $label];
+        }
+
+        return $thead;
+    }
+
+    private function getCombinedCategoryData($categoryAreas, $categoryMosques)
+    {
+        $combinedData = [];
+
+        foreach ($categoryAreas as $area) {
+            foreach ($categoryMosques as $mosque) {
+                $combinedData[] = [
+                    'label' => "{$area->name} - {$mosque->name}",
+                    'value' => "{$area->id}-{$mosque->id}",
+                ];
+            }
+        }
+
+        return $combinedData;
     }
 }

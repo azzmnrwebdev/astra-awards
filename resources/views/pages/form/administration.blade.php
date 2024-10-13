@@ -351,22 +351,22 @@
                             </div>
 
                             @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div class="{{ $pillarFour && $pillarFour->file_question_four ? 'mb-2' : 'mb-0' }}">
-                                    <label for="file_question_four" class="form-label fw-medium">Dokumen
+                                <div class="{{ $pillarFour && $pillarFour->file_question_two ? 'mb-2' : 'mb-0' }}">
+                                    <label for="file_question_two" class="form-label fw-medium">Dokumen
                                         Pendukung</label>
-                                    <input class="form-control" type="file" id="file_question_four"
-                                        name="file_question_four">
+                                    <input class="form-control" type="file" id="file_question_two"
+                                        name="file_question_two">
 
                                     <div class="form-text">Hanya file bertipe jpg, png, jpeg dan pdf yang di
                                         izinkan.</div>
 
-                                    @error('file_question_four')
+                                    @error('file_question_two')
                                         <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
                                     @enderror
                                 </div>
                             @endif
 
-                            @if ($pillarFour && $pillarFour->file_question_four)
+                            @if ($pillarFour && $pillarFour->file_question_two)
                                 <div class="@if (auth()->check() && auth()->user()->hasRole('admin')) mb-3 @endif">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
                                         <label class="form-label fw-medium d-block">Dokumen
@@ -375,7 +375,7 @@
 
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($pillarFour->file_question_four, '/')) }}">
+                                        data-url="{{ url('/' . ltrim($pillarFour->file_question_two, '/')) }}">
                                         Lihat Dokumen
                                     </button>
                                 </div>

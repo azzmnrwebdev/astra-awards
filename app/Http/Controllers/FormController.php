@@ -495,6 +495,7 @@ class FormController extends Controller
             'question_four' => 'string',
             'question_five' => 'string',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
+            'file_question_two' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_six' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
@@ -520,6 +521,7 @@ class FormController extends Controller
         );
 
         $pillarFour->file_question_one = $this->handleFileUpdate($request, 'file_question_one', $pillarFour->file_question_one, 'pillarFours');
+        $pillarFour->file_question_two = $this->handleFileUpdate($request, 'file_question_two', $pillarFour->file_question_two, 'pillarFours');
         $pillarFour->file_question_four = $this->handleFileUpdate($request, 'file_question_four', $pillarFour->file_question_four, 'pillarFours');
         $pillarFour->file_question_five = $this->handleFileUpdate($request, 'file_question_five', $pillarFour->file_question_five, 'pillarFours');
 

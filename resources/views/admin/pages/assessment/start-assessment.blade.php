@@ -105,7 +105,7 @@
                     <table class="table table-hover text-nowrap align-middle mb-0">
                         <thead class="border-top border-start border-end table-secondary">
                             <tr>
-                                @foreach ($otherTheadName as $thead)
+                                @foreach ($categoryTheadName as $thead)
                                     <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
                                 @endforeach
                             </tr>

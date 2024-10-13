@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('is_committe_assessment')->nullable()->after('status');
+        Schema::table('pillar_fours', function (Blueprint $table) {
+            $table->text('file_question_two')->nullable()->after('file_question_one');
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('pillar_fours', function (Blueprint $table) {
             //
         });
     }

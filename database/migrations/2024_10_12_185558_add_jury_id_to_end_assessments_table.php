@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('is_committe_assessment')->nullable()->after('status');
+        Schema::table('end_assessments', function (Blueprint $table) {
+            $table->foreignId('jury_id')
+                ->nullable()
+                ->after('mosque_id')
+                ->constrained('users')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 
@@ -21,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('end_assessments', function (Blueprint $table) {
             //
         });
     }

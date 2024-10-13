@@ -12,6 +12,7 @@ class StartAssessment extends Model
     protected $table = 'start_assessments';
     protected $fillable = [
         'presentation_id',
+        'jury_id',
         'presentation_file',
     ];
 }

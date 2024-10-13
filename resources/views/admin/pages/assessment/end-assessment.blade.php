@@ -56,16 +56,16 @@
                 <table class="table table-hover text-nowrap align-middle mb-0">
                     <thead class="border-top border-start border-end table-custom">
                         <tr>
-                            @foreach ($theadName as $thead)
+                            @foreach ($endAssessmentTheadNames as $thead)
                                 <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
                             @endforeach
                         </tr>
                     </thead>
 
                     <tbody class="border-start border-end">
-                        @forelse ($usersInEndAssessment as $item)
+                        @forelse ($endAssessmentAllUsers as $item)
                             <tr>
-                                <td class="text-center py-3">{{ $loop->index + $usersInEndAssessment->firstItem() }}
+                                <td class="text-center py-3">{{ $loop->index + $endAssessmentAllUsers->firstItem() }}
                                 </td>
                                 <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
@@ -85,7 +85,7 @@
 
             {{-- Pagination --}}
             <div class="mt-3">
-                {{ $usersInEndAssessment->appends(request()->query())->links() }}
+                {{ $endAssessmentAllUsers->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
@@ -99,7 +99,7 @@
                 <table class="table table-hover text-nowrap align-middle mb-0">
                     <thead class="border-top border-start border-end table-custom">
                         <tr>
-                            @foreach ($otherTheadName as $thead)
+                            @foreach ($startAssessmentTheadNames as $thead)
                                 <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
                             @endforeach
                         </tr>
@@ -148,7 +148,7 @@
                     <table class="table table-hover text-nowrap align-middle mb-0">
                         <thead class="border-top border-start border-end table-secondary">
                             <tr>
-                                @foreach ($categoryTheadName as $thead)
+                                @foreach ($categoryTheadNames as $thead)
                                     <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
                                 @endforeach
                             </tr>

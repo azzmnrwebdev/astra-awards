@@ -12,6 +12,7 @@ class EndAssessment extends Model
     protected $table = 'end_assessments';
     protected $fillable = [
         'mosque_id',
+        'jury_id',
         'presentation_value',
     ];
 }
