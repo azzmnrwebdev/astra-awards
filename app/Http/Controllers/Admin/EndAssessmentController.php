@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\CategoryArea;
-use App\Models\CategoryMosque;
-use App\Models\User;
 use Exception;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\User;
+use App\Models\CategoryArea;
+use Illuminate\Http\Request;
+use App\Models\CategoryMosque;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class EndAssessmentController extends Controller
 {
@@ -17,6 +18,7 @@ class EndAssessmentController extends Controller
     {
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
+        $juries = User::where('role', 'jury')->get();
 
         $endAssessmentTheadNames = $this->getTheadName([
             'No',
@@ -49,6 +51,7 @@ class EndAssessmentController extends Controller
         // Ambil input filter dari request
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
+        $juryId = $request->input('juri');
         $search = $request->input('pencarian');
 
         // Menampilkan semua data pengguna penilaian akhir
@@ -67,12 +70,18 @@ class EndAssessmentController extends Controller
                         $q->where('category_area_id', $categoryAreaId)
                             ->where('category_mosque_id', $categoryMosqueId);
                     });
+                })->when($juryId, function ($query) use ($juryId) {
+                    $query->where(function ($q) use ($juryId) {
+                        $q->whereHas('mosque.endAssessment', function ($q2) use ($juryId) {
+                            $q2->where('jury_id', $juryId);
+                        });
+                    });
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
-                        $q->whereHas('mosque', function ($mosqueQuery) use ($search) {
-                            $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                        })->orWhereHas('mosque.company', function ($companyQuery) use ($search) {
-                            $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        $q->whereHas('mosque', function ($q2) use ($search) {
+                            $q2->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        })->orWhereHas('mosque.company', function ($q3) use ($search) {
+                            $q3->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
                         });
                     });
                 })->get();
@@ -82,10 +91,10 @@ class EndAssessmentController extends Controller
 
                     if ($user->mosque->endAssessment) {
                         $totalValue += $user->mosque->endAssessment->presentation_value;
-                    }
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                        if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
+                            $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                        }
 
                         if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
                             $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
@@ -167,10 +176,10 @@ class EndAssessmentController extends Controller
                     $q->whereHas('mosque.presentation');
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
-                        $q->whereHas('mosque', function ($mosqueQuery) use ($search) {
-                            $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                        })->orWhereHas('mosque.company', function ($companyQuery) use ($search) {
-                            $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        $q->whereHas('mosque', function ($q2) use ($search) {
+                            $q2->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        })->orWhereHas('mosque.company', function ($q3) use ($search) {
+                            $q3->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
                         });
                     });
                 })->get();
@@ -261,6 +270,52 @@ class EndAssessmentController extends Controller
 
                     if ($user->mosque->endAssessment) {
                         $totalValue += $user->mosque->endAssessment->presentation_value;
+
+                        if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
+                            $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                        }
+
+                        if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+                        }
+
+                        if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+                        }
+
+                        if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+                        }
+
+                        if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+                        }
+
+                        if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
+                        }
                     }
 
                     $user->totalNilai = $totalValue;
@@ -277,7 +332,7 @@ class EndAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.end-assessment', compact('endAssessmentTheadNames', 'startAssessmentTheadNames', 'categoryTheadNames', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'endAssessmentAllUsers', 'usersInStartAssessment', 'categories'));
+        return view('admin.pages.assessment.end-assessment', compact('endAssessmentTheadNames', 'startAssessmentTheadNames', 'categoryTheadNames', 'juries', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'juryId', 'search', 'endAssessmentAllUsers', 'usersInStartAssessment', 'categories'));
     }
 
     public function edit(User $user)
@@ -300,7 +355,10 @@ class EndAssessmentController extends Controller
         try {
             $user->mosque->endAssessment()->updateOrCreate(
                 ['mosque_id' => $user->mosque->id],
-                ['presentation_value' => $request->presentation_value]
+                [
+                    'jury_id' => Auth::id(),
+                    'presentation_value' => $request->presentation_value,
+                ]
             );
 
             return redirect(route('end_assessment.index'))->with('success', 'Nilai akhir berhasil disimpan');

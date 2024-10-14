@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\CategoryMosque;
 use App\Models\StartAssessment;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class StartAssessmentController extends Controller
@@ -22,6 +23,7 @@ class StartAssessmentController extends Controller
             ['id' => $request->input('id')],
             [
                 'presentation_id' => $request->input('presentation_id'),
+                'jury_id' => Auth::id(),
                 'presentation_file' => $request->input('presentation_file')
             ]
         );
@@ -33,6 +35,7 @@ class StartAssessmentController extends Controller
     {
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
+        $juries = User::where('role', 'jury')->get();
 
         $theadName = $this->getTheadName();
         $categoryTheadName = $this->getCategoryTheadName();
@@ -43,6 +46,7 @@ class StartAssessmentController extends Controller
         // Ambil input filter dari request
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
+        $juryId = $request->input('juri');
         $search = $request->input('pencarian');
 
         // Menampilkan semua data pengguna
@@ -54,6 +58,7 @@ class StartAssessmentController extends Controller
                     'mosque',
                     'mosque.company',
                     'mosque.presentation',
+                    'mosque.presentation.startAssessment',
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->where(function ($q) {
@@ -63,18 +68,28 @@ class StartAssessmentController extends Controller
                         $q->where('category_area_id', $categoryAreaId)
                             ->where('category_mosque_id', $categoryMosqueId);
                     });
+                })->when($juryId, function ($query) use ($juryId) {
+                    $query->where(function ($q) use ($juryId) {
+                        $q->whereHas('mosque.presentation.startAssessment', function ($q2) use ($juryId) {
+                            $q2->where('jury_id', $juryId);
+                        });
+                    });
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
-                        $q->whereHas('mosque', function ($mosqueQuery) use ($search) {
-                            $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                        })->orWhereHas('mosque.company', function ($companyQuery) use ($search) {
-                            $companyQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                        $q->whereHas('mosque', function ($q2) use ($search) {
+                            $q2->where('name', 'LIKE', '%' . strtolower($search) . '%');
+                        })->orWhereHas('mosque.company', function ($q3) use ($search) {
+                            $q3->where('name', 'LIKE', '%' . strtolower($search) . '%');
                         });
                     });
                 })->get();
 
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
+
+                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                    }
 
                     if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
                         $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
@@ -116,10 +131,6 @@ class StartAssessmentController extends Controller
                         $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
                         $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
                         $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
-                    }
-
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -220,7 +231,7 @@ class StartAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.start-assessment', compact('theadName', 'categoryTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'paginatedUsers', 'categories'));
+        return view('admin.pages.assessment.start-assessment', compact('juries', 'theadName', 'categoryTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'juryId', 'search', 'paginatedUsers', 'categories'));
     }
 
     public function show(User $user)

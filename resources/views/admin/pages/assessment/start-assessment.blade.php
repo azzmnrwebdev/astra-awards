@@ -32,6 +32,17 @@
                         </div>
 
                         <div class="col-12">
+                            <select name="juri" id="juri" class="form-select">
+                                <option value="">-- Semua Juri --</option>
+                                @foreach ($juries as $jury)
+                                    <option value="{{ $jury->id }}" {{ $juryId == $jury->id ? 'selected' : '' }}>
+                                        {{ $jury->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-12">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                                 class="form-control" placeholder="Cari peserta?">
                             <div class="form-text">Kata kunci bisa berdasarkan nama masjid/musala atau
@@ -141,7 +152,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#kategori, #pencarian').on('input keydown change', function(e) {
+                $('#kategori, #juri, #pencarian').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -161,6 +172,7 @@
                 function filter() {
                     const params = {};
                     const categoryId = $('#kategori').val();
+                    const juryId = $('#juri').val();
                     const searchValue = $('#pencarian').val();
                     const url = '{{ route('start_assessment.index') }}';
 
@@ -169,6 +181,10 @@
 
                         params.kategori_area = categoryAreaId;
                         params.kategori_masjid = categoryMosqueId;
+                    }
+
+                    if (juryId !== '') {
+                        params.juri = juryId;
                     }
 
                     if (searchValue.trim() !== '') {
