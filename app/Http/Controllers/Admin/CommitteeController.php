@@ -120,22 +120,27 @@ class CommitteeController extends Controller
             return redirect()->back()->with('error_distribution', 'Tidak ada panitia yang tersedia untuk pembagian penilaian.');
         }
 
-        $index = 0;
         $adminCount = $admins->count();
+        $userCount = $users->count();
+
+        $usersPerAdmin = intdiv($userCount * 2, $adminCount);
+        $extraUsers = ($userCount * 2) % $adminCount;
+
+        $distribution = [];
+        $adminIndex = 0;
 
         foreach ($users as $user) {
-            $currentAdminCount = Distribution::where('user_id', $user->id)->count();
-
-            if ($currentAdminCount >= 2) {
-                continue;
-            }
-
             $assignedAdmins = [];
 
-            for ($i = $currentAdminCount; $i < 2; $i++) {
-                $admin = $admins[$index % $adminCount];
+            for ($i = 0; $i < 2; $i++) {
+                $admin = $admins[$adminIndex];
                 $assignedAdmins[] = $admin;
-                $index++;
+                $distribution[$admin->id] = ($distribution[$admin->id] ?? 0) + 1;
+
+                if ($distribution[$admin->id] >= $usersPerAdmin + ($extraUsers > 0 ? 1 : 0)) {
+                    $adminIndex = ($adminIndex + 1) % $adminCount;
+                    $extraUsers--;
+                }
             }
 
             foreach ($assignedAdmins as $admin) {

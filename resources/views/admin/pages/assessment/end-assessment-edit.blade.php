@@ -22,6 +22,58 @@
                 </div>
             @endif
 
+            <div class="mb-3">
+                <h5 class="card-title fw-semibold">Juri Menilai File Presentasi</h5>
+
+                <ul class="list-group mt-3">
+                    <li class="list-group-item border-0 py-1">
+                        {{ $user->mosque->presentation->startAssessment->jury->name }}</li>
+                </ul>
+            </div>
+
+            <div class="mb-5">
+                <h5 class="card-title fw-semibold">File Presentasi</h5>
+
+                <div class="table-responsive mt-3">
+                    <table class="table table-hover text-nowrap align-middle mb-0">
+                        <thead class="border-top border-start border-end table-custom">
+                            <tr>
+                                <th class="text-center py-3">Pertanyaan</th>
+                                <th class="text-center py-3">File Presentasi</th>
+                                <th class="text-center py-3">Nilai</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="border-start border-end">
+                            @if ($user->mosque->presentation->startAssessment)
+                                <tr>
+                                    <td class="text-start py-3">
+                                        Silahkan untuk mengunggah file presentasi yang memuat keseluruhan pilar
+                                        penilaian
+                                        (Pilar 1, 2, 3, 4, dan 5)
+                                    </td>
+                                    <td class="text-center py-3">
+                                        <button type="button" class="border-0 p-0 bg-transparent text-primary"
+                                            data-bs-toggle="modal" data-bs-target="#documentModal"
+                                            data-url="{{ url('/' . ltrim($user->mosque->presentation->file, '/')) }}">
+                                            Lihat File
+                                        </button>
+                                    </td>
+                                    <td class="text-center py-3">
+                                        {{ $user->mosque->presentation->startAssessment->presentation_file }}
+                                    </td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td colspan="3" class="text-center text-danger py-3">Penilaian belum
+                                        dilakukan</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <form action="{{ route('end_assessment.update', ['user' => $user->id]) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -70,11 +122,45 @@
         </div>
     </div>
 
+    {{-- Modal --}}
+    <div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="documentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="documentModalLabel">File Presentasi - {{ $user->name }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="documentContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Custom Javascript --}}
     @prepend('scripts')
         <script>
             document.getElementById('pageTitle').addEventListener('click', function() {
                 window.location.href = "{{ route('end_assessment.index') }}";
+            });
+
+            document.addEventListener('DOMContentLoaded', function() {
+                $('#documentModal').on('show.bs.modal', function(event) {
+                    let button = $(event.relatedTarget);
+                    let url = button.data('url');
+                    let modal = $(this);
+                    let documentContent = modal.find('#documentContent');
+
+                    documentContent.html('');
+
+                    if (url.match(/\.pdf$/i)) {
+                        documentContent.html('<embed src="' + url +
+                            '" type="application/pdf" width="100%" height="500px" />');
+                    } else {
+                        documentContent.html('<p>File format tidak didukung.</p>');
+                    }
+                });
             });
         </script>
     @endprepend

@@ -15,4 +15,9 @@ class StartAssessment extends Model
         'jury_id',
         'presentation_file',
     ];
+
+    public function jury()
+    {
+        return $this->belongsTo(User::class, 'jury_id');
+    }
 }
