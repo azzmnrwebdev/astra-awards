@@ -245,6 +245,8 @@ class EndAssessmentController extends Controller
             }
         }
 
+        
+
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
         $usersInStartAssessment = new LengthAwarePaginator(

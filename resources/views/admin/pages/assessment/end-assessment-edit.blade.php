@@ -27,7 +27,12 @@
 
                 <ul class="list-group mt-3">
                     <li class="list-group-item border-0 py-1">
-                        {{ $user->mosque->presentation->startAssessment->jury->name }}</li>
+                        @if($user->mosque && $user->mosque->presentation && $user->mosque->presentation->startAssessment && $user->mosque->presentation->startAssessment->jury)
+                            {{ $user->mosque->presentation->startAssessment->jury->name }}
+                        @else
+                            Jury name not available
+                        @endif
+                    </li>
                 </ul>
             </div>
 
