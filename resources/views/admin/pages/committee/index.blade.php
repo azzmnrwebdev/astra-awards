@@ -106,18 +106,20 @@
                 </div>
             @endif
 
-            <div class="row">
-                <div class="col-auto">
-                    <form action="{{ route('committee.distribution') }}" method="POST">
-                        @csrf
+            @if ($currentDate < $startSelection)
+                <div class="row">
+                    <div class="col-auto">
+                        <form action="{{ route('committee.distribution') }}" method="POST">
+                            @csrf
 
-                        <button type="submit" class="btn btn-dark rounded-0">Pembagian</button>
-                    </form>
+                            <button type="submit" class="btn btn-dark rounded-0">Pembagian</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
 
-            <p class="card-text text-muted mt-4 mb-1">Keterangan:</p>
-            <p class="card-text text-muted mb-0">Tekan tombol Pembagian untuk sinkronisasi data.</p>
+                <p class="card-text text-muted mt-4 mb-1">Keterangan:</p>
+                <p class="card-text text-muted mb-0">Tekan tombol Pembagian untuk sinkronisasi data.</p>
+            @endif
 
             <div class="table-responsive mt-2">
                 <table class="table table-hover text-nowrap align-middle mb-0">

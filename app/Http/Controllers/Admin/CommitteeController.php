@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Timeline;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Mail\AccountRegistration;
 use App\Models\Distribution;
-use Exception;
-use Illuminate\Support\Facades\Auth;
+use App\Mail\AccountRegistration;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -36,6 +37,10 @@ class CommitteeController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
+        $timeline = Timeline::latest()->first();
+        $startSelection = Carbon::parse($timeline->start_selection)->toDateString();
+        $currentDate = Carbon::now()->setTimezone('Asia/Jakarta')->toDateString();
+
         $search = $request->input('pencarian');
         $query = User::query()->where('role', 'admin');
 
@@ -56,7 +61,7 @@ class CommitteeController extends Controller
 
         $committees = $query->clone()->orderBy('updated_at', 'desc')->latest('created_at')->paginate(10);
 
-        return view('admin.pages.committee.index', compact('theadNameOne', 'theadNametwo', 'search', 'committees', 'distributions'));
+        return view('admin.pages.committee.index', compact('theadNameOne', 'theadNametwo', 'startSelection', 'currentDate', 'search', 'committees', 'distributions'));
     }
 
     public function create()
