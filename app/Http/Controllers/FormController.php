@@ -375,7 +375,7 @@ class FormController extends Controller
             'question_one' => 'string',
             'question_two' => 'string',
             'question_three' => 'string',
-            'question_five' => 'string',
+            'question_five' => 'string|max:1000',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_six' => 'file|mimes:pdf,jpg,jpeg,png',
