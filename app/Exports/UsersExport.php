@@ -21,6 +21,7 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
 
     private $companyId;
     private $statusAccount;
+    private $statusForm;
     private $search;
 
     private $index = 0;
@@ -33,10 +34,11 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
         'Content-Type' => 'text/xlsx',
     ];
 
-    public function __construct($companyId = null, $statusAccount = null, $search = null)
+    public function __construct($companyId = null, $statusAccount = null, $statusForm = null, $search = null)
     {
         $this->companyId = $companyId;
         $this->statusAccount = $statusAccount;
+        $this->statusForm = $statusForm;
         $this->search = $search;
     }
 
@@ -61,6 +63,146 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
 
         if ($this->statusAccount !== null) {
             $query->where('status', (int)$this->statusAccount);
+        }
+
+        if ($this->statusForm !== null) {
+            if ($this->statusForm === "belum") {
+                $query->where(function ($q) {
+                    $q->whereDoesntHave('mosque.pillarOne')
+                        ->whereDoesntHave('mosque.pillarTwo')
+                        ->whereDoesntHave('mosque.pillarThree')
+                        ->whereDoesntHave('mosque.pillarFour')
+                        ->whereDoesntHave('mosque.pillarFive');
+                });
+            }
+
+            if ($this->statusForm === "sebagian") {
+                $query->where(function ($q) {
+                    $q->whereHas('mosque.pillarOne', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_one')
+                                ->orWhereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five')
+                                ->orWhereNotNull('file_question_two_one')
+                                ->orWhereNotNull('file_question_two_two');
+                        });
+                    })->orWhereHas('mosque.pillarTwo', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five');
+                        });
+                    })->orWhereHas('mosque.pillarThree', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_one')
+                                ->orWhereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five')
+                                ->orWhereNotNull('question_six');
+                        });
+                    })->orWhereHas('mosque.pillarFour', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_one')
+                                ->orWhereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five');
+                        });
+                    })->orWhereHas('mosque.pillarFive', function ($q1) {
+                        $q1->where(function ($q2) {
+                            $q2->whereNotNull('question_one')
+                                ->orWhereNotNull('question_two')
+                                ->orWhereNotNull('question_three')
+                                ->orWhereNotNull('question_four')
+                                ->orWhereNotNull('question_five');
+                        });
+                    });
+                })->where(function ($q) {
+                    $q->whereDoesntHave('mosque.pillarOne', function ($q1) {
+                        $q1->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five')
+                            ->whereNotNull('file_question_two_one')
+                            ->whereNotNull('file_question_two_two');
+                    })->orWhereDoesntHave('mosque.pillarTwo', function ($q1) {
+                        $q1->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    })->orWhereDoesntHave('mosque.pillarThree', function ($q1) {
+                        $q1->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five')
+                            ->whereNotNull('question_six');
+                    })->orWhereDoesntHave('mosque.pillarFour', function ($q1) {
+                        $q1->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    })->orWhereDoesntHave('mosque.pillarFive', function ($q1) {
+                        $q1->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    });
+                });
+            }
+
+            if ($this->statusForm === "lengkap") {
+                $query->whereHas('mosque.pillarOne', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five')
+                            ->whereNotNull('file_question_two_one')
+                            ->whereNotNull('file_question_two_two');
+                    });
+                })->whereHas('mosque.pillarTwo', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    });
+                })->whereHas('mosque.pillarThree', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five')
+                            ->whereNotNull('question_six');
+                    });
+                })->whereHas('mosque.pillarFour', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    });
+                })->whereHas('mosque.pillarFive', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('question_one')
+                            ->whereNotNull('question_two')
+                            ->whereNotNull('question_three')
+                            ->whereNotNull('question_four')
+                            ->whereNotNull('question_five');
+                    });
+                });
+            }
         }
 
         if ($this->search) {
