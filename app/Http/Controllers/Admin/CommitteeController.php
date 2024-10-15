@@ -108,6 +108,8 @@ class CommitteeController extends Controller
 
     public function distribution()
     {
+        Distribution::truncate();
+
         $users = User::where('role', 'user')->get();
         $admins = User::where('role', 'admin')
             ->where('is_committe_assessment', 'yes')
@@ -120,40 +122,14 @@ class CommitteeController extends Controller
             return redirect()->back()->with('error_distribution', 'Tidak ada panitia yang tersedia untuk pembagian penilaian.');
         }
 
-        $adminCount = $admins->count();
-        $userCount = $users->count();
-
-        $usersPerAdmin = intdiv($userCount * 2, $adminCount);
-        $extraUsers = ($userCount * 2) % $adminCount;
-
-        $distribution = [];
-        $adminIndex = 0;
-
         foreach ($users as $user) {
-            $assignedAdmins = [];
+            $randomAdmins = $admins->random(2);
 
-            for ($i = 0; $i < 2; $i++) {
-                $admin = $admins[$adminIndex];
-                $assignedAdmins[] = $admin;
-                $distribution[$admin->id] = ($distribution[$admin->id] ?? 0) + 1;
-
-                if ($distribution[$admin->id] >= $usersPerAdmin + ($extraUsers > 0 ? 1 : 0)) {
-                    $adminIndex = ($adminIndex + 1) % $adminCount;
-                    $extraUsers--;
-                }
-            }
-
-            foreach ($assignedAdmins as $admin) {
-                $existingDistribution = Distribution::where('user_id', $user->id)
-                    ->where('committe_id', $admin->id)
-                    ->first();
-
-                if (!$existingDistribution) {
-                    Distribution::create([
-                        'user_id' => $user->id,
-                        'committe_id' => $admin->id
-                    ]);
-                }
+            foreach ($randomAdmins as $admin) {
+                Distribution::create([
+                    'user_id' => $user->id,
+                    'committe_id' => $admin->id
+                ]);
             }
         }
 
