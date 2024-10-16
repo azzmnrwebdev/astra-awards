@@ -23,6 +23,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
     private $categoryAreaId;
     private $categoryMosqueId;
+    private $juryId;
     private $search;
 
     private $index = 0;
@@ -36,10 +37,11 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         'Content-Type' => 'text/xlsx',
     ];
 
-    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $search = null)
+    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $juryId = null, $search = null)
     {
         $this->categoryAreaId = $categoryAreaId;
         $this->categoryMosqueId = $categoryMosqueId;
+        $this->juryId = $juryId;
         $this->search = $search;
 
         if ($this->categoryAreaId && $this->categoryMosqueId) {
@@ -70,6 +72,10 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                         $q->where('category_area_id', $this->categoryAreaId)
                             ->where('category_mosque_id', $this->categoryMosqueId);
                     });
+                })->when($this->juryId, function ($query) {
+                    $query->whereHas('mosque.endAssessment', function ($q) {
+                        $q->where('jury_id', $this->juryId);
+                    });
                 })->when($this->search, function ($query) {
                     $query->where(function ($q) {
                         $q->whereHas('mosque', function ($mosqueQuery) {
@@ -85,13 +91,55 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
                     if ($user->mosque->endAssessment) {
                         $totalValue += $user->mosque->endAssessment->presentation_value;
+
+                        if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
+                            $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                        }
+
+                        if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
+                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+                        }
+
+                        if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
+                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+                        }
+
+                        if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
+                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+                        }
+
+                        if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
+                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+                        }
+
+                        if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
+                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
+                        }
                     }
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
-                    }
-
-                    $user->totalNilai = $totalValue + $user->mosque->total_pillar_value;
+                    $user->totalNilai = $totalValue;
                     return $user;
                 })->filter(function ($user) {
                     return $user->totalNilai > 0;
@@ -163,9 +211,10 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
         return [
             $this->index,
-            $user->name,
-            $user->mosque->company->name,
             $user->mosque->name,
+            $user->mosque->company->name,
+            $user->mosque->categoryArea->name,
+            $user->mosque->categoryMosque->name,
             $pillarTwoValue,
             $pillarOneValue,
             $pillarThreeValue,
@@ -181,9 +230,10 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     {
         return [
             'NO',
-            'NAMA LENGKAP',
-            'PERUSAHAAN',
             'NAMA MASJID/MUSALA',
+            'PERUSAHAAN',
+            'KATEGORI AREA',
+            'KATEGORI MASJID',
             'HUBUNGAN DENGAN YAYASAN AMALIAH ASTRA',
             'HUBUNGAN MANAJEMEN PERUSAHAAN DENGAN DKM & JAMAAH',
             'PROGRAM SOSIAL',
@@ -210,14 +260,14 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
         }
 
-        $sheet->getStyle('B2:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('B2:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
-            'B1:M1' => [
+            'B1:N1' => [
                 'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
                 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
             ],
-            'B2:M2' => [
+            'B2:N2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                 'alignment' => ['vertical' => 'center', 'wrapText' => true],
                 'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
