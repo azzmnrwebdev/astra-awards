@@ -23,11 +23,13 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
 
     private $categoryAreaId;
     private $categoryMosqueId;
+    private $juryId;
+    private $juryName;
     private $search;
 
     private $index = 0;
 
-    private $title = 'LAPORAN PENILAIAN AWAL PESERTA SEMUA KATEGORI';
+    private $title = 'LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS 2024';
     private $fileName = 'Daftar-Penilaian-Awal-Peserta-Amaliah-Astra-Awards-2024.xlsx';
 
     private $writerType = Excel::XLSX;
@@ -36,17 +38,24 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
         'Content-Type' => 'text/xlsx',
     ];
 
-    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $search = null)
+    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $juryId = null, $search = null)
     {
         $this->categoryAreaId = $categoryAreaId;
         $this->categoryMosqueId = $categoryMosqueId;
+        $this->juryId = $juryId;
         $this->search = $search;
 
         if ($this->categoryAreaId && $this->categoryMosqueId) {
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = 'LAPORAN PENILAIAN AWAL PESERTA KATEGORI ' . strtoupper($categoryArea->name) . ' DAN ' . strtoupper($categoryMosque->name);
+            $this->title = "LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS 2024\n" .
+                "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
+        }
+
+        if ($this->juryId) {
+            $juryName = User::find($this->juryId);
+            $this->juryName = strtoupper($juryName->name);
         }
     }
 
@@ -77,6 +86,12 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                         $q->where('category_area_id', $this->categoryAreaId)
                             ->where('category_mosque_id', $this->categoryMosqueId);
                     });
+                })->when($this->juryId, function ($query) {
+                    $query->where(function ($q) {
+                        $q->whereHas('mosque.presentation.startAssessment', function ($q2) {
+                            $q2->where('jury_id', $this->juryId);
+                        });
+                    });
                 })->when($this->search, function ($query) {
                     $query->where(function ($q) {
                         $q->whereHas('mosque', function ($mosqueQuery) {
@@ -89,6 +104,10 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
 
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
+
+                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                    }
 
                     if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
                         $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
@@ -132,10 +151,6 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                         $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
                     }
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
-                    }
-
                     $user->totalNilai = $totalValue;
                     return $user;
                 })->filter(function ($user) {
@@ -152,7 +167,11 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
 
     public function startCell(): string
     {
-        return 'B2';
+        if ($this->juryId) {
+            return 'B3';
+        } else {
+            return 'B2';
+        }
     }
 
     public function map($user): array
@@ -206,9 +225,10 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
 
         return [
             $this->index,
-            $user->name,
-            $user->mosque->company->name,
             $user->mosque->name,
+            $user->mosque->company->name,
+            $user->mosque->categoryMosque->name,
+            $user->mosque->categoryArea->name,
             $user->mosque->presentation->startAssessment ? 'Sudah Penilaian' : 'Belum Penilaian',
             $pillarTwoValue,
             $pillarOneValue,
@@ -224,9 +244,10 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
     {
         return [
             'NO',
-            'NAMA LENGKAP',
-            'PERUSAHAAN',
             'NAMA MASJID/MUSALA',
+            'PERUSAHAAN',
+            'KATEGORI',
+            'KATEGORI AREA',
             'STATUS',
             'HUBUNGAN DENGAN YAYASAN AMALIAH ASTRA',
             'HUBUNGAN MANAJEMEN PERUSAHAAN DENGAN DKM & JAMAAH',
@@ -240,44 +261,94 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('B1:M1');
-        $sheet->setCellValue('B1', $this->title);
-        $sheet->getRowDimension(1)->setRowHeight(40);
+        $sheet->mergeCells('B1:N1');
+        $sheet->setCellValue('B1', "\n\n" . $this->title);
+        $sheet->getRowDimension(1)->setRowHeight(100);
 
-        $sheet->getRowDimension(2)->setRowHeight(30);
-        $sheet->getStyle('C2:M2')->getAlignment()->setIndent(1);
+        $sheet->getStyle('B1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B1:N1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
-        $lastDataRow = $sheet->getHighestRow();
-        for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
-            $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-            $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
+        if ($this->juryId) {
+            $sheet->mergeCells('B2:N2');
+            $sheet->setCellValue('B2', 'NAMA JURI                      :  ' . $this->juryName);
+            $sheet->getRowDimension(2)->setRowHeight(20);
+
+            $sheet->getRowDimension(3)->setRowHeight(30);
+            $sheet->getStyle('C3:N3')->getAlignment()->setIndent(1);
+
+            $lastDataRow = $sheet->getHighestRow();
+            for ($rowIndex = 4; $rowIndex <= $lastDataRow; $rowIndex++) {
+                $sheet->getRowDimension($rowIndex)->setRowHeight(20);
+                $sheet->getStyle('C' . $rowIndex . ':N' . $rowIndex)->getAlignment()->setIndent(1);
+            }
+
+            $sheet->getStyle('B3:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+            return [
+                'B1:N1' => [
+                    'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
+                    'alignment' => ['wrapText' => true],
+                ],
+                'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'B2:N2' => [
+                    'font' => ['bold' => true],
+                    'alignment' => ['horizontal' => 'left', 'wrapText' => true],
+                ],
+                'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'N' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'B3:N3' => [
+                    'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
+                    'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+                    'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
+                ],
+                'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            ];
+        } else {
+            $sheet->getRowDimension(2)->setRowHeight(30);
+            $sheet->getStyle('C2:N2')->getAlignment()->setIndent(1);
+
+            $lastDataRow = $sheet->getHighestRow();
+            for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
+                $sheet->getRowDimension($rowIndex)->setRowHeight(20);
+                $sheet->getStyle('C' . $rowIndex . ':N' . $rowIndex)->getAlignment()->setIndent(1);
+            }
+
+            $sheet->getStyle('B2:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+            return [
+                'B1:N1' => [
+                    'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
+                    'alignment' => ['wrapText' => true],
+                ],
+                'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'N' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'B2:N2' => [
+                    'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
+                    'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+                    'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
+                ],
+                'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            ];
         }
-
-        $sheet->getStyle('B2:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        return [
-            'B1:M1' => [
-                'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
-                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
-            ],
-            'B2:M2' => [
-                'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
-                'alignment' => ['vertical' => 'center', 'wrapText' => true],
-                'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
-            ],
-            'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-            'D' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'E' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'F' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'I' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'J' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'K' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'L' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'M' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-        ];
     }
 
     public function title(): string

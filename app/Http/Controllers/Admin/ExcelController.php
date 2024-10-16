@@ -69,9 +69,10 @@ class ExcelController extends Controller
     {
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
+        $juryId = $request->input('juri');
         $search = $request->input('pencarian');
 
-        return new StartAssessmentsExport($categoryAreaId, $categoryMosqueId, $search);
+        return new StartAssessmentsExport($categoryAreaId, $categoryMosqueId, $juryId, $search);
     }
 
     public function endAssessments(Request $request)
