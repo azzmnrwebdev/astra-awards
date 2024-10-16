@@ -11,7 +11,7 @@
     {{-- Main Content --}}
     <h4 class="mb-4 fw-semibold d-inline-flex" id="pageTitle">
         <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Penilaian Awal
-        {{ $user->name }}
+        {{ $user->mosque->name }}
     </h4>
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
@@ -63,7 +63,7 @@
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="documentModalLabel">File Presentasi - {{ $user->name }}</h1>
+                    <h1 class="modal-title fs-5" id="documentModalLabel">File Presentasi</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 

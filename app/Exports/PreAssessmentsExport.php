@@ -27,7 +27,7 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
     private $index = 0;
 
-    private $title = 'LAPORAN PRA PENILAIAN PESERTA SEMUA KATEGORI';
+    private $title = 'LAPORAN PRA PENILAIAN AMALIAH ASTRA AWARDS 2024';
     private $fileName = 'Daftar-Pra-Penilaian-Peserta-Amaliah-Astra-Awards-2024.xlsx';
 
     private $writerType = Excel::XLSX;
@@ -46,7 +46,8 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = 'LAPORAN PRA PENILAIAN PESERTA KATEGORI ' . strtoupper($categoryArea->name) . ' DAN ' . strtoupper($categoryMosque->name);
+            $this->title = "LAPORAN PRA PENILAIAN AMALIAH ASTRA AWARDS 2024\n" .
+                "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
         }
     }
 
@@ -225,9 +226,10 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
         return [
             $this->index,
-            $user->name,
             $user->mosque->name,
             $user->mosque->company->name,
+            $user->mosque->categoryMosque->name,
+            $user->mosque->categoryArea->name,
             $status,
             $pillarTwoTotal,
             $pillarOneTotal,
@@ -242,9 +244,10 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     {
         return [
             'NO',
-            'NAMA LENGKAP',
             'NAMA MASJID/MUSALA',
             'PERUSAHAAN',
+            'KATEGORI',
+            'KATEGORI AREA',
             'STATUS',
             'HUBUNGAN DENGAN YAYASAN AMALIAH ASTRA',
             'HUBUNGAN MANAJEMEN PERUSAHAAN DENGAN DKM & JAMAAH',
@@ -257,42 +260,46 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('B1:L1');
-        $sheet->setCellValue('B1', $this->title);
-        $sheet->getRowDimension(1)->setRowHeight(40);
+        $sheet->mergeCells('B1:M1');
+        $sheet->setCellValue('B1', "\n\n" . $this->title);
+        $sheet->getRowDimension(1)->setRowHeight(100);
+
+        $sheet->getStyle('B1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B1:M1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
         $sheet->getRowDimension(2)->setRowHeight(30);
-        $sheet->getStyle('C2:L2')->getAlignment()->setIndent(1);
+        $sheet->getStyle('C2:M2')->getAlignment()->setIndent(1);
 
         $lastDataRow = $sheet->getHighestRow();
         for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
             $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-            $sheet->getStyle('C' . $rowIndex . ':L' . $rowIndex)->getAlignment()->setIndent(1);
+            $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
         }
 
-        $sheet->getStyle('B2:L' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('B2:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
-            'B1:L1' => [
-                'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
-                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+            'B1:M1' => [
+                'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
+                'alignment' => ['wrapText' => true],
             ],
-            'B2:L2' => [
+            'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+            'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+            'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+            'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+            'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+            'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+            'B2:M2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
-                'alignment' => ['vertical' => 'center', 'wrapText' => true],
+                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
                 'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
             ],
             'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-            'D' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'E' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'F' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+            'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+            'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
             'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'I' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'J' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'K' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'L' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
         ];
     }
 
