@@ -35,32 +35,18 @@ class SystemAssessmentController extends Controller
 
     public function pillarTwoAct(Request $request)
     {
-
         $nilaiMappingCheckbox4 = [
+            '1,2,3' => 9,
+            '1,2,4' => 9,
+            '1,3,4' => 9,
+            '2,3,4' => 9,
             '' => 1,
-            '1' => 7,
-            '2' => 7,
-            '3' => 3,
             '1,2' => 9,
             '1,3' => 7,
             '2,3' => 7,
-            '1,2,3' => 9,
-            '2,3,4' => 9,
-            '1,2,3,4' => 9,
-        ];
-
-        $nilaiMappingCheckboxPertanyaan3 = [
-            '' => 1,
+            '3' => 3,
             '1' => 7,
             '2' => 7,
-            '3' => 7,
-            '4' => 3,
-            '1,2' => 9,
-            '1,3' => 9,
-            '2,3' => 9,
-            '1,4' => 9,
-            '2,4' => 9,
-            '3,4' => 9,
         ];
 
         $nilaiMappingCheckbox2 = [
@@ -83,7 +69,7 @@ class SystemAssessmentController extends Controller
         $questionFour = $request->input('pillar_two_question_four', []);
         sort($questionFour);
         $questionFourKey = implode(',', $questionFour);
-        $resultQuestionFour = $nilaiMappingCheckboxPertanyaan3[$questionFourKey] ?? null;
+        $resultQuestionFour = $nilaiMappingCheckbox4[$questionFourKey] ?? null;
 
         $questionFive = $request->input('pillar_two_question_five', []);
         sort($questionFive);
@@ -121,39 +107,41 @@ class SystemAssessmentController extends Controller
             4 => 9,
         ];
 
-        $nilaiMappingCheckbox6 = [
-            '' => 1,
-            '3' => 3,
-            '1,2' => 3,
-            '1,3' => 7,
-            '1,4' => 3,
-            '2,3' => 7,
-            '2,4' => 3,
-            '3,4' => 7,
-            '5,6' => 9,
-            '1,2,3' => 9,
-            '2,3,4' => 9,
-            '1,2,3,4' => 9,
-        ];
-
         $nilaiMappingCheckbox4 = [
             '' => 1,
             '1' => 3,
             '2' => 3,
             '3' => 3,
-            '3' => 3,
+            '4' => 3,
             '1,2' => 7,
+            '1,3' => 7,
+            '1,4' => 7,
+            '2,3' => 7,
+            '2,4' => 7,
             '3,4' => 7,
             '1,2,3' => 9,
-            '2,3,4' => 9,
             '1,2,4' => 9,
             '1,3,4' => 9,
+            '2,3,4' => 9,
         ];
 
+        $questionFourAmount = 1;
         $questionFour = $request->input('pillar_three_question_four', []);
-        sort($questionFour);
-        $questionFourKey = implode(',', $questionFour);
-        $resultQuestionFour = $nilaiMappingCheckbox6[$questionFourKey] ?? null;
+
+        if (!empty($questionFour)) {
+            $selectedOptions = explode(',', $questionFour[0]);
+            $questionFourAmount = count($selectedOptions);
+        }
+
+        if ($questionFourAmount >= 1 && $questionFourAmount <= 2) {
+            $resultQuestionFour = 3;
+        } elseif ($questionFourAmount >= 3 && $questionFourAmount <= 4) {
+            $resultQuestionFour = 7;
+        } elseif ($questionFourAmount >= 5 && $questionFourAmount <= 6) {
+            $resultQuestionFour = 9;
+        } else {
+            $resultQuestionFour = 1;
+        }
 
         $questionSix = $request->input('pillar_three_question_six', []);
         sort($questionSix);
@@ -178,7 +166,6 @@ class SystemAssessmentController extends Controller
         return redirect()->back()->with('success', 'Nilai berhasil ditampilkan');
     }
 
-    // belum selesai
     public function pillarFourAct(Request $request)
     {
         $nilaiMappingRadio2 = [
