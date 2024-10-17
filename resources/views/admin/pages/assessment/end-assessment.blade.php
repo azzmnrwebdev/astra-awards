@@ -7,7 +7,7 @@
         <div class="card-body p-lg-4">
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('end_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'juri'=> $juryId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
+                    <a href="{{ route('end_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
                         class="btn btn-success rounded-0">Unduh Excel
                     </a>
                 </div>

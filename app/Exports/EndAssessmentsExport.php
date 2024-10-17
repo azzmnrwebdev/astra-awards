@@ -24,11 +24,12 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     private $categoryAreaId;
     private $categoryMosqueId;
     private $juryId;
+    private $juryName;
     private $search;
 
     private $index = 0;
 
-    private $title = 'LAPORAN PENILAIAN AKHIR PESERTA SEMUA KATEGORI';
+    private $title = 'LAPORAN PENILAIAN AKHIR AMALIAH ASTRA AWARDS 2024';
     private $fileName = 'Daftar-Penilaian-Akhir-Peserta-Amaliah-Astra-Awards-2024.xlsx';
 
     private $writerType = Excel::XLSX;
@@ -48,7 +49,13 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = 'LAPORAN PENILAIAN AKHIR PESERTA KATEGORI ' . strtoupper($categoryArea->name) . ' DAN ' . strtoupper($categoryMosque->name);
+            $this->title = "LAPORAN PENILAIAN AKHIR AMALIAH ASTRA AWARDS 2024\n" .
+                "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
+        }
+
+        if ($this->juryId) {
+            $juryName = User::find($this->juryId);
+            $this->juryName = strtoupper($juryName->name);
         }
     }
 
@@ -89,54 +96,46 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->endAssessment) {
-                        $totalValue += $user->mosque->endAssessment->presentation_value;
+                    if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+                    }
 
-                        if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                            $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
-                        }
+                    if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+                    }
 
-                        if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
-                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
-                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
-                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
-                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
-                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
-                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
-                            $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
-                        }
+                    if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+                    }
 
-                        if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
-                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
-                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
-                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
-                            $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
-                        }
+                    if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+                    }
 
-                        if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
-                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
-                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
-                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
-                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
-                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
-                            $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
-                        }
-
-                        if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
-                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
-                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
-                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
-                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
-                            $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
-                        }
-
-                        if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
-                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
-                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
-                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
-                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
-                            $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
-                        }
+                    if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -155,7 +154,11 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
     public function startCell(): string
     {
-        return 'B2';
+        if ($this->juryId) {
+            return 'B3';
+        } else {
+            return 'B2';
+        }
     }
 
     public function map($user): array
@@ -204,25 +207,43 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five
         ) : 'Belum Tersedia';
 
-        $filePresentationValue = $user->mosque->presentation && $user->mosque->presentation->startAssessment ?
-            $user->mosque->presentation->startAssessment->presentation_file : 'Belum Tersedia';
+        $pillarOneWeight = 0.25;
+        $pillarTwoWeight = 0.25;
+        $pillarThreeWeight = 0.20;
+        $pillarFourWeight = 0.15;
+        $pillarFiveWeight = 0.15;
 
-        $presentationValue = $user->mosque->endAssessment ? $user->mosque->endAssessment->presentation_value : 'Belum Tersedia';
+        $rekapNilai = 0;
+
+        if (is_numeric($pillarOneValue)) {
+            $rekapNilai += $pillarOneValue * $pillarOneWeight;
+        }
+        if (is_numeric($pillarTwoValue)) {
+            $rekapNilai += $pillarTwoValue * $pillarTwoWeight;
+        }
+        if (is_numeric($pillarThreeValue)) {
+            $rekapNilai += $pillarThreeValue * $pillarThreeWeight;
+        }
+        if (is_numeric($pillarFourValue)) {
+            $rekapNilai += $pillarFourValue * $pillarFourWeight;
+        }
+        if (is_numeric($pillarFiveValue)) {
+            $rekapNilai += $pillarFiveValue * $pillarFiveWeight;
+        }
 
         return [
             $this->index,
             $user->mosque->name,
             $user->mosque->company->name,
-            $user->mosque->categoryArea->name,
             $user->mosque->categoryMosque->name,
+            $user->mosque->categoryArea->name,
             $pillarTwoValue,
             $pillarOneValue,
             $pillarThreeValue,
             $pillarFourValue,
             $pillarFiveValue,
-            $filePresentationValue,
-            $presentationValue,
             $user->totalNilai,
+            $rekapNilai,
         ];
     }
 
@@ -232,59 +253,104 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             'NO',
             'NAMA MASJID/MUSALA',
             'PERUSAHAAN',
+            'KATEGORI',
             'KATEGORI AREA',
-            'KATEGORI MASJID',
-            'HUBUNGAN DENGAN YAYASAN AMALIAH ASTRA',
-            'HUBUNGAN MANAJEMEN PERUSAHAAN DENGAN DKM & JAMAAH',
-            'PROGRAM SOSIAL',
-            'ADMINISTRASI & KEUANGAN',
-            'PERIBADAHAN & INFRASTRUKTUR',
-            'FILE PRESENTASI',
-            'PRESENTASI',
+            "HUBUNGAN DENGAN\nYAYASAN AMALIAH\nASTRA (BOBOT 25%)",
+            "HUBUNGAN\nMANAJEMEN\nPERUSAHAAN\nDENGAN DKM &\nJAMAAH (BOBOT 25%)",
+            "PROGRAM SOSIAL\n(BOBOT 20%)",
+            "ADMINISTRASI\n& KEUANGAN\n(BOBOT 15%)",
+            "PERIBADAHAN\n& INFRASTRUKTUR\n(BOBOT 15%)",
             'TOTAL NILAI',
+            "REKAP NILAI\n(DIKALIKAN BOBOT)",
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
         $sheet->mergeCells('B1:M1');
-        $sheet->setCellValue('B1', $this->title);
-        $sheet->getRowDimension(1)->setRowHeight(40);
+        $sheet->setCellValue('B1', "\n\n" . $this->title);
+        $sheet->getRowDimension(1)->setRowHeight(100);
 
-        $sheet->getRowDimension(2)->setRowHeight(30);
-        $sheet->getStyle('C2:M2')->getAlignment()->setIndent(1);
+        $sheet->getStyle('B1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B1:M1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
-        $lastDataRow = $sheet->getHighestRow();
-        for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
-            $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-            $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
+        if ($this->juryId) {
+            $sheet->mergeCells('B2:M2');
+            $sheet->setCellValue('B2', 'NAMA JURI                      :  ' . $this->juryName);
+            $sheet->getRowDimension(2)->setRowHeight(20);
+
+            $sheet->getRowDimension(3)->setRowHeight(100);
+
+            $lastDataRow = $sheet->getHighestRow();
+            for ($rowIndex = 4; $rowIndex <= $lastDataRow; $rowIndex++) {
+                $sheet->getRowDimension($rowIndex)->setRowHeight(20);
+                $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
+            }
+
+            $sheet->getStyle('B3:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+            return [
+                'B1:M1' => [
+                    'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
+                    'alignment' => ['wrapText' => true],
+                ],
+                'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'B2:M2' => [
+                    'font' => ['bold' => true],
+                    'alignment' => ['horizontal' => 'left', 'wrapText' => true],
+                ],
+                'G' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'B3:M3' => [
+                    'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
+                    'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+                    'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
+                ],
+                'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'L' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            ];
+        } else {
+            $sheet->getRowDimension(2)->setRowHeight(100);
+
+            $lastDataRow = $sheet->getHighestRow();
+            for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
+                $sheet->getRowDimension($rowIndex)->setRowHeight(20);
+                $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
+            }
+
+            $sheet->getStyle('B2:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+            return [
+                'B1:M1' => [
+                    'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
+                    'alignment' => ['wrapText' => true],
+                ],
+                'G' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'B2:M2' => [
+                    'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
+                    'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+                    'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
+                ],
+                'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'L' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            ];
         }
-
-        $sheet->getStyle('B2:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        return [
-            'B1:N1' => [
-                'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
-                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
-            ],
-            'B2:N2' => [
-                'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
-                'alignment' => ['vertical' => 'center', 'wrapText' => true],
-                'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
-            ],
-            'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-            'D' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'E' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'F' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'I' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'J' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'K' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'L' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'M' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-        ];
     }
 
     public function title(): string

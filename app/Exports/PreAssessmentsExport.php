@@ -138,6 +138,7 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
         $filledPillars = 0;
         $status = 'Belum Penilaian';
+        $pillarOneTotalValue = $pillarTwoTotalValue = $pillarThreeTotalValue = $pillarFourTotalValue = $pillarFiveTotalValue = 0;
 
         $pillarOneTotal = 'Belum Tersedia';
         $pillarTwoTotal = 'Belum Tersedia';
@@ -224,6 +225,16 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $status = 'Semua Formulir';
         }
 
+        $rekapNilai = (
+            ($pillarOneTotalValue * 0.25) +
+            ($pillarTwoTotalValue * 0.25) +
+            ($pillarThreeTotalValue * 0.20) +
+            ($pillarFourTotalValue * 0.15) +
+            ($pillarFiveTotalValue * 0.15)
+        );
+
+        $rekapNilaiFormatted = number_format($rekapNilai, 2);
+
         return [
             $this->index,
             $user->mosque->name,
@@ -237,6 +248,7 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $pillarFourTotal,
             $pillarFiveTotal,
             $user->mosque->total_pillar_value !== 0 ? $user->mosque->total_pillar_value : 'Belum Tersedia',
+            $rekapNilaiFormatted
         ];
     }
 
@@ -249,37 +261,37 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             'KATEGORI',
             'KATEGORI AREA',
             'STATUS',
-            'HUBUNGAN DENGAN YAYASAN AMALIAH ASTRA',
-            'HUBUNGAN MANAJEMEN PERUSAHAAN DENGAN DKM & JAMAAH',
-            'PROGRAM SOSIAL',
-            'ADMINISTRASI & KEUANGAN',
-            'PERIBADAHAN & INFRASTRUKTUR',
+            "HUBUNGAN DENGAN\nYAYASAN AMALIAH\nASTRA (BOBOT 25%)",
+            "HUBUNGAN\nMANAJEMEN\nPERUSAHAAN\nDENGAN DKM &\nJAMAAH (BOBOT 25%)",
+            "PROGRAM SOSIAL\n(BOBOT 20%)",
+            "ADMINISTRASI\n& KEUANGAN\n(BOBOT 15%)",
+            "PERIBADAHAN\n& INFRASTRUKTUR\n(BOBOT 15%)",
             'TOTAL NILAI',
+            "REKAP NILAI\n(DIKALIKAN BOBOT)",
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('B1:M1');
+        $sheet->mergeCells('B1:N1');
         $sheet->setCellValue('B1', "\n\n" . $this->title);
         $sheet->getRowDimension(1)->setRowHeight(100);
 
-        $sheet->getStyle('B1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('B1:M1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
+        $sheet->getStyle('B1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B1:N1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
-        $sheet->getRowDimension(2)->setRowHeight(30);
-        $sheet->getStyle('C2:M2')->getAlignment()->setIndent(1);
+        $sheet->getRowDimension(2)->setRowHeight(100);
 
         $lastDataRow = $sheet->getHighestRow();
         for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
             $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-            $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
+            $sheet->getStyle('C' . $rowIndex . ':N' . $rowIndex)->getAlignment()->setIndent(1);
         }
 
-        $sheet->getStyle('B2:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+        $sheet->getStyle('B2:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
         return [
-            'B1:M1' => [
+            'B1:N1' => [
                 'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
                 'alignment' => ['wrapText' => true],
             ],
@@ -288,8 +300,7 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
             'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
             'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-            'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-            'B2:M2' => [
+            'B2:N2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
                 'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
@@ -300,6 +311,8 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
             'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
             'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
         ];
     }
 

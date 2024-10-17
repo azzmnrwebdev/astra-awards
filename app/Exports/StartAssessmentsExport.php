@@ -105,10 +105,6 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
-                    }
-
                     if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
                         $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
                         $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
@@ -220,8 +216,29 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five
         ) : 'Belum Tersedia';
 
-        $filePresentationValue = $user->mosque->presentation && $user->mosque->presentation->startAssessment ?
-            $user->mosque->presentation->startAssessment->presentation_file : 'Belum Tersedia';
+        $pillarOneWeight = 0.25;
+        $pillarTwoWeight = 0.25;
+        $pillarThreeWeight = 0.20;
+        $pillarFourWeight = 0.15;
+        $pillarFiveWeight = 0.15;
+
+        $rekapNilai = 0;
+
+        if (is_numeric($pillarOneValue)) {
+            $rekapNilai += $pillarOneValue * $pillarOneWeight;
+        }
+        if (is_numeric($pillarTwoValue)) {
+            $rekapNilai += $pillarTwoValue * $pillarTwoWeight;
+        }
+        if (is_numeric($pillarThreeValue)) {
+            $rekapNilai += $pillarThreeValue * $pillarThreeWeight;
+        }
+        if (is_numeric($pillarFourValue)) {
+            $rekapNilai += $pillarFourValue * $pillarFourWeight;
+        }
+        if (is_numeric($pillarFiveValue)) {
+            $rekapNilai += $pillarFiveValue * $pillarFiveWeight;
+        }
 
         return [
             $this->index,
@@ -235,8 +252,8 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             $pillarThreeValue,
             $pillarFourValue,
             $pillarFiveValue,
-            $filePresentationValue,
             $user->totalNilai,
+            $rekapNilai,
         ];
     }
 
@@ -249,13 +266,13 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             'KATEGORI',
             'KATEGORI AREA',
             'STATUS',
-            'HUBUNGAN DENGAN YAYASAN AMALIAH ASTRA',
-            'HUBUNGAN MANAJEMEN PERUSAHAAN DENGAN DKM & JAMAAH',
-            'PROGRAM SOSIAL',
-            'ADMINISTRASI & KEUANGAN',
-            'PERIBADAHAN & INFRASTRUKTUR',
-            'FILE PRESENTASI',
+            "HUBUNGAN DENGAN\nYAYASAN AMALIAH\nASTRA (BOBOT 25%)",
+            "HUBUNGAN\nMANAJEMEN\nPERUSAHAAN\nDENGAN DKM &\nJAMAAH (BOBOT 25%)",
+            "PROGRAM SOSIAL\n(BOBOT 20%)",
+            "ADMINISTRASI\n& KEUANGAN\n(BOBOT 15%)",
+            "PERIBADAHAN\n& INFRASTRUKTUR\n(BOBOT 15%)",
             'TOTAL NILAI',
+            "REKAP NILAI\n(DIKALIKAN BOBOT)",
         ];
     }
 
@@ -273,8 +290,7 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             $sheet->setCellValue('B2', 'NAMA JURI                      :  ' . $this->juryName);
             $sheet->getRowDimension(2)->setRowHeight(20);
 
-            $sheet->getRowDimension(3)->setRowHeight(30);
-            $sheet->getStyle('C3:N3')->getAlignment()->setIndent(1);
+            $sheet->getRowDimension(3)->setRowHeight(100);
 
             $lastDataRow = $sheet->getHighestRow();
             for ($rowIndex = 4; $rowIndex <= $lastDataRow; $rowIndex++) {
@@ -299,8 +315,6 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'N' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'B3:N3' => [
                     'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                     'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
@@ -311,10 +325,11 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             ];
         } else {
-            $sheet->getRowDimension(2)->setRowHeight(30);
-            $sheet->getStyle('C2:N2')->getAlignment()->setIndent(1);
+            $sheet->getRowDimension(2)->setRowHeight(100);
 
             $lastDataRow = $sheet->getHighestRow();
             for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
@@ -334,8 +349,6 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'N' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'B2:N2' => [
                     'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                     'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
@@ -347,6 +360,8 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'G' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             ];
         }
     }
