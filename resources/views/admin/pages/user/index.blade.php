@@ -183,6 +183,13 @@
                                     <span class="badge {{ $badgeClass }}">{{ $status }}</span>
                                 </td>
                                 <td class="text-center py-3">
+                                    @if ($item->mosque->presentation && $item->mosque->presentation->file)
+                                        <span class="badge text-bg-success">Sudah</span>
+                                    @else
+                                        <span class="badge text-bg-danger">Belum</span>
+                                    @endif
+                                </td>
+                                <td class="text-center py-3">
                                     {{ \Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('d F Y') }}
                                 </td>
                                 <td class="text-center py-3">
@@ -206,7 +213,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="9" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>
