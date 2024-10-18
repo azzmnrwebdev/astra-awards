@@ -43,7 +43,7 @@ class UserController extends Controller
         $companyId = $request->input('perusahaan');
         $statusAccount = $request->input('status_akun');
         $statusForm = $request->input('status_formulir');
-        $statusPresentationFileValue = $request->input('status_file_presentasi');
+        $statusPresentationFile = $request->input('status_file_presentasi');
         $search = $request->input('pencarian');
 
         $query = User::with(['mosque.company'])->where('role', 'user');
@@ -198,14 +198,14 @@ class UserController extends Controller
             }
         }
 
-        if ($statusPresentationFileValue !== null) {
-            if ($statusPresentationFileValue === "belum") {
+        if ($statusPresentationFile !== null) {
+            if ($statusPresentationFile === "belum") {
                 $query->where(function ($q) {
                     $q->whereDoesntHave('mosque.presentation');
                 });
             }
 
-            if ($statusPresentationFileValue === "sudah") {
+            if ($statusPresentationFile === "sudah") {
                 $query->whereHas('mosque.presentation', function ($q1) {
                     $q1->where(function ($q2) {
                         $q2->whereNotNull('file');

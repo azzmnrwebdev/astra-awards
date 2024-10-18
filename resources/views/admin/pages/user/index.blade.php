@@ -18,7 +18,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('user.download_excel', ['perusahaan' => $companyId, 'status_akun' => request('status_akun'), 'status_formulir' => request('status_formulir'), 'pencarian' => $search]) }}"
+                    <a href="{{ route('user.download_excel', ['perusahaan' => $companyId, 'status_akun' => request('status_akun'), 'status_formulir' => request('status_formulir'), 'status_file_presentasi' => request('status_file_presentasi'), 'pencarian' => $search]) }}"
                         class="btn btn-success rounded-0">Unduh Excel</a>
                 </div>
 

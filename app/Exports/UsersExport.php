@@ -22,6 +22,7 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
     private $companyId;
     private $statusAccount;
     private $statusForm;
+    private $statusPresentationFile;
     private $search;
 
     private $index = 0;
@@ -34,11 +35,12 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
         'Content-Type' => 'text/xlsx',
     ];
 
-    public function __construct($companyId = null, $statusAccount = null, $statusForm = null, $search = null)
+    public function __construct($companyId = null, $statusAccount = null, $statusForm = null, $statusPresentationFile = null, $search = null)
     {
         $this->companyId = $companyId;
         $this->statusAccount = $statusAccount;
         $this->statusForm = $statusForm;
+        $this->statusPresentationFile = $statusPresentationFile;
         $this->search = $search;
     }
 
@@ -205,6 +207,22 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
             }
         }
 
+        if ($this->statusPresentationFile !== null) {
+            if ($this->statusPresentationFile === "belum") {
+                $query->where(function ($q) {
+                    $q->whereDoesntHave('mosque.presentation');
+                });
+            }
+
+            if ($this->statusPresentationFile === "sudah") {
+                $query->whereHas('mosque.presentation', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('file');
+                    });
+                });
+            }
+        }
+
         if ($this->search) {
             $query->where(function ($q) {
                 $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($this->search) . '%'])
@@ -278,8 +296,11 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
     public function styles(Worksheet $sheet)
     {
         $sheet->mergeCells('B1:T1');
-        $sheet->setCellValue('B1', 'LAPORAN SEMUA PESERTA PENDAFTAR AMALIAH ASTRA AWARDS 2024');
-        $sheet->getRowDimension(1)->setRowHeight(40);
+        $sheet->setCellValue('B1', "\n\n" . 'LAPORAN SEMUA PESERTA PENDAFTAR AMALIAH ASTRA AWARDS 2024');
+        $sheet->getRowDimension(1)->setRowHeight(100);
+
+        $sheet->getStyle('B1:T1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B1:T1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
         $sheet->getRowDimension(2)->setRowHeight(30);
         $sheet->getStyle('C2:T2')->getAlignment()->setIndent(1);
@@ -294,8 +315,8 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
 
         return [
             'B1:T1' => [
-                'font' => ['bold' => true, 'size' => 14, 'color' => ['argb' => 'FF000000']],
-                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+                'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
+                'alignment' => ['wrapText' => true],
             ],
             'B2:T2' => [
                 'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],

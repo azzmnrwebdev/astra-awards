@@ -51,9 +51,10 @@ class ExcelController extends Controller
         $companyId = $request->input('perusahaan');
         $statusAccount = $request->input('status_akun');
         $statusForm = $request->input('status_formulir');
+        $statusPresentationFile = $request->input('status_file_presentasi');
         $search = $request->input('pencarian');
 
-        return new UsersExport($companyId, $statusAccount, $statusForm, $search);
+        return new UsersExport($companyId, $statusAccount, $statusForm, $statusPresentationFile, $search);
     }
 
     public function preeAssessments(Request $request)
