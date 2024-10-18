@@ -43,6 +43,7 @@ class UserController extends Controller
         $companyId = $request->input('perusahaan');
         $statusAccount = $request->input('status_akun');
         $statusForm = $request->input('status_formulir');
+        $statusPresentationFileValue = $request->input('status_file_presentasi');
         $search = $request->input('pencarian');
 
         $query = User::with(['mosque.company'])->where('role', 'user');
@@ -192,6 +193,22 @@ class UserController extends Controller
                             ->whereNotNull('question_three')
                             ->whereNotNull('question_four')
                             ->whereNotNull('question_five');
+                    });
+                });
+            }
+        }
+
+        if ($statusPresentationFileValue !== null) {
+            if ($statusPresentationFileValue === "belum") {
+                $query->where(function ($q) {
+                    $q->whereDoesntHave('mosque.presentation');
+                });
+            }
+
+            if ($statusPresentationFileValue === "sudah") {
+                $query->whereHas('mosque.presentation', function ($q1) {
+                    $q1->where(function ($q2) {
+                        $q2->whereNotNull('file');
                     });
                 });
             }

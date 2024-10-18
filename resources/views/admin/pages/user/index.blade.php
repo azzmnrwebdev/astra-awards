@@ -46,7 +46,7 @@
                             </select>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-sm-6">
                             <select name="status_formulir" id="status_formulir" class="form-select">
                                 <option value="">-- Semua Status Formulir --</option>
                                 <option value="belum" {{ request('status_formulir') === 'belum' ? 'selected' : '' }}>
@@ -60,6 +60,19 @@
                                     {{ request('status_formulir') === 'lengkap' ? 'selected' : '' }}>
                                     Semua Formulir
                                 </option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <select name="status_file_presentasi" id="status_file_presentasi" class="form-select">
+                                <option value="">-- Semua Status File Presentasi --</option>
+                                <option value="sudah"
+                                    {{ request('status_file_presentasi') === 'sudah' ? 'selected' : '' }}>
+                                    Sudah
+                                </option>
+                                <option value="belum"
+                                    {{ request('status_file_presentasi') === 'belum' ? 'selected' : '' }}>
+                                    Belum</option>
                             </select>
                         </div>
 
@@ -264,15 +277,17 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#perusahaan, #status_akun, #status_formulir, #pencarian').on('input keydown change', function(e) {
-                    if (e.which !== 13) {
-                        clearTimeout(debounceTimeout);
+                $('#perusahaan, #status_akun, #status_formulir, #status_file_presentasi, #pencarian').on(
+                    'input keydown change',
+                    function(e) {
+                        if (e.which !== 13) {
+                            clearTimeout(debounceTimeout);
 
-                        debounceTimeout = setTimeout(function() {
-                            filter();
-                        }, 1000);
-                    }
-                });
+                            debounceTimeout = setTimeout(function() {
+                                filter();
+                            }, 1000);
+                        }
+                    });
 
                 $('#pencarian').on('keypress', function(e) {
                     if (e.which == 13) {
@@ -286,6 +301,7 @@
                     const companyValue = $('#perusahaan').val();
                     const statusAccountValue = $('#status_akun').val();
                     const statusFormValue = $('#status_formulir').val();
+                    const statusPresentationFileValue = $('#status_file_presentasi').val();
                     const searchValue = $('#pencarian').val();
                     const url = '{{ route('user.index') }}';
 
@@ -299,6 +315,10 @@
 
                     if (statusFormValue !== '') {
                         params.status_formulir = statusFormValue;
+                    }
+
+                    if (statusPresentationFileValue !== '') {
+                        params.status_file_presentasi = statusPresentationFileValue;
                     }
 
                     if (searchValue.trim() !== '') {
