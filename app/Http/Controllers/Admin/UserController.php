@@ -37,7 +37,7 @@ class UserController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
 
-        $companies = Company::all();
+        $companies = Company::orderBy('name', 'asc')->get();
 
         $companyId = $request->input('perusahaan');
         $statusAccount = $request->input('status_akun');
