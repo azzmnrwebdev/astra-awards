@@ -16,14 +16,27 @@
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
-            <h5 class="card-title fw-semibold">File Presentasi</h5>
+            <div class="mb-4">
+                <h5 class="card-title fw-semibold">Pihak Penilai</h5>
+
+                <ul class="list-group mt-3">
+                    <li class="list-group-item border-0 py-1">
+                        {{ $user->mosque->presentation->startAssessment->jury->name }}</li>
+                </ul>
+            </div>
+
+            <h5 class="card-title fw-semibold mb-3">File Presentasi</h5>
+
+            <button type="button" class="btn btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#documentModal"
+                data-url="{{ url('/' . ltrim($user->mosque->presentation->file, '/')) }}">
+                Lihat File
+            </button>
 
             <div class="table-responsive mt-3">
                 <table class="table table-hover text-nowrap align-middle mb-0">
                     <thead class="border-top border-start border-end table-custom">
                         <tr>
-                            <th class="text-center py-3">Pertanyaan</th>
-                            <th class="text-center py-3">File Presentasi</th>
+                            <th class="text-center py-3">Pilar</th>
                             <th class="text-center py-3">Nilai</th>
                         </tr>
                     </thead>
@@ -32,23 +45,77 @@
                         @if ($user->mosque->presentation->startAssessment)
                             <tr>
                                 <td class="text-start py-3">
-                                    Silahkan untuk mengunggah file presentasi yang memuat keseluruhan pilar penilaian
-                                    (Pilar 1, 2, 3, 4, dan 5)
+                                    Hubungan DKM dengan YAA (Bobot 25%)
                                 </td>
                                 <td class="text-center py-3">
-                                    <button type="button" class="border-0 p-0 bg-transparent text-primary"
-                                        data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($user->mosque->presentation->file, '/')) }}">
-                                        Lihat File
-                                    </button>
+                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_two }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-start py-3">
+                                    Hubungan Manajemen Perusahaan dengan DKM dan Jamaah (Bobot 25%)
                                 </td>
                                 <td class="text-center py-3">
                                     {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_one }}
                                 </td>
                             </tr>
+
+                            <tr>
+                                <td class="text-start py-3">
+                                    Program Sosial (Bobot 20%)
+                                </td>
+                                <td class="text-center py-3">
+                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_three }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-start py-3">
+                                    Administrasi dan Keuangan (Bobot 15%)
+                                </td>
+                                <td class="text-center py-3">
+                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_four }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-start py-3">
+                                    Peribadahan dan Infrastruktur (Bobot 15%)
+                                </td>
+                                <td class="text-center py-3">
+                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_five }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center fw-semibold py-3">
+                                    Total Nilai
+                                </td>
+                                <td class="text-center fw-semibold py-3">
+                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_two +
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_one +
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_three +
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_four +
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_five }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center fw-semibold py-3">
+                                    Rekap Nilai (Dikalikan Bobot)
+                                </td>
+                                <td class="text-center fw-semibold py-3">
+                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15 }}
+                                </td>
+                            </tr>
                         @else
                             <tr>
-                                <td colspan="3" class="text-center text-danger py-3">Penilaian belum
+                                <td colspan="2" class="text-center text-danger py-3">Penilaian belum
                                     dilakukan</td>
                             </tr>
                         @endif
