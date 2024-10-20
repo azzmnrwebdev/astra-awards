@@ -35,6 +35,7 @@ class EndAssessmentController extends Controller
             'Kategori Area',
             'Nama Masjid/Musala',
             'Perusahaan',
+            'Status',
             'Aksi',
         ]);
 

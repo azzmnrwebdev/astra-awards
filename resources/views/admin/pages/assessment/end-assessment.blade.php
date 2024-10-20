@@ -127,6 +127,13 @@
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">
+                                    @if ($item->mosque->endAssessment)
+                                        <span class="badge text-bg-success">Sudah Penilaian</span>
+                                    @else
+                                        <span class="badge text-bg-danger">Belum Penilaian</span>
+                                    @endif
+                                </td>
+                                <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('jury'))
                                         <a href="{{ route('end_assessment.edit', ['user' => $item->id]) }}"
                                             class="text-dark align-middle"><i class="bi bi-pencil"></i></a>
@@ -137,7 +144,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>
