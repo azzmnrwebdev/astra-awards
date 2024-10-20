@@ -232,8 +232,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/', [CommitteeController::class, 'store'])->name('committee.store');
             Route::post('pembagian-penilaian', [CommitteeController::class, 'distribution'])->name('committee.distribution');
             Route::get('{committee}', [CommitteeController::class, 'show'])->name('committee.show');
-            Route::get('{committee}/edit', [CommitteeController::class, 'edit'])->name('committee.edit');
+            Route::get('{committee}/{name}', [CommitteeController::class, 'edit'])->name('committee.edit');
             Route::put('{committee}', [CommitteeController::class, 'update'])->name('committee.update');
+            Route::put('{committee}/pembagian-penilaian', [CommitteeController::class, 'updateDistribution'])->name('committee.update_distribution');
             Route::delete('{committee}', [CommitteeController::class, 'destroy'])->name('committee.destroy');
         });
 

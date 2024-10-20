@@ -60,7 +60,7 @@
                                 </td>
                                 <td class="text-center py-3">
                                     @if (Auth::user()->email !== $item->email)
-                                        <a href="{{ route('committee.edit', ['committee' => $item->id]) }}"
+                                        <a href="{{ route('committee.edit', ['committee' => $item->id, 'name' => 'edit']) }}"
                                             class="text-dark align-middle me-3"><i class="bi bi-pencil"></i></a>
 
                                         <button type="button"
@@ -140,6 +140,9 @@
                                 <td class="text-start py-3">{{ $item->name }}</td>
                                 <td class="text-center py-3">{{ count($item->distributionToCommitte) }}</td>
                                 <td class="text-center py-3">
+                                    <a href="{{ route('committee.edit', ['committee' => $item->id, 'name' => 'edit-pembagian-penilaian']) }}"
+                                        class="text-dark align-middle me-3"><i class="bi bi-pencil"></i></a>
+
                                     <a href="{{ route('committee.show', ['committee' => $item->id]) }}"
                                         class="text-dark align-middle"><i class="bi bi-eye"></i></a>
                                 </td>

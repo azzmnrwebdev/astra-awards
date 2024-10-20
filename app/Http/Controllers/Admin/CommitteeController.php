@@ -170,9 +170,15 @@ class CommitteeController extends Controller
         return view('admin.pages.committee.show', compact('committee', 'theadName', 'users'));
     }
 
-    public function edit(User $committee)
+    public function edit(User $committee, $name)
     {
-        return view('admin.pages.committee.edit', compact('committee'));
+        if ($name === "edit") {
+            return view('admin.pages.committee.edit', compact('committee'));
+        } elseif ($name === "edit-pembagian-penilaian") {
+            return view('admin.pages.committee.edit-distribution', compact('committee'));
+        } else {
+            abort(404);
+        }
     }
 
     public function update(Request $request, User $committee)
@@ -203,6 +209,11 @@ class CommitteeController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui panitia: ' . $e->getMessage());
         }
+    }
+
+    public function updateDistribution(Request $request, User $committee)
+    {
+        //
     }
 
     public function destroy(Request $request, User $committee)

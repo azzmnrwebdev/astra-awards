@@ -732,7 +732,7 @@
                 const selectedRadio2 = $('input[name="question_two"]:checked');
                 const selectedOption = $('select[name="question_three"] option:selected');
                 const selectedCheckbox1 = $('input[name="question_four[]"]:checked');
-                const textInput = $('input[name="question_five"]').val();
+                const textInput = $('textarea[name="question_five"]').val();
                 const selectedCheckbox2 = $('input[name="question_six[]"]:checked');
 
                 // Jawaban 1
