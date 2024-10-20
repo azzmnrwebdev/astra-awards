@@ -60,7 +60,7 @@
                                         </button>
                                     </td>
                                     <td class="text-center py-3">
-                                        {{ $user->mosque->presentation->startAssessment->presentation_file }}
+                                        {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_one }}
                                     </td>
                                 </tr>
                             @else

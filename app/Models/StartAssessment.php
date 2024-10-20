@@ -13,7 +13,11 @@ class StartAssessment extends Model
     protected $fillable = [
         'presentation_id',
         'jury_id',
-        'presentation_file',
+        'presentation_file_pillar_one',
+        'presentation_file_pillar_two',
+        'presentation_file_pillar_three',
+        'presentation_file_pillar_four',
+        'presentation_file_pillar_five',
     ];
 
     public function jury()

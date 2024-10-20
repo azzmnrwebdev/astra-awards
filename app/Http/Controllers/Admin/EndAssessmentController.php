@@ -93,7 +93,7 @@ class EndAssessmentController extends Controller
                         $totalValue += $user->mosque->endAssessment->presentation_value;
 
                         if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                            $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                            $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one;
                         }
 
                         if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
@@ -188,7 +188,7 @@ class EndAssessmentController extends Controller
                     $totalValue = 0;
 
                     if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one;
 
                         if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
                             $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
@@ -245,7 +245,7 @@ class EndAssessmentController extends Controller
             }
         }
 
-        
+
 
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
@@ -274,7 +274,7 @@ class EndAssessmentController extends Controller
                         $totalValue += $user->mosque->endAssessment->presentation_value;
 
                         if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                            $totalValue += $user->mosque->presentation->startAssessment->presentation_file;
+                            $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one;
                         }
 
                         if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {

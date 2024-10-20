@@ -107,7 +107,7 @@
                                                 </td>
                                                 <td class="text-center py-3">
                                                     @if ($item->mosque->presentation->startAssessment->presentation_id ?? '')
-                                                        @if ($item->mosque->presentation->startAssessment->presentation_file)
+                                                        @if ($item->mosque->presentation->startAssessment->presentation_file_pillar_one)
                                                             <span class="badge rounded-pill text-bg-success">
                                                                 Sudah
                                                             </span>

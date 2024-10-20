@@ -30,25 +30,16 @@
                     </div>
                 @endif
 
-                @if (Session('error'))
-                    <div class="col-md-10 col-lg-8">
-                        <div class="alert alert-danger mb-4" role="alert">
-                            {{ Session('error') }}
-                        </div>
-                    </div>
-                @endif
-
                 <div class="col-md-10 col-lg-8">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-3">Mengunggah File Presentasi</h5>
 
                             {{-- Pertanyaan 1 --}}
-                            <div class="mb-3
-                                <label for="file"
-                                class="form-label fw-medium">Silahkan untuk mengunggah file
-                                presentasi yang memuat keseluruhan pilar penilaian (Pilar 1, 2, 3, 4, dan
-                                5)</label>
+                            <div class="mb-3">
+                                <label for="file" class="form-label fw-medium">Silahkan untuk mengunggah file
+                                    presentasi yang memuat keseluruhan pilar penilaian (Pilar 1, 2, 3, 4, dan
+                                    5)</label>
                             </div>
 
                             @error('file')
@@ -70,33 +61,182 @@
                             @endif
 
                             @if ($user->mosque->presentation && $user->mosque->presentation->file)
-                                <div class="row">
-                                    <label for="presentation_file"
-                                        class="col-md-4 col-xl-3 col-form-label fw-medium">Penilaian
-                                        Juri:</label>
+                                {{-- Pillar 2 --}}
+                                <div class="row mb-3">
+                                    <label for="presentation_file_pillar_two"
+                                        class="col-md-4 col-xl-3 col-form-label fw-medium">Hubungan DKM dengan
+                                        YAA:</label>
 
                                     <div class="col-md-8 col-xl-9">
-                                        <select name="presentation_file" id="presentation_file" class="form-select">
+                                        <select name="presentation_file_pillar_two" id="presentation_file_pillar_two"
+                                            class="form-select">
                                             @if (
                                                 !$user->mosque->presentation ||
                                                     !$user->mosque->presentation->startAssessment ||
-                                                    !$user->mosque->presentation->startAssessment->presentation_file)
+                                                    !$user->mosque->presentation->startAssessment->presentation_file_pillar_two)
                                                 <option value="">-- Pilih Nilai --</option>
                                             @endif
 
                                             <option value="1"
-                                                {{ old('presentation_file', $user->mosque->presentation->startAssessment->presentation_file ?? '') == 1 ? 'selected' : '' }}>
+                                                {{ old('presentation_file_pillar_two', $user->mosque->presentation->startAssessment->presentation_file_pillar_two ?? '') == 1 ? 'selected' : '' }}>
                                                 1</option>
                                             <option value="3"
-                                                {{ old('presentation_file', $user->mosque->presentation->startAssessment->presentation_file ?? '') == 3 ? 'selected' : '' }}>
+                                                {{ old('presentation_file_pillar_two', $user->mosque->presentation->startAssessment->presentation_file_pillar_two ?? '') == 3 ? 'selected' : '' }}>
                                                 3</option>
                                             <option value="7"
-                                                {{ old('presentation_file', $user->mosque->presentation->startAssessment->presentation_file ?? '') == 7 ? 'selected' : '' }}>
+                                                {{ old('presentation_file_pillar_two', $user->mosque->presentation->startAssessment->presentation_file_pillar_two ?? '') == 7 ? 'selected' : '' }}>
                                                 7</option>
                                             <option value="9"
-                                                {{ old('presentation_file', $user->mosque->presentation->startAssessment->presentation_file ?? '') == 9 ? 'selected' : '' }}>
+                                                {{ old('presentation_file_pillar_two', $user->mosque->presentation->startAssessment->presentation_file_pillar_two ?? '') == 9 ? 'selected' : '' }}>
                                                 9</option>
                                         </select>
+
+                                        @error('presentation_file_pillar_two')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- Pillar 1 --}}
+                                <div class="row mb-3">
+                                    <label for="presentation_file_pillar_one"
+                                        class="col-md-4 col-xl-3 col-form-label fw-medium">Hubungan Manajemen Perusahaan
+                                        dengan DKM dan Jamaah:</label>
+
+                                    <div class="col-md-8 col-xl-9">
+                                        <select name="presentation_file_pillar_one" id="presentation_file_pillar_one"
+                                            class="form-select">
+                                            @if (
+                                                !$user->mosque->presentation ||
+                                                    !$user->mosque->presentation->startAssessment ||
+                                                    !$user->mosque->presentation->startAssessment->presentation_file_pillar_one)
+                                                <option value="">-- Pilih Nilai --</option>
+                                            @endif
+
+                                            <option value="1"
+                                                {{ old('presentation_file_pillar_one', $user->mosque->presentation->startAssessment->presentation_file_pillar_one ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('presentation_file_pillar_one', $user->mosque->presentation->startAssessment->presentation_file_pillar_one ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('presentation_file_pillar_one', $user->mosque->presentation->startAssessment->presentation_file_pillar_one ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('presentation_file_pillar_one', $user->mosque->presentation->startAssessment->presentation_file_pillar_one ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('presentation_file_pillar_one')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- Pillar 3 --}}
+                                <div class="row mb-3">
+                                    <label for="presentation_file_pillar_three"
+                                        class="col-md-4 col-xl-3 col-form-label fw-medium">Program Sosial:</label>
+
+                                    <div class="col-md-8 col-xl-9">
+                                        <select name="presentation_file_pillar_three"
+                                            id="presentation_file_pillar_three" class="form-select">
+                                            @if (
+                                                !$user->mosque->presentation ||
+                                                    !$user->mosque->presentation->startAssessment ||
+                                                    !$user->mosque->presentation->startAssessment->presentation_file_pillar_three)
+                                                <option value="">-- Pilih Nilai --</option>
+                                            @endif
+
+                                            <option value="1"
+                                                {{ old('presentation_file_pillar_three', $user->mosque->presentation->startAssessment->presentation_file_pillar_three ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('presentation_file_pillar_three', $user->mosque->presentation->startAssessment->presentation_file_pillar_three ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('presentation_file_pillar_three', $user->mosque->presentation->startAssessment->presentation_file_pillar_three ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('presentation_file_pillar_three', $user->mosque->presentation->startAssessment->presentation_file_pillar_three ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('presentation_file_pillar_three')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- Pillar 4 --}}
+                                <div class="row mb-3">
+                                    <label for="presentation_file_pillar_four"
+                                        class="col-md-4 col-xl-3 col-form-label fw-medium">Administrasi dan
+                                        Keuangan:</label>
+
+                                    <div class="col-md-8 col-xl-9">
+                                        <select name="presentation_file_pillar_four" id="presentation_file_pillar_four"
+                                            class="form-select">
+                                            @if (
+                                                !$user->mosque->presentation ||
+                                                    !$user->mosque->presentation->startAssessment ||
+                                                    !$user->mosque->presentation->startAssessment->presentation_file_pillar_four)
+                                                <option value="">-- Pilih Nilai --</option>
+                                            @endif
+
+                                            <option value="1"
+                                                {{ old('presentation_file_pillar_four', $user->mosque->presentation->startAssessment->presentation_file_pillar_four ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('presentation_file_pillar_four', $user->mosque->presentation->startAssessment->presentation_file_pillar_four ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('presentation_file_pillar_four', $user->mosque->presentation->startAssessment->presentation_file_pillar_four ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('presentation_file_pillar_four', $user->mosque->presentation->startAssessment->presentation_file_pillar_four ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('presentation_file_pillar_four')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- Pillar 5 --}}
+                                <div class="row mb-3">
+                                    <label for="presentation_file_pillar_five"
+                                        class="col-md-4 col-xl-3 col-form-label fw-medium">Peribadahan dan
+                                        Infrastruktur:</label>
+
+                                    <div class="col-md-8 col-xl-9">
+                                        <select name="presentation_file_pillar_five" id="presentation_file_pillar_five"
+                                            class="form-select">
+                                            @if (
+                                                !$user->mosque->presentation ||
+                                                    !$user->mosque->presentation->startAssessment ||
+                                                    !$user->mosque->presentation->startAssessment->presentation_file_pillar_five)
+                                                <option value="">-- Pilih Nilai --</option>
+                                            @endif
+
+                                            <option value="1"
+                                                {{ old('presentation_file_pillar_five', $user->mosque->presentation->startAssessment->presentation_file_pillar_five ?? '') == 1 ? 'selected' : '' }}>
+                                                1</option>
+                                            <option value="3"
+                                                {{ old('presentation_file_pillar_five', $user->mosque->presentation->startAssessment->presentation_file_pillar_five ?? '') == 3 ? 'selected' : '' }}>
+                                                3</option>
+                                            <option value="7"
+                                                {{ old('presentation_file_pillar_five', $user->mosque->presentation->startAssessment->presentation_file_pillar_five ?? '') == 7 ? 'selected' : '' }}>
+                                                7</option>
+                                            <option value="9"
+                                                {{ old('presentation_file_pillar_five', $user->mosque->presentation->startAssessment->presentation_file_pillar_five ?? '') == 9 ? 'selected' : '' }}>
+                                                9</option>
+                                        </select>
+
+                                        @error('presentation_file_pillar_five')
+                                            <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -113,7 +253,8 @@
     </div>
 
     {{-- Modal --}}
-    <div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="documentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="documentModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
