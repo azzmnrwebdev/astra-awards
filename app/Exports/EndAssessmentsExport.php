@@ -96,46 +96,12 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
-                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
-                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
-                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
-                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
-                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
-                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
-                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
-                    }
-
-                    if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
-                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
-                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
-                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
-                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
-                    }
-
-                    if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
-                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
-                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
-                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
-                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
-                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
-                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
-                    }
-
-                    if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
-                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
-                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
-                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
-                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
-                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
-                    }
-
-                    if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
-                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
-                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
-                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
-                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
-                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
+                    if ($user->mosque->endAssessment) {
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -165,47 +131,11 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     {
         $this->index++;
 
-        $pillarOneValue = $user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet ? (
-            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one +
-            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two +
-            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three +
-            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four +
-            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five +
-            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six +
-            $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven
-        ) : 'Belum Tersedia';
-
-        $pillarTwoValue = $user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet ? (
-            $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two +
-            $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three +
-            $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four +
-            $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five
-        ) : 'Belum Tersedia';
-
-        $pillarThreeValue = $user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet ? (
-            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one +
-            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two +
-            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three +
-            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four +
-            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five +
-            $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six
-        ) : 'Belum Tersedia';
-
-        $pillarFourValue = $user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet ? (
-            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one +
-            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two +
-            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three +
-            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four +
-            $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five
-        ) : 'Belum Tersedia';
-
-        $pillarFiveValue = $user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet ? (
-            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one +
-            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two +
-            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three +
-            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four +
-            $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five
-        ) : 'Belum Tersedia';
+        $pillarTwoValue = $user->mosque->endAssessment->presentation_value_pillar_one;
+        $pillarOneValue = $user->mosque->endAssessment->presentation_value_pillar_two;
+        $pillarThreeValue = $user->mosque->endAssessment->presentation_value_pillar_three;
+        $pillarFourValue = $user->mosque->endAssessment->presentation_value_pillar_four;
+        $pillarFiveValue = $user->mosque->endAssessment->presentation_value_pillar_five;
 
         $pillarOneWeight = 0.25;
         $pillarTwoWeight = 0.25;
@@ -218,15 +148,19 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         if (is_numeric($pillarOneValue)) {
             $rekapNilai += $pillarOneValue * $pillarOneWeight;
         }
+
         if (is_numeric($pillarTwoValue)) {
             $rekapNilai += $pillarTwoValue * $pillarTwoWeight;
         }
+
         if (is_numeric($pillarThreeValue)) {
             $rekapNilai += $pillarThreeValue * $pillarThreeWeight;
         }
+
         if (is_numeric($pillarFourValue)) {
             $rekapNilai += $pillarFourValue * $pillarFourWeight;
         }
+
         if (is_numeric($pillarFiveValue)) {
             $rekapNilai += $pillarFiveValue * $pillarFiveWeight;
         }

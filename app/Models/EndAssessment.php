@@ -13,6 +13,10 @@ class EndAssessment extends Model
     protected $fillable = [
         'mosque_id',
         'jury_id',
-        'presentation_value',
+        'presentation_value_pillar_one',
+        'presentation_value_pillar_two',
+        'presentation_value_pillar_three',
+        'presentation_value_pillar_four',
+        'presentation_value_pillar_five',
     ];
 }
