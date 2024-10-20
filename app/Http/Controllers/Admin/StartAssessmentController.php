@@ -110,12 +110,46 @@ class StartAssessmentController extends Controller
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_two;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_three;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_four;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_five;
+                    if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+                    }
+
+                    if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+                    }
+
+                    if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+                    }
+
+                    if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+                    }
+
+                    if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
                     }
 
                     $user->totalNilai = $totalValue;

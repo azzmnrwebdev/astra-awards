@@ -21,7 +21,7 @@
 
                 <ul class="list-group mt-3">
                     <li class="list-group-item border-0 py-1">
-                        {{ $user->mosque->presentation->startAssessment->jury->name }}</li>
+                        {{ $user->mosque->presentation->startAssessment ? $user->mosque->presentation->startAssessment->jury->name : "Belum ada" }}</li>
                 </ul>
             </div>
 

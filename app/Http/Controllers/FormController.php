@@ -43,10 +43,11 @@ class FormController extends Controller
 
             if ($search) {
                 $query->where(function ($q) use ($search) {
-                    $q->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%'])
-                        ->orWhereHas('mosque', function ($mosqueQuery) use ($search) {
-                            $mosqueQuery->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
-                        });
+                    $q->whereHas('mosque', function ($q2) use ($search) {
+                        $q2->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                    })->orWhereHas('mosque.company', function ($q3) use ($search) {
+                        $q3->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                    });
                 });
             }
 

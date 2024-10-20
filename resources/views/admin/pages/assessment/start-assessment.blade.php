@@ -81,7 +81,12 @@
 
                                 <td class="text-center py-3">
                                     @if ($item->mosque->presentation->startAssessment)
-                                        {{ $item->totalNilai }} Poin
+                                        {{ $item->mosque->presentation->startAssessment->presentation_file_pillar_two +
+                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_one +
+                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_three +
+                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_four +
+                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_five }}
+                                        Poin
                                     @else
                                         <span class="badge text-bg-danger">Belum Tersedia</span>
                                     @endif

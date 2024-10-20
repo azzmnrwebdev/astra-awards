@@ -101,12 +101,46 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_two;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_three;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_four;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_five;
+                    if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
+                        $totalValue += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+                    }
+
+                    if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
+                        $totalValue += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+                    }
+
+                    if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
+                        $totalValue += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+                    }
+
+                    if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
+                        $totalValue += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+                    }
+
+                    if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
+                        $totalValue += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -136,38 +170,30 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
     {
         $this->index++;
 
-        $pillarTwoValue = $user->mosque->presentation->startAssessment->presentation_file_pillar_two;
-        $pillarOneValue = $user->mosque->presentation->startAssessment->presentation_file_pillar_one;
-        $pillarThreeValue = $user->mosque->presentation->startAssessment->presentation_file_pillar_three;
-        $pillarFourValue = $user->mosque->presentation->startAssessment->presentation_file_pillar_four;
-        $pillarFiveValue = $user->mosque->presentation->startAssessment->presentation_file_pillar_five;
+        $pillarValues = [
+            'pillarTwo' => $user->mosque->presentation->startAssessment->presentation_file_pillar_two ?? null,
+            'pillarOne' => $user->mosque->presentation->startAssessment->presentation_file_pillar_one ?? null,
+            'pillarThree' => $user->mosque->presentation->startAssessment->presentation_file_pillar_three ?? null,
+            'pillarFour' => $user->mosque->presentation->startAssessment->presentation_file_pillar_four ?? null,
+            'pillarFive' => $user->mosque->presentation->startAssessment->presentation_file_pillar_five ?? null,
+        ];
 
-        $pillarTwoWeight = 0.25;
-        $pillarOneWeight = 0.25;
-        $pillarThreeWeight = 0.20;
-        $pillarFourWeight = 0.15;
-        $pillarFiveWeight = 0.15;
+        $pillarWeights = [
+            'pillarTwo' => 0.25,
+            'pillarOne' => 0.25,
+            'pillarThree' => 0.20,
+            'pillarFour' => 0.15,
+            'pillarFive' => 0.15,
+        ];
 
         $rekapNilai = 0;
+        $totalPillarValues = 0;
 
-        if (is_numeric($pillarTwoValue)) {
-            $rekapNilai += $pillarTwoValue * $pillarTwoWeight;
-        }
-
-        if (is_numeric($pillarOneValue)) {
-            $rekapNilai += $pillarOneValue * $pillarOneWeight;
-        }
-
-        if (is_numeric($pillarThreeValue)) {
-            $rekapNilai += $pillarThreeValue * $pillarThreeWeight;
-        }
-
-        if (is_numeric($pillarFourValue)) {
-            $rekapNilai += $pillarFourValue * $pillarFourWeight;
-        }
-
-        if (is_numeric($pillarFiveValue)) {
-            $rekapNilai += $pillarFiveValue * $pillarFiveWeight;
+        foreach ($pillarValues as $key => $value) {
+            if (is_numeric($value)) {
+                $rekapNilai += $value * $pillarWeights[$key];
+                $totalPillarValues += $value;
+            }
         }
 
         return [
@@ -177,12 +203,12 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             $user->mosque->categoryMosque->name,
             $user->mosque->categoryArea->name,
             $user->mosque->presentation->startAssessment ? 'Sudah Penilaian' : 'Belum Penilaian',
-            $pillarTwoValue,
-            $pillarOneValue,
-            $pillarThreeValue,
-            $pillarFourValue,
-            $pillarFiveValue,
-            $user->totalNilai,
+            $pillarValues['pillarTwo'] ?? 'Belum Tersedia',
+            $pillarValues['pillarOne'] ?? 'Belum Tersedia',
+            $pillarValues['pillarThree'] ?? 'Belum Tersedia',
+            $pillarValues['pillarFour'] ?? 'Belum Tersedia',
+            $pillarValues['pillarFive'] ?? 'Belum Tersedia',
+            $totalPillarValues,
             $rekapNilai,
         ];
     }

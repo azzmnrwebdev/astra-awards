@@ -83,10 +83,10 @@
                                     <thead class="border-top border-start border-end table-primary">
                                         <tr>
                                             <th class="text-center py-3">No</th>
-                                            <th class="text-start py-3">Nama</th>
-                                            <th class="text-center py-3">Masjid/Musala</th>
-                                            <th class="text-center py-3">Kategori Masjid/Musala</th>
+                                            <th class="text-center py-3">Kategori</th>
                                             <th class="text-center py-3">Kategori Area</th>
+                                            <th class="text-center py-3">Masjid/Musala</th>
+                                            <th class="text-center py-3">Perusahaan</th>
                                             <th class="text-center py-3">Penilaian</th>
                                             <th class="text-center py-3">Aksi</th>
                                         </tr>
@@ -97,13 +97,11 @@
                                             <tr>
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + 1 }}</td>
-                                                <td class="text-start py-3">{{ $item->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
                                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
-                                                    {{ $item->mosque->categoryMosque->name }}
-                                                </td>
-                                                <td class="text-center py-3">
-                                                    {{ $item->mosque->categoryArea->name }}
+                                                    {{ $item->mosque->company->name }}
                                                 </td>
                                                 <td class="text-center py-3">
                                                     @if ($item->mosque->presentation->startAssessment->presentation_id ?? '')

@@ -51,6 +51,7 @@
                     <form>
                         <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                             class="form-control" placeholder="Cari peserta?">
+                        <div class="form-text">Kata kunci berdasarkan nama masjid/musala atau perusahaan</div>
                     </form>
                 </div>
 
@@ -79,8 +80,10 @@
                                             <tr>
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarTwos->firstItem() }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}
+                                                </td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}
+                                                </td>
                                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->company->name }}
@@ -154,8 +157,10 @@
                                             <tr>
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarOnes->firstItem() }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}
+                                                </td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}
+                                                </td>
                                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->company->name }}
@@ -231,8 +236,10 @@
                                             <tr>
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarThrees->firstItem() }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}
+                                                </td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}
+                                                </td>
                                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->company->name }}
@@ -307,8 +314,10 @@
                                             <tr>
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarFours->firstItem() }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}
+                                                </td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}
+                                                </td>
                                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->company->name }}
@@ -382,8 +391,10 @@
                                             <tr>
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + $pillarFives->firstItem() }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}
+                                                </td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}
+                                                </td>
                                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->company->name }}
