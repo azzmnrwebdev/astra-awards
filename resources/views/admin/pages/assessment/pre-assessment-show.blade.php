@@ -1,4 +1,4 @@
-<x-admin title="Pra Penilaian {{ $user->name }}">
+<x-admin title="Pra Penilaian {{ $user->mosque->name }}">
     {{-- Custom CSS --}}
     @prepend('styles')
         <style>

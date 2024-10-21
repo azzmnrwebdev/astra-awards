@@ -1,4 +1,4 @@
-<x-admin title="Penilaian Akhir {{ $user->name }}">
+<x-admin title="Penilaian Akhir {{ $user->mosque->name }}">
     {{-- Custom CSS --}}
     @prepend('styles')
         <style>
@@ -113,11 +113,15 @@
                                     Rekap Nilai (Dikalikan Bobot)
                                 </td>
                                 <td class="text-center fw-semibold py-3">
-                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15 }}
+                                    {{ str_replace(
+                                        '.',
+                                        ',',
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
+                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
+                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
+                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
+                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15,
+                                    ) }}
                                 </td>
                             </tr>
                         </tbody>

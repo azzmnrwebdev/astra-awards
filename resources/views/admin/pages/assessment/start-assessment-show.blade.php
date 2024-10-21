@@ -1,4 +1,4 @@
-<x-admin title="Penilaian Awal {{ $user->name }}">
+<x-admin title="Penilaian Awal {{ $user->mosque->name }}">
     {{-- Custom CSS --}}
     @prepend('styles')
         <style>
@@ -21,7 +21,8 @@
 
                 <ul class="list-group mt-3">
                     <li class="list-group-item border-0 py-1">
-                        {{ $user->mosque->presentation->startAssessment ? $user->mosque->presentation->startAssessment->jury->name : "Belum ada" }}</li>
+                        {{ $user->mosque->presentation->startAssessment ? $user->mosque->presentation->startAssessment->jury->name : 'Belum ada' }}
+                    </li>
                 </ul>
             </div>
 
@@ -106,11 +107,15 @@
                                     Rekap Nilai (Dikalikan Bobot)
                                 </td>
                                 <td class="text-center fw-semibold py-3">
-                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15 }}
+                                    {{ str_replace(
+                                        '.',
+                                        ',',
+                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
+                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
+                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
+                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
+                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15,
+                                    ) }}
                                 </td>
                             </tr>
                         @else

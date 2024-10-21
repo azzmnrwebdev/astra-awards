@@ -34,7 +34,8 @@
                         <div class="col-12">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                                 class="form-control" placeholder="Cari peserta?">
-                            <div class="form-text">Kata kunci bisa berdasarkan nama peserta, masjid/musala atau perusahaan.
+                            <div class="form-text">Kata kunci bisa berdasarkan nama peserta, masjid/musala atau
+                                perusahaan.
                             </div>
                         </div>
                     </form>
@@ -152,8 +153,8 @@
                                 </td>
 
                                 <td class="text-center py-3">
-                                    @if ($item->mosque->total_pillar_value !== 0)
-                                        {{ $item->mosque->total_pillar_value }} Poin
+                                    @if ($item->totalPillarValue != 0)
+                                        {{ str_replace('.', ',', $item->totalPillarValue) }}
                                     @else
                                         <span class="badge text-bg-danger">Belum Tersedia</span>
                                     @endif
@@ -201,7 +202,7 @@
                                     <td class="text-center py-3">{{ $loop->index + 1 }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
-                                    <td class="text-center py-3">{{ $item->totalNilai }}</td>
+                                    <td class="text-center py-3">{{ str_replace('.', ',', $item->totalNilai) }}</td>
                                     <td class="text-center py-3">
                                         <a href="{{ route('pre_assessment.show', ['user' => $item->id]) }}"
                                             class="text-dark align-middle"><i class="bi bi-eye"></i>
