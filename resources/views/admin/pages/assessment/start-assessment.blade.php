@@ -81,12 +81,7 @@
 
                                 <td class="text-center py-3">
                                     @if ($item->mosque->presentation->startAssessment)
-                                        {{ $item->mosque->presentation->startAssessment->presentation_file_pillar_two +
-                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_one +
-                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_three +
-                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_four +
-                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_five }}
-                                        Poin
+                                        {{ $item->totalNilai }}
                                     @else
                                         <span class="badge text-bg-danger">Belum Tersedia</span>
                                     @endif
@@ -133,7 +128,7 @@
                                     <td class="text-center py-3">{{ $loop->index + 1 }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
-                                    <td class="text-center py-3">{{ $item->totalNilai }} Poin</td>
+                                    <td class="text-center py-3">{{ $item->totalNilai }}</td>
                                     <td class="text-center py-3">
                                         <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
                                             class="text-dark align-middle"><i class="bi bi-eye"></i>

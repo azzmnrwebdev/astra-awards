@@ -83,7 +83,7 @@
                                 <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
-                                <td class="text-center py-3">{{ $item->totalNilai }} Poin
+                                <td class="text-center py-3">{{ $item->totalNilai }}
                                 </td>
                             </tr>
                         @empty
@@ -179,7 +179,8 @@
                                     <td class="text-center py-3">{{ $loop->index + 1 }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
-                                    <td class="text-center py-3">{{ $item->totalNilai }} Poin</td>
+                                    <td class="text-center py-3">{{ $item->totalNilai }}
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>

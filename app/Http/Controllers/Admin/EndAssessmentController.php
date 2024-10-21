@@ -90,12 +90,12 @@ class EndAssessmentController extends Controller
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->endAssessment) {
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five;
+                    if ($user->mosque->presentation && $user->mosque->endAssessment) {
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * 0.25 +
+                            $user->mosque->endAssessment->presentation_value_pillar_two * 0.25 +
+                            $user->mosque->endAssessment->presentation_value_pillar_three * 0.2 +
+                            $user->mosque->endAssessment->presentation_value_pillar_four * 0.15 +
+                            $user->mosque->endAssessment->presentation_value_pillar_five * 0.15;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -147,11 +147,11 @@ class EndAssessmentController extends Controller
                     $totalValue = 0;
 
                     if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_two;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_three;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_four;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_five;
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
+                            $user->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
+                            $user->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
+                            $user->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
+                            $user->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -189,14 +189,12 @@ class EndAssessmentController extends Controller
                 $topUsers = $topUsers->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->endAssessment) {
-                        if ($user->mosque->endAssessment) {
-                            $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one;
-                            $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two;
-                            $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three;
-                            $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four;
-                            $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five;
-                        }
+                    if ($user->mosque->presentation && $user->mosque->endAssessment) {
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * 0.25 +
+                            $user->mosque->endAssessment->presentation_value_pillar_two * 0.25 +
+                            $user->mosque->endAssessment->presentation_value_pillar_three * 0.2 +
+                            $user->mosque->endAssessment->presentation_value_pillar_four * 0.15 +
+                            $user->mosque->endAssessment->presentation_value_pillar_five * 0.15;
                     }
 
                     $user->totalNilai = $totalValue;
