@@ -213,6 +213,10 @@
             outline: #dc3545 solid 1px;
         }
 
+        .form-check-input:focus {
+            box-shadow: none;
+        }
+
         /* Pagination */
         div p.small,
         div ul.pagination {

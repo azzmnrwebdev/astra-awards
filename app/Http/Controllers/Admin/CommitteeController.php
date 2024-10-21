@@ -170,12 +170,22 @@ class CommitteeController extends Controller
         return view('admin.pages.committee.show', compact('committee', 'theadName', 'users'));
     }
 
-    public function edit(User $committee, $name)
+    public function edit(Request $request, User $committee, $name)
     {
         if ($name === "edit") {
             return view('admin.pages.committee.edit', compact('committee'));
         } elseif ($name === "edit-pembagian-penilaian") {
-            return view('admin.pages.committee.edit-distribution', compact('committee'));
+            $search = $request->input('pencarian');
+
+            $users = User::where('role', 'user')->when($search, function ($query) use ($search) {
+                $query->where(function ($q) use ($search) {
+                    $q->whereHas('mosque', function ($q2) use ($search) {
+                        $q2->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
+                    });
+                });
+            })->get();
+
+            return view('admin.pages.committee.edit-distribution', compact('users', 'search', 'committee'));
         } else {
             abort(404);
         }
@@ -213,7 +223,22 @@ class CommitteeController extends Controller
 
     public function updateDistribution(Request $request, User $committee)
     {
-        //
+        $selectedUserIds = $request->input('users', []);
+
+        if (empty($selectedUserIds)) {
+            return redirect()->back()->with('error', 'Anda harus memilih minimal 1 peserta.');
+        }
+
+        $committee->distributionToCommitte()->delete();
+
+        foreach ($selectedUserIds as $userId) {
+            $committee->distributionToCommitte()->create([
+                'user_id' => $userId,
+                'committe_id' => $committee->id,
+            ]);
+        }
+
+        return redirect(route('committee.index'))->with('success_distribution', 'Pembagian penilaian berhasil diperbarui');
     }
 
     public function destroy(Request $request, User $committee)
