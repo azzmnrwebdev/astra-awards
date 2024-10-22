@@ -15,8 +15,8 @@ class PreAssessmentController extends Controller
     {
         $theadName = [
             ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori'],
             ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
+            ['class' => 'text-center py-3', 'label' => 'Kategori'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Status'],
@@ -181,10 +181,22 @@ class PreAssessmentController extends Controller
 
         foreach ($categoryAreas as $area) {
             foreach ($categoryMosques as $mosque) {
-                $topUsers = User::with(['mosque.pillarOne.committeeAssessmnet', 'mosque.pillarTwo.committeeAssessmnet', 'mosque.pillarThree.committeeAssessmnet', 'mosque.pillarFour.committeeAssessmnet', 'mosque.pillarFive.committeeAssessmnet'])
+                $topUsers = User::with([
+                    'mosque',
+                    'mosque.pillarOne',
+                    'mosque.pillarTwo',
+                    'mosque.pillarThree',
+                    'mosque.pillarFour',
+                    'mosque.pillarFive',
+                    'mosque.pillarOne.committeeAssessmnet',
+                    'mosque.pillarTwo.committeeAssessmnet',
+                    'mosque.pillarThree.committeeAssessmnet',
+                    'mosque.pillarFour.committeeAssessmnet',
+                    'mosque.pillarFive.committeeAssessmnet'
+                ])
                     ->whereHas('mosque', function ($q) use ($area, $mosque) {
                         $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
-                    })->take(5)->get();
+                    })->get();
 
                 $topUsers = $topUsers->map(function ($user) {
                     $totalValue = 0;
@@ -257,11 +269,11 @@ class PreAssessmentController extends Controller
                     return $user;
                 })->filter(function ($user) {
                     return $user->totalNilai > 0;
-                })->sortByDesc('totalNilai');
+                });
 
                 $categories[] = [
                     'title' => $area->name . ' dan ' . $mosque->name,
-                    'datas' => $topUsers,
+                    'datas' => $topUsers->sortByDesc('totalNilai')->take(5),
                 ];
             }
         }

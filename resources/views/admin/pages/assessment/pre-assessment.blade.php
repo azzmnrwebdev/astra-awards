@@ -56,8 +56,8 @@
                         @forelse ($users as $item)
                             <tr>
                                 <td class="text-center py-3">{{ $loop->index + $users->firstItem() }}</td>
-                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
+                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">

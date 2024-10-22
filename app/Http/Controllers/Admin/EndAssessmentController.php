@@ -90,22 +90,28 @@ class EndAssessmentController extends Controller
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->presentation && $user->mosque->endAssessment) {
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * 0.25 +
-                            $user->mosque->endAssessment->presentation_value_pillar_two * 0.25 +
-                            $user->mosque->endAssessment->presentation_value_pillar_three * 0.2 +
-                            $user->mosque->endAssessment->presentation_value_pillar_four * 0.15 +
-                            $user->mosque->endAssessment->presentation_value_pillar_five * 0.15;
+                    $weightPillarOne = 0.25;
+                    $weightPillarTwo = 0.25;
+                    $weightPillarThree = 0.20;
+                    $weightPillarFour = 0.15;
+                    $weightPillarFive = 0.15;
+
+                    if ($user->mosque->endAssessment) {
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two * $weightPillarTwo;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * $weightPillarOne;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three * $weightPillarThree;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four * $weightPillarFour;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five * $weightPillarFive;
                     }
 
                     $user->totalNilai = $totalValue;
+
                     return $user;
                 })->filter(function ($user) {
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortByDesc('totalNilai');
-                $endAssessmentUsers = $endAssessmentUsers->merge($topUsers);
+                $endAssessmentUsers = $endAssessmentUsers->merge($users->sortByDesc('totalNilai'));
             }
         }
 
@@ -146,12 +152,18 @@ class EndAssessmentController extends Controller
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
+                    $weightPillarOne = 0.25;
+                    $weightPillarTwo = 0.25;
+                    $weightPillarThree = 0.20;
+                    $weightPillarFour = 0.15;
+                    $weightPillarFive = 0.15;
+
                     if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
-                            $user->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
-                            $user->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
-                            $user->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
-                            $user->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15;
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_two * $weightPillarTwo;
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one * $weightPillarOne;
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_three * $weightPillarThree;
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_four * $weightPillarFour;
+                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_five * $weightPillarFive;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -161,7 +173,8 @@ class EndAssessmentController extends Controller
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortByDesc('totalNilai');
+                $topUsers = $users->sortByDesc('totalNilai')->take(3);
+
                 $startAssessmentUsers = $startAssessmentUsers->merge($topUsers);
             }
         }
@@ -184,17 +197,23 @@ class EndAssessmentController extends Controller
                 $topUsers = User::with(['mosque', 'mosque.endAssessment'])
                     ->whereHas('mosque', function ($q) use ($area, $mosque) {
                         $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
-                    })->take(3)->get();
+                    })->get();
 
                 $topUsers = $topUsers->map(function ($user) {
                     $totalValue = 0;
 
-                    if ($user->mosque->presentation && $user->mosque->endAssessment) {
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * 0.25 +
-                            $user->mosque->endAssessment->presentation_value_pillar_two * 0.25 +
-                            $user->mosque->endAssessment->presentation_value_pillar_three * 0.2 +
-                            $user->mosque->endAssessment->presentation_value_pillar_four * 0.15 +
-                            $user->mosque->endAssessment->presentation_value_pillar_five * 0.15;
+                    $weightPillarOne = 0.25;
+                    $weightPillarTwo = 0.25;
+                    $weightPillarThree = 0.20;
+                    $weightPillarFour = 0.15;
+                    $weightPillarFive = 0.15;
+
+                    if ($user->mosque->endAssessment) {
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two * $weightPillarTwo;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * $weightPillarOne;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three * $weightPillarThree;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four * $weightPillarFour;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five * $weightPillarFive;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -202,11 +221,11 @@ class EndAssessmentController extends Controller
                     return $user;
                 })->filter(function ($user) {
                     return $user->totalNilai > 0;
-                })->sortByDesc('totalNilai');
+                });
 
                 $categories[] = [
                     'title' => $area->name . ' dan ' . $mosque->name,
-                    'datas' => $topUsers,
+                    'datas' => $topUsers->sortByDesc('totalNilai')->take(3),
                 ];
             }
         }
