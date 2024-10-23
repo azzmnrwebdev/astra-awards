@@ -7,7 +7,7 @@
             {{-- Filter --}}
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('pre_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
+                    <a href="{{ route('pre_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'panitia' => $committeId, 'pencarian' => $search]) }}"
                         class="btn btn-success rounded-0">Unduh Excel</a>
                 </div>
 
@@ -32,9 +32,21 @@
                         </div>
 
                         <div class="col-12">
+                            <select name="panitia" id="panitia" class="form-select">
+                                <option value="">-- Semua Panitia --</option>
+                                @foreach ($committes as $committe)
+                                    <option value="{{ $committe->id }}"
+                                        {{ $committeId == $committe->id ? 'selected' : '' }}>
+                                        {{ $committe->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-12">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                                 class="form-control" placeholder="Cari peserta?">
-                            <div class="form-text">Kata kunci bisa berdasarkan nama peserta, masjid/musala atau
+                            <div class="form-text">Kata kunci bisa berdasarkan nama masjid/musala atau
                                 perusahaan.
                             </div>
                         </div>
@@ -226,7 +238,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#kategori, #pencarian').on('input keydown change', function(e) {
+                $('#kategori, #panitia, #pencarian').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -246,6 +258,7 @@
                 function filter() {
                     const params = {};
                     const categoryId = $('#kategori').val();
+                    const committeId = $('#panitia').val();
                     const searchValue = $('#pencarian').val();
                     const url = '{{ route('pre_assessment.index') }}';
 
@@ -254,6 +267,10 @@
 
                         params.kategori_area = categoryAreaId;
                         params.kategori_masjid = categoryMosqueId;
+                    }
+
+                    if (committeId !== '') {
+                        params.panitia = committeId;
                     }
 
                     if (searchValue.trim() !== '') {

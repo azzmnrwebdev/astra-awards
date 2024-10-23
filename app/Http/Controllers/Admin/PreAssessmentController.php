@@ -34,6 +34,8 @@ class PreAssessmentController extends Controller
 
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
+        $committes = User::with(['distributionToCommitte'])->where('role', 'admin')
+            ->whereHas('distributionToCommitte')->get();
 
         // Gabungkan data kategori
         $combinedData = [];
@@ -54,11 +56,13 @@ class PreAssessmentController extends Controller
             'mosque.pillarTwo',
             'mosque.pillarThree',
             'mosque.pillarFour',
-            'mosque.pillarFive'
+            'mosque.pillarFive',
+            'distributions'
         ])->where('role', 'user');
 
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
+        $committeId = $request->input('panitia');
         $search = $request->input('pencarian');
 
         if ($categoryAreaId && $categoryMosqueId) {
@@ -68,12 +72,17 @@ class PreAssessmentController extends Controller
             });
         }
 
+        if ($committeId) {
+            $query->whereHas('distributions', function ($q) use ($committeId) {
+                $q->where('committe_id', $committeId);
+            });
+        }
+
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->whereRaw('LOWER(users.name) LIKE ?', ['%' . strtolower($search) . '%'])
-                    ->orWhereHas('mosque', function ($q1) use ($search) {
-                        $q1->whereRaw('LOWER(mosques.name) LIKE ?', ['%' . strtolower($search) . '%']);
-                    })
+                $q->whereHas('mosque', function ($q1) use ($search) {
+                    $q1->whereRaw('LOWER(mosques.name) LIKE ?', ['%' . strtolower($search) . '%']);
+                })
                     ->orWhereHas('mosque.company', function ($q2) use ($search) {
                         $q2->whereRaw('LOWER(companies.name) LIKE ?', ['%' . strtolower($search) . '%']);
                     });
@@ -334,7 +343,7 @@ class PreAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.pre-assessment', compact('theadName', 'otherTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'search', 'users', 'categories'));
+        return view('admin.pages.assessment.pre-assessment', compact('theadName', 'otherTheadName', 'combinedData', 'committes', 'categoryAreaId', 'categoryMosqueId', 'committeId', 'search', 'users', 'categories'));
     }
 
     public function show(User $user)
