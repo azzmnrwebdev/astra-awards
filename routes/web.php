@@ -123,15 +123,6 @@ Route::middleware('auth')->group(function () {
         Route::get('profil-saya/edit-password', [AdminProfileController::class, 'editPassword'])->name('dashboard_profile.edit_pass');
         Route::post('profil-saya/perbarui-password', [AdminProfileController::class, 'updatePassword'])->name('dashboard_profile.update_pass');
 
-        Route::prefix('juri')->group(function () {
-            Route::get('/', [JuryController::class, 'index'])->name('jury.index');
-            Route::get('tambah', [JuryController::class, 'create'])->name('jury.create');
-            Route::post('/', [JuryController::class, 'store'])->name('jury.store');
-            Route::get('{jury}/edit', [JuryController::class, 'edit'])->name('jury.edit');
-            Route::put('{jury}', [JuryController::class, 'update'])->name('jury.update');
-            Route::delete('{jury}', [JuryController::class, 'destroy'])->name('jury.destroy');
-        });
-
         Route::prefix('penilaian-awal')->group(function () {
             Route::get('unduh-excel', [ExcelController::class, 'startAssessments'])->name('start_assessment.download_excel');
             Route::get('/', [StartAssessmentController::class, 'index'])->name('start_assessment.index');
@@ -236,6 +227,15 @@ Route::middleware('auth')->group(function () {
             Route::put('{committee}', [CommitteeController::class, 'update'])->name('committee.update');
             Route::put('{committee}/pembagian-penilaian', [CommitteeController::class, 'updateDistribution'])->name('committee.update_distribution');
             Route::delete('{committee}', [CommitteeController::class, 'destroy'])->name('committee.destroy');
+        });
+
+        Route::prefix('juri')->group(function () {
+            Route::get('/', [JuryController::class, 'index'])->name('jury.index');
+            Route::get('tambah', [JuryController::class, 'create'])->name('jury.create');
+            Route::post('/', [JuryController::class, 'store'])->name('jury.store');
+            Route::get('{jury}/edit', [JuryController::class, 'edit'])->name('jury.edit');
+            Route::put('{jury}', [JuryController::class, 'update'])->name('jury.update');
+            Route::delete('{jury}', [JuryController::class, 'destroy'])->name('jury.destroy');
         });
 
         Route::prefix('peserta')->group(function () {

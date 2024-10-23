@@ -107,15 +107,15 @@
                     Manajemen Panitia
                 </a>
             </li>
-        @endif
 
-        <li class="sidebar-item">
-            <a href="{{ route('jury.index') }}"
-                class="sidebar-link {{ request()->routeIs('jury.*') ? 'active' : '' }}">
-                <i class="bi bi-people-fill me-2 fs-5"></i>
-                Manajemen Juri
-            </a>
-        </li>
+            <li class="sidebar-item">
+                <a href="{{ route('jury.index') }}"
+                    class="sidebar-link {{ request()->routeIs('jury.*') ? 'active' : '' }}">
+                    <i class="bi bi-people-fill me-2 fs-5"></i>
+                    Manajemen Juri
+                </a>
+            </li>
+        @endif
 
         @if (auth()->check() && auth()->user()->hasRole('admin'))
             <li class="sidebar-item">
