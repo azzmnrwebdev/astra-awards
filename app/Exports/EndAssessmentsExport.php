@@ -96,22 +96,28 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $users = $users->map(function ($user) {
                     $totalValue = 0;
 
+                    $weightPillarOne = 0.25;
+                    $weightPillarTwo = 0.25;
+                    $weightPillarThree = 0.20;
+                    $weightPillarFour = 0.15;
+                    $weightPillarFive = 0.15;
+
                     if ($user->mosque->endAssessment) {
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two * $weightPillarTwo;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * $weightPillarOne;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three * $weightPillarThree;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four * $weightPillarFour;
+                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five * $weightPillarFive;
                     }
 
                     $user->totalNilai = $totalValue;
+
                     return $user;
                 })->filter(function ($user) {
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortByDesc('totalNilai');
-                $allUsers = $allUsers->merge($topUsers);
+                $allUsers = $allUsers->merge($users->sortByDesc('totalNilai'));
             }
         }
 
