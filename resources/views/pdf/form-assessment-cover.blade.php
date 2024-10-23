@@ -62,7 +62,7 @@
 
         <h2 style="font-weight: 800; text-transform: uppercase;">2024</h2>
 
-        <div style="height: 4px; border-radius: 10px; width: 350px; background-color: #f0c916;"></div>
+        <div style="height: 4px; border-radius: 10px; width: 328px; background-color: #f0c916;"></div>
 
         <div style="position: absolute; bottom: 230px; right: 80px; text-align: right; z-index: 2;">
             <a href="https://awards.amaliah.id/" style="font-size: 12px; font-weight: 600;">
