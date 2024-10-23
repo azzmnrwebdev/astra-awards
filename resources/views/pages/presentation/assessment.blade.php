@@ -36,15 +36,17 @@
                             <h5 class="card-title fw-bold mb-3">Mengunggah File Presentasi</h5>
 
                             {{-- Pertanyaan 1 --}}
-                            <div class="mb-3">
-                                <label for="file" class="form-label fw-medium">Silahkan untuk mengunggah file
-                                    presentasi yang memuat keseluruhan pilar penilaian (Pilar 1, 2, 3, 4, dan
-                                    5)</label>
-                            </div>
+                            @if (auth()->check() && auth()->user()->hasRole('user'))
+                                <div class="mb-3">
+                                    <label for="file" class="form-label fw-medium">Silahkan untuk mengunggah file
+                                        presentasi yang memuat keseluruhan pilar penilaian (Pilar 1, 2, 3, 4, dan
+                                        5)</label>
+                                </div>
 
-                            @error('file')
-                                <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                            @enderror
+                                @error('file')
+                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
+                                @enderror
+                            @endif
 
                             @if ($user->mosque->presentation && $user->mosque->presentation->file)
                                 <div class="mb-3">
