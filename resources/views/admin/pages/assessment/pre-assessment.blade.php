@@ -73,12 +73,12 @@
                                         if ($pillarOne && $pillarOne->committeeAssessmnet?->pillar_one_id) {
                                             $pillarOneAssessment = $pillarOne->committeeAssessmnet;
                                             if (
-                                                $pillarOneAssessment->pillar_one_question_one ||
-                                                $pillarOneAssessment->pillar_one_question_two ||
-                                                $pillarOneAssessment->pillar_one_question_three ||
-                                                $pillarOneAssessment->pillar_one_question_four ||
-                                                $pillarOneAssessment->pillar_one_question_five ||
-                                                $pillarOneAssessment->pillar_one_question_six ||
+                                                $pillarOneAssessment->pillar_one_question_one &&
+                                                $pillarOneAssessment->pillar_one_question_two &&
+                                                $pillarOneAssessment->pillar_one_question_three &&
+                                                $pillarOneAssessment->pillar_one_question_four &&
+                                                $pillarOneAssessment->pillar_one_question_five &&
+                                                $pillarOneAssessment->pillar_one_question_six &&
                                                 $pillarOneAssessment->pillar_one_question_seven
                                             ) {
                                                 $filledPillars++;
@@ -88,9 +88,9 @@
                                         if ($pillarTwo && $pillarTwo->committeeAssessmnet?->pillar_two_id) {
                                             $pillarTwoAssessment = $pillarTwo->committeeAssessmnet;
                                             if (
-                                                $pillarTwoAssessment->pillar_two_question_two ||
-                                                $pillarTwoAssessment->pillar_two_question_three ||
-                                                $pillarTwoAssessment->pillar_two_question_four ||
+                                                $pillarTwoAssessment->pillar_two_question_two &&
+                                                $pillarTwoAssessment->pillar_two_question_three &&
+                                                $pillarTwoAssessment->pillar_two_question_four &&
                                                 $pillarTwoAssessment->pillar_two_question_five
                                             ) {
                                                 $filledPillars++;
@@ -100,11 +100,11 @@
                                         if ($pillarThree && $pillarThree->committeeAssessmnet?->pillar_three_id) {
                                             $pillarThreeAssessment = $pillarThree->committeeAssessmnet;
                                             if (
-                                                $pillarThreeAssessment->pillar_three_question_one ||
-                                                $pillarThreeAssessment->pillar_three_question_two ||
-                                                $pillarThreeAssessment->pillar_three_question_three ||
-                                                $pillarThreeAssessment->pillar_three_question_four ||
-                                                $pillarThreeAssessment->pillar_three_question_five ||
+                                                $pillarThreeAssessment->pillar_three_question_one &&
+                                                $pillarThreeAssessment->pillar_three_question_two &&
+                                                $pillarThreeAssessment->pillar_three_question_three &&
+                                                $pillarThreeAssessment->pillar_three_question_four &&
+                                                $pillarThreeAssessment->pillar_three_question_five &&
                                                 $pillarThreeAssessment->pillar_three_question_six
                                             ) {
                                                 $filledPillars++;
@@ -114,10 +114,10 @@
                                         if ($pillarFour && $pillarFour->committeeAssessmnet?->pillar_four_id) {
                                             $pillarFourAssessment = $pillarFour->committeeAssessmnet;
                                             if (
-                                                $pillarFourAssessment->pillar_four_question_one ||
-                                                $pillarFourAssessment->pillar_four_question_two ||
-                                                $pillarFourAssessment->pillar_four_question_three ||
-                                                $pillarFourAssessment->pillar_four_question_four ||
+                                                $pillarFourAssessment->pillar_four_question_one &&
+                                                $pillarFourAssessment->pillar_four_question_two &&
+                                                $pillarFourAssessment->pillar_four_question_three &&
+                                                $pillarFourAssessment->pillar_four_question_four &&
                                                 $pillarFourAssessment->pillar_four_question_five
                                             ) {
                                                 $filledPillars++;
@@ -127,10 +127,10 @@
                                         if ($pillarFive && $pillarFive->committeeAssessmnet?->pillar_five_id) {
                                             $pillarFiveAssessment = $pillarFive->committeeAssessmnet;
                                             if (
-                                                $pillarFiveAssessment->pillar_five_question_one ||
-                                                $pillarFiveAssessment->pillar_five_question_two ||
-                                                $pillarFiveAssessment->pillar_five_question_three ||
-                                                $pillarFiveAssessment->pillar_five_question_four ||
+                                                $pillarFiveAssessment->pillar_five_question_one &&
+                                                $pillarFiveAssessment->pillar_five_question_two &&
+                                                $pillarFiveAssessment->pillar_five_question_three &&
+                                                $pillarFiveAssessment->pillar_five_question_four &&
                                                 $pillarFiveAssessment->pillar_five_question_five
                                             ) {
                                                 $filledPillars++;

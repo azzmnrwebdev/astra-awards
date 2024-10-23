@@ -11,7 +11,9 @@ use App\Models\CategoryArea;
 use App\Models\BusinessLine;
 use App\Models\CategoryMosque;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PDFController extends Controller
 {
@@ -25,8 +27,8 @@ class PDFController extends Controller
         $mosques = Mosque::with(['user', 'company', 'categoryArea', 'categoryMosque'])
             ->where('category_area_id', $categoryAreaId)
             ->where('category_mosque_id', $categoryMosqueId);
-        
-            if (!empty($search)) {
+
+        if (!empty($search)) {
             $mosques->where(function ($query) use ($search) {
                 $loweredSearch = strtolower($search);
 
@@ -228,5 +230,49 @@ class PDFController extends Controller
         return response($mergedPdf, 200)
             ->header('Content-Type', 'application/pdf')
             ->header('Content-Disposition', 'attachment; filename="Daftar-Peserta-Lini-Bisnis-' . $businessLineName . '.pdf"');
+    }
+
+    public function getFormAssessment(User $user)
+    {
+        $data = [
+            'user' => $user,
+            'date' => Carbon::now()->toDateString(),
+        ];
+
+        $pdfPortrait = PDF::loadView('pdf.form-assessment-cover')
+            ->setPaper('a4', 'portrait')
+            ->setOption([
+                'fontDir' => public_path('/fonts'),
+                'fontCache' => public_path('/fonts'),
+                'defaultFont' => 'Inter'
+            ]);
+
+        $pdfLandscape = PDF::loadView('pdf.form-assessment-page', $data)
+            ->setPaper('a4', 'landscape')
+            ->setOption([
+                'fontDir' => public_path('/fonts'),
+                'fontCache' => public_path('/fonts'),
+                'defaultFont' => 'Inter'
+            ]);
+
+        $pdfPortraitPath = storage_path('app/temp_portrait.pdf');
+        $pdfLandscapePath = storage_path('app/temp_landscape.pdf');
+        $pdfPortrait->save($pdfPortraitPath);
+        $pdfLandscape->save($pdfLandscapePath);
+
+        $merger = new Merger;
+        $merger->addFile($pdfPortraitPath);
+        $merger->addFile($pdfLandscapePath);
+
+        $mergedPdf = $merger->merge();
+
+        unlink($pdfPortraitPath);
+        unlink($pdfLandscapePath);
+
+        $fileName = $user->id . '.pdf';
+        Storage::put('public/assessments/' . $fileName, $mergedPdf);
+
+        return redirect(route('presentation.assessment', ['user' => $user->id]))
+            ->with('success', 'Nilai berhasil dihasilkan dan Anda bisa melihat formulir penilaian.');
     }
 }

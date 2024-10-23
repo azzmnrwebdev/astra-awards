@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware([CheckRolesMiddleware::class . ':jury,user', CheckStatusMiddleware::class])->group(function () {
         Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation.index')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
         Route::get('presentasi/{user}/penilaian', [PresentationController::class, 'presentationAssessment'])->name('presentation.assessment')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
+        Route::get('presentasi/{user}/penilaian/hasilkan-nilai', [PDFController::class, 'getFormAssessment'])->name('jury_assessment.presentation_generate_value')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
     });
 
     // Route Jury

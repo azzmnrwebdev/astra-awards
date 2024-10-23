@@ -30,29 +30,46 @@
                     </div>
                 @endif
 
+                <div class="col-md-10 col-lg-8 mb-3">
+                    <div class="card h-100 border-0 shadow rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-3">Formulir Penilaian</h5>
+
+                            <p class="card-text mb-3">*) Silahkan tekan tombol <span class="fw-semibold">Hasilkan
+                                    Nilai</span> untuk mendapatkan file formulir penilaian.</p>
+
+                            <a href="{{ route('jury_assessment.presentation_generate_value', ['user' => $user->id]) }}"
+                                class="btn btn-danger mb-4">Hasilkan Nilai</a>
+
+                            @php
+                                $fileName = $user->id . '.pdf';
+                                $filePath = 'storage/assessments/' . $fileName;
+                            @endphp
+
+                            @if (file_exists(public_path($filePath)))
+                                <button type="button" class="d-block border-0 p-0 bg-transparent text-primary"
+                                    data-bs-toggle="modal" data-bs-target="#documentModal"
+                                    data-url="{{ url('/' . ltrim($filePath, '/')) }}" data-title="Formulir Penilaian">
+                                    Lihat Dokumen
+                                </button>
+                            @else
+                                <p class="card-text text-danger mb-0">File PDF belum tersedia</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-md-10 col-lg-8">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-3">Mengunggah File Presentasi</h5>
-
-                            {{-- Pertanyaan 1 --}}
-                            @if (auth()->check() && auth()->user()->hasRole('user'))
-                                <div class="mb-3">
-                                    <label for="file" class="form-label fw-medium">Silahkan untuk mengunggah file
-                                        presentasi yang memuat keseluruhan pilar penilaian (Pilar 1, 2, 3, 4, dan
-                                        5)</label>
-                                </div>
-
-                                @error('file')
-                                    <div class="text-danger mt-1"><strong>{{ $message }}</strong></div>
-                                @enderror
-                            @endif
+                            <h5 class="card-title fw-bold mb-3">File Presentasi</h5>
 
                             @if ($user->mosque->presentation && $user->mosque->presentation->file)
                                 <div class="mb-3">
                                     <button type="button" class="border-0 p-0 bg-transparent text-primary"
                                         data-bs-toggle="modal" data-bs-target="#documentModal"
-                                        data-url="{{ url('/' . ltrim($user->mosque->presentation->file, '/')) }}">
+                                        data-url="{{ url('/' . ltrim($user->mosque->presentation->file, '/')) }}"
+                                        data-title="File Presentasi">
                                         Lihat Dokumen
                                     </button>
                                 </div>
@@ -213,8 +230,8 @@
                                         Infrastruktur:</label>
 
                                     <div class="col-md-8 col-xl-9">
-                                        <select name="presentation_file_pillar_five" id="presentation_file_pillar_five"
-                                            class="form-select">
+                                        <select name="presentation_file_pillar_five"
+                                            id="presentation_file_pillar_five" class="form-select">
                                             @if (
                                                 !$user->mosque->presentation ||
                                                     !$user->mosque->presentation->startAssessment ||
@@ -260,7 +277,7 @@
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="documentModalLabel">Lihat Dokumen</h1>
+                    <h1 class="modal-title fs-5" id="documentModalLabel"></h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -278,10 +295,14 @@
                 $('#documentModal').on('show.bs.modal', function(event) {
                     let button = $(event.relatedTarget);
                     let url = button.data('url');
+                    let title = button.data('title');
                     let modal = $(this);
                     let documentContent = modal.find('#documentContent');
+                    let documentModalLabel = modal.find('#documentModalLabel');
 
                     documentContent.html('');
+                    documentModalLabel.text('');
+                    documentModalLabel.text(title);
 
                     if (url.match(/\.pdf$/i)) {
                         documentContent.html('<embed src="' + url +

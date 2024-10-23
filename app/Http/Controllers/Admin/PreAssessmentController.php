@@ -98,35 +98,63 @@ class PreAssessmentController extends Controller
                 ->leftJoin('pillar_fives', 'pillar_fives.mosque_id', '=', 'mosques.id')
                 ->selectRaw('
                     (
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_one_question_one + pillar_one_question_two + pillar_one_question_three + pillar_one_question_four + pillar_one_question_five + pillar_one_question_six + pillar_one_question_seven)
-                        ) * 0.25
-                        FROM committee_assessments WHERE committee_assessments.pillar_one_id = pillar_ones.id), 0)
-                    +
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_two_question_two + pillar_two_question_three + pillar_two_question_four + pillar_two_question_five)
-                        ) * 0.25
-                        FROM committee_assessments WHERE committee_assessments.pillar_two_id = pillar_twos.id), 0)
-                    +
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_three_question_one + pillar_three_question_two + pillar_three_question_three + pillar_three_question_four + pillar_three_question_five + pillar_three_question_six)
-                        ) * 0.20
-                        FROM committee_assessments WHERE committee_assessments.pillar_three_id = pillar_threes.id), 0)
-                    +
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_four_question_one + pillar_four_question_two + pillar_four_question_three + pillar_four_question_four + pillar_four_question_five)
-                        ) * 0.15
-                        FROM committee_assessments WHERE committee_assessments.pillar_four_id = pillar_fours.id), 0)
-                    +
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_five_question_one + pillar_five_question_two + pillar_five_question_three + pillar_five_question_four + pillar_five_question_five)
-                        ) * 0.15
-                        FROM committee_assessments WHERE committee_assessments.pillar_five_id = pillar_fives.id), 0)
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_one_question_one, 0) +
+                                COALESCE(pillar_one_question_two, 0) +
+                                COALESCE(pillar_one_question_three, 0) +
+                                COALESCE(pillar_one_question_four, 0) +
+                                COALESCE(pillar_one_question_five, 0) +
+                                COALESCE(pillar_one_question_six, 0) +
+                                COALESCE(pillar_one_question_seven, 0)
+                            ) * 0.25
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_one_id = pillar_ones.id
+                        ), 0) +
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_two_question_two, 0) +
+                                COALESCE(pillar_two_question_three, 0) +
+                                COALESCE(pillar_two_question_four, 0) +
+                                COALESCE(pillar_two_question_five, 0)
+                            ) * 0.25
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_two_id = pillar_twos.id
+                        ), 0) +
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_three_question_one, 0) +
+                                COALESCE(pillar_three_question_two, 0) +
+                                COALESCE(pillar_three_question_three, 0) +
+                                COALESCE(pillar_three_question_four, 0) +
+                                COALESCE(pillar_three_question_five, 0) +
+                                COALESCE(pillar_three_question_six, 0)
+                            ) * 0.20
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_three_id = pillar_threes.id
+                        ), 0) +
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_four_question_one, 0) +
+                                COALESCE(pillar_four_question_two, 0) +
+                                COALESCE(pillar_four_question_three, 0) +
+                                COALESCE(pillar_four_question_four, 0) +
+                                COALESCE(pillar_four_question_five, 0)
+                            ) * 0.15
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_four_id = pillar_fours.id
+                        ), 0) +
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_five_question_one, 0) +
+                                COALESCE(pillar_five_question_two, 0) +
+                                COALESCE(pillar_five_question_three, 0) +
+                                COALESCE(pillar_five_question_four, 0) +
+                                COALESCE(pillar_five_question_five, 0)
+                            ) * 0.15
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_five_id = pillar_fives.id
+                        ), 0)
                     ) AS "totalPillarValue"
                 ')
                 ->orderByDesc('totalPillarValue')
@@ -141,35 +169,63 @@ class PreAssessmentController extends Controller
                 ->leftJoin('pillar_fives', 'pillar_fives.mosque_id', '=', 'mosques.id')
                 ->selectRaw('
                     (
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_one_question_one + pillar_one_question_two + pillar_one_question_three + pillar_one_question_four + pillar_one_question_five + pillar_one_question_six + pillar_one_question_seven)
-                        ) * 0.25
-                        FROM committee_assessments WHERE committee_assessments.pillar_one_id = pillar_ones.id), 0)
-                    +
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_two_question_two + pillar_two_question_three + pillar_two_question_four + pillar_two_question_five)
-                        ) * 0.25
-                        FROM committee_assessments WHERE committee_assessments.pillar_two_id = pillar_twos.id), 0)
-                    +
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_three_question_one + pillar_three_question_two + pillar_three_question_three + pillar_three_question_four + pillar_three_question_five + pillar_three_question_six)
-                        ) * 0.20
-                        FROM committee_assessments WHERE committee_assessments.pillar_three_id = pillar_threes.id), 0)
-                    +
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_four_question_one + pillar_four_question_two + pillar_four_question_three + pillar_four_question_four + pillar_four_question_five)
-                        ) * 0.15
-                        FROM committee_assessments WHERE committee_assessments.pillar_four_id = pillar_fours.id), 0)
-                    +
-                    COALESCE(
-                        (SELECT SUM(
-                            (pillar_five_question_one + pillar_five_question_two + pillar_five_question_three + pillar_five_question_four + pillar_five_question_five)
-                        ) * 0.15
-                        FROM committee_assessments WHERE committee_assessments.pillar_five_id = pillar_fives.id), 0)
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_one_question_one, 0) +
+                                COALESCE(pillar_one_question_two, 0) +
+                                COALESCE(pillar_one_question_three, 0) +
+                                COALESCE(pillar_one_question_four, 0) +
+                                COALESCE(pillar_one_question_five, 0) +
+                                COALESCE(pillar_one_question_six, 0) +
+                                COALESCE(pillar_one_question_seven, 0)
+                            ) * 0.25
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_one_id = pillar_ones.id
+                        ), 0) +
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_two_question_two, 0) +
+                                COALESCE(pillar_two_question_three, 0) +
+                                COALESCE(pillar_two_question_four, 0) +
+                                COALESCE(pillar_two_question_five, 0)
+                            ) * 0.25
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_two_id = pillar_twos.id
+                        ), 0) +
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_three_question_one, 0) +
+                                COALESCE(pillar_three_question_two, 0) +
+                                COALESCE(pillar_three_question_three, 0) +
+                                COALESCE(pillar_three_question_four, 0) +
+                                COALESCE(pillar_three_question_five, 0) +
+                                COALESCE(pillar_three_question_six, 0)
+                            ) * 0.20
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_three_id = pillar_threes.id
+                        ), 0) +
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_four_question_one, 0) +
+                                COALESCE(pillar_four_question_two, 0) +
+                                COALESCE(pillar_four_question_three, 0) +
+                                COALESCE(pillar_four_question_four, 0) +
+                                COALESCE(pillar_four_question_five, 0)
+                            ) * 0.15
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_four_id = pillar_fours.id
+                        ), 0) +
+                        COALESCE((
+                            SELECT SUM(
+                                COALESCE(pillar_five_question_one, 0) +
+                                COALESCE(pillar_five_question_two, 0) +
+                                COALESCE(pillar_five_question_three, 0) +
+                                COALESCE(pillar_five_question_four, 0) +
+                                COALESCE(pillar_five_question_five, 0)
+                            ) * 0.15
+                            FROM committee_assessments
+                            WHERE committee_assessments.pillar_five_id = pillar_fives.id
+                        ), 0)
                     ) AS "totalPillarValue"
                 ')
                 ->orderByDesc('totalPillarValue')
