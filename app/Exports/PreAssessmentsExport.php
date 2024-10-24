@@ -253,13 +253,6 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
         $filledPillars = 0;
         $status = 'Belum Penilaian';
-        $pillarOneTotalValue = $pillarTwoTotalValue = $pillarThreeTotalValue = $pillarFourTotalValue = $pillarFiveTotalValue = 0;
-
-        $pillarOneTotal = 'Belum Tersedia';
-        $pillarTwoTotal = 'Belum Tersedia';
-        $pillarThreeTotal = 'Belum Tersedia';
-        $pillarFourTotal = 'Belum Tersedia';
-        $pillarFiveTotal = 'Belum Tersedia';
 
         $pillarOne = $user->mosque->pillarOne;
         $pillarTwo = $user->mosque->pillarTwo;
@@ -267,8 +260,12 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         $pillarFour = $user->mosque->pillarFour;
         $pillarFive = $user->mosque->pillarFive;
 
+        $pillarOneTotal = $pillarTwoTotal = $pillarThreeTotal = $pillarFourTotal = $pillarFiveTotal = "Belum Tersedia";
+        $pillarOneTotalValue = $pillarTwoTotalValue = $pillarThreeTotalValue = $pillarFourTotalValue = $pillarFiveTotalValue = 0;
+
         if ($pillarOne && $pillarOne->committeeAssessmnet?->pillar_one_id) {
             $pillarOneAssessment = $pillarOne->committeeAssessmnet;
+
             $pillarOneTotalValue =
                 $pillarOneAssessment->pillar_one_question_one +
                 $pillarOneAssessment->pillar_one_question_two +
@@ -279,11 +276,23 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $pillarOneAssessment->pillar_one_question_seven;
 
             $pillarOneTotal = $pillarOneTotalValue > 0 ? $pillarOneTotalValue : 'Belum Tersedia';
-            $filledPillars++;
+
+            if (
+                $pillarOneAssessment->pillar_one_question_one &&
+                $pillarOneAssessment->pillar_one_question_two &&
+                $pillarOneAssessment->pillar_one_question_three &&
+                $pillarOneAssessment->pillar_one_question_four &&
+                $pillarOneAssessment->pillar_one_question_five &&
+                $pillarOneAssessment->pillar_one_question_six &&
+                $pillarOneAssessment->pillar_one_question_seven
+            ) {
+                $filledPillars++;
+            }
         }
 
         if ($pillarTwo && $pillarTwo->committeeAssessmnet?->pillar_two_id) {
             $pillarTwoAssessment = $pillarTwo->committeeAssessmnet;
+
             $pillarTwoTotalValue =
                 $pillarTwoAssessment->pillar_two_question_two +
                 $pillarTwoAssessment->pillar_two_question_three +
@@ -291,11 +300,20 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $pillarTwoAssessment->pillar_two_question_five;
 
             $pillarTwoTotal = $pillarTwoTotalValue > 0 ? $pillarTwoTotalValue : 'Belum Tersedia';
-            $filledPillars++;
+
+            if (
+                $pillarTwoAssessment->pillar_two_question_two &&
+                $pillarTwoAssessment->pillar_two_question_three &&
+                $pillarTwoAssessment->pillar_two_question_four &&
+                $pillarTwoAssessment->pillar_two_question_five
+            ) {
+                $filledPillars++;
+            }
         }
 
         if ($pillarThree && $pillarThree->committeeAssessmnet?->pillar_three_id) {
             $pillarThreeAssessment = $pillarThree->committeeAssessmnet;
+
             $pillarThreeTotalValue =
                 $pillarThreeAssessment->pillar_three_question_one +
                 $pillarThreeAssessment->pillar_three_question_two +
@@ -305,11 +323,22 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $pillarThreeAssessment->pillar_three_question_six;
 
             $pillarThreeTotal = $pillarThreeTotalValue > 0 ? $pillarThreeTotalValue : 'Belum Tersedia';
-            $filledPillars++;
+
+            if (
+                $pillarThreeAssessment->pillar_three_question_one &&
+                $pillarThreeAssessment->pillar_three_question_two &&
+                $pillarThreeAssessment->pillar_three_question_three &&
+                $pillarThreeAssessment->pillar_three_question_four &&
+                $pillarThreeAssessment->pillar_three_question_five &&
+                $pillarThreeAssessment->pillar_three_question_six
+            ) {
+                $filledPillars++;
+            }
         }
 
         if ($pillarFour && $pillarFour->committeeAssessmnet?->pillar_four_id) {
             $pillarFourAssessment = $pillarFour->committeeAssessmnet;
+
             $pillarFourTotalValue =
                 $pillarFourAssessment->pillar_four_question_one +
                 $pillarFourAssessment->pillar_four_question_two +
@@ -318,11 +347,21 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $pillarFourAssessment->pillar_four_question_five;
 
             $pillarFourTotal = $pillarFourTotalValue > 0 ? $pillarFourTotalValue : 'Belum Tersedia';
-            $filledPillars++;
+
+            if (
+                $pillarFourAssessment->pillar_four_question_one &&
+                $pillarFourAssessment->pillar_four_question_two &&
+                $pillarFourAssessment->pillar_four_question_three &&
+                $pillarFourAssessment->pillar_four_question_four &&
+                $pillarFourAssessment->pillar_four_question_five
+            ) {
+                $filledPillars++;
+            }
         }
 
         if ($pillarFive && $pillarFive->committeeAssessmnet?->pillar_five_id) {
             $pillarFiveAssessment = $pillarFive->committeeAssessmnet;
+
             $pillarFiveTotalValue =
                 $pillarFiveAssessment->pillar_five_question_one +
                 $pillarFiveAssessment->pillar_five_question_two +
@@ -331,22 +370,23 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $pillarFiveAssessment->pillar_five_question_five;
 
             $pillarFiveTotal = $pillarFiveTotalValue > 0 ? $pillarFiveTotalValue : 'Belum Tersedia';
-            $filledPillars++;
+
+            if (
+                $pillarFiveAssessment->pillar_five_question_one &&
+                $pillarFiveAssessment->pillar_five_question_two &&
+                $pillarFiveAssessment->pillar_five_question_three &&
+                $pillarFiveAssessment->pillar_five_question_four &&
+                $pillarFiveAssessment->pillar_five_question_five
+            ) {
+                $filledPillars++;
+            }
         }
 
-        if ($filledPillars > 0 && $filledPillars < 5) {
-            $status = 'Sebagian Formulir';
-        } elseif ($filledPillars == 5) {
+        if ($filledPillars === 5) {
             $status = 'Semua Formulir';
+        } elseif ($filledPillars > 0 && $filledPillars < 5) {
+            $status = 'Sebagian Formulir';
         }
-
-        $rekapNilai = (
-            ($pillarOneTotalValue * 0.25) +
-            ($pillarTwoTotalValue * 0.25) +
-            ($pillarThreeTotalValue * 0.20) +
-            ($pillarFourTotalValue * 0.15) +
-            ($pillarFiveTotalValue * 0.15)
-        );
 
         return [
             $this->index,
@@ -361,7 +401,7 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $pillarFourTotal,
             $pillarFiveTotal,
             $user->mosque->total_pillar_value !== 0 ? $user->mosque->total_pillar_value : 'Belum Tersedia',
-            $rekapNilai
+            $user->totalPillarValue != 0 ? str_replace('.', ',', $user->totalPillarValue) : "Belum Tersedia"
         ];
     }
 
