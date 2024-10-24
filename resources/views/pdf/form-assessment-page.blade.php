@@ -72,7 +72,7 @@
                 </td>
                 <td style="width: 1%; vertical-align: top;font-size: 12px; padding: 0;">:</td>
                 <td style="width: 30%; vertical-align: top; text-transform: uppercase; padding: 0; font-size: 12px;">
-                    Laporan Formulir Penilaian Pilar 1 Sampai Dengan Pilar 5 Dari Peserta {{ $user->mosque->name }}
+                    Laporan Formulir Penilaian Pilar 1 Sampai Dengan Pilar 5 Dari Masjid/Musala {{ $user->mosque->name }}
                 </td>
             </tr>
             <tr>
@@ -87,7 +87,7 @@
 
     <h3 style="font-weight: 800; text-align: center; line-height: 20px;">
         <span style="display: block;">Laporan Formulir Penilaian Pilar 1 Sampai Dengan Pilar 5</span>
-        Dari Peserta {{ $user->mosque->name }}
+        Dari MasjidMusala {{ $user->mosque->name }}
     </h3>
 
     <table id="table">
