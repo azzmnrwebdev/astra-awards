@@ -453,6 +453,14 @@
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                <p class="card-text fw-medium text-danger">
+                                    @if ($pillarThree->file_question_four == null)
+                                        *) Dokumen Pendukung: N/A
+                                    @endif
+                                </p>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_three_id ?? '')
                                     <p class="card-text mb-0 mt-2 fw-medium">
                                         Penilaian
@@ -623,6 +631,14 @@
                                         Lihat Dokumen
                                     </button>
                                 </div>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                <p class="card-text fw-medium text-danger">
+                                    @if ($pillarThree->file_question_four == null)
+                                        *) Dokumen Pendukung: N/A
+                                    @endif
+                                </p>
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))

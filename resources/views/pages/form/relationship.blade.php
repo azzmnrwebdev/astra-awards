@@ -274,6 +274,14 @@
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                <p class="card-text fw-medium text-danger">
+                                    @if ($pillarTwo->file_question_two == null)
+                                        *) Dokumen Pendukung: N/A
+                                    @endif
+                                </p>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_two_id ?? '')
                                     <p class="card-text mb-0 mt-2 fw-medium">
                                         Penilaian
@@ -396,6 +404,14 @@
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                <p class="card-text fw-medium text-danger">
+                                    @if ($pillarTwo->file_question_three == null)
+                                        *) Dokumen Pendukung: N/A
+                                    @endif
+                                </p>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_two_id ?? '')
                                     <p class="card-text mb-0 mt-2 fw-medium">
                                         Penilaian
@@ -513,6 +529,14 @@
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                <p class="card-text fw-medium text-danger">
+                                    @if ($pillarTwo->file_question_four == null)
+                                        *) Dokumen Pendukung: N/A
+                                    @endif
+                                </p>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_two_id ?? '')
                                     <p class="card-text mb-0 mt-2 fw-medium">
                                         Penilaian
@@ -622,6 +646,14 @@
                             @endif
 
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                <p class="card-text fw-medium text-danger">
+                                    @if ($pillarTwo->file_question_five == null)
+                                        *) Dokumen Pendukung: N/A
+                                    @endif
+                                </p>
+                            @endif
+
+                            @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_two_id ?? '')
                                     <p class="card-text mb-0 mt-2 fw-medium">
                                         Penilaian
@@ -666,7 +698,8 @@
                                 @if ($systemAssessment->pillar_two_id ?? '')
                                     <div class="d-flex justify-content-between align-items-center">
                                         <button type="submit" class="btn btn-warning">Ubah Nilai</button>
-                                        <a href="{{ route('form.managementRelationship', ['user' => $pillarTwo->mosque->user->id, 'action' => 'penilaian']) }}" class="btn btn-outline-dark">Selanjutnya</a>
+                                        <a href="{{ route('form.managementRelationship', ['user' => $pillarTwo->mosque->user->id, 'action' => 'penilaian']) }}"
+                                            class="btn btn-outline-dark">Selanjutnya</a>
                                     </div>
 
                                     </form>
@@ -676,7 +709,8 @@
                             @if (auth()->check() && auth()->user()->hasRole('user'))
                                 <div class="d-flex justify-content-between align-items-center">
                                     <button type="submit" class="btn btn-primary">Simpan</button>
-                                    <a href="{{ route('form.managementRelationship') }}" class="btn btn-outline-dark">Selanjutnya</a>
+                                    <a href="{{ route('form.managementRelationship') }}"
+                                        class="btn btn-outline-dark">Selanjutnya</a>
                                 </div>
                             @endif
                         </div>
