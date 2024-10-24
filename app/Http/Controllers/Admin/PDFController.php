@@ -234,8 +234,94 @@ class PDFController extends Controller
 
     public function getFormAssessment(User $user)
     {
+        $weightPillarOne = 0.25;
+        $weightPillarTwo = 0.25;
+        $weightPillarThree = 0.20;
+        $weightPillarFour = 0.15;
+        $weightPillarFive = 0.15;
+
+        $pillarOne = $user->mosque->pillarOne;
+        $pillarTwo = $user->mosque->pillarTwo;
+        $pillarThree = $user->mosque->pillarThree;
+        $pillarFour = $user->mosque->pillarFour;
+        $pillarFive = $user->mosque->pillarFive;
+
+        $pillarOneTotalValue = $pillarTwoTotalValue = $pillarThreeTotalValue = $pillarFourTotalValue = $pillarFiveTotalValue = 0;
+
+        if ($pillarOne && $pillarOne->committeeAssessmnet?->pillar_one_id) {
+            $pillarOneAssessment = $pillarOne->committeeAssessmnet;
+
+            $pillarOneTotalValue =
+                $pillarOneAssessment->pillar_one_question_one +
+                $pillarOneAssessment->pillar_one_question_two +
+                $pillarOneAssessment->pillar_one_question_three +
+                $pillarOneAssessment->pillar_one_question_four +
+                $pillarOneAssessment->pillar_one_question_five +
+                $pillarOneAssessment->pillar_one_question_six +
+                $pillarOneAssessment->pillar_one_question_seven;
+        }
+
+        if ($pillarTwo && $pillarTwo->committeeAssessmnet?->pillar_two_id) {
+            $pillarTwoAssessment = $pillarTwo->committeeAssessmnet;
+
+            $pillarTwoTotalValue =
+                $pillarTwoAssessment->pillar_two_question_two +
+                $pillarTwoAssessment->pillar_two_question_three +
+                $pillarTwoAssessment->pillar_two_question_four +
+                $pillarTwoAssessment->pillar_two_question_five;
+        }
+
+        if ($pillarThree && $pillarThree->committeeAssessmnet?->pillar_three_id) {
+            $pillarThreeAssessment = $pillarThree->committeeAssessmnet;
+
+            $pillarThreeTotalValue =
+                $pillarThreeAssessment->pillar_three_question_one +
+                $pillarThreeAssessment->pillar_three_question_two +
+                $pillarThreeAssessment->pillar_three_question_three +
+                $pillarThreeAssessment->pillar_three_question_four +
+                $pillarThreeAssessment->pillar_three_question_five +
+                $pillarThreeAssessment->pillar_three_question_six;
+        }
+
+        if ($pillarFour && $pillarFour->committeeAssessmnet?->pillar_four_id) {
+            $pillarFourAssessment = $pillarFour->committeeAssessmnet;
+
+            $pillarFourTotalValue =
+                $pillarFourAssessment->pillar_four_question_one +
+                $pillarFourAssessment->pillar_four_question_two +
+                $pillarFourAssessment->pillar_four_question_three +
+                $pillarFourAssessment->pillar_four_question_four +
+                $pillarFourAssessment->pillar_four_question_five;
+        }
+
+        if ($pillarFive && $pillarFive->committeeAssessmnet?->pillar_five_id) {
+            $pillarFiveAssessment = $pillarFive->committeeAssessmnet;
+
+            $pillarFiveTotalValue =
+                $pillarFiveAssessment->pillar_five_question_one +
+                $pillarFiveAssessment->pillar_five_question_two +
+                $pillarFiveAssessment->pillar_five_question_three +
+                $pillarFiveAssessment->pillar_five_question_four +
+                $pillarFiveAssessment->pillar_five_question_five;
+        }
+
+        $valueSummary = (
+            ($pillarOneTotalValue * $weightPillarOne) +
+            ($pillarTwoTotalValue * $weightPillarTwo) +
+            ($pillarThreeTotalValue * $weightPillarThree) +
+            ($pillarFourTotalValue * $weightPillarFour) +
+            ($pillarFiveTotalValue * $weightPillarFive)
+        );
+
         $data = [
             'user' => $user,
+            'pillarTwoValue' => $pillarTwoTotalValue,
+            'pillarOneValue' => $pillarOneTotalValue,
+            'pillarThreeValue' => $pillarThreeTotalValue,
+            'pillarFourValue' => $pillarFourTotalValue,
+            'pillarFiveValue' => $pillarFiveTotalValue,
+            'totalValue' => $pillarTwoTotalValue + $pillarOneTotalValue + $pillarThreeTotalValue + $pillarFourTotalValue + $pillarFiveTotalValue,
+            'valueSummary' => str_replace('.', ',', $valueSummary),
             'date' => Carbon::now()->toDateString(),
         ];
 
