@@ -33,13 +33,13 @@
                 <div class="col-md-10 col-lg-8 mb-3">
                     <div class="card h-100 border-0 shadow rounded-4">
                         <div class="card-body p-4">
-                            <h5 class="card-title fw-bold mb-3">Formulir Penilaian</h5>
+                            <h5 class="card-title fw-bold mb-3">Formulir Penilaian Panitia</h5>
 
                             <p class="card-text mb-3">*) Silahkan tekan tombol <span class="fw-semibold">Hasilkan
-                                    Nilai</span> untuk mendapatkan file formulir penilaian.</p>
+                                    Formulir Penilaian Panitia</span> untuk mendapatkan file formulir penilaian panitia bila belum tersedia.</p>
 
                             <a href="{{ route('jury_assessment.presentation_generate_value', ['user' => $user->id]) }}"
-                                class="btn btn-danger mb-4">Hasilkan Nilai</a>
+                                class="btn btn-danger mb-4">Hasilkan Formulir Penilaian Panitia</a>
 
                             @php
                                 $fileName = $user->id . '.pdf';
