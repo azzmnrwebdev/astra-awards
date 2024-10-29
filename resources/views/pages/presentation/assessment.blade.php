@@ -53,7 +53,7 @@
                                     Lihat Dokumen
                                 </button>
                             @else
-                                <p class="card-text text-danger mb-0">File formulir penilaian belum tersedia</p>
+                                <p class="card-text text-danger mb-0">File Formulir Penilaian Panitia belum tersedia</p>
                             @endif
                         </div>
                     </div>
