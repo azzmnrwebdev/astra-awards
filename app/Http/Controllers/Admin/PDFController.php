@@ -359,6 +359,6 @@ class PDFController extends Controller
         Storage::put('public/assessments/' . $fileName, $mergedPdf);
 
         return redirect(route('presentation.assessment', ['user' => $user->id]))
-            ->with('success', 'Nilai berhasil dihasilkan dan Anda bisa melihat formulir penilaian.');
+            ->with('success', 'Formulir Penilaian Pantia berhasil dibuat.');
     }
 }
