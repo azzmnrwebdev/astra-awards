@@ -73,6 +73,11 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                     'mosque.company',
                     'mosque.presentation',
                     'mosque.presentation.startAssessment',
+                    'mosque.pillarOne.committeeAssessmnet',
+                    'mosque.pillarTwo.committeeAssessmnet',
+                    'mosque.pillarThree.committeeAssessmnet',
+                    'mosque.pillarFour.committeeAssessmnet',
+                    'mosque.pillarFive.committeeAssessmnet'
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->where(function ($q) {
@@ -171,7 +176,7 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortBy('totalNilai')->take(5);
+                $topUsers = $users->sortByDesc('totalNilai')->take(5);
                 $allUsers = $allUsers->merge($topUsers);
             }
         }

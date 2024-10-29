@@ -87,7 +87,7 @@
 
     <h3 style="font-weight: 800; text-align: center; line-height: 20px;">
         <span style="display: block;">Laporan Formulir Penilaian Pilar 1 Sampai Dengan Pilar 5</span>
-        Dari MasjidMusala {{ $user->mosque->name }}
+        Dari Masjid/Musala {{ $user->mosque->name }}
     </h3>
 
     <table id="table">

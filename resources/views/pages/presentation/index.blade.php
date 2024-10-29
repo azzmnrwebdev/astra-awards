@@ -69,6 +69,7 @@
                     <form>
                         <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                             class="form-control" placeholder="Cari peserta?">
+                        <div class="form-text">Kata kunci berdasarkan nama masjid/musala atau perusahaan</div>
                     </form>
                 </div>
 
@@ -83,8 +84,8 @@
                                     <thead class="border-top border-start border-end table-primary">
                                         <tr>
                                             <th class="text-center py-3">No</th>
-                                            <th class="text-center py-3">Kategori</th>
                                             <th class="text-center py-3">Kategori Area</th>
+                                            <th class="text-center py-3">Kategori</th>
                                             <th class="text-center py-3">Masjid/Musala</th>
                                             <th class="text-center py-3">Perusahaan</th>
                                             <th class="text-center py-3">Penilaian</th>
@@ -97,8 +98,10 @@
                                             <tr>
                                                 <td class="text-center py-3">
                                                     {{ $loop->index + 1 }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
-                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}
+                                                </td>
+                                                <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}
+                                                </td>
                                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                                 <td class="text-center py-3">
                                                     {{ $item->mosque->company->name }}
