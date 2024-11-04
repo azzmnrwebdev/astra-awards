@@ -273,6 +273,7 @@ class StartAssessmentController extends Controller
             ['class' => 'text-center py-3', 'label' => 'No'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
+            ['class' => 'text-center py-3', 'label' => 'Provinsi'],
             ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];

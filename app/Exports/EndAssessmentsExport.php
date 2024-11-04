@@ -175,6 +175,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $this->index,
             $user->mosque->name,
             $user->mosque->company->name,
+            $user->mosque->city->province->name,
             $user->mosque->categoryMosque->name,
             $user->mosque->categoryArea->name,
             $pillarTwoValue,
@@ -193,6 +194,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             'NO',
             'NAMA MASJID/MUSALA',
             'PERUSAHAAN',
+            'PROVINSI',
             'KATEGORI',
             'KATEGORI AREA',
             "HUBUNGAN DENGAN\nYAYASAN AMALIAH\nASTRA (BOBOT 25%)",
@@ -207,15 +209,15 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('B1:M1');
+        $sheet->mergeCells('B1:N1');
         $sheet->setCellValue('B1', "\n\n" . $this->title);
         $sheet->getRowDimension(1)->setRowHeight(100);
 
-        $sheet->getStyle('B1:M1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('B1:M1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
+        $sheet->getStyle('B1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B1:N1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
         if ($this->juryId) {
-            $sheet->mergeCells('B2:M2');
+            $sheet->mergeCells('B2:N2');
             $sheet->setCellValue('B2', 'NAMA JURI                      :  ' . $this->juryName);
             $sheet->getRowDimension(2)->setRowHeight(20);
 
@@ -224,27 +226,28 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $lastDataRow = $sheet->getHighestRow();
             for ($rowIndex = 4; $rowIndex <= $lastDataRow; $rowIndex++) {
                 $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-                $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
+                $sheet->getStyle('C' . $rowIndex . ':N' . $rowIndex)->getAlignment()->setIndent(1);
             }
 
-            $sheet->getStyle('B3:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('B3:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
             return [
-                'B1:M1' => [
+                'B1:N1' => [
                     'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
                     'alignment' => ['wrapText' => true],
                 ],
                 'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-                'B2:M2' => [
+                'B2:N2' => [
                     'font' => ['bold' => true],
                     'alignment' => ['horizontal' => 'left', 'wrapText' => true],
                 ],
-                'G' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'B3:M3' => [
+                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'B3:N3' => [
                     'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                     'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
                     'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
@@ -253,8 +256,9 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-                'L' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'G' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             ];
         } else {
             $sheet->getRowDimension(2)->setRowHeight(100);
@@ -262,22 +266,23 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $lastDataRow = $sheet->getHighestRow();
             for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
                 $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-                $sheet->getStyle('C' . $rowIndex . ':M' . $rowIndex)->getAlignment()->setIndent(1);
+                $sheet->getStyle('C' . $rowIndex . ':N' . $rowIndex)->getAlignment()->setIndent(1);
             }
 
-            $sheet->getStyle('B2:M' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('B2:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
             return [
-                'B1:M1' => [
+                'B1:N1' => [
                     'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
                     'alignment' => ['wrapText' => true],
                 ],
-                'G' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'B2:M2' => [
+                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'B2:N2' => [
                     'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                     'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
                     'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
@@ -287,8 +292,9 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-                'L' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'G' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             ];
         }
     }

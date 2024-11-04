@@ -136,6 +136,7 @@
                                     <td class="text-center py-3">{{ $loop->index + 1 }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
+                                    <td class="text-center py-3">{{ $item->mosque->city->province->name }}</td>
                                     <td class="text-center py-3">{{ str_replace('.', ',', $item->totalNilai) }}</td>
                                     <td class="text-center py-3">
                                         <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
@@ -144,7 +145,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center py-3">Data tidak ditemukan</td>
+                                    <td colspan="6" class="text-center py-3">Data tidak ditemukan</td>
                                 </tr>
                             @endforelse
                         </tbody>

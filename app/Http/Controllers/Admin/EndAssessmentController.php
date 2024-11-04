@@ -43,6 +43,7 @@ class EndAssessmentController extends Controller
             'No',
             'Nama Masjid/Musala',
             'Perusahaan',
+            'Provinsi',
             'Total Nilai',
         ]);
 
