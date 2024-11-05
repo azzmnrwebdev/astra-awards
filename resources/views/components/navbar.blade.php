@@ -11,7 +11,7 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                @if ((auth()->check() && auth()->user()->hasRole('admin')) || (auth()->check() && auth()->user()->hasRole('jury')))
+                @if (auth()->check() && auth()->user()->hasRole('admin'))
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                     </li>
@@ -22,14 +22,14 @@
                         href="{{ route('information') }}">Informasi</a>
                 </li>
 
-                @if ((auth()->check() && auth()->user()->hasRole('admin')) || auth()->user()->hasRole('user'))
+                @if ((auth()->check() && auth()->user()->hasRole('admin')) || (auth()->check() && auth()->user()->hasRole('user')))
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('form.*') ? 'active' : '' }}"
                             href="{{ route('form.index') }}">Formulir</a>
                     </li>
                 @endif
 
-                @if ((auth()->check() && auth()->user()->hasRole('jury')) || auth()->user()->hasRole('user'))
+                @if (auth()->check() && auth()->user()->hasRole('user'))
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('presentation.*') ? 'active' : '' }}"
                             href="{{ route('presentation.index') }}">Presentasi</a>

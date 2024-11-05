@@ -1,6 +1,10 @@
 <aside id="sidebar" class="d-flex flex-column gap-0">
     <div class="sidebar-logo d-flex align-items-center justify-content-between">
-        <a wire:navigate href="{{ route('information') }}">Amaliah Astra Awards</a>
+        @if (auth()->check() && auth()->user()->hasRole('jury'))
+            <a href="{{ route('dashboard') }}">Amaliah Astra Awards</a>
+        @else
+            <a href="{{ route('information') }}">Amaliah Astra Awards</a>
+        @endif
         <i class="bi bi-caret-left-fill d-lg-none text-white" id="sidebarToggle"></i>
     </div>
 
@@ -90,6 +94,16 @@
                 Penilaian Awal
             </a>
         </li>
+
+        @if (auth()->check() && auth()->user()->hasRole('jury'))
+            <li class="sidebar-item">
+                <a href="{{ route('jury_assessment.index') }}"
+                    class="sidebar-link {{ request()->routeIs('jury_assessment.*') ? 'active' : '' }}">
+                    <i class="bi bi-clipboard-check-fill me-2 fs-5"></i>
+                    Penilaian Juri
+                </a>
+            </li>
+        @endif
 
         <li class="sidebar-item">
             <a href="{{ route('end_assessment.index') }}"

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EndAssessmentController;
 use App\Http\Controllers\Admin\ExcelController;
+use App\Http\Controllers\Admin\JuryAssessmentController;
 use App\Http\Controllers\Admin\JuryController;
 use App\Http\Controllers\Admin\ParentCompanyController;
 use App\Http\Controllers\Admin\PDFController;
@@ -33,9 +34,10 @@ use App\Http\Middleware\CheckStatusMiddleware;
 use App\Http\Middleware\EndAssessmentEndMiddleware;
 use App\Http\Middleware\EndAssessmentStartMiddleware;
 use App\Http\Middleware\FormDKMMiddleware;
-use App\Http\Middleware\InitialAssessmentMiddleware;
 use App\Http\Middleware\RegisterMiddleware;
 use App\Http\Middleware\SelectionMiddleware;
+use App\Http\Middleware\StartAssessmentEndMiddleware;
+use App\Http\Middleware\StartAssessmentStartMiddleware;
 
 Route::middleware('guest')->group(function () {
     Route::get('masuk', [LoginController::class, 'login'])->name('login');
@@ -51,8 +53,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('logout', [LogoutController::class, 'logout'])->name('logout');
 
-    // Route All Role
-    Route::middleware([CheckStatusMiddleware::class])->group(function () {
+    // Route Admin & User
+    Route::middleware([CheckRolesMiddleware::class . ':admin,user', CheckStatusMiddleware::class])->group(function () {
         Route::get('/', [HomeController::class, 'information'])->name('information');
 
         Route::prefix('pengaturan')->group(function () {
@@ -64,22 +66,7 @@ Route::middleware('auth')->group(function () {
             Route::get('ganti-kata-sandi', [SettingController::class, 'changePassword'])->name('setting.changePassword');
             Route::put('ganti-kata-sandi', [SettingController::class, 'changePasswordAct'])->name('setting.changePasswordAct');
         });
-    });
 
-    // Route Jury & User
-    Route::middleware([CheckRolesMiddleware::class . ':jury,user', CheckStatusMiddleware::class])->group(function () {
-        Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation.index')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
-        Route::get('presentasi/{user}/penilaian', [PresentationController::class, 'presentationAssessment'])->name('presentation.assessment')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
-    });
-
-    // Route Jury
-    Route::middleware([CheckRolesMiddleware::class . ':jury', CheckStatusMiddleware::class])->group(function () {
-        Route::get('presentasi/{user}/penilaian/hasilkan-nilai', [PDFController::class, 'getFormAssessment'])->name('jury_assessment.presentation_generate_value')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
-        Route::post('presentasi/{user}/penilaian', [StartAssessmentController::class, 'presentationAssessmentAct'])->name('jury_assessment.presentation')->middleware([FormDKMMiddleware::class, InitialAssessmentMiddleware::class]);
-    });
-
-    // Route Admin & User
-    Route::middleware([CheckRolesMiddleware::class . ':admin,user', CheckStatusMiddleware::class])->group(function () {
         Route::get('formulir', [FormController::class, 'index'])->name('form.index')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
         Route::get('formulir/manajemen-hubungan/{user?}/{action?}', [FormController::class, 'managementRelationship'])->name('form.managementRelationship')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
         Route::get('formulir/hubungan/{user?}/{action?}', [FormController::class, 'relationship'])->name('form.relationship')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
@@ -90,6 +77,8 @@ Route::middleware('auth')->group(function () {
 
     // Route Only User
     Route::middleware([CheckRolesMiddleware::class . ':user'])->group(function () {
+        Route::get('presentasi', [PresentationController::class, 'presentation'])->name('presentation.index')->middleware([FormDKMMiddleware::class]);
+
         Route::post('formulir/manajemen-hubungan', [FormController::class, 'managementRelationshipAct'])->name('form.managementRelationshipAct')->middleware(FormDKMMiddleware::class);
         Route::post('formulir/hubungan', [FormController::class, 'relationshipAct'])->name('form.relationshipAct')->middleware(FormDKMMiddleware::class);
         Route::post('presentasi', [PresentationController::class, 'presentationAct'])->name('presentationAct')->middleware(FormDKMMiddleware::class);
@@ -116,7 +105,6 @@ Route::middleware('auth')->group(function () {
     // Route Dashboard Admin & Jury
     Route::middleware([CheckRolesMiddleware::class . ':admin,jury'])->prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
-        Route::post('/', [DashboardController::class, 'dashboardAct'])->name('dashboardAct');
 
         Route::get('profil-saya', [AdminProfileController::class, 'index'])->name('dashboard_profile.index');
         Route::get('profil-saya/edit-profil', [AdminProfileController::class, 'edit'])->name('dashboard_profile.edit');
@@ -133,13 +121,26 @@ Route::middleware('auth')->group(function () {
         Route::prefix('penilaian-akhir')->group(function () {
             Route::get('unduh-excel', [ExcelController::class, 'endAssessments'])->name('end_assessment.download_excel');
             Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index')->middleware([EndAssessmentStartMiddleware::class]);
-            Route::get('{user}/nilai-presentasi', [EndAssessmentController::class, 'edit'])->name('end_assessment.edit')->middleware([EndAssessmentStartMiddleware::class, EndAssessmentEndMiddleware::class]);
+            Route::get('{user}', [EndAssessmentController::class, 'show'])->name('end_assessment.show')->middleware([EndAssessmentStartMiddleware::class]);
+            Route::get('{user}/nilai', [EndAssessmentController::class, 'edit'])->name('end_assessment.edit')->middleware([EndAssessmentStartMiddleware::class, EndAssessmentEndMiddleware::class]);
             Route::put('{user}', [EndAssessmentController::class, 'update'])->name('end_assessment.update')->middleware([EndAssessmentStartMiddleware::class, EndAssessmentEndMiddleware::class]);
+        });
+    });
+
+    // Route Dashboard Jury
+    Route::middleware([CheckRolesMiddleware::class . ':jury'])->prefix('dashboard')->group(function () {
+        Route::prefix('penilaian-juri')->group(function () {
+            Route::get('/', [JuryAssessmentController::class, 'index'])->name('jury_assessment.index')->middleware([StartAssessmentStartMiddleware::class]);
+            Route::get('{user}/penilaian-awal', [JuryAssessmentController::class, 'assessment'])->name('jury_assessment.assessment')->middleware([StartAssessmentStartMiddleware::class, StartAssessmentEndMiddleware::class]);
+            Route::post('{user}/penilaian-awal', [JuryAssessmentController::class, 'assessmentAct'])->name('jury_assessment.assessmentAct')->middleware([StartAssessmentStartMiddleware::class, StartAssessmentEndMiddleware::class]);
+            Route::get('{user}/formulir-penilaian-panitia/pdf', [PDFController::class, 'getFormAssessment'])->name('jury_assessment.formAssessment');
         });
     });
 
     // Route Dashboard Admin
     Route::middleware([CheckRolesMiddleware::class . ':admin'])->prefix('dashboard')->group(function () {
+        Route::post('/', [DashboardController::class, 'dashboardAct'])->name('dashboardAct');
+
         Route::get('pengguna-berdasarkan-kategori-unduh-pdf/{categoryAreaId}/{categoryMosqueId}', [PDFController::class, 'getUsersByCategory'])->name('download_pdf.get_users_by_category');
         Route::get('pengguna-berdasarkan-provinsi-unduh-pdf/{provinceId}', [PDFController::class, 'getUsersByProvince'])->name('download_pdf.get_users_by_province');
         Route::get('pengguna-berdasarkan-lini-bisnis-unduh-pdf/{businessLineId}', [PDFController::class, 'getUsersByBusinessLine'])->name('download_pdf.get_users_by_business_line');

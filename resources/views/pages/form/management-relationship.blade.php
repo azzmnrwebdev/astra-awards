@@ -1015,7 +1015,7 @@
                                         <button type="submit" class="btn btn-warning">Ubah Nilai</button>
                                     </div>
 
-                                    <hr/>
+                                    <hr />
 
                                     <div class="d-flex justify-content-between align-items-center">
                                         <a href="{{ route('form.relationship', ['user' => $pillarOne->mosque->user->id, 'action' => 'penilaian']) }}"
@@ -1033,7 +1033,7 @@
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                 </div>
 
-                                <hr/>
+                                <hr />
 
                                 <div class="d-flex justify-content-between align-items-center">
                                     <a href="{{ route('form.relationship') }}"
@@ -1126,7 +1126,7 @@
                         documentContent.html('<embed src="' + url +
                             '" type="application/pdf" width="100%" height="500px" />');
                     } else {
-                        documentContent.html('<p>File format tidak didukung.</p>');
+                        documentContent.html('<p>Format file tidak didukung.</p>');
                     }
                 });
             });

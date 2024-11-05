@@ -1,4 +1,4 @@
-<x-admin title="Penilaian Akhir {{ $user->mosque->name }}">
+<x-admin title="Edit Penilaian Akhir {{ $user->mosque->name }}">
     {{-- Custom CSS --}}
     @prepend('styles')
         <style>
@@ -10,7 +10,7 @@
 
     {{-- Main Content --}}
     <h4 class="mb-4 fw-semibold d-inline-flex" id="pageTitle">
-        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Penilaian Akhir
+        <i class="bi bi-arrow-left-short" style="-webkit-text-stroke: 1px;"></i>&nbsp;&nbsp;Edit Penilaian Akhir
         {{ $user->mosque->name }}
     </h4>
 
@@ -23,7 +23,7 @@
             @endif
 
             <div class="mb-4">
-                <h5 class="card-title fw-semibold">Juri Menilai File Presentasi</h5>
+                <h5 class="card-title fw-semibold">Juri Penilaian Awal</h5>
 
                 <ul class="list-group mt-3">
                     <li class="list-group-item border-0 py-1">
@@ -32,12 +32,12 @@
             </div>
 
             <div class="mb-5">
-                <h5 class="card-title fw-semibold mb-3">File Presentasi</h5>
+                <h5 class="card-title fw-semibold mb-3">Lampiran Penilaian Awal</h5>
 
-                <button type="button" class="btn btn-warning mb-1" data-bs-toggle="modal"
+                <button type="button" class="btn btn-dark mb-1" data-bs-toggle="modal"
                     data-bs-target="#documentModal"
                     data-url="{{ url('/' . ltrim($user->mosque->presentation->file, '/')) }}">
-                    Lihat File
+                    Lihat File Presentasi
                 </button>
 
                 <div class="table-responsive mt-3">
@@ -350,7 +350,7 @@
                         documentContent.html('<embed src="' + url +
                             '" type="application/pdf" width="100%" height="500px" />');
                     } else {
-                        documentContent.html('<p>File format tidak didukung.</p>');
+                        documentContent.html('<p>Format file tidak didukung.</p>');
                     }
                 });
             });

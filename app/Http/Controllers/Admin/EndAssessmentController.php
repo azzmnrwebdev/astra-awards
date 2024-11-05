@@ -27,6 +27,7 @@ class EndAssessmentController extends Controller
             'Nama Masjid/Musala',
             'Perusahaan',
             'Total Nilai',
+            'Aksi',
         ]);
 
         $startAssessmentTheadNames = $this->getTheadName([
@@ -45,6 +46,7 @@ class EndAssessmentController extends Controller
             'Perusahaan',
             'Provinsi',
             'Total Nilai',
+            'Aksi',
         ]);
 
         // Gabungkan data kategori
@@ -234,6 +236,11 @@ class EndAssessmentController extends Controller
         return view('admin.pages.assessment.end-assessment', compact('endAssessmentTheadNames', 'startAssessmentTheadNames', 'categoryTheadNames', 'juries', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'juryId', 'search', 'endAssessmentAllUsers', 'usersInStartAssessment', 'categories'));
     }
 
+    public function show(User $user)
+    {
+        return view('admin.pages.assessment.end-assessment-show', compact('user'));
+    }
+
     public function edit(User $user)
     {
         return view('admin.pages.assessment.end-assessment-edit', compact('user'));
@@ -264,8 +271,10 @@ class EndAssessmentController extends Controller
         }
 
         try {
+            $mosqueId = $user->mosque->id;
+
             $user->mosque->endAssessment()->updateOrCreate(
-                ['mosque_id' => $user->mosque->id],
+                ['mosque_id' => $mosqueId],
                 [
                     'jury_id' => Auth::id(),
                     'presentation_value_pillar_one' => $request->presentation_value_pillar_one,
@@ -276,9 +285,11 @@ class EndAssessmentController extends Controller
                 ]
             );
 
-            return redirect(route('end_assessment.index'))->with('success', 'Nilai akhir berhasil disimpan');
+            $message = $mosqueId ? 'Penilaian Akhir berhasil diperbarui.' : 'Penilaian Akhir berhasil disimpan.';
+
+            return redirect(route('end_assessment.index'))->with('success', $message);
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan pada server.');
         }
     }
 

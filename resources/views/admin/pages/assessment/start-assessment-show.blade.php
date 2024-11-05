@@ -26,11 +26,11 @@
                 </ul>
             </div>
 
-            <h5 class="card-title fw-semibold mb-3">File Presentasi</h5>
+            <h5 class="card-title fw-semibold mb-3">Lampiran Penilaian Awal</h5>
 
-            <button type="button" class="btn btn-warning mb-1" data-bs-toggle="modal" data-bs-target="#documentModal"
+            <button type="button" class="btn btn-dark mb-1" data-bs-toggle="modal" data-bs-target="#documentModal"
                 data-url="{{ url('/' . ltrim($user->mosque->presentation->file, '/')) }}">
-                Lihat File
+                Lihat File Presentasi
             </button>
 
             <div class="table-responsive mt-3">
@@ -166,7 +166,7 @@
                         documentContent.html('<embed src="' + url +
                             '" type="application/pdf" width="100%" height="500px" />');
                     } else {
-                        documentContent.html('<p>File format tidak didukung.</p>');
+                        documentContent.html('<p>Format file tidak didukung.</p>');
                     }
                 });
             });

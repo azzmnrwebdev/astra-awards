@@ -358,7 +358,7 @@ class PDFController extends Controller
         $fileName = $user->id . '.pdf';
         Storage::put('public/assessments/' . $fileName, $mergedPdf);
 
-        return redirect(route('presentation.assessment', ['user' => $user->id]))
-            ->with('success', 'Formulir Penilaian Pantia berhasil dibuat.');
+        $filePath = public_path('storage/assessments/' . $fileName);
+        return response()->json(['exists' => file_exists($filePath)]);
     }
 }

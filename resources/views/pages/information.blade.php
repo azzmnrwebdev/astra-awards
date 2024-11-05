@@ -3,32 +3,21 @@
         {{-- Jumbroton --}}
         <div class="p-5 mb-4 bg-dark rounded-3">
             <div class="container-fluid py-4">
-                {{-- belum selesai --}}
                 @if (auth()->check() && auth()->user()->hasRole('user'))
                     <h1 class="display-6 text-white fw-bold">Assalamu'alaikum {{ auth()->user()->name }},</h1>
-                    <p class="col-md-8 text-white fs-5">Terima kasih telah berpartisipasi pada Amaliah Astra Awards. Untuk selanjutnya silakan untuk mengisi formulir dan melampirkan berkas/dokumen pendukung pada 5 Pilar Penilaian.</p>
+                    <p class="col-md-8 text-white fs-5">Terima kasih telah berpartisipasi pada Amaliah Astra Awards.
+                        Untuk selanjutnya silakan untuk mengisi formulir dan melampirkan berkas/dokumen pendukung pada 5
+                        Pilar Penilaian.</p>
 
                     <a href="{{ route('form.index') }}" class="btn btn-primary btn-lg">Mulai Sekarang</a>
                 @endif
 
                 {{-- belum selesai --}}
                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                    <h1 class="display-6 text-white fw-bold">Halo Panitia,</h1>
-                    <p class="col-md-8 text-white fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Laudantium,
-                        animi ea ut facere culpa recusandae doloremque fuga natus reiciendis fugiat nemo. Nostrum,
-                        adipisci
-                        numquam. Mollitia rem nam architecto aliquid.</p>
-                @endif
-
-                {{-- belum selesai --}}
-                @if (auth()->check() && auth()->user()->hasRole('jury'))
-                    <h1 class="display-6 text-white fw-bold">Halo Juri,</h1>
-                    <p class="col-md-8 text-white fs-5">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Laudantium,
-                        animi ea ut facere culpa recusandae doloremque fuga natus reiciendis fugiat nemo. Nostrum,
-                        adipisci
-                        numquam. Mollitia rem nam architecto aliquid.</p>
+                    <h1 class="display-6 text-white fw-bold">Assalamu'alaikum Panitia,</h1>
+                    <p class="col-md-8 text-white fs-5">Terima kasih atas partisipasi Anda dalam Amaliah Astra Awards.
+                        Selanjutnya, silakan lakukan penilaian formulir untuk peserta yang telah mengisi kelima pilar.
+                    </p>
                 @endif
             </div>
         </div>
@@ -41,12 +30,13 @@
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-3">Informasi Umum</h5>
 
-                            <img src="{{ asset('storage/' . $mosque->logo) }}" alt="Logo" style="width: 200px; display: block; margin-left: auto; margin-right: auto;">
+                            <img src="{{ asset('storage/' . $mosque->logo) }}" alt="Logo"
+                                style="width: 200px; display: block; margin-left: auto; margin-right: auto;">
 
                             <p class="card-text mb-0 fw-bold mt-3">Nama Masjid/Musala: {{ $mosque->name }}</p>
                             <p class="card-text mb-0 fw-bold">Kategori Masjid: {{ $mosque->categoryMosque->name }}</p>
                             <p class="card-text mb-0 fw-bold">Kategori Area: {{ $mosque->categoryArea->name }}</p>
-                            <br/>
+                            <br />
                             <p class="card-text mb-0"><span class="fw-medium">Alamat: </span>{{ $mosque->address }}</p>
                             <p class="card-text mb-0"><span class="fw-medium">Kota/Kabupaten:
                                 </span>{{ $mosque->city->name }}</p>
@@ -72,7 +62,8 @@
                             <h5 class="card-title fw-bold mb-3">Pemenuhan Formulir & Presentasi</h5>
 
                             <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link" href="{{ route('form.relationship') }}">1. Hubungan DKM dan YAA</a></p>
+                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link"
+                                            href="{{ route('form.relationship') }}">1. Hubungan DKM dan YAA</a></p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
                                     aria-valuenow="{{ $pillarTwoCompletion }}" aria-valuemin="0" aria-valuemax="100">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -83,9 +74,10 @@
                             </div>
 
                             <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link" href="{{ route('form.managementRelationship') }}">2. Hubungan Manajemen
-                                        Perusahaan
-                                        dengan DKM dan Jamaah</a></p>
+                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link"
+                                            href="{{ route('form.managementRelationship') }}">2. Hubungan Manajemen
+                                            Perusahaan
+                                            dengan DKM dan Jamaah</a></p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
                                     aria-valuenow="{{ $pillarOneCompletion }}" aria-valuemin="0" aria-valuemax="100">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -96,7 +88,8 @@
                             </div>
 
                             <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link" href="{{ route('form.program') }}">3. Program Sosial</a></p>
+                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link"
+                                            href="{{ route('form.program') }}">3. Program Sosial</a></p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
                                     aria-valuenow="{{ $pillarThreeCompletion }}" aria-valuemin="0" aria-valuemax="100">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated"
@@ -107,7 +100,8 @@
                             </div>
 
                             <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link" href="{{ route('form.administration') }}">4. Administrasi & Keuangan</a>
+                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link"
+                                            href="{{ route('form.administration') }}">4. Administrasi & Keuangan</a>
                                 </p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
                                     aria-valuenow="{{ $pillarFourCompletion }}" aria-valuemin="0" aria-valuemax="100">
@@ -119,11 +113,13 @@
                             </div>
 
                             <div class="mb-2">
-                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link" href="{{ route('form.infrastructure') }}">5. Peribadahan dan
-                                        Infrastruktur</a>
+                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link"
+                                            href="{{ route('form.infrastructure') }}">5. Peribadahan dan
+                                            Infrastruktur</a>
                                 </p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
-                                    aria-valuenow="{{ $pillarFiveCompletion }}" aria-valuemin="0" aria-valuemax="100">
+                                    aria-valuenow="{{ $pillarFiveCompletion }}" aria-valuemin="0"
+                                    aria-valuemax="100">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated"
                                         style="width: {{ $pillarFiveCompletion }}%;">
                                         {{ $pillarFiveCompletion }}%
@@ -132,7 +128,8 @@
                             </div>
 
                             <div class="mb-0">
-                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link" href="{{ route('presentation.index') }}">6. Presentasi</a></p>
+                                <p class="card-text mb-2"><span class="fw-medium"><a class="nav-link"
+                                            href="{{ route('presentation.index') }}">6. Presentasi</a></p>
                                 <div class="progress" role="progressbar" aria-label="Animated striped example"
                                     aria-valuenow="{{ $presentationCompletion }}" aria-valuemin="0"
                                     aria-valuemax="100">

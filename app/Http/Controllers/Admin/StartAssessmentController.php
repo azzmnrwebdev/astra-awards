@@ -14,46 +14,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class StartAssessmentController extends Controller
 {
-    public function presentationAssessmentAct(Request $request)
-    {
-        $rules = [
-            'presentation_file_pillar_two' => 'required',
-            'presentation_file_pillar_one' => 'required',
-            'presentation_file_pillar_three' => 'required',
-            'presentation_file_pillar_four' => 'required',
-            'presentation_file_pillar_five' => 'required',
-        ];
-
-        $messages = [
-            'presentation_file_pillar_two.required' => 'Nilai untuk pilar 1 tidak boleh kosong.',
-            'presentation_file_pillar_one.required' => 'Nilai untuk pilar 2 tidak boleh kosong.',
-            'presentation_file_pillar_three.required' => 'Nilai untuk pilar 3 tidak boleh kosong.',
-            'presentation_file_pillar_four.required' => 'Nilai untuk pilar 4 tidak boleh kosong.',
-            'presentation_file_pillar_five.required' => 'Nilai untuk pilar 5 tidak boleh kosong.',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        StartAssessment::updateOrCreate(
-            ['id' => $request->input('id')],
-            [
-                'presentation_id' => $request->input('presentation_id'),
-                'jury_id' => Auth::id(),
-                'presentation_file_pillar_two' => $request->input('presentation_file_pillar_two'),
-                'presentation_file_pillar_one' => $request->input('presentation_file_pillar_one'),
-                'presentation_file_pillar_three' => $request->input('presentation_file_pillar_three'),
-                'presentation_file_pillar_four' => $request->input('presentation_file_pillar_four'),
-                'presentation_file_pillar_five' => $request->input('presentation_file_pillar_five')
-            ]
-        );
-
-        return redirect()->back()->with('success', 'Nilai berhasil disimpan');
-    }
-
     public function index(Request $request)
     {
         $categoryAreas = CategoryArea::all();

@@ -19,4 +19,9 @@ class EndAssessment extends Model
         'presentation_value_pillar_four',
         'presentation_value_pillar_five',
     ];
+
+    public function jury()
+    {
+        return $this->belongsTo(User::class, 'jury_id');
+    }
 }

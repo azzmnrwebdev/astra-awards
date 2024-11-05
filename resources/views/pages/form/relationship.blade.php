@@ -832,7 +832,7 @@
                         documentContent.html('<embed src="' + url +
                             '" type="application/pdf" width="100%" height="500px" />');
                     } else {
-                        documentContent.html('<p>File format tidak didukung.</p>');
+                        documentContent.html('<p>Format file tidak didukung.</p>');
                     }
                 });
 

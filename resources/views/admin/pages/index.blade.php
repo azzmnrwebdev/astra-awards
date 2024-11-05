@@ -7,7 +7,7 @@
         {{-- Jumbroton --}}
         <div class="p-5 mb-4 bg-dark rounded-3">
             <div class="container-fluid py-4">
-                <h1 class="display-6 text-white fw-bold">Halo {{ Auth::user()->name }}</h1>
+                <h1 class="display-6 text-white fw-bold">Assalamu'alaikum Wr Wb {{ Auth::user()->name }}</h1>
                 <p class="col-md-8 text-white fs-5">Selamat datang di acara Amaliah Astra Awards! Dalam dashboard ini,
                     Anda dapat mengakses informasi penting, melakukan penilaian, dan mengikuti proses acara. Kami
                     percaya bahwa dengan keahlian dan komitmen Anda, acara ini akan menjadi sangat berkesan.</p>
@@ -617,23 +617,23 @@
                             modalBody.empty();
 
                             function updateDownloadUrls() {
-                                const pdfUrl = 
+                                const pdfUrl =
                                     "{{ route('download_pdf.get_users_by_category', ['categoryAreaId' => 'PLACEHOLDER', 'categoryMosqueId' => 'PLACEHOLDER2']) }}"
                                     .replace('PLACEHOLDER', categoryAreaId)
-                                    .replace('PLACEHOLDER2', categoryMosqueId) 
+                                    .replace('PLACEHOLDER2', categoryMosqueId)
                                     + '?search=' + encodeURIComponent(keyword);
 
-                                const excelUrl = 
+                                const excelUrl =
                                     "{{ route('download_excel.get_users_by_category', ['categoryAreaId' => 'PLACEHOLDER', 'categoryMosqueId' => 'PLACEHOLDER2']) }}"
                                     .replace('PLACEHOLDER', categoryAreaId)
                                     .replace('PLACEHOLDER2', categoryMosqueId)
                                     + '?search=' + encodeURIComponent(keyword);
-                                
+
                                 $('#downloadPdfButtonProvince').attr('href', pdfUrl);
                                 $('#downloadExcelButtonProvince').attr('href', excelUrl);
-                            
+
                             }
-                             
+
                             const table = `
                                 <h5 class="card-title fw-semibold mb-1">${categoryAreaName} - ${categoryMosqueName}</h5>
                                 <p class="card-text">Total Keseluruhan Sekitar ${data.length} Peserta</p>
@@ -759,7 +759,7 @@
                         },
                         error: function() {
                             modalBody.html(
-                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data</div>'
+                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data.</div>'
                             );
                         }
                     });
@@ -796,7 +796,7 @@
                                     "{{ route('download_excel.get_users_by_business_line', ['businessLineId' => 'PLACEHOLDER']) }}"
                                     .replace('PLACEHOLDER', businessLineId)+ '?search=' +
                                     encodeURIComponent(keyword);
-                                
+
                                 $('#downloadPdfButtonBusinessLine').attr('href', pdfUrl);
                                 $('#downloadExcelButtonBusinessLine').attr('href', excelUrl);
                             }
@@ -893,7 +893,7 @@
                                         },
                                         error: function() {
                                             modalBody.html(
-                                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data</div>'
+                                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data.</div>'
                                             );
                                         }
                                     });
@@ -907,7 +907,7 @@
                             });
 
                             $('#downloadPdfButtonBusinessLine, #downloadExcelButtonBusinessLine').on(
-                                'click', 
+                                'click',
                                 function(event) {
                                     const modal = $('#userByBusinessLineModal');
 
@@ -1089,7 +1089,7 @@
                         },
                         error: function() {
                             modalBody.html(
-                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data</div>'
+                                '<div class="text-center text-danger py-4">Mohon maaf, ada kesalahan dalam mengambil data.</div>'
                             );
                         }
                     });

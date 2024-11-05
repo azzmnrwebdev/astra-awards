@@ -801,7 +801,8 @@
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
                                 @if ($systemAssessment->pillar_five_id ?? '')
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <a href="{{ route('form.administration', ['user' => $pillarFive->mosque->user->id, 'action' => 'penilaian']) }}" class="btn btn-outline-dark">Sebelumnya</a>
+                                        <a href="{{ route('form.administration', ['user' => $pillarFive->mosque->user->id, 'action' => 'penilaian']) }}"
+                                            class="btn btn-outline-dark">Sebelumnya</a>
                                         <button type="submit" class="btn btn-warning">Ubah Nilai</button>
                                     </div>
 
@@ -811,7 +812,8 @@
 
                             @if (auth()->check() && auth()->user()->hasRole('user'))
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <a href="{{ route('form.administration') }}" class="btn btn-outline-dark">Sebelumnya</a>
+                                    <a href="{{ route('form.administration') }}"
+                                        class="btn btn-outline-dark">Sebelumnya</a>
                                     <button type="submit" class="btn btn-primary">Simpan</button>
                                 </div>
                             @endif
@@ -896,7 +898,7 @@
                         documentContent.html('<embed src="' + url +
                             '" type="application/pdf" width="100%" height="500px" />');
                     } else {
-                        documentContent.html('<p>File format tidak didukung.</p>');
+                        documentContent.html('<p>Format file tidak didukung.</p>');
                     }
                 });
             });
