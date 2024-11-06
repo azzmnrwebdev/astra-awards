@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CategoryArea;
-use App\Models\CategoryMosque;
-use App\Models\Presentation;
-use App\Models\StartAssessment;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\Presentation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -46,17 +43,32 @@ class PresentationController extends Controller
         $checkPillarFive = $mosque->pillarFive ? true : false;
 
         if ($checkPillarOne && $checkPillarTwo && $checkPillarThree && $checkPillarFour && $checkPillarFive) {
-            $presentation = Presentation::where('mosque_id', $mosque->id)->first();
+            DB::beginTransaction();
 
-            $presentation = Presentation::updateOrCreate(
-                ['id' => $request->input('id')],
-                [
-                    'mosque_id' => $mosque->id,
-                    'file' => $this->handleFileUpdate($request, 'file', $presentation->file ?? null, 'presentations'),
-                ]
-            );
+            try {
+                $presentation = Presentation::where('mosque_id', $mosque->id)->first();
+                $filePath = $this->handleFileUpdate($request, 'file', $presentation->file ?? null, 'presentations');
 
-            return redirect()->back()->with('success', 'File presentasi berhasil disimpan.');
+                if ($filePath) {
+                    $presentation = Presentation::updateOrCreate(
+                        ['id' => $request->input('id')],
+                        [
+                            'mosque_id' => $mosque->id,
+                            'file' => $filePath,
+                        ]
+                    );
+
+                    DB::commit();
+
+                    return redirect()->back()->with('success', 'File presentasi berhasil disimpan.');
+                } else {
+                    throw new \Exception("Gagal menyimpan file ke storage");
+                }
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan file. Silakan coba lagi.');
+            }
         } else {
             return redirect()->back()->with('error', 'Semua pilar harus lengkap sebelum mengunggah file presentasi.');
         }
