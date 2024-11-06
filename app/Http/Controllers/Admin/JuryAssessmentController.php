@@ -45,6 +45,8 @@ class JuryAssessmentController extends Controller
                     'mosque.pillarFive.committeeAssessmnet'
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
+                })->where(function ($q) {
+                    $q->whereHas('mosque.presentation');
                 })->get();
 
                 $topUsers = $topUsers->map(function ($user) {
