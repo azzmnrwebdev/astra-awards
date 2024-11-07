@@ -31,7 +31,7 @@
                                     <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->city->province->name }}</td>
                                     <td class="text-center py-3">
-                                        @if ($item->mosque->presentation->startAssessment)
+                                        @if ($item->mosque->presentation->startAssessmentForJury(auth()->id())->exists())
                                             <span class="badge text-bg-success">Sudah Penilaian</span>
                                         @else
                                             <span class="badge text-bg-danger">Belum Penilaian</span>

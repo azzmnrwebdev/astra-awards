@@ -25,20 +25,18 @@
             <div class="mb-4">
                 <h5 class="card-title fw-semibold">Juri Penilaian Awal</h5>
 
-                <ul class="list-group mt-3">
-                    <li class="list-group-item border-0 py-1">
-                        {{ $user->mosque->presentation->startAssessment->jury->name }}</li>
-                </ul>
+                <ol class="list-group list-group-numbered mt-3">
+                    @foreach ($user->mosque->presentation->startAssessment as $item)
+                        <li class="list-group-item border-0 py-1">{{ $item->jury->name }}</li>
+                    @endforeach
+                </ol>
             </div>
 
             <div class="mb-5">
                 <h5 class="card-title fw-semibold mb-3">Lampiran Penilaian Awal</h5>
 
-                <button type="button" class="btn btn-dark mb-1" data-bs-toggle="modal"
-                    data-bs-target="#documentModal"
-                    data-url="{{ url('/' . ltrim($user->mosque->presentation->file, '/')) }}">
-                    Lihat File Presentasi
-                </button>
+                <embed src="{{ asset($user->mosque->presentation->file) }}" type="application/pdf" width="100%"
+                    height="500px" />
 
                 <div class="table-responsive mt-3">
                     <table class="table table-hover text-nowrap align-middle mb-0">
@@ -50,12 +48,18 @@
                         </thead>
 
                         <tbody class="border-start border-end">
+                            @php
+                                $assessment = $user->mosque->presentation
+                                    ->startAssessmentForJury(auth()->id())
+                                    ->first();
+                            @endphp
+
                             <tr>
                                 <td class="text-start py-3">
                                     Hubungan DKM dengan YAA (Bobot 25%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_two }}
+                                    {{ $assessment->presentation_file_pillar_two }}
                                 </td>
                             </tr>
 
@@ -64,7 +68,7 @@
                                     Hubungan Manajemen Perusahaan dengan DKM dan Jamaah (Bobot 25%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_one }}
+                                    {{ $assessment->presentation_file_pillar_one }}
                                 </td>
                             </tr>
 
@@ -73,7 +77,7 @@
                                     Program Sosial (Bobot 20%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_three }}
+                                    {{ $assessment->presentation_file_pillar_three }}
                                 </td>
                             </tr>
 
@@ -82,7 +86,7 @@
                                     Administrasi dan Keuangan (Bobot 15%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_four }}
+                                    {{ $assessment->presentation_file_pillar_four }}
                                 </td>
                             </tr>
 
@@ -91,7 +95,7 @@
                                     Peribadahan dan Infrastruktur (Bobot 15%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_five }}
+                                    {{ $assessment->presentation_file_pillar_five }}
                                 </td>
                             </tr>
 
@@ -100,11 +104,11 @@
                                     Total Nilai
                                 </td>
                                 <td class="text-center fw-semibold py-3">
-                                    {{ $user->mosque->presentation->startAssessment->presentation_file_pillar_two +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_one +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_three +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_four +
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_five }}
+                                    {{ $assessment->presentation_file_pillar_two +
+                                        $assessment->presentation_file_pillar_one +
+                                        $assessment->presentation_file_pillar_three +
+                                        $assessment->presentation_file_pillar_four +
+                                        $assessment->presentation_file_pillar_five }}
                                 </td>
                             </tr>
 
@@ -116,11 +120,45 @@
                                     {{ str_replace(
                                         '.',
                                         ',',
-                                        $user->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
-                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
-                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
-                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
-                                            $user->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15,
+                                        $assessment->presentation_file_pillar_two * 0.25 +
+                                            $assessment->presentation_file_pillar_one * 0.25 +
+                                            $assessment->presentation_file_pillar_three * 0.2 +
+                                            $assessment->presentation_file_pillar_four * 0.15 +
+                                            $assessment->presentation_file_pillar_five * 0.15,
+                                    ) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center fw-semibold py-3">
+                                    Total Nilai Berdasarkan Seluruh Juri Yang Menilai
+                                </td>
+                                <td class="text-center fw-semibold py-3">
+                                    {{ $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                        return $sumAssessment->presentation_file_pillar_two +
+                                            $sumAssessment->presentation_file_pillar_one +
+                                            $sumAssessment->presentation_file_pillar_three +
+                                            $sumAssessment->presentation_file_pillar_four +
+                                            $sumAssessment->presentation_file_pillar_five;
+                                    }) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center fw-semibold py-3">
+                                    Rekap Nilai Berdasarkan Seluruh Juri Yang Menilai (Dikalikan Bobot)
+                                </td>
+                                <td class="text-center fw-semibold py-3">
+                                    {{ str_replace(
+                                        '.',
+                                        ',',
+                                        $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                            return $sumAssessment->presentation_file_pillar_two * 0.25 +
+                                                $sumAssessment->presentation_file_pillar_one * 0.25 +
+                                                $sumAssessment->presentation_file_pillar_three * 0.2 +
+                                                $sumAssessment->presentation_file_pillar_four * 0.15 +
+                                                $sumAssessment->presentation_file_pillar_five * 0.15;
+                                        }),
                                     ) }}
                                 </td>
                             </tr>
@@ -135,31 +173,32 @@
                 @csrf
                 @method('PUT')
 
+                <input type="hidden" name="id" value="{{ $endAssessment?->id ?? '' }}">
                 <input type="hidden" name="mosque_id" value="{{ $user->mosque->id }}">
 
                 {{-- Pillar 2 --}}
                 <div class="row mb-3">
                     <label for="presentation_value_pillar_two" class="col-md-3 col-xl-2 col-form-label">Hubungan DKM
-                        dengan YAA</label>
+                        dengan YAA <span class="text-danger fw-semibold">*</span></label>
 
                     <div class="col-md-9 col-xl-10">
                         <select class="form-select @error('presentation_value_pillar_two') is-invalid @enderror"
                             id="presentation_value_pillar_two" name="presentation_value_pillar_two">
                             <option value="">-- Pilih Nilai Akhir --</option>
                             <option value="1"
-                                {{ old('presentation_value_pillar_two', $user->mosque->endAssessment?->presentation_value_pillar_two) == 1 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_two', $endAssessment?->presentation_value_pillar_two) == 1 ? 'selected' : '' }}>
                                 1
                             </option>
                             <option value="3"
-                                {{ old('presentation_value_pillar_two', $user->mosque->endAssessment?->presentation_value_pillar_two) == 3 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_two', $endAssessment?->presentation_value_pillar_two) == 3 ? 'selected' : '' }}>
                                 3
                             </option>
                             <option value="7"
-                                {{ old('presentation_value_pillar_two', $user->mosque->endAssessment?->presentation_value_pillar_two) == 7 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_two', $endAssessment?->presentation_value_pillar_two) == 7 ? 'selected' : '' }}>
                                 7
                             </option>
                             <option value="9"
-                                {{ old('presentation_value_pillar_two', $user->mosque->endAssessment?->presentation_value_pillar_two) == 9 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_two', $endAssessment?->presentation_value_pillar_two) == 9 ? 'selected' : '' }}>
                                 9
                             </option>
                         </select>
@@ -173,26 +212,27 @@
                 {{-- Pillar 1 --}}
                 <div class="row mb-3">
                     <label for="presentation_value_pillar_one" class="col-md-3 col-xl-2 col-form-label">Hubungan
-                        Manajemen Perusahaan dengan DKM dan Jamaah</label>
+                        Manajemen Perusahaan dengan DKM dan Jamaah <span
+                            class="text-danger fw-semibold">*</span></label>
 
                     <div class="col-md-9 col-xl-10">
                         <select class="form-select @error('presentation_value_pillar_one') is-invalid @enderror"
                             id="presentation_value_pillar_one" name="presentation_value_pillar_one">
                             <option value="">-- Pilih Nilai Akhir --</option>
                             <option value="1"
-                                {{ old('presentation_value_pillar_one', $user->mosque->endAssessment?->presentation_value_pillar_one) == 1 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_one', $endAssessment?->presentation_value_pillar_one) == 1 ? 'selected' : '' }}>
                                 1
                             </option>
                             <option value="3"
-                                {{ old('presentation_value_pillar_one', $user->mosque->endAssessment?->presentation_value_pillar_one) == 3 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_one', $endAssessment?->presentation_value_pillar_one) == 3 ? 'selected' : '' }}>
                                 3
                             </option>
                             <option value="7"
-                                {{ old('presentation_value_pillar_one', $user->mosque->endAssessment?->presentation_value_pillar_one) == 7 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_one', $endAssessment?->presentation_value_pillar_one) == 7 ? 'selected' : '' }}>
                                 7
                             </option>
                             <option value="9"
-                                {{ old('presentation_value_pillar_one', $user->mosque->endAssessment?->presentation_value_pillar_one) == 9 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_one', $endAssessment?->presentation_value_pillar_one) == 9 ? 'selected' : '' }}>
                                 9
                             </option>
                         </select>
@@ -206,26 +246,26 @@
                 {{-- Pillar 3 --}}
                 <div class="row mb-3">
                     <label for="presentation_value_pillar_three" class="col-md-3 col-xl-2 col-form-label">Program
-                        Sosial</label>
+                        Sosial <span class="text-danger fw-semibold">*</span></label>
 
                     <div class="col-md-9 col-xl-10">
                         <select class="form-select @error('presentation_value_pillar_three') is-invalid @enderror"
                             id="presentation_value_pillar_three" name="presentation_value_pillar_three">
                             <option value="">-- Pilih Nilai Akhir --</option>
                             <option value="1"
-                                {{ old('presentation_value_pillar_three', $user->mosque->endAssessment?->presentation_value_pillar_three) == 1 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_three', $endAssessment?->presentation_value_pillar_three) == 1 ? 'selected' : '' }}>
                                 1
                             </option>
                             <option value="3"
-                                {{ old('presentation_value_pillar_three', $user->mosque->endAssessment?->presentation_value_pillar_three) == 3 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_three', $endAssessment?->presentation_value_pillar_three) == 3 ? 'selected' : '' }}>
                                 3
                             </option>
                             <option value="7"
-                                {{ old('presentation_value_pillar_three', $user->mosque->endAssessment?->presentation_value_pillar_three) == 7 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_three', $endAssessment?->presentation_value_pillar_three) == 7 ? 'selected' : '' }}>
                                 7
                             </option>
                             <option value="9"
-                                {{ old('presentation_value_pillar_three', $user->mosque->endAssessment?->presentation_value_pillar_three) == 9 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_three', $endAssessment?->presentation_value_pillar_three) == 9 ? 'selected' : '' }}>
                                 9
                             </option>
                         </select>
@@ -239,26 +279,26 @@
                 {{-- Pillar 4 --}}
                 <div class="row mb-3">
                     <label for="presentation_value_pillar_four" class="col-md-3 col-xl-2 col-form-label">Administrasi
-                        dan Keuangan</label>
+                        dan Keuangan <span class="text-danger fw-semibold">*</span></label>
 
                     <div class="col-md-9 col-xl-10">
                         <select class="form-select @error('presentation_value_pillar_four') is-invalid @enderror"
                             id="presentation_value_pillar_four" name="presentation_value_pillar_four">
                             <option value="">-- Pilih Nilai Akhir --</option>
                             <option value="1"
-                                {{ old('presentation_value_pillar_four', $user->mosque->endAssessment?->presentation_value_pillar_four) == 1 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_four', $endAssessment?->presentation_value_pillar_four) == 1 ? 'selected' : '' }}>
                                 1
                             </option>
                             <option value="3"
-                                {{ old('presentation_value_pillar_four', $user->mosque->endAssessment?->presentation_value_pillar_four) == 3 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_four', $endAssessment?->presentation_value_pillar_four) == 3 ? 'selected' : '' }}>
                                 3
                             </option>
                             <option value="7"
-                                {{ old('presentation_value_pillar_four', $user->mosque->endAssessment?->presentation_value_pillar_four) == 7 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_four', $endAssessment?->presentation_value_pillar_four) == 7 ? 'selected' : '' }}>
                                 7
                             </option>
                             <option value="9"
-                                {{ old('presentation_value_pillar_four', $user->mosque->endAssessment?->presentation_value_pillar_four) == 9 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_four', $endAssessment?->presentation_value_pillar_four) == 9 ? 'selected' : '' }}>
                                 9
                             </option>
                         </select>
@@ -272,26 +312,26 @@
                 {{-- Pillar 5 --}}
                 <div class="row mb-3">
                     <label for="presentation_value_pillar_five" class="col-md-3 col-xl-2 col-form-label">Peribadahan
-                        dan Infrastruktur</label>
+                        dan Infrastruktur <span class="text-danger fw-semibold">*</span></label>
 
                     <div class="col-md-9 col-xl-10">
                         <select class="form-select @error('presentation_value_pillar_five') is-invalid @enderror"
                             id="presentation_value_pillar_five" name="presentation_value_pillar_five">
                             <option value="">-- Pilih Nilai Akhir --</option>
                             <option value="1"
-                                {{ old('presentation_value_pillar_five', $user->mosque->endAssessment?->presentation_value_pillar_five) == 1 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_five', $endAssessment?->presentation_value_pillar_five) == 1 ? 'selected' : '' }}>
                                 1
                             </option>
                             <option value="3"
-                                {{ old('presentation_value_pillar_five', $user->mosque->endAssessment?->presentation_value_pillar_five) == 3 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_five', $endAssessment?->presentation_value_pillar_five) == 3 ? 'selected' : '' }}>
                                 3
                             </option>
                             <option value="7"
-                                {{ old('presentation_value_pillar_five', $user->mosque->endAssessment?->presentation_value_pillar_five) == 7 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_five', $endAssessment?->presentation_value_pillar_five) == 7 ? 'selected' : '' }}>
                                 7
                             </option>
                             <option value="9"
-                                {{ old('presentation_value_pillar_five', $user->mosque->endAssessment?->presentation_value_pillar_five) == 9 ? 'selected' : '' }}>
+                                {{ old('presentation_value_pillar_five', $endAssessment?->presentation_value_pillar_five) == 9 ? 'selected' : '' }}>
                                 9
                             </option>
                         </select>
@@ -303,7 +343,7 @@
                 </div>
 
                 <div class="col-12 text-end">
-                    @if (!$user->mosque->endAssessment)
+                    @if (!$endAssessment)
                         <button type="submit" class="btn btn-success">Simpan Nilai</button>
                     @else
                         <button type="submit" class="btn btn-warning">Ubah Nilai</button>
@@ -313,46 +353,11 @@
         </div>
     </div>
 
-    {{-- Modal --}}
-    <div class="modal fade" id="documentModal" tabindex="-1" aria-labelledby="documentModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="documentModalLabel">File Presentasi</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    <div id="documentContent"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     {{-- Custom Javascript --}}
     @prepend('scripts')
         <script>
             document.getElementById('pageTitle').addEventListener('click', function() {
                 window.location.href = "{{ route('end_assessment.index') }}";
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                $('#documentModal').on('show.bs.modal', function(event) {
-                    let button = $(event.relatedTarget);
-                    let url = button.data('url');
-                    let modal = $(this);
-                    let documentContent = modal.find('#documentContent');
-
-                    documentContent.html('');
-
-                    if (url.match(/\.pdf$/i)) {
-                        documentContent.html('<embed src="' + url +
-                            '" type="application/pdf" width="100%" height="500px" />');
-                    } else {
-                        documentContent.html('<p>Format file tidak didukung.</p>');
-                    }
-                });
             });
         </script>
     @endprepend

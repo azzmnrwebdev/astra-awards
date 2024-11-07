@@ -64,6 +64,7 @@
                 </div>
             @endif
 
+            {{-- Penilaian Akhir --}}
             <div class="table-responsive">
                 <table class="table table-hover text-nowrap align-middle mb-0">
                     <thead class="border-top border-start border-end table-custom">
@@ -83,7 +84,9 @@
                                 <td class="text-center py-3">{{ $item->mosque->categoryArea->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
-                                <td class="text-center py-3">{{ str_replace('.', ',', $item->totalNilai) }}
+                                <td class="text-center py-3">
+                                    {{ str_replace('.', ',', $item->totalNilai) }}
+                                </td>
                                 </td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('end_assessment.show', ['user' => $item->id]) }}"
@@ -131,7 +134,7 @@
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">
-                                    @if ($item->mosque->endAssessment)
+                                    @if ($item->mosque->endAssessmentForJury($juryId ?? auth()->id())->exists())
                                         <span class="badge text-bg-success">Sudah Penilaian</span>
                                     @else
                                         <span class="badge text-bg-danger">Belum Penilaian</span>

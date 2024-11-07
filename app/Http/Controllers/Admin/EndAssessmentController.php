@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\CategoryMosque;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\EndAssessment;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -99,12 +100,18 @@ class EndAssessmentController extends Controller
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->endAssessment) {
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two * $weightPillarTwo;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * $weightPillarOne;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three * $weightPillarThree;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four * $weightPillarFour;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five * $weightPillarFive;
+                    if ($user->mosque->endAssessment->isNotEmpty()) {
+                        $totalPillarOne = $user->mosque->endAssessment->sum('presentation_value_pillar_one');
+                        $totalPillarTwo = $user->mosque->endAssessment->sum('presentation_value_pillar_two');
+                        $totalPillarThree = $user->mosque->endAssessment->sum('presentation_value_pillar_three');
+                        $totalPillarFour = $user->mosque->endAssessment->sum('presentation_value_pillar_four');
+                        $totalPillarFive = $user->mosque->endAssessment->sum('presentation_value_pillar_five');
+
+                        $totalValue += $totalPillarOne * $weightPillarOne;
+                        $totalValue += $totalPillarTwo * $weightPillarTwo;
+                        $totalValue += $totalPillarThree * $weightPillarThree;
+                        $totalValue += $totalPillarFour * $weightPillarFour;
+                        $totalValue += $totalPillarFive * $weightPillarFive;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -161,12 +168,18 @@ class EndAssessmentController extends Controller
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_two * $weightPillarTwo;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one * $weightPillarOne;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_three * $weightPillarThree;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_four * $weightPillarFour;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_five * $weightPillarFive;
+                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment->isNotEmpty()) {
+                        $totalPillarOne = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_one');
+                        $totalPillarTwo = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_two');
+                        $totalPillarThree = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_three');
+                        $totalPillarFour = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_four');
+                        $totalPillarFive = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_five');
+
+                        $totalValue += $totalPillarOne * $weightPillarOne;
+                        $totalValue += $totalPillarTwo * $weightPillarTwo;
+                        $totalValue += $totalPillarThree * $weightPillarThree;
+                        $totalValue += $totalPillarFour * $weightPillarFour;
+                        $totalValue += $totalPillarFive * $weightPillarFive;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -211,12 +224,18 @@ class EndAssessmentController extends Controller
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->endAssessment) {
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two * $weightPillarTwo;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * $weightPillarOne;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three * $weightPillarThree;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four * $weightPillarFour;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five * $weightPillarFive;
+                    if ($user->mosque->endAssessment->isNotEmpty()) {
+                        $totalPillarOne = $user->mosque->endAssessment->sum('presentation_value_pillar_one');
+                        $totalPillarTwo = $user->mosque->endAssessment->sum('presentation_value_pillar_two');
+                        $totalPillarThree = $user->mosque->endAssessment->sum('presentation_value_pillar_three');
+                        $totalPillarFour = $user->mosque->endAssessment->sum('presentation_value_pillar_four');
+                        $totalPillarFive = $user->mosque->endAssessment->sum('presentation_value_pillar_five');
+
+                        $totalValue += $totalPillarOne * $weightPillarOne;
+                        $totalValue += $totalPillarTwo * $weightPillarTwo;
+                        $totalValue += $totalPillarThree * $weightPillarThree;
+                        $totalValue += $totalPillarFour * $weightPillarFour;
+                        $totalValue += $totalPillarFive * $weightPillarFive;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -243,7 +262,10 @@ class EndAssessmentController extends Controller
 
     public function edit(User $user)
     {
-        return view('admin.pages.assessment.end-assessment-edit', compact('user'));
+        $juryId = Auth::user()->id;
+        $endAssessment = EndAssessment::where('mosque_id', $user->mosque->id)->where('jury_id', $juryId)->first();
+
+        return view('admin.pages.assessment.end-assessment-edit', compact('user', 'endAssessment'));
     }
 
     public function update(Request $request, User $user)
@@ -271,21 +293,22 @@ class EndAssessmentController extends Controller
         }
 
         try {
-            $mosqueId = $user->mosque->id;
+            $id = $request->input('id');
 
-            $user->mosque->endAssessment()->updateOrCreate(
-                ['mosque_id' => $mosqueId],
+            EndAssessment::updateOrCreate(
+                ['id' => $id],
                 [
+                    'mosque_id' => $request->input('mosque_id'),
                     'jury_id' => Auth::id(),
-                    'presentation_value_pillar_one' => $request->presentation_value_pillar_one,
-                    'presentation_value_pillar_two' => $request->presentation_value_pillar_two,
-                    'presentation_value_pillar_three' => $request->presentation_value_pillar_three,
-                    'presentation_value_pillar_four' => $request->presentation_value_pillar_four,
-                    'presentation_value_pillar_five' => $request->presentation_value_pillar_five,
+                    'presentation_value_pillar_one' => $request->input('presentation_value_pillar_one'),
+                    'presentation_value_pillar_two' => $request->input('presentation_value_pillar_two'),
+                    'presentation_value_pillar_three' => $request->input('presentation_value_pillar_three'),
+                    'presentation_value_pillar_four' => $request->input('presentation_value_pillar_four'),
+                    'presentation_value_pillar_five' => $request->input('presentation_value_pillar_five')
                 ]
             );
 
-            $message = $mosqueId ? 'Penilaian Akhir berhasil diperbarui.' : 'Penilaian Akhir berhasil disimpan.';
+            $message = $id ? 'Penilaian Akhir berhasil diperbarui.' : 'Penilaian Akhir berhasil disimpan.';
 
             return redirect(route('end_assessment.index'))->with('success', $message);
         } catch (Exception $e) {

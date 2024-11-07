@@ -19,6 +19,12 @@ class Presentation extends Model
 
     public function startAssessment()
     {
-        return $this->hasOne(StartAssessment::class, 'presentation_id');
+        return $this->hasMany(StartAssessment::class, 'presentation_id');
+    }
+
+    public function startAssessmentForJury($juryId)
+    {
+        return $this->hasMany(StartAssessment::class, 'presentation_id')
+            ->where('jury_id', $juryId);
     }
 }

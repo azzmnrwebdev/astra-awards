@@ -16,22 +16,25 @@
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
-            @if (session('error'))
-                <div class="alert alert-danger fw-medium mb-4" role="alert">
-                    {{ session('error') }}
-                </div>
-            @endif
-
             <div class="mb-4">
                 <h5 class="card-title fw-semibold">Pihak Penilai</h5>
 
-                <ul class="list-group mt-3">
-                    <li class="list-group-item border-0 py-1">
-                        {{ $user->mosque->endAssessment->jury->name }}</li>
-                </ul>
+                @if ($user->mosque->endAssessment && $user->mosque->endAssessment->isNotEmpty())
+                    <ol class="list-group list-group-numbered mt-3">
+                        @foreach ($user->mosque->endAssessment as $item)
+                            <li class="list-group-item border-0 py-1">{{ $item->jury->name }}</li>
+                        @endforeach
+                    </ol>
+                @else
+                    <ul class="list-group mt-3">
+                        <li class="list-group-item border-0 py-1">
+                            Belum ada
+                        </li>
+                    </ul>
+                @endif
             </div>
 
-            <div class="mb-0">
+            <div class="mb-4">
                 <h5 class="card-title fw-semibold">Lampiran Penilaian Akhir</h5>
 
                 <div class="table-responsive mt-4">
@@ -44,12 +47,16 @@
                         </thead>
 
                         <tbody class="border-start border-end">
+                            @php
+                                $assessment = $user->mosque->endAssessmentForJury(auth()->id())->first();
+                            @endphp
+
                             <tr>
                                 <td class="text-start py-3">
                                     Hubungan DKM dengan YAA (Bobot 25%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->endAssessment->presentation_value_pillar_two }}
+                                    {{ $assessment->presentation_value_pillar_two ?? '-' }}
                                 </td>
                             </tr>
 
@@ -58,7 +65,7 @@
                                     Hubungan Manajemen Perusahaan dengan DKM dan Jamaah (Bobot 25%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->endAssessment->presentation_value_pillar_one }}
+                                    {{ $assessment->presentation_value_pillar_one ?? '-' }}
                                 </td>
                             </tr>
 
@@ -67,7 +74,7 @@
                                     Program Sosial (Bobot 20%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->endAssessment->presentation_value_pillar_three }}
+                                    {{ $assessment->presentation_value_pillar_three ?? '-' }}
                                 </td>
                             </tr>
 
@@ -76,7 +83,7 @@
                                     Administrasi dan Keuangan (Bobot 15%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->endAssessment->presentation_value_pillar_four }}
+                                    {{ $assessment->presentation_value_pillar_four ?? '-' }}
                                 </td>
                             </tr>
 
@@ -85,7 +92,7 @@
                                     Peribadahan dan Infrastruktur (Bobot 15%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $user->mosque->endAssessment->presentation_value_pillar_five }}
+                                    {{ $assessment->presentation_value_pillar_five ?? '-' }}
                                 </td>
                             </tr>
 
@@ -94,11 +101,13 @@
                                     Total Nilai
                                 </td>
                                 <td class="text-center fw-semibold py-3">
-                                    {{ $user->mosque->endAssessment->presentation_value_pillar_two +
-                                        $user->mosque->endAssessment->presentation_value_pillar_one +
-                                        $user->mosque->endAssessment->presentation_value_pillar_three +
-                                        $user->mosque->endAssessment->presentation_value_pillar_four +
-                                        $user->mosque->endAssessment->presentation_value_pillar_five }}
+                                    {{ $assessment
+                                        ? $assessment->presentation_value_pillar_two +
+                                            $assessment->presentation_value_pillar_one +
+                                            $assessment->presentation_value_pillar_three +
+                                            $assessment->presentation_value_pillar_four +
+                                            $assessment->presentation_value_pillar_five
+                                        : '-' }}
                                 </td>
                             </tr>
 
@@ -107,14 +116,50 @@
                                     Rekap Nilai (Dikalikan Bobot)
                                 </td>
                                 <td class="text-center fw-semibold py-3">
+                                    {{ $assessment
+                                        ? str_replace(
+                                            '.',
+                                            ',',
+                                            $assessment->presentation_value_pillar_two * 0.25 +
+                                                $assessment->presentation_value_pillar_one * 0.25 +
+                                                $assessment->presentation_value_pillar_three * 0.2 +
+                                                $assessment->presentation_value_pillar_four * 0.15 +
+                                                $assessment->presentation_value_pillar_five * 0.15,
+                                        )
+                                        : '-' }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center fw-semibold py-3">
+                                    Total Nilai Berdasarkan Seluruh Juri Yang Menilai
+                                </td>
+                                <td class="text-center fw-semibold py-3">
+                                    {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                        return $sumAssessment->presentation_value_pillar_two +
+                                            $sumAssessment->presentation_value_pillar_one +
+                                            $sumAssessment->presentation_value_pillar_three +
+                                            $sumAssessment->presentation_value_pillar_four +
+                                            $sumAssessment->presentation_value_pillar_five;
+                                    }) }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="text-center fw-semibold py-3">
+                                    Rekap Nilai Berdasarkan Seluruh Juri Yang Menilai (Dikalikan Bobot)
+                                </td>
+                                <td class="text-center fw-semibold py-3">
                                     {{ str_replace(
                                         '.',
                                         ',',
-                                        $user->mosque->endAssessment->presentation_value_pillar_two * 0.25 +
-                                            $user->mosque->endAssessment->presentation_value_pillar_one * 0.25 +
-                                            $user->mosque->endAssessment->presentation_value_pillar_three * 0.2 +
-                                            $user->mosque->endAssessment->presentation_value_pillar_four * 0.15 +
-                                            $user->mosque->endAssessment->presentation_value_pillar_five * 0.15,
+                                        $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                            return $sumAssessment->presentation_value_pillar_two * 0.25 +
+                                                $sumAssessment->presentation_value_pillar_one * 0.25 +
+                                                $sumAssessment->presentation_value_pillar_three * 0.2 +
+                                                $sumAssessment->presentation_value_pillar_four * 0.15 +
+                                                $sumAssessment->presentation_value_pillar_five * 0.15;
+                                        }),
                                     ) }}
                                 </td>
                             </tr>

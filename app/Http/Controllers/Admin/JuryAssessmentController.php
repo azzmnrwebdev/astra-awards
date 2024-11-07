@@ -134,8 +134,9 @@ class JuryAssessmentController extends Controller
 
     public function assessment(User $user)
     {
+        $juryId = Auth::user()->id;
         $presentationId = $user->mosque->presentation->id ?? '';
-        $startAssessment = StartAssessment::where('presentation_id', $presentationId)->first();
+        $startAssessment = StartAssessment::where('presentation_id', $presentationId)->where('jury_id', $juryId)->first();
 
         return view('admin.pages.assessment.jury-assessment-edit', compact('user', 'presentationId', 'startAssessment'));
     }

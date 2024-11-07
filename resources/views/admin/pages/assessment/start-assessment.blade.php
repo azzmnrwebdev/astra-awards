@@ -72,27 +72,17 @@
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">
-                                    @if ($item->mosque->presentation->startAssessment)
-                                        <span class="badge text-bg-success">Sudah Penilaian</span>
-                                    @else
-                                        <span class="badge text-bg-danger">Belum Penilaian</span>
-                                    @endif
-                                </td>
-
-                                <td class="text-center py-3">
-                                    @if ($item->mosque->presentation->startAssessment)
-                                        {{ str_replace(
-                                            '.',
-                                            ',',
-                                            $item->mosque->presentation->startAssessment->presentation_file_pillar_two * 0.25 +
-                                                $item->mosque->presentation->startAssessment->presentation_file_pillar_one * 0.25 +
-                                                $item->mosque->presentation->startAssessment->presentation_file_pillar_three * 0.2 +
-                                                $item->mosque->presentation->startAssessment->presentation_file_pillar_four * 0.15 +
-                                                $item->mosque->presentation->startAssessment->presentation_file_pillar_five * 0.15,
-                                        ) }}
-                                    @else
-                                        <span class="badge text-bg-danger">Belum Tersedia</span>
-                                    @endif
+                                    {{ str_replace(
+                                        '.',
+                                        ',',
+                                        $item->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                            return $sumAssessment->presentation_file_pillar_two * 0.25 +
+                                                $sumAssessment->presentation_file_pillar_one * 0.25 +
+                                                $sumAssessment->presentation_file_pillar_three * 0.2 +
+                                                $sumAssessment->presentation_file_pillar_four * 0.15 +
+                                                $sumAssessment->presentation_file_pillar_five * 0.15;
+                                        }),
+                                    ) }}
                                 </td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
@@ -101,7 +91,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>

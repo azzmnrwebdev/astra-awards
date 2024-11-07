@@ -6,10 +6,7 @@ use App\Models\User;
 use App\Models\CategoryArea;
 use Illuminate\Http\Request;
 use App\Models\CategoryMosque;
-use App\Models\StartAssessment;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class StartAssessmentController extends Controller
@@ -182,12 +179,18 @@ class StartAssessmentController extends Controller
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment) {
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_two * $weightPillarTwo;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_one * $weightPillarOne;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_three * $weightPillarThree;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_four * $weightPillarFour;
-                        $totalValue += $user->mosque->presentation->startAssessment->presentation_file_pillar_five * $weightPillarFive;
+                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment->isNotEmpty()) {
+                        $totalPillarOne = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_one');
+                        $totalPillarTwo = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_two');
+                        $totalPillarThree = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_three');
+                        $totalPillarFour = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_four');
+                        $totalPillarFive = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_five');
+
+                        $totalValue += $totalPillarOne * $weightPillarOne;
+                        $totalValue += $totalPillarTwo * $weightPillarTwo;
+                        $totalValue += $totalPillarThree * $weightPillarThree;
+                        $totalValue += $totalPillarFour * $weightPillarFour;
+                        $totalValue += $totalPillarFive * $weightPillarFive;
                     }
 
                     $user->totalNilai = $totalValue;
@@ -204,7 +207,7 @@ class StartAssessmentController extends Controller
             }
         }
 
-        return view('admin.pages.assessment.start-assessment', compact('juries', 'theadName', 'categoryTheadName', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'juryId', 'search', 'paginatedUsers', 'categories'));
+        return view('admin.pages.assessment.start-assessment', compact('theadName', 'categoryTheadName', 'combinedData', 'juries', 'categoryAreaId', 'categoryMosqueId', 'juryId', 'search', 'paginatedUsers', 'categories'));
     }
 
     public function show(User $user)
@@ -221,7 +224,6 @@ class StartAssessmentController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Kategori'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
-            ['class' => 'text-center py-3', 'label' => 'Status'],
             ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
