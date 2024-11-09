@@ -42,7 +42,11 @@
                         <thead class="border-top border-start border-end table-custom">
                             <tr>
                                 <th class="text-center py-3">Pilar</th>
-                                <th class="text-center py-3">Nilai</th>
+                                @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                    <th class="text-center py-3">Nilai Keseluruhan Juri</th>
+                                @else
+                                    <th class="text-center py-3">Nilai</th>
+                                @endif
                             </tr>
                         </thead>
 
@@ -56,7 +60,13 @@
                                     Hubungan DKM dengan YAA (Bobot 25%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $assessment->presentation_value_pillar_two ?? '-' }}
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                            return $sumAssessment->presentation_value_pillar_two;
+                                        }) }}
+                                    @else
+                                        {{ $assessment->presentation_value_pillar_two ?? '-' }}
+                                    @endif
                                 </td>
                             </tr>
 
@@ -65,7 +75,13 @@
                                     Hubungan Manajemen Perusahaan dengan DKM dan Jamaah (Bobot 25%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $assessment->presentation_value_pillar_one ?? '-' }}
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                            return $sumAssessment->presentation_value_pillar_one;
+                                        }) }}
+                                    @else
+                                        {{ $assessment->presentation_value_pillar_one ?? '-' }}
+                                    @endif
                                 </td>
                             </tr>
 
@@ -74,7 +90,13 @@
                                     Program Sosial (Bobot 20%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $assessment->presentation_value_pillar_three ?? '-' }}
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                            return $sumAssessment->presentation_value_pillar_three;
+                                        }) }}
+                                    @else
+                                        {{ $assessment->presentation_value_pillar_three ?? '-' }}
+                                    @endif
                                 </td>
                             </tr>
 
@@ -83,7 +105,13 @@
                                     Administrasi dan Keuangan (Bobot 15%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $assessment->presentation_value_pillar_four ?? '-' }}
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                            return $sumAssessment->presentation_value_pillar_four;
+                                        }) }}
+                                    @else
+                                        {{ $assessment->presentation_value_pillar_four ?? '-' }}
+                                    @endif
                                 </td>
                             </tr>
 
@@ -92,43 +120,51 @@
                                     Peribadahan dan Infrastruktur (Bobot 15%)
                                 </td>
                                 <td class="text-center py-3">
-                                    {{ $assessment->presentation_value_pillar_five ?? '-' }}
+                                    @if (auth()->check() && auth()->user()->hasRole('admin'))
+                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                            return $sumAssessment->presentation_value_pillar_five;
+                                        }) }}
+                                    @else
+                                        {{ $assessment->presentation_value_pillar_five ?? '-' }}
+                                    @endif
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="text-center fw-semibold py-3">
-                                    Total Nilai
-                                </td>
-                                <td class="text-center fw-semibold py-3">
-                                    {{ $assessment
-                                        ? $assessment->presentation_value_pillar_two +
-                                            $assessment->presentation_value_pillar_one +
-                                            $assessment->presentation_value_pillar_three +
-                                            $assessment->presentation_value_pillar_four +
-                                            $assessment->presentation_value_pillar_five
-                                        : '-' }}
-                                </td>
-                            </tr>
+                            @if (auth()->check() && auth()->user()->hasRole('jury'))
+                                <tr>
+                                    <td class="text-center fw-semibold py-3">
+                                        Total Nilai
+                                    </td>
+                                    <td class="text-center fw-semibold py-3">
+                                        {{ $assessment
+                                            ? $assessment->presentation_value_pillar_two +
+                                                $assessment->presentation_value_pillar_one +
+                                                $assessment->presentation_value_pillar_three +
+                                                $assessment->presentation_value_pillar_four +
+                                                $assessment->presentation_value_pillar_five
+                                            : '-' }}
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td class="text-center fw-semibold py-3">
-                                    Rekap Nilai (Dikalikan Bobot)
-                                </td>
-                                <td class="text-center fw-semibold py-3">
-                                    {{ $assessment
-                                        ? str_replace(
-                                            '.',
-                                            ',',
-                                            $assessment->presentation_value_pillar_two * 0.25 +
-                                                $assessment->presentation_value_pillar_one * 0.25 +
-                                                $assessment->presentation_value_pillar_three * 0.2 +
-                                                $assessment->presentation_value_pillar_four * 0.15 +
-                                                $assessment->presentation_value_pillar_five * 0.15,
-                                        )
-                                        : '-' }}
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="text-center fw-semibold py-3">
+                                        Rekap Nilai (Dikalikan Bobot)
+                                    </td>
+                                    <td class="text-center fw-semibold py-3">
+                                        {{ $assessment
+                                            ? str_replace(
+                                                '.',
+                                                ',',
+                                                $assessment->presentation_value_pillar_two * 0.25 +
+                                                    $assessment->presentation_value_pillar_one * 0.25 +
+                                                    $assessment->presentation_value_pillar_three * 0.2 +
+                                                    $assessment->presentation_value_pillar_four * 0.15 +
+                                                    $assessment->presentation_value_pillar_five * 0.15,
+                                            )
+                                            : '-' }}
+                                    </td>
+                                </tr>
+                            @endif
 
                             <tr>
                                 <td class="text-center fw-semibold py-3">

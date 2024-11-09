@@ -134,10 +134,28 @@
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">
-                                    @if ($item->mosque->endAssessmentForJury($juryId ?? auth()->id())->exists())
-                                        <span class="badge text-bg-success">Sudah Penilaian</span>
+                                    @php
+                                        $totalJuries = \App\Models\User::where('role', 'jury')->count();
+                                        $completedAssessments = $item->mosque
+                                            ->endAssessment()
+                                            ->distinct('jury_id')
+                                            ->count('jury_id');
+                                    @endphp
+
+                                    @if (auth()->check() && auth()->user()->hasRole('jury'))
+                                        @if ($item->mosque->endAssessmentForJury($juryId ?? auth()->id())->exists())
+                                            <span class="badge text-bg-success">Sudah Penilaian</span>
+                                        @else
+                                            <span class="badge text-bg-danger">Belum Penilaian</span>
+                                        @endif
                                     @else
-                                        <span class="badge text-bg-danger">Belum Penilaian</span>
+                                        @if ($completedAssessments === 0)
+                                            <span class="badge text-bg-danger">Juri Belum Menilai</span>
+                                        @elseif ($completedAssessments < $totalJuries)
+                                            <span class="badge text-bg-warning">Baru Sebagian Juri</span>
+                                        @else
+                                            <span class="badge text-bg-success">Sudah Semua Juri</span>
+                                        @endif
                                     @endif
                                 </td>
                                 <td class="text-center py-3">
