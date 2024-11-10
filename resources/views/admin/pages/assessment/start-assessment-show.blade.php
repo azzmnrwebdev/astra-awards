@@ -43,11 +43,11 @@
                 <table class="table table-hover text-nowrap align-middle mb-0">
                     <thead class="border-top border-start border-end table-custom">
                         <tr>
-                            <th class="text-center py-3">Pilar</th>
+                            <th class="text-center py-3 align-middle">Pilar</th>
                             @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                <th class="text-center py-3">Nilai Keseluruhan Juri</th>
+                                <th class="text-center py-3 align-middle">Nilai<br />Keseluruhan Juri</th>
                             @else
-                                <th class="text-center py-3">Nilai</th>
+                                <th class="text-center py-3 align-middle">Nilai</th>
                             @endif
                         </tr>
                     </thead>

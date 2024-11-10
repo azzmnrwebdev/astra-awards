@@ -7,17 +7,41 @@ use App\Models\CategoryArea;
 use Illuminate\Http\Request;
 use App\Models\CategoryMosque;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class StartAssessmentController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
         $juries = User::where('role', 'jury')->get();
 
-        $theadName = $this->getTheadName();
+        if ($user->role == 'admin') {
+            $theadName = [
+                ['class' => 'text-center py-3', 'label' => 'No'],
+                ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
+                ['class' => 'text-center py-3', 'label' => 'Kategori'],
+                ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+                ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
+                ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
+                ['class' => 'text-center py-3', 'label' => 'Aksi'],
+            ];
+        } else {
+            $theadName = [
+                ['class' => 'text-center py-3', 'label' => 'No'],
+                ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
+                ['class' => 'text-center py-3', 'label' => 'Kategori'],
+                ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+                ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
+                ['class' => 'text-center py-3', 'label' => 'Total Nilai<br />Per Juri'],
+                ['class' => 'text-center py-3', 'label' => 'Total Nilai<br />Keluruhan Juri'],
+                ['class' => 'text-center py-3', 'label' => 'Aksi'],
+            ];
+        }
+
         $categoryTheadName = $this->getCategoryTheadName();
 
         // Gabungkan data kategori

@@ -17,19 +17,33 @@ class EndAssessmentController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
         $juries = User::where('role', 'jury')->get();
 
-        $endAssessmentTheadNames = $this->getTheadName([
-            'No',
-            'Kategori',
-            'Kategori Area',
-            'Nama Masjid/Musala',
-            'Perusahaan',
-            'Total Nilai',
-            'Aksi',
-        ]);
+        if ($user->role == 'admin') {
+            $endAssessmentTheadNames = $this->getTheadName([
+                'No',
+                'Kategori',
+                'Kategori Area',
+                'Nama Masjid/Musala',
+                'Perusahaan',
+                'Total Nilai',
+                'Aksi',
+            ]);
+        } else {
+            $endAssessmentTheadNames = $this->getTheadName([
+                'No',
+                'Kategori',
+                'Kategori Area',
+                'Nama Masjid/Musala',
+                'Perusahaan',
+                'Total Nilai<br />Per Juri',
+                'Total Nilai<br />Keseluruhan Juri',
+                'Aksi',
+            ]);
+        }
 
         $startAssessmentTheadNames = $this->getTheadName([
             'No',

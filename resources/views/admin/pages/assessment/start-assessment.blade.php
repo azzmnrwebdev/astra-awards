@@ -58,7 +58,7 @@
                     <thead class="border-top border-start border-end table-custom">
                         <tr>
                             @foreach ($theadName as $thead)
-                                <th class="{{ $thead['class'] }}">{{ $thead['label'] }}</th>
+                                <th class="{{ $thead['class'] }} align-middle">{!! $thead['label'] !!}</th>
                             @endforeach
                         </tr>
                     </thead>
@@ -71,6 +71,27 @@
                                 <td class="text-center py-3">{{ $item->mosque->categoryMosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
+                                @if (auth()->check() && auth()->user()->hasRole('jury'))
+                                    <td class="text-center py-3">
+                                        @php
+                                            $assessment = $item->mosque->presentation
+                                                ->startAssessmentForJury(auth()->id())
+                                                ->first();
+                                        @endphp
+
+                                        {{ $assessment
+                                            ? str_replace(
+                                                '.',
+                                                ',',
+                                                $assessment->presentation_file_pillar_two * 0.25 +
+                                                    $assessment->presentation_file_pillar_one * 0.25 +
+                                                    $assessment->presentation_file_pillar_three * 0.2 +
+                                                    $assessment->presentation_file_pillar_four * 0.15 +
+                                                    $assessment->presentation_file_pillar_five * 0.15,
+                                            )
+                                            : '-' }}
+                                    </td>
+                                @endif
                                 <td class="text-center py-3">
                                     {{ str_replace(
                                         '.',
@@ -91,7 +112,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-3">Data tidak ditemukan</td>
+                                <td colspan="{{ auth()->check() && auth()->user()->hasRole('admin') ? '7' : '8' }}"
+                                    class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
                     </tbody>

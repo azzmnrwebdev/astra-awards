@@ -198,11 +198,11 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
         $this->index++;
 
         $pillarValues = [
-            'pillarTwo' => $user->mosque->presentation->startAssessment->presentation_file_pillar_two ?? null,
-            'pillarOne' => $user->mosque->presentation->startAssessment->presentation_file_pillar_one ?? null,
-            'pillarThree' => $user->mosque->presentation->startAssessment->presentation_file_pillar_three ?? null,
-            'pillarFour' => $user->mosque->presentation->startAssessment->presentation_file_pillar_four ?? null,
-            'pillarFive' => $user->mosque->presentation->startAssessment->presentation_file_pillar_five ?? null,
+            'pillarTwo' => $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_two'),
+            'pillarOne' => $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_one'),
+            'pillarThree' => $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_three'),
+            'pillarFour' => $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_four'),
+            'pillarFive' => $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_five'),
         ];
 
         $pillarWeights = [
@@ -334,6 +334,7 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
                 'B2:O2' => [
                     'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                     'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
@@ -346,7 +347,6 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'G' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-                'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
                 'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
                 'O' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             ];
