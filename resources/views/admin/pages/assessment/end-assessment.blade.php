@@ -90,7 +90,7 @@
                                             $assessment = $item->mosque->endAssessmentForJury(auth()->id())->first();
                                         @endphp
 
-                                        {{ $assessment
+                                        {!! $assessment
                                             ? str_replace(
                                                 '.',
                                                 ',',
@@ -100,11 +100,13 @@
                                                     $assessment->presentation_value_pillar_four * 0.15 +
                                                     $assessment->presentation_value_pillar_five * 0.15,
                                             )
-                                            : '-' }}
+                                            : '<span class="badge text-bg-danger">Belum Tersedia</span>' !!}
                                     </td>
                                 @endif
                                 <td class="text-center py-3">
-                                    {{ str_replace('.', ',', $item->totalNilai) }}
+                                    {!! $item->totalNilai == 0
+                                        ? '<span class="badge text-bg-danger">Belum Tersedia</span>'
+                                        : str_replace('.', ',', $item->totalNilai) !!}
                                 </td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('end_assessment.show', ['user' => $item->id]) }}"

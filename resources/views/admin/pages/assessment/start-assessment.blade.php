@@ -79,7 +79,7 @@
                                                 ->first();
                                         @endphp
 
-                                        {{ $assessment
+                                        {!! $assessment
                                             ? str_replace(
                                                 '.',
                                                 ',',
@@ -89,21 +89,29 @@
                                                     $assessment->presentation_file_pillar_four * 0.15 +
                                                     $assessment->presentation_file_pillar_five * 0.15,
                                             )
-                                            : '-' }}
+                                            : '<span class="badge text-bg-danger">Belum Tersedia</span>' !!}
                                     </td>
                                 @endif
                                 <td class="text-center py-3">
-                                    {{ str_replace(
-                                        '.',
-                                        ',',
-                                        $item->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
-                                            return $sumAssessment->presentation_file_pillar_two * 0.25 +
-                                                $sumAssessment->presentation_file_pillar_one * 0.25 +
-                                                $sumAssessment->presentation_file_pillar_three * 0.2 +
-                                                $sumAssessment->presentation_file_pillar_four * 0.15 +
-                                                $sumAssessment->presentation_file_pillar_five * 0.15;
-                                        }),
-                                    ) }}
+                                    {!! $item->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                        return $sumAssessment->presentation_file_pillar_two * 0.25 +
+                                            $sumAssessment->presentation_file_pillar_one * 0.25 +
+                                            $sumAssessment->presentation_file_pillar_three * 0.2 +
+                                            $sumAssessment->presentation_file_pillar_four * 0.15 +
+                                            $sumAssessment->presentation_file_pillar_five * 0.15;
+                                    }) == 0
+                                        ? '<span class="badge text-bg-danger">Belum Tersedia</span>'
+                                        : str_replace(
+                                            '.',
+                                            ',',
+                                            $item->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                                return $sumAssessment->presentation_file_pillar_two * 0.25 +
+                                                    $sumAssessment->presentation_file_pillar_one * 0.25 +
+                                                    $sumAssessment->presentation_file_pillar_three * 0.2 +
+                                                    $sumAssessment->presentation_file_pillar_four * 0.15 +
+                                                    $sumAssessment->presentation_file_pillar_five * 0.15;
+                                            }),
+                                        ) !!}
                                 </td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
