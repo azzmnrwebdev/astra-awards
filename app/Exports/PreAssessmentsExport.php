@@ -24,6 +24,7 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     private $categoryAreaId;
     private $categoryMosqueId;
     private $committeId;
+    private $committeName;
     private $search;
 
     private $index = 0;
@@ -50,6 +51,11 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
             $this->title = "LAPORAN PRA PENILAIAN AMALIAH ASTRA AWARDS 2024\n" .
                 "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
+        }
+
+        if ($this->committeId) {
+            $committeName = User::find($this->committeId);
+            $this->committeName = strtoupper($committeName->name);
         }
     }
 
@@ -244,7 +250,11 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
     public function startCell(): string
     {
-        return 'B2';
+        if ($this->committeId) {
+            return 'B3';
+        } else {
+            return 'B2';
+        }
     }
 
     public function map($user): array
@@ -435,41 +445,87 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         $sheet->getStyle('B1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $sheet->getStyle('B1:O1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
-        $sheet->getRowDimension(2)->setRowHeight(100);
+        if ($this->committeId) {
+            $sheet->mergeCells('B2:O2');
+            $sheet->setCellValue('B2', 'NAMA PANITIA                      :  ' . $this->committeName);
+            $sheet->getRowDimension(2)->setRowHeight(20);
 
-        $lastDataRow = $sheet->getHighestRow();
-        for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
-            $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-            $sheet->getStyle('C' . $rowIndex . ':O' . $rowIndex)->getAlignment()->setIndent(1);
+            $sheet->getRowDimension(3)->setRowHeight(100);
+
+            $lastDataRow = $sheet->getHighestRow();
+            for ($rowIndex = 4; $rowIndex <= $lastDataRow; $rowIndex++) {
+                $sheet->getRowDimension($rowIndex)->setRowHeight(20);
+                $sheet->getStyle('C' . $rowIndex . ':O' . $rowIndex)->getAlignment()->setIndent(1);
+            }
+
+            $sheet->getStyle('B3:O' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+            return [
+                'B1:O1' => [
+                    'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
+                    'alignment' => ['wrapText' => true],
+                ],
+                'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'B2:O2' => [
+                    'font' => ['bold' => true],
+                    'alignment' => ['horizontal' => 'left', 'wrapText' => true],
+                ],
+                'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'B3:O3' => [
+                    'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
+                    'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+                    'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
+                ],
+                'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'G' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'O' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            ];
+        } else {
+            $sheet->getRowDimension(2)->setRowHeight(100);
+
+            $lastDataRow = $sheet->getHighestRow();
+            for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
+                $sheet->getRowDimension($rowIndex)->setRowHeight(20);
+                $sheet->getStyle('C' . $rowIndex . ':O' . $rowIndex)->getAlignment()->setIndent(1);
+            }
+
+            $sheet->getStyle('B2:O' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
+            return [
+                'B1:O1' => [
+                    'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
+                    'alignment' => ['wrapText' => true],
+                ],
+                'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
+                'B2:O2' => [
+                    'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
+                    'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
+                    'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
+                ],
+                'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'G' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
+                'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'O' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+            ];
         }
-
-        $sheet->getStyle('B2:O' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-        return [
-            'B1:O1' => [
-                'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
-                'alignment' => ['wrapText' => true],
-            ],
-            'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-            'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-            'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-            'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-            'B2:O2' => [
-                'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
-                'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
-                'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
-            ],
-            'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'C' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-            'D' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-            'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-            'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-            'G' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-            'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-            'O' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-        ];
     }
 
     public function title(): string

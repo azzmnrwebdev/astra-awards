@@ -30,6 +30,7 @@ class EndAssessmentController extends Controller
                 'Nama Masjid/Musala',
                 'Perusahaan',
                 'Total Nilai',
+                'Rata Rata',
                 'Aksi',
             ]);
         } else {
@@ -41,6 +42,7 @@ class EndAssessmentController extends Controller
                 'Perusahaan',
                 'Total Nilai<br />Per Juri',
                 'Total Nilai<br />Keseluruhan Juri',
+                'Rata Rata',
                 'Aksi',
             ]);
         }
@@ -60,7 +62,7 @@ class EndAssessmentController extends Controller
             'Nama Masjid/Musala',
             'Perusahaan',
             'Provinsi',
-            'Total Nilai',
+            'Rata Rata',
             'Aksi',
         ]);
 
@@ -126,6 +128,12 @@ class EndAssessmentController extends Controller
                         $totalValue += $totalPillarThree * $weightPillarThree;
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
+
+                        $juryCount = $user->mosque->endAssessment->count();
+
+                        if ($juryCount > 0) {
+                            $totalValue = $totalValue / $juryCount;
+                        }
                     }
 
                     $user->totalNilai = $totalValue;
@@ -194,6 +202,12 @@ class EndAssessmentController extends Controller
                         $totalValue += $totalPillarThree * $weightPillarThree;
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
+
+                        $juryCount = $user->mosque->presentation->startAssessment->count();
+
+                        if ($juryCount > 0) {
+                            $totalValue = $totalValue / $juryCount;
+                        }
                     }
 
                     $user->totalNilai = $totalValue;
@@ -250,6 +264,12 @@ class EndAssessmentController extends Controller
                         $totalValue += $totalPillarThree * $weightPillarThree;
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
+
+                        $juryCount = $user->mosque->endAssessment->count();
+
+                        if ($juryCount > 0) {
+                            $totalValue = $totalValue / $juryCount;
+                        }
                     }
 
                     $user->totalNilai = $totalValue;

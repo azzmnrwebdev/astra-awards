@@ -104,9 +104,37 @@
                                     </td>
                                 @endif
                                 <td class="text-center py-3">
-                                    {!! $item->totalNilai == 0
-                                        ? '<span class="badge text-bg-danger">Belum Tersedia</span>'
-                                        : str_replace('.', ',', $item->totalNilai) !!}
+                                    {!! $item->mosque->endAssessment->count() > 0
+                                        ? str_replace(
+                                            '.',
+                                            ',',
+                                            $item->mosque->endAssessment->sum(function ($sumAssessment) {
+                                                return $sumAssessment->presentation_value_pillar_one * 0.25 +
+                                                    $sumAssessment->presentation_value_pillar_two * 0.25 +
+                                                    $sumAssessment->presentation_value_pillar_three * 0.2 +
+                                                    $sumAssessment->presentation_value_pillar_four * 0.15 +
+                                                    $sumAssessment->presentation_value_pillar_five * 0.15;
+                                            }),
+                                        )
+                                        : '<span class="badge text-bg-danger">Belum Tersedia</span>' !!}
+                                </td>
+                                <td class="text-center py-3">
+                                    {!! $item->mosque->endAssessment->count() > 0
+                                        ? str_replace(
+                                            '.',
+                                            ',',
+                                            round(
+                                                $item->mosque->endAssessment->sum(function ($sumAssessment) {
+                                                    return $sumAssessment->presentation_value_pillar_two * 0.25 +
+                                                        $sumAssessment->presentation_value_pillar_one * 0.25 +
+                                                        $sumAssessment->presentation_value_pillar_three * 0.2 +
+                                                        $sumAssessment->presentation_value_pillar_four * 0.15 +
+                                                        $sumAssessment->presentation_value_pillar_five * 0.15;
+                                                }) / $item->mosque->endAssessment->count(),
+                                                2,
+                                            ),
+                                        )
+                                        : '<span class="badge text-bg-danger">Belum Tersedia</span>' !!}
                                 </td>
                                 <td class="text-center py-3">
                                     <a href="{{ route('end_assessment.show', ['user' => $item->id]) }}"
@@ -115,7 +143,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="{{ auth()->check() && auth()->user()->hasRole('admin') ? '7' : '8' }}"
+                                <td colspan="{{ auth()->check() && auth()->user()->hasRole('admin') ? '8' : '9' }}"
                                     class="text-center py-3">Data tidak ditemukan</td>
                             </tr>
                         @endforelse
@@ -204,6 +232,7 @@
         </div>
     </div>
 
+    {{-- Penentuan Penilaian Akhir --}}
     @foreach ($categories as $category)
         <h4 class="mt-4 mb-4 fw-semibold d-inline-flex">{{ $category['title'] }}</h4>
 
@@ -226,7 +255,21 @@
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->city->province->name }}</td>
-                                    <td class="text-center py-3">{{ str_replace('.', ',', $item->totalNilai) }}
+                                    <td class="text-center py-3">
+                                        {{ str_replace(
+                                            '.',
+                                            ',',
+                                            round(
+                                                $item->mosque->endAssessment->sum(function ($sumAssessment) {
+                                                    return $sumAssessment->presentation_value_pillar_two * 0.25 +
+                                                        $sumAssessment->presentation_value_pillar_one * 0.25 +
+                                                        $sumAssessment->presentation_value_pillar_three * 0.2 +
+                                                        $sumAssessment->presentation_value_pillar_four * 0.15 +
+                                                        $sumAssessment->presentation_value_pillar_five * 0.15;
+                                                }) / $item->mosque->endAssessment->count(),
+                                                2,
+                                            ),
+                                        ) }}
                                     </td>
                                     <td class="text-center py-3">
                                         <a href="{{ route('end_assessment.show', ['user' => $item->id]) }}"

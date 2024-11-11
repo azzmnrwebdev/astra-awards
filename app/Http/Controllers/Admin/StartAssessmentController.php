@@ -27,6 +27,7 @@ class StartAssessmentController extends Controller
                 ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
                 ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
                 ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
+                ['class' => 'text-center py-3', 'label' => 'Rata Rata'],
                 ['class' => 'text-center py-3', 'label' => 'Aksi'],
             ];
         } else {
@@ -37,7 +38,8 @@ class StartAssessmentController extends Controller
                 ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
                 ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
                 ['class' => 'text-center py-3', 'label' => 'Total Nilai<br />Per Juri'],
-                ['class' => 'text-center py-3', 'label' => 'Total Nilai<br />Keluruhan Juri'],
+                ['class' => 'text-center py-3', 'label' => 'Total Nilai<br />Keseluruhan Juri'],
+                ['class' => 'text-center py-3', 'label' => 'Rata Rata'],
                 ['class' => 'text-center py-3', 'label' => 'Aksi'],
             ];
         }
@@ -215,6 +217,12 @@ class StartAssessmentController extends Controller
                         $totalValue += $totalPillarThree * $weightPillarThree;
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
+
+                        $juryCount = $user->mosque->presentation->startAssessment->count();
+
+                        if ($juryCount > 0) {
+                            $totalValue = $totalValue / $juryCount;
+                        }
                     }
 
                     $user->totalNilai = $totalValue;
@@ -240,19 +248,6 @@ class StartAssessmentController extends Controller
     }
 
     // Kebutuhan Method Index
-    private function getTheadName()
-    {
-        return [
-            ['class' => 'text-center py-3', 'label' => 'No'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori Area'],
-            ['class' => 'text-center py-3', 'label' => 'Kategori'],
-            ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
-            ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
-            ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
-            ['class' => 'text-center py-3', 'label' => 'Aksi'],
-        ];
-    }
-
     private function getCategoryTheadName()
     {
         return [
@@ -260,7 +255,7 @@ class StartAssessmentController extends Controller
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Provinsi'],
-            ['class' => 'text-center py-3', 'label' => 'Total Nilai'],
+            ['class' => 'text-center py-3', 'label' => 'Rata Rata'],
             ['class' => 'text-center py-3', 'label' => 'Aksi'],
         ];
     }
