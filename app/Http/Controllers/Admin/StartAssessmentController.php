@@ -88,9 +88,9 @@ class StartAssessmentController extends Controller
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
                         $q->whereHas('mosque', function ($q2) use ($search) {
-                            $q2->where('name', 'LIKE', '%' . strtolower($search) . '%');
+                            $q2->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
                         })->orWhereHas('mosque.company', function ($q3) use ($search) {
-                            $q3->where('name', 'LIKE', '%' . strtolower($search) . '%');
+                            $q3->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($search) . '%']);
                         });
                     });
                 })->get();

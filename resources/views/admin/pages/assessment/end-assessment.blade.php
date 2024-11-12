@@ -203,7 +203,7 @@
                                         @elseif ($completedAssessments < $totalJuries)
                                             <span class="badge text-bg-warning">Baru Sebagian Juri</span>
                                         @else
-                                            <span class="badge text-bg-success">Sudah Semua Juri</span>
+                                            <span class="badge text-bg-success">Semua Juri Sudah Menilai</span>
                                         @endif
                                     @endif
                                 </td>

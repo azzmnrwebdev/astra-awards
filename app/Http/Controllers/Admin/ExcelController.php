@@ -11,6 +11,7 @@ use App\Exports\PreAssessmentsExport;
 use App\Exports\UsersByCategoryExport;
 use App\Exports\MultipleSheetUsersByProvinceExport;
 use App\Exports\MultipleSheetCompaniesByBusinessLineExport;
+use App\Exports\StartAssessmentRecapExport;
 use App\Exports\StartAssessmentsExport;
 
 class ExcelController extends Controller
@@ -67,7 +68,7 @@ class ExcelController extends Controller
         return new PreAssessmentsExport($categoryAreaId, $categoryMosqueId, $committeId, $search);
     }
 
-    public function startAssessments(Request $request)
+    public function startAssessmentList(Request $request)
     {
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
@@ -75,6 +76,15 @@ class ExcelController extends Controller
         $search = $request->input('pencarian');
 
         return new StartAssessmentsExport($categoryAreaId, $categoryMosqueId, $juryId, $search);
+    }
+
+    public function startAssessmentsRecap(Request $request)
+    {
+        $categoryAreaId = $request->input('kategori_area');
+        $categoryMosqueId = $request->input('kategori_masjid');
+        $search = $request->input('pencarian');
+
+        return new StartAssessmentRecapExport($categoryAreaId, $categoryMosqueId, $search);
     }
 
     public function endAssessments(Request $request)

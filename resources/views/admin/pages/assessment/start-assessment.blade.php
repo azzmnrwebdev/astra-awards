@@ -7,13 +7,18 @@
             {{-- Filter --}}
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('start_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
-                        class="btn btn-success rounded-0">Unduh Excel</a>
+                    <a href="{{ route('start_assessment.list_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
+                        class="btn btn-success rounded-0">Daftar Peserta</a>
+
+                    @if (!$juryId)
+                        <a href="{{ route('start_assessment.recap_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
+                            class="btn btn-success rounded-0">Rekapitulasi Penilaian</a>
+                    @endif
                 </div>
 
                 <div class="col-12 mt-3">
                     <form class="row g-3">
-                        <div class="col-12">
+                        <div class="col-sm-6">
                             <select name="kategori" id="kategori" class="form-select">
                                 <option value="">-- Semua Kategori --</option>
                                 @foreach ($combinedData as $data)
@@ -31,7 +36,7 @@
                             </select>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-sm-6">
                             <select name="juri" id="juri" class="form-select">
                                 <option value="">-- Semua Juri --</option>
                                 @foreach ($juries as $jury)

@@ -113,7 +113,8 @@ Route::middleware('auth')->group(function () {
         Route::post('profil-saya/perbarui-password', [AdminProfileController::class, 'updatePassword'])->name('dashboard_profile.update_pass');
 
         Route::prefix('penilaian-awal')->group(function () {
-            Route::get('unduh-excel', [ExcelController::class, 'startAssessments'])->name('start_assessment.download_excel');
+            Route::get('daftar-peserta/unduh-excel', [ExcelController::class, 'startAssessmentList'])->name('start_assessment.list_download_excel');
+            Route::get('rekapitulasi/unduh-excel', [ExcelController::class, 'startAssessmentsRecap'])->name('start_assessment.recap_download_excel');
             Route::get('/', [StartAssessmentController::class, 'index'])->name('start_assessment.index');
             Route::get('{user}', [StartAssessmentController::class, 'show'])->name('start_assessment.show');
         });
