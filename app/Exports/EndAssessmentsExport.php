@@ -30,7 +30,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     private $index = 0;
 
     private $title = 'LAPORAN PENILAIAN AKHIR AMALIAH ASTRA AWARDS 2024';
-    private $fileName = 'Daftar-Penilaian-Akhir-Peserta-Amaliah-Astra-Awards-2024.xlsx';
+    private $fileName = 'Laporan-Penilaian-Akhir-Peserta-Amaliah-Astra-Awards-2024.xlsx';
 
     private $writerType = Excel::XLSX;
 
@@ -71,17 +71,14 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $users = User::with([
                     'mosque',
                     'mosque.company',
-                    'mosque.endAssessment'
+                    'mosque.presentation',
+                    'mosque.presentation.startAssessment'
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->when($this->categoryAreaId && $this->categoryMosqueId, function ($query) {
                     $query->whereHas('mosque', function ($q) {
                         $q->where('category_area_id', $this->categoryAreaId)
                             ->where('category_mosque_id', $this->categoryMosqueId);
-                    });
-                })->when($this->juryId, function ($query) {
-                    $query->whereHas('mosque.endAssessment', function ($q) {
-                        $q->where('jury_id', $this->juryId);
                     });
                 })->when($this->search, function ($query) {
                     $query->where(function ($q) {
@@ -102,12 +99,24 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->endAssessment) {
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_two * $weightPillarTwo;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_one * $weightPillarOne;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_three * $weightPillarThree;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_four * $weightPillarFour;
-                        $totalValue += $user->mosque->endAssessment->presentation_value_pillar_five * $weightPillarFive;
+                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment->isNotEmpty()) {
+                        $totalPillarOne = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_one');
+                        $totalPillarTwo = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_two');
+                        $totalPillarThree = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_three');
+                        $totalPillarFour = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_four');
+                        $totalPillarFive = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_five');
+
+                        $totalValue += $totalPillarOne * $weightPillarOne;
+                        $totalValue += $totalPillarTwo * $weightPillarTwo;
+                        $totalValue += $totalPillarThree * $weightPillarThree;
+                        $totalValue += $totalPillarFour * $weightPillarFour;
+                        $totalValue += $totalPillarFive * $weightPillarFive;
+
+                        $juryCount = $user->mosque->presentation->startAssessment->count();
+
+                        if ($juryCount > 0) {
+                            $totalValue = $totalValue / $juryCount;
+                        }
                     }
 
                     $user->totalNilai = $totalValue;
@@ -137,38 +146,110 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     {
         $this->index++;
 
-        $pillarTwoValue = $user->mosque->endAssessment->presentation_value_pillar_one;
-        $pillarOneValue = $user->mosque->endAssessment->presentation_value_pillar_two;
-        $pillarThreeValue = $user->mosque->endAssessment->presentation_value_pillar_three;
-        $pillarFourValue = $user->mosque->endAssessment->presentation_value_pillar_four;
-        $pillarFiveValue = $user->mosque->endAssessment->presentation_value_pillar_five;
+        if ($this->juryId) {
+            // Status
+            $status = 'Belum Penilaian';
 
-        $pillarOneWeight = 0.25;
-        $pillarTwoWeight = 0.25;
-        $pillarThreeWeight = 0.20;
-        $pillarFourWeight = 0.15;
-        $pillarFiveWeight = 0.15;
+            if ($user->mosque->endAssessmentForJury($this->juryId)->exists()) {
+                $status = 'Sudah Penilaian';
+            }
 
-        $rekapNilai = 0;
+            // Pillar Assessments
+            $pillarTwoValue = null;
+            $pillarOneValue = null;
+            $pillarThreeValue = null;
+            $pillarFourValue = null;
+            $pillarFiveValue = null;
 
-        if (is_numeric($pillarOneValue)) {
-            $rekapNilai += $pillarOneValue * $pillarOneWeight;
-        }
+            // TOtal & Rekap Nilai
+            $totalValue = null;
+            $recapValue = null;
+            $assessment = $user->mosque
+                ->endAssessmentForJury($this->juryId)
+                ->first();
 
-        if (is_numeric($pillarTwoValue)) {
-            $rekapNilai += $pillarTwoValue * $pillarTwoWeight;
-        }
+            if ($assessment) {
+                $pillarTwoValue += $assessment->presentation_value_pillar_two;
+                $pillarOneValue += $assessment->presentation_value_pillar_one;
+                $pillarThreeValue += $assessment->presentation_value_pillar_three;
+                $pillarFourValue += $assessment->presentation_value_pillar_four;
+                $pillarFiveValue += $assessment->presentation_value_pillar_five;
 
-        if (is_numeric($pillarThreeValue)) {
-            $rekapNilai += $pillarThreeValue * $pillarThreeWeight;
-        }
+                // Total Nilai
+                $totalValue  += $assessment->presentation_value_pillar_two +
+                    $assessment->presentation_value_pillar_one +
+                    $assessment->presentation_value_pillar_three +
+                    $assessment->presentation_value_pillar_four +
+                    $assessment->presentation_value_pillar_five;
 
-        if (is_numeric($pillarFourValue)) {
-            $rekapNilai += $pillarFourValue * $pillarFourWeight;
-        }
+                // Rekap Nilai
+                $recapValue += $assessment->presentation_value_pillar_two * 0.25 +
+                    $assessment->presentation_value_pillar_one * 0.25 +
+                    $assessment->presentation_value_pillar_three * 0.2 +
+                    $assessment->presentation_value_pillar_four * 0.15 +
+                    $assessment->presentation_value_pillar_five * 0.15;
+            }
+        } else {
+            // Status
+            $status = 'Semua Juri Sudah Menilai';
+            $totalJuries = User::where('role', 'jury')->count();
 
-        if (is_numeric($pillarFiveValue)) {
-            $rekapNilai += $pillarFiveValue * $pillarFiveWeight;
+            $completedAssessments = $user->mosque->endAssessment()
+                ->distinct('jury_id')
+                ->count('jury_id');
+
+            if ($completedAssessments === 0) {
+                $status = 'Juri Belum Menilai';
+            } elseif ($completedAssessments < $totalJuries) {
+                $status = 'Baru Sebagian Juri';
+            }
+
+            // Pillar Assessments
+            $pillarTwoValue = null;
+            $pillarOneValue = null;
+            $pillarThreeValue = null;
+            $pillarFourValue = null;
+            $pillarFiveValue = null;
+
+            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarTwoValue) {
+                $pillarTwoValue += $sumAssessment->presentation_value_pillar_two;
+            });
+
+            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarOneValue) {
+                $pillarOneValue += $sumAssessment->presentation_value_pillar_one;
+            });
+
+            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarThreeValue) {
+                $pillarThreeValue += $sumAssessment->presentation_value_pillar_three;
+            });
+
+            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarFourValue) {
+                $pillarFourValue += $sumAssessment->presentation_value_pillar_four;
+            });
+
+            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarFiveValue) {
+                $pillarFiveValue += $sumAssessment->presentation_value_pillar_five;
+            });
+
+            // Total Nilai
+            $totalValue = null;
+            $user->mosque->endAssessment->each(function ($sumAssessment) use (&$totalValue) {
+                $totalValue += $sumAssessment->presentation_value_pillar_two +
+                    $sumAssessment->presentation_value_pillar_one +
+                    $sumAssessment->presentation_value_pillar_three +
+                    $sumAssessment->presentation_value_pillar_four +
+                    $sumAssessment->presentation_value_pillar_five;
+            });
+
+            // Rekap Nilai
+            $recapValue = null;
+            $user->mosque->endAssessment->each(function ($sumAssessment) use (&$recapValue) {
+                $recapValue += $sumAssessment->presentation_value_pillar_two * 0.25 +
+                    $sumAssessment->presentation_value_pillar_one * 0.25 +
+                    $sumAssessment->presentation_value_pillar_three * 0.20 +
+                    $sumAssessment->presentation_value_pillar_four * 0.15 +
+                    $sumAssessment->presentation_value_pillar_five * 0.15;
+            });
         }
 
         return [
@@ -178,13 +259,14 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $user->mosque->city->province->name,
             $user->mosque->categoryMosque->name,
             $user->mosque->categoryArea->name,
-            $pillarTwoValue,
-            $pillarOneValue,
-            $pillarThreeValue,
-            $pillarFourValue,
-            $pillarFiveValue,
-            $user->totalNilai,
-            $rekapNilai,
+            $status,
+            $pillarTwoValue ? $pillarTwoValue : '-',
+            $pillarOneValue ? $pillarOneValue : '-',
+            $pillarThreeValue ? $pillarThreeValue : '-',
+            $pillarFourValue ? $pillarFourValue : '-',
+            $pillarFiveValue ? $pillarFiveValue : '-',
+            $totalValue ? $totalValue : '-',
+            $recapValue ? number_format($recapValue, 2, ',', '') : '-'
         ];
     }
 
@@ -197,6 +279,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             'PROVINSI',
             'KATEGORI',
             'KATEGORI AREA',
+            'STATUS',
             "HUBUNGAN DENGAN\nYAYASAN AMALIAH\nASTRA (BOBOT 25%)",
             "HUBUNGAN\nMANAJEMEN\nPERUSAHAAN\nDENGAN DKM &\nJAMAAH (BOBOT 25%)",
             "PROGRAM SOSIAL\n(BOBOT 20%)",
@@ -209,15 +292,15 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('B1:N1');
+        $sheet->mergeCells('B1:O1');
         $sheet->setCellValue('B1', "\n\n" . $this->title);
         $sheet->getRowDimension(1)->setRowHeight(100);
 
-        $sheet->getStyle('B1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('B1:N1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
+        $sheet->getStyle('B1:O1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B1:O1')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
         if ($this->juryId) {
-            $sheet->mergeCells('B2:N2');
+            $sheet->mergeCells('B2:O2');
             $sheet->setCellValue('B2', 'NAMA JURI                      :  ' . $this->juryName);
             $sheet->getRowDimension(2)->setRowHeight(20);
 
@@ -226,28 +309,22 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $lastDataRow = $sheet->getHighestRow();
             for ($rowIndex = 4; $rowIndex <= $lastDataRow; $rowIndex++) {
                 $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-                $sheet->getStyle('C' . $rowIndex . ':N' . $rowIndex)->getAlignment()->setIndent(1);
+                $sheet->getStyle('C' . $rowIndex . ':O' . $rowIndex)->getAlignment()->setIndent(1);
             }
 
-            $sheet->getStyle('B3:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('B3:O' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
             return [
-                'B1:N1' => [
+                'B1:O1' => [
                     'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
                     'alignment' => ['wrapText' => true],
                 ],
                 'B' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
-                'B2:N2' => [
+                'B2:O2' => [
                     'font' => ['bold' => true],
                     'alignment' => ['horizontal' => 'left', 'wrapText' => true],
                 ],
-                'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'B3:N3' => [
+                'B3:O3' => [
                     'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                     'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
                     'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
@@ -257,8 +334,14 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'G' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-                'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'I' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'J' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'K' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'L' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
                 'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'O' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             ];
         } else {
             $sheet->getRowDimension(2)->setRowHeight(100);
@@ -266,23 +349,17 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $lastDataRow = $sheet->getHighestRow();
             for ($rowIndex = 3; $rowIndex <= $lastDataRow; $rowIndex++) {
                 $sheet->getRowDimension($rowIndex)->setRowHeight(20);
-                $sheet->getStyle('C' . $rowIndex . ':N' . $rowIndex)->getAlignment()->setIndent(1);
+                $sheet->getStyle('C' . $rowIndex . ':O' . $rowIndex)->getAlignment()->setIndent(1);
             }
 
-            $sheet->getStyle('B2:N' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+            $sheet->getStyle('B2:O' . $lastDataRow)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
             return [
-                'B1:N1' => [
+                'B1:O1' => [
                     'font' => ['bold' => true, 'size' => 16, 'color' => ['argb' => 'FF000000']],
                     'alignment' => ['wrapText' => true],
                 ],
-                'H' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'I' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'J' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'K' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'L' => ['alignment' => ['horizontal' => 'right', 'vertical' => 'center', 'wrapText' => true]],
-                'B2:N2' => [
+                'B2:O2' => [
                     'font' => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF'], 'uppercase' => true],
                     'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true],
                     'fill' => ['fillType' => 'solid', 'startColor' => ['argb' => 'FF004EA2']],
@@ -293,14 +370,20 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 'E' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'F' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
                 'G' => ['alignment' => ['vertical' => 'center', 'wrapText' => true]],
-                'M' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'H' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'I' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'J' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'K' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'L' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'M' => ['alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
                 'N' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
+                'O' => ['font' => ['bold' => true], 'alignment' => ['horizontal' => 'center', 'vertical' => 'center', 'wrapText' => true]],
             ];
         }
     }
 
     public function title(): string
     {
-        return 'Penilaian Akhir';
+        return 'Laporan Penilaian Akhir';
     }
 }

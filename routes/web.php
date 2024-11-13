@@ -113,14 +113,15 @@ Route::middleware('auth')->group(function () {
         Route::post('profil-saya/perbarui-password', [AdminProfileController::class, 'updatePassword'])->name('dashboard_profile.update_pass');
 
         Route::prefix('penilaian-awal')->group(function () {
-            Route::get('daftar-peserta/unduh-excel', [ExcelController::class, 'startAssessmentList'])->name('start_assessment.list_download_excel');
-            Route::get('rekapitulasi/unduh-excel', [ExcelController::class, 'startAssessmentsRecap'])->name('start_assessment.recap_download_excel');
+            Route::get('daftar-peserta/unduh-excel', [ExcelController::class, 'startAssessments'])->name('start_assessment.list_download_excel');
+            Route::get('rekapitulasi/unduh-excel', [ExcelController::class, 'startAssessmentRecapies'])->name('start_assessment.recap_download_excel');
             Route::get('/', [StartAssessmentController::class, 'index'])->name('start_assessment.index');
             Route::get('{user}', [StartAssessmentController::class, 'show'])->name('start_assessment.show');
         });
 
         Route::prefix('penilaian-akhir')->group(function () {
-            Route::get('unduh-excel', [ExcelController::class, 'endAssessments'])->name('end_assessment.download_excel');
+            Route::get('daftar-peserta/unduh-excel', [ExcelController::class, 'endAssessments'])->name('end_assessment.list_download_excel');
+            Route::get('rekapitulasi/daftar-peserta/unduh-excel', [ExcelController::class, 'endAssessmentRecapies'])->name('end_assessment.recap_download_excel');
             Route::get('/', [EndAssessmentController::class, 'index'])->name('end_assessment.index')->middleware([EndAssessmentStartMiddleware::class]);
             Route::get('{user}', [EndAssessmentController::class, 'show'])->name('end_assessment.show')->middleware([EndAssessmentStartMiddleware::class]);
             Route::get('{user}/nilai', [EndAssessmentController::class, 'edit'])->name('end_assessment.edit')->middleware([EndAssessmentStartMiddleware::class, EndAssessmentEndMiddleware::class]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\EndAssessmentRecapExport;
 use App\Exports\EndAssessmentsExport;
 use Illuminate\Http\Request;
 use App\Exports\UsersExport;
@@ -68,7 +69,7 @@ class ExcelController extends Controller
         return new PreAssessmentsExport($categoryAreaId, $categoryMosqueId, $committeId, $search);
     }
 
-    public function startAssessmentList(Request $request)
+    public function startAssessments(Request $request)
     {
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
@@ -78,7 +79,7 @@ class ExcelController extends Controller
         return new StartAssessmentsExport($categoryAreaId, $categoryMosqueId, $juryId, $search);
     }
 
-    public function startAssessmentsRecap(Request $request)
+    public function startAssessmentRecapies(Request $request)
     {
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
@@ -95,5 +96,14 @@ class ExcelController extends Controller
         $search = $request->input('pencarian');
 
         return new EndAssessmentsExport($categoryAreaId, $categoryMosqueId, $juryId, $search);
+    }
+
+    public function endAssessmentRecapies(Request $request)
+    {
+        $categoryAreaId = $request->input('kategori_area');
+        $categoryMosqueId = $request->input('kategori_masjid');
+        $search = $request->input('pencarian');
+
+        return new EndAssessmentRecapExport($categoryAreaId, $categoryMosqueId, $search);
     }
 }

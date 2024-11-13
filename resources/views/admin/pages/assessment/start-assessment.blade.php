@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12">
                     <a href="{{ route('start_assessment.list_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
-                        class="btn btn-success rounded-0">Daftar Peserta</a>
+                        class="btn btn-success rounded-0">Laporan Penilaian</a>
 
                     @if (!$juryId)
                         <a href="{{ route('start_assessment.recap_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
