@@ -95,7 +95,7 @@ class StartAssessmentController extends Controller
                     });
                 })->get();
 
-                $users = $users->map(function ($user) {
+                    $users = $users->map(function ($user) {
                     $totalValue = 0;
 
                     $weightPillarOne = 0.25;
@@ -253,6 +253,7 @@ class StartAssessmentController extends Controller
         return [
             ['class' => 'text-center py-3', 'label' => 'No'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
+            ['class' => 'text-center py-3', 'label' => 'PIC'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Provinsi'],
             ['class' => 'text-center py-3', 'label' => 'Rata Rata'],
