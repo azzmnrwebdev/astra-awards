@@ -243,7 +243,7 @@
                                 Hubungan DKM dengan YAA (Bobot 25%)
                             </td>
                             <td class="text-center py-3">
-                                {{ $assessment->presentation_file_pillar_two }}
+                                {{ $assessment->presentation_file_pillar_two ?? '-' }}
                             </td>
                         </tr>
 
@@ -252,7 +252,7 @@
                                 Hubungan Manajemen Perusahaan dengan DKM dan Jamaah (Bobot 25%)
                             </td>
                             <td class="text-center py-3">
-                                {{ $assessment->presentation_file_pillar_one }}
+                                {{ $assessment->presentation_file_pillar_one ?? '-' }}
                             </td>
                         </tr>
 
@@ -261,7 +261,7 @@
                                 Program Sosial (Bobot 20%)
                             </td>
                             <td class="text-center py-3">
-                                {{ $assessment->presentation_file_pillar_three }}
+                                {{ $assessment->presentation_file_pillar_three ?? '-' }}
                             </td>
                         </tr>
 
@@ -270,7 +270,7 @@
                                 Administrasi dan Keuangan (Bobot 15%)
                             </td>
                             <td class="text-center py-3">
-                                {{ $assessment->presentation_file_pillar_four }}
+                                {{ $assessment->presentation_file_pillar_four ?? '-' }}
                             </td>
                         </tr>
 
@@ -279,7 +279,7 @@
                                 Peribadahan dan Infrastruktur (Bobot 15%)
                             </td>
                             <td class="text-center py-3">
-                                {{ $assessment->presentation_file_pillar_five }}
+                                {{ $assessment->presentation_file_pillar_five ?? '-' }}
                             </td>
                         </tr>
 
@@ -288,11 +288,13 @@
                                 Total Nilai
                             </td>
                             <td class="text-center fw-semibold py-3">
-                                {{ $assessment->presentation_file_pillar_two +
-                                    $assessment->presentation_file_pillar_one +
-                                    $assessment->presentation_file_pillar_three +
-                                    $assessment->presentation_file_pillar_four +
-                                    $assessment->presentation_file_pillar_five }}
+                                {{ $assessment
+                                    ? $assessment->presentation_file_pillar_two +
+                                        $assessment->presentation_file_pillar_one +
+                                        $assessment->presentation_file_pillar_three +
+                                        $assessment->presentation_file_pillar_four +
+                                        $assessment->presentation_file_pillar_five
+                                    : '-' }}
                             </td>
                         </tr>
 
@@ -301,15 +303,17 @@
                                 Rekap Nilai (Dikalikan Bobot)
                             </td>
                             <td class="text-center fw-semibold py-3">
-                                {{ str_replace(
-                                    '.',
-                                    ',',
-                                    $assessment->presentation_file_pillar_two * 0.25 +
-                                        $assessment->presentation_file_pillar_one * 0.25 +
-                                        $assessment->presentation_file_pillar_three * 0.2 +
-                                        $assessment->presentation_file_pillar_four * 0.15 +
-                                        $assessment->presentation_file_pillar_five * 0.15,
-                                ) }}
+                                {{ $assessment
+                                    ? str_replace(
+                                        '.',
+                                        ',',
+                                        $assessment->presentation_file_pillar_two * 0.25 +
+                                            $assessment->presentation_file_pillar_one * 0.25 +
+                                            $assessment->presentation_file_pillar_three * 0.2 +
+                                            $assessment->presentation_file_pillar_four * 0.15 +
+                                            $assessment->presentation_file_pillar_five * 0.15,
+                                    )
+                                    : '-' }}
                             </td>
                         </tr>
 
