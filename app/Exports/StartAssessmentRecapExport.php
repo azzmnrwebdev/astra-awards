@@ -27,8 +27,8 @@ class StartAssessmentRecapExport implements FromCollection, Responsable, WithCus
     private $index = 0;
     private $juryNames = [];
 
-    private $title = 'REKAPITULASI PENILAIAN AWAL AMALIAH ASTRA AWARDS 2024';
-    private $fileName = 'Rekap-Penilaian-Awal-Peserta-Amaliah-Astra-Awards-2024.xlsx';
+    private $title;
+    private $fileName;
 
     private $writerType = Excel::XLSX;
 
@@ -38,9 +38,14 @@ class StartAssessmentRecapExport implements FromCollection, Responsable, WithCus
 
     public function __construct($categoryAreaId = null, $categoryMosqueId = null, $search = null)
     {
+        $currentYear = date('Y');
+
         $this->categoryAreaId = $categoryAreaId;
         $this->categoryMosqueId = $categoryMosqueId;
         $this->search = $search;
+
+        $this->title = "REKAPITULASI PENILAIAN AWAL AMALIAH ASTRA AWARDS $currentYear";
+        $this->fileName = "Rekap-Penilaian-Awal-Peserta-Amaliah-Astra-Awards-$currentYear.xlsx";
 
         $this->juryNames = User::where('role', 'jury')->pluck('name')->toArray();
 
@@ -48,7 +53,7 @@ class StartAssessmentRecapExport implements FromCollection, Responsable, WithCus
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = "REKAPITULASI PENILAIAN AWAL AMALIAH ASTRA AWARDS 2024\n" .
+            $this->title = "REKAPITULASI PENILAIAN AWAL AMALIAH ASTRA AWARDS $currentYear\n" .
                 "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
         }
     }

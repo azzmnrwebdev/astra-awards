@@ -60,7 +60,8 @@
             Berdasarkan Provinsi
         </h1>
 
-        <h2 style="font-weight: 800; text-transform: uppercase;">2024</h2>
+        <h2 style="font-weight: 800; text-transform: uppercase;">
+            {{ \Carbon\Carbon::parse($date)->locale('id')->translatedFormat('Y') }}</h2>
 
         <div style="height: 4px; border-radius: 10px; width: 410px; background-color: #f0c916;"></div>
 

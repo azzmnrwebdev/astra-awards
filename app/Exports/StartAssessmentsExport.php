@@ -29,8 +29,8 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
 
     private $index = 0;
 
-    private $title = 'LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS 2024';
-    private $fileName = 'Laporan-Penilaian-Awal-Peserta-Amaliah-Astra-Awards-2024.xlsx';
+    private $title;
+    private $fileName;
 
     private $writerType = Excel::XLSX;
 
@@ -40,16 +40,21 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
 
     public function __construct($categoryAreaId = null, $categoryMosqueId = null, $juryId = null, $search = null)
     {
+        $currentYear = date('Y');
+
         $this->categoryAreaId = $categoryAreaId;
         $this->categoryMosqueId = $categoryMosqueId;
         $this->juryId = $juryId;
         $this->search = $search;
 
+        $this->title = "LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS $currentYear";
+        $this->fileName = "Laporan-Penilaian-Awal-Peserta-Amaliah-Astra-Awards-$currentYear.xlsx";
+
         if ($this->categoryAreaId && $this->categoryMosqueId) {
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = "LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS 2024\n" .
+            $this->title = "LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS $currentYear\n" .
                 "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
         }
 

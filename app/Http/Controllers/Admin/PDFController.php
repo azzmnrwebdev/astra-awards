@@ -19,6 +19,7 @@ class PDFController extends Controller
 {
     public function getUsersByCategory($categoryAreaId, $categoryMosqueId, Request $request)
     {
+        $date = Carbon::now()->toDateString();
         $categoryArea = CategoryArea::find($categoryAreaId);
         $categoryMosque = CategoryMosque::find($categoryMosqueId);
 
@@ -51,13 +52,13 @@ class PDFController extends Controller
             'mosques' => $mosques,
             'categoryArea' => $categoryArea,
             'categoryMosque' => $categoryMosque,
-            'date' => Carbon::now()->toDateString(),
+            'date' => $date,
         ];
 
         $categoryAreaName = str_replace([' ', ','], ['-', ''], $categoryArea->name);
         $categoryMosqueName = str_replace([' ', ','], ['-', ''], $categoryMosque->name);
 
-        $pdfPortrait = PDF::loadView('admin.pdf.users-by-category-cover', ['categoryArea' => $categoryArea, 'categoryMosque' => $categoryMosque])
+        $pdfPortrait = PDF::loadView('admin.pdf.users-by-category-cover', ['categoryArea' => $categoryArea, 'categoryMosque' => $categoryMosque, 'date' => $date])
             ->setPaper('a4', 'portrait')
             ->setOption([
                 'fontDir' => public_path('/fonts'),
@@ -94,6 +95,7 @@ class PDFController extends Controller
 
     public function getUsersByProvince($provinceId, Request $request)
     {
+        $date = Carbon::now()->toDateString();
         $province = Province::with(['city'])->find($provinceId);
 
         $search = $request->query('search');
@@ -122,12 +124,12 @@ class PDFController extends Controller
         $data = [
             'mosques' => $mosques,
             'province' => $province,
-            'date' => Carbon::now()->toDateString(),
+            'date' => $date,
         ];
 
         $provinceName = str_replace([' ', ','], ['-', ''], $province->name);
 
-        $pdfPortrait = PDF::loadView('admin.pdf.users-by-province-cover', ['province' => $province])
+        $pdfPortrait = PDF::loadView('admin.pdf.users-by-province-cover', ['province' => $province, 'date' => $date])
             ->setPaper('a4', 'portrait')
             ->setOption([
                 'fontDir' => public_path('/fonts'),
@@ -164,6 +166,7 @@ class PDFController extends Controller
 
     public function getUsersByBusinessLine($businessLineId, Request $request)
     {
+        $date = Carbon::now()->toDateString();
         $businessLine = BusinessLine::with(['company'])->find($businessLineId);
 
         $search = $request->query('search');
@@ -192,12 +195,12 @@ class PDFController extends Controller
         $data = [
             'mosques' => $mosques,
             'businessLine' => $businessLine,
-            'date' => Carbon::now()->toDateString(),
+            'date' => $date,
         ];
 
         $businessLineName = str_replace([' ', ','], ['-', ''], $businessLine->name);
 
-        $pdfPortrait = PDF::loadView('admin.pdf.users-by-business-line-cover', ['businessLine' => $businessLine])
+        $pdfPortrait = PDF::loadView('admin.pdf.users-by-business-line-cover', ['businessLine' => $businessLine, 'date' => $date])
             ->setPaper('a4', 'portrait')
             ->setOption([
                 'fontDir' => public_path('/fonts'),

@@ -27,7 +27,8 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
 
     private $index = 0;
 
-    private $fileName = 'Daftar-Peserta-Amaliah-Astra-Awards-2024.xlsx';
+    private $fileName;
+    private $currentYear;
 
     private $writerType = Excel::XLSX;
 
@@ -37,11 +38,15 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
 
     public function __construct($companyId = null, $statusAccount = null, $statusForm = null, $statusPresentationFile = null, $search = null)
     {
+        $this->currentYear = date('Y');
+
         $this->companyId = $companyId;
         $this->statusAccount = $statusAccount;
         $this->statusForm = $statusForm;
         $this->statusPresentationFile = $statusPresentationFile;
         $this->search = $search;
+
+        $this->fileName = "Daftar-Peserta-Amaliah-Astra-Awards-{$this->currentYear}.xlsx";
     }
 
     public function collection()
@@ -296,7 +301,7 @@ class UsersExport implements FromCollection, Responsable, WithCustomStartCell, W
     public function styles(Worksheet $sheet)
     {
         $sheet->mergeCells('B1:T1');
-        $sheet->setCellValue('B1', "\n\n" . 'LAPORAN SEMUA PESERTA PENDAFTAR AMALIAH ASTRA AWARDS 2024');
+        $sheet->setCellValue('B1', "\n\n" . 'LAPORAN SEMUA PESERTA PENDAFTAR AMALIAH ASTRA AWARDS ' . $this->currentYear);
         $sheet->getRowDimension(1)->setRowHeight(100);
 
         $sheet->getStyle('B1:T1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
