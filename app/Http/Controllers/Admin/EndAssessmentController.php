@@ -58,7 +58,7 @@ class EndAssessmentController extends Controller
         ]);
 
         $categoryTheadNames = $this->getTheadName([
-            'No',
+            'Peringkat',
             'Nama Masjid/Musala',
             'Perusahaan',
             'Provinsi',

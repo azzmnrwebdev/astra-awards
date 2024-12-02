@@ -18,8 +18,13 @@
 
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('user.download_excel', ['perusahaan' => $companyId, 'status_akun' => request('status_akun'), 'status_formulir' => request('status_formulir'), 'status_file_presentasi' => request('status_file_presentasi'), 'pencarian' => $search]) }}"
-                        class="btn btn-success rounded-0">Unduh Excel</a>
+                    <div class="row g-2">
+                        <div class="col-auto">
+                            <a href="{{ route('user.download_excel', ['perusahaan' => $companyId, 'status_akun' => request('status_akun'), 'status_formulir' => request('status_formulir'), 'status_file_presentasi' => request('status_file_presentasi'), 'pencarian' => $search]) }}"
+                                class="btn btn-success rounded-0"><i
+                                    class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Daftar Peserta</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-12 mt-3">

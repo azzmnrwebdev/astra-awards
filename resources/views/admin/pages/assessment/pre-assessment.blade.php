@@ -7,8 +7,13 @@
             {{-- Filter --}}
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('pre_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'panitia' => $committeId, 'pencarian' => $search]) }}"
-                        class="btn btn-success rounded-0">Unduh Excel</a>
+                    <div class="row g-2">
+                        <div class="col-auto">
+                            <a href="{{ route('pre_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'panitia' => $committeId, 'pencarian' => $search]) }}"
+                                class="btn btn-success rounded-0"><i
+                                    class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Laporan Penilaian</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-12 mt-3">

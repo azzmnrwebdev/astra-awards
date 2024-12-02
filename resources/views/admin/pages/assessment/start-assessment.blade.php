@@ -7,13 +7,22 @@
             {{-- Filter --}}
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('start_assessment.list_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
-                        class="btn btn-success rounded-0">Laporan Penilaian</a>
+                    <div class="row g-2">
+                        <div class="col-auto">
+                            <a href="{{ route('start_assessment.list_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
+                                class="btn btn-success rounded-0"><i
+                                    class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Laporan Penilaian</a>
+                        </div>
 
-                    @if (!$juryId)
-                        <a href="{{ route('start_assessment.recap_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
-                            class="btn btn-success rounded-0">Rekapitulasi Penilaian</a>
-                    @endif
+                        <div class="col-auto">
+                            @if (!$juryId)
+                                <a href="{{ route('start_assessment.recap_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
+                                    class="btn btn-success rounded-0"><i
+                                        class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Rekapitulasi
+                                    Penilaian</a>
+                            @endif
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-12 mt-3">
@@ -173,7 +182,9 @@
                                 <tr>
                                     <td class="text-center py-3">{{ $loop->index + 1 }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->name }}</td>
-                                    <td class="text-center py-3">{{ $item->getAttribute('name') . ' (' . $item->getAttribute('phone_number') . ')' }}</td>
+                                    <td class="text-center py-3">
+                                        {{ $item->getAttribute('name') . ' (' . $item->getAttribute('phone_number') . ')' }}
+                                    </td>
                                     <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                     <td class="text-center py-3">{{ $item->mosque->city->province->name }}</td>
                                     <td class="text-center py-3">

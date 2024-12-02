@@ -17,7 +17,7 @@ class JuryAssessmentController extends Controller
     public function index()
     {
         $theadName = [
-            ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-center py-3', 'label' => 'Peringkat'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],
             ['class' => 'text-center py-3', 'label' => 'Provinsi'],

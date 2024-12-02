@@ -251,7 +251,7 @@ class StartAssessmentController extends Controller
     private function getCategoryTheadName()
     {
         return [
-            ['class' => 'text-center py-3', 'label' => 'No'],
+            ['class' => 'text-center py-3', 'label' => 'Peringkat'],
             ['class' => 'text-center py-3', 'label' => 'Nama Masjid/Musala'],
             ['class' => 'text-center py-3', 'label' => 'PIC'],
             ['class' => 'text-center py-3', 'label' => 'Perusahaan'],

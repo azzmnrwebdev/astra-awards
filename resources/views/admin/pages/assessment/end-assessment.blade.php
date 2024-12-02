@@ -7,15 +7,23 @@
         <div class="card-body p-lg-4">
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('end_assessment.list_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
-                        class="btn btn-success rounded-0">Laporan Penilaian
-                    </a>
+                    <div class="row g-2">
+                        <div class="col-auto">
+                            <a href="{{ route('end_assessment.list_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
+                                class="btn btn-success rounded-0"><i
+                                    class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Laporan Penilaian
+                            </a>
+                        </div>
 
-                    @if (!$juryId)
-                        <a href="{{ route('end_assessment.recap_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
-                            class="btn btn-success rounded-0">Rekapitulasi Penilaian
-                        </a>
-                    @endif
+                        <div class="col-auto">
+                            @if (!$juryId)
+                                <a href="{{ route('end_assessment.recap_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
+                                    class="btn btn-success rounded-0"><i
+                                        class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Rekapitulasi Penilaian
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-12 mt-3">
@@ -169,7 +177,15 @@
 
     <div class="card border-0" style="box-shadow: rgba(13, 38, 76, 0.19) 0px 9px 20px">
         <div class="card-body p-lg-4">
-            <div class="table-responsive">
+            <div class="row g-2">
+                <div class="col-auto">
+                    <a href="{{ route('start_assessment.download_presentation_file') }}"
+                        class="btn btn-dark rounded-0"><i class="bi bi-file-earmark-zip-fill me-2 fs-5"></i>File
+                        Presentasi</a>
+                </div>
+            </div>
+
+            <div class="table-responsive mt-4">
                 <table class="table table-hover text-nowrap align-middle mb-0">
                     <thead class="border-top border-start border-end table-custom">
                         <tr>
