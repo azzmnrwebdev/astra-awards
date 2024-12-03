@@ -36,6 +36,42 @@
             outline: none;
             box-shadow: none;
         }
+
+        .form-label {
+            color: #333333;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #004ea2;
+            outline: #004ea2 solid 1px;
+        }
+
+        .form-control:focus,
+        .form-control.is-invalid:focus,
+        .form-select:focus,
+        .form-select.is-invalid:focus {
+            box-shadow: none;
+        }
+
+        .form-control.is-invalid:focus,
+        .form-select.is-invalid:focus {
+            border-color: #dc3545;
+            outline: #dc3545 solid 1px;
+        }
+
+        .form-check-input:focus {
+            box-shadow: none;
+        }
+
+        .form-check-input:checked {
+            border-color: #004ea2;
+            background-color: #004ea2;
+        }
+
+        .btn-close:focus {
+            box-shadow: none;
+        }
     </style>
 
     @stack('styles')

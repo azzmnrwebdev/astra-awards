@@ -1,6 +1,6 @@
 <x-user title="Pengaturan" name="Pengaturan">
     <div class="container py-4">
-        <div class="row row-cols-1 g-3">
+        <div class="row row-cols-1 row-cols-lg-2 g-3">
             @if (Session('success'))
                 <div class="col-md-10 col-lg-8">
                     <div class="alert alert-success mb-2" role="alert">

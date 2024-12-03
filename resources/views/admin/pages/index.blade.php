@@ -363,7 +363,7 @@
                         }
                     @endphp
 
-                    <div class="row mb-3">
+                    <div class="row mb-3 mb-md-4">
                         <label for="final_assessment" class="col-md-3 col-xl-2 col-form-label">Penilaian
                             Akhir</label>
 

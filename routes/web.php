@@ -59,13 +59,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [HomeController::class, 'information'])->name('information');
 
         Route::prefix('pengaturan')->group(function () {
-            Route::get('pengaturan', [SettingController::class, 'index'])->name('setting.index');
+            Route::get('/', [SettingController::class, 'index'])->name('setting.index');
             Route::get('informasi-akun', [SettingController::class, 'account'])->name('setting.account');
-            Route::put('informasi-akun', [SettingController::class, 'accountAct'])->name('setting.accountAct');
-            Route::get('informasi-umum', [SettingController::class, 'general'])->name('setting.general');
-            Route::put('informasi-umum', [SettingController::class, 'generalAct'])->name('setting.generalAct');
+            Route::post('informasi-akun', [SettingController::class, 'accountAct'])->name('setting.accountAct');
             Route::get('ganti-kata-sandi', [SettingController::class, 'changePassword'])->name('setting.changePassword');
-            Route::put('ganti-kata-sandi', [SettingController::class, 'changePasswordAct'])->name('setting.changePasswordAct');
+            Route::post('ganti-kata-sandi', [SettingController::class, 'changePasswordAct'])->name('setting.changePasswordAct');
         });
 
         Route::get('formulir', [FormController::class, 'index'])->name('form.index')->middleware([FormDKMMiddleware::class, SelectionMiddleware::class]);
@@ -86,6 +84,11 @@ Route::middleware('auth')->group(function () {
         Route::post('formulir/program', [FormController::class, 'programAct'])->name('form.programAct')->middleware(FormDKMMiddleware::class);
         Route::post('formulir/administrasi', [FormController::class, 'administrationAct'])->name('form.administrationAct')->middleware(FormDKMMiddleware::class);
         Route::post('formulir/infrastruktur', [FormController::class, 'infrastructureAct'])->name('form.infrastructureAct')->middleware(FormDKMMiddleware::class);
+
+        Route::prefix('pengaturan')->group(function () {
+            Route::get('informasi-umum', [SettingController::class, 'general'])->name('setting.general');
+            Route::post('informasi-umum', [SettingController::class, 'generalAct'])->name('setting.generalAct');
+        });
     });
 
     // Route Admin

@@ -1,12 +1,24 @@
 <x-user title="Informasi Akun" name="Informasi Akun">
     <div class="container py-4">
-        <div class="row row-cols-1 g-3">
+        <div class="row row-cols-1 row-cols-lg-2 g-0">
+            <div class="col-md-10 col-lg-8">
+                <div class="alert alert-light" role="alert">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
+                        aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="{{ route('setting.index') }}"
+                                    class="text-decoration-none">Pengaturan</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Informasi Akun</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
             <div class="col-md-10 col-lg-8">
                 <div class="card h-100 border-0 shadow rounded-4">
                     <div class="card-body p-4">
                         <form action="{{ route('setting.accountAct') }}" method="POST">
                             @csrf
-                            @method('PUT')
 
                             {{-- Name --}}
                             <div class="mb-3">
@@ -69,4 +81,41 @@
             </div>
         </div>
     </div>
+
+    {{-- Custom Javascript --}}
+    @prepend('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const phoneNumberInput = document.getElementById('phone_number');
+
+                if (phoneNumberInput.value === '') {
+                    phoneNumberInput.value = '08';
+                }
+
+                phoneNumberInput.addEventListener('input', function() {
+                    let value = phoneNumberInput.value;
+
+                    if (value.startsWith('+62')) {
+                        value = '08' + value.slice(3);
+                    }
+
+                    value = value.replace(/[^0-9]/g, '');
+
+                    if (!value.startsWith('08')) {
+                        value = '08';
+                    }
+
+                    phoneNumberInput.value = value;
+                });
+
+                phoneNumberInput.addEventListener('keydown', function(event) {
+                    const value = phoneNumberInput.value;
+
+                    if (value === '08' && (event.key === 'Backspace' || event.key === 'Delete')) {
+                        event.preventDefault();
+                    }
+                });
+            });
+        </script>
+    @endprepend
 </x-user>

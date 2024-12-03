@@ -1,48 +1,52 @@
 <x-user title="Formulir" name="Formulir">
     <div class="container py-4">
         @if (auth()->check() && auth()->user()->hasRole('user'))
-            {{-- Alert --}}
-            <div class="alert alert-info mb-4" role="alert">
-                Silahkan isi 5 formulir yang ada dibawah ini
+            <div class="row row-cols-1 row-cols-lg-2 g-0">
+                <div class="col-md-10 col-lg-8">
+                    {{-- Alert --}}
+                    <div class="alert alert-info mb-4" role="alert">
+                        Silahkan isi 5 formulir yang ada dibawah ini.
+                    </div>
+
+                    {{-- List Form --}}
+                    <ul class="list-group list-group-numbered">
+                        <a href="{{ route('form.relationship') }}"
+                            class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                Hubungan DKM dengan YAA
+                            </div>
+                        </a>
+
+                        <a href="{{ route('form.managementRelationship') }}"
+                            class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                Hubungan Manajemen Perusahaan dengan DKM dan Jamaah
+                            </div>
+                        </a>
+
+                        <a href="{{ route('form.program') }}"
+                            class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                Program Sosial
+                            </div>
+                        </a>
+
+                        <a href="{{ route('form.administration') }}"
+                            class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                Administrasi dan Keuangan
+                            </div>
+                        </a>
+
+                        <a href="{{ route('form.infrastructure') }}"
+                            class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                Peribadahan dan Infrastruktur
+                            </div>
+                        </a>
+                    </ul>
+                </div>
             </div>
-
-            {{-- List Form --}}
-            <ul class="list-group list-group-numbered">
-                <a href="{{ route('form.relationship') }}"
-                    class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        Hubungan DKM dengan YAA
-                    </div>
-                </a>
-
-                <a href="{{ route('form.managementRelationship') }}"
-                    class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        Hubungan Manajemen Perusahaan dengan DKM dan Jamaah
-                    </div>
-                </a>
-
-                <a href="{{ route('form.program') }}"
-                    class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        Program Sosial
-                    </div>
-                </a>
-
-                <a href="{{ route('form.administration') }}"
-                    class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        Administrasi dan Keuangan
-                    </div>
-                </a>
-
-                <a href="{{ route('form.infrastructure') }}"
-                    class="list-group-item mb-3 border rounded py-3 bg-dark text-white d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
-                        Peribadahan dan Infrastruktur
-                    </div>
-                </a>
-            </ul>
         @endif
 
         @if (auth()->check() && auth()->user()->hasRole('admin'))

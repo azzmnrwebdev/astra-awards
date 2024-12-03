@@ -74,8 +74,10 @@ class RegisterController extends Controller
                 'status' => 0,
             ]);
 
-            $fileName = 'logo' . '_' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $request->file('logo')->getClientOriginalExtension();
-            $filePath = $request->file('logo')->storeAs('logo', $fileName, 'public');
+            $logo = $request->file('logo');
+            $mosqueName = strtolower(preg_replace('/\s+/', '_', preg_replace('/\W+/', '', $request->input('name_mosque'))));
+            $logoName = 'logo_' . $mosqueName . '_' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $logo->getClientOriginalExtension();
+            $logoPath = $logo->storeAs('logo', $logoName, 'public');
 
             Mosque::create([
                 'user_id' => $user->id,
@@ -84,7 +86,7 @@ class RegisterController extends Controller
                 'category_mosque_id' => $request->input('category_mosque_id'),
                 'name' => $request->input('name_mosque'),
                 'capacity' => $request->input('capacity'),
-                'logo' => $filePath,
+                'logo' => $logoPath,
                 'leader' => $request->input('leader'),
                 'leader_phone' => $request->input('leader_phone'),
                 'leader_email' => $request->input('leader_email'),

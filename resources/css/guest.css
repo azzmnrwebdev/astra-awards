@@ -5,8 +5,8 @@
 
 .form-control:focus,
 .form-select:focus {
-    border-color: #343a40;
-    outline: #343a40 solid 1px;
+    border-color: #004ea2;
+    outline: #004ea2 solid 1px;
 }
 
 .form-control:focus,
@@ -24,6 +24,11 @@
 
 .form-check-input:focus {
     box-shadow: none;
+}
+
+.form-check-input:checked {
+    border-color: #004ea2;
+    background-color: #004ea2;
 }
 
 .btn-close:focus {

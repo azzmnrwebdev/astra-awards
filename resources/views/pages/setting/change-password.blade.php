@@ -1,22 +1,34 @@
 <x-user title="Ganti Kata Sandi" name="Ganti Kata Sandi">
     <div class="container py-4">
-        <div class="row row-cols-1 g-3">
+        <div class="row row-cols-1 row-cols-lg-2 g-0">
+            <div class="col-md-10 col-lg-8">
+                <div class="alert alert-light" role="alert">
+                    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);"
+                        aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="{{ route('setting.index') }}"
+                                    class="text-decoration-none">Pengaturan</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Ganti Kata Sandi</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
             <div class="col-md-10 col-lg-8">
                 <div class="card h-100 border-0 shadow rounded-4">
                     <div class="card-body p-4">
                         <form action="{{ route('setting.changePasswordAct') }}" method="POST">
                             @csrf
-                            @method('PUT')
 
                             {{-- Current Password --}}
                             <div class="mb-3">
-                                <label for="current_password" class="form-label">Password Saat Ini</label>
+                                <label for="current_password" class="form-label">Kata Sandi Saat Ini</label>
 
                                 <div class="input-group">
                                     <input type="password"
                                         class="form-control @error('current_password') is-invalid @enderror"
                                         id="current_password" name="current_password"
-                                        value="{{ old('current_password') }}" placeholder="Masukan password saat ini">
+                                        value="{{ old('current_password') }}" placeholder="Masukan kata sandi saat ini">
 
                                     <span class="input-group-text"><i class="bi bi-eye toggle-password"
                                             id="toggleCurrentPassword"></i></span>
@@ -29,13 +41,13 @@
 
                             {{-- Password Baru --}}
                             <div class="mb-3">
-                                <label for="new_password" class="form-label">Password Baru</label>
+                                <label for="new_password" class="form-label">Kata Sandi Baru</label>
 
                                 <div class="input-group">
                                     <input type="password"
                                         class="form-control @error('new_password') is-invalid @enderror"
                                         id="new_password" name="new_password" value="{{ old('new_password') }}"
-                                        placeholder="Masukan password baru">
+                                        placeholder="Masukan kata sandi baru">
 
                                     <span class="input-group-text"><i class="bi bi-eye toggle-password"
                                             id="toggleNewPassword"></i></span>
@@ -47,15 +59,15 @@
                             </div>
 
                             {{-- Konfirmasi Password --}}
-                            <div class="mb-3">
-                                <label for="new_password_confirmation" class="form-label">Konfirmasi Password
+                            <div class="mb-3 mb-md-4">
+                                <label for="new_password_confirmation" class="form-label">Konfirmasi Kata Sandi
                                     Baru</label>
 
                                 <div class="input-group">
                                     <input type="password"
                                         class="form-control @error('new_password_confirmation') is-invalid @enderror"
                                         id="new_password_confirmation" name="new_password_confirmation"
-                                        placeholder="Masukan konfirmasi password baru">
+                                        placeholder="Masukan konfirmasi kata sandi baru">
 
                                     <span class="input-group-text"><i class="bi bi-eye toggle-password"
                                             id="toggleConfirmPassword"></i></span>

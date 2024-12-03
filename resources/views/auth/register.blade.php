@@ -156,7 +156,7 @@
                             <div class="col-lg-6">
                                 <label for="name_mosque" class="form-label fw-medium">Nama Masjid/Musala</label>
                                 <input type="text" class="form-control @error('name_mosque') is-invalid @enderror"
-                                    id="name_mosque" name="name_mosque" placeholder="Masukan nama masjid/Musala"
+                                    id="name_mosque" name="name_mosque" placeholder="Masukan nama masjid/musala"
                                     value="{{ old('name_mosque') }}">
 
                                 @error('name_mosque')
@@ -190,7 +190,7 @@
 
                                 <button type="button" class="border-0 p-0 bg-transparent text-primary mt-2"
                                     data-bs-toggle="modal" data-bs-target="#logoModal">
-                                    Petinjau Logo
+                                    Pratinjau Logo
                                 </button>
 
                                 @error('logo')
@@ -362,7 +362,7 @@
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="logoModalLabel">Petinjau Logo</h1>
+                    <h1 class="modal-title fs-5" id="logoModalLabel">Pratinjau Logo</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -378,24 +378,6 @@
     @prepend('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const form = document.getElementById('registrationForm');
-
-                form.addEventListener('submit', function(event) {
-                    const allInputsFilled = Array.from(form.querySelectorAll('input, select, textarea')).every(
-                        input => {
-                            return input.value.trim() !== '' || (input.type === 'checkbox' && input
-                                .checked);
-                        });
-
-                    if (allInputsFilled) {
-                        const confirmed = confirm("Apakah anda yakin data telah terisi dengan benar ?");
-                        if (!confirmed) {
-                            event.preventDefault();
-                        }
-                    }
-                });
-
-                // Input Phone Number
                 const phoneNumberInput = document.getElementById('phone_number');
 
                 if (phoneNumberInput.value === '') {
@@ -426,7 +408,56 @@
                     }
                 });
 
-                // Input Leader Phone
+                // ===============================================================================
+
+                function togglePasswordVisibility(inputId, iconElement) {
+                    let passwordInput = document.getElementById(inputId);
+                    let icon = iconElement;
+
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('bi-eye');
+                        icon.classList.add('bi-eye-slash');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('bi-eye-slash');
+                        icon.classList.add('bi-eye');
+                    }
+                }
+
+                document.getElementById('toggle-password').addEventListener('click', function() {
+                    togglePasswordVisibility('password', this);
+                });
+
+                document.getElementById('toggle-password-confirm').addEventListener('click', function() {
+                    togglePasswordVisibility('password_confirmation', this);
+                });
+
+                // ===============================================================================
+
+                document.getElementById('logo').addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    const logoPreview = document.getElementById('logoPreview');
+                    const noLogoMessage = document.getElementById('noLogoMessage');
+
+                    if (file) {
+                        const reader = new FileReader();
+
+                        reader.onload = function(e) {
+                            logoPreview.src = e.target.result;
+                            logoPreview.classList.remove('d-none');
+                            noLogoMessage.classList.add('d-none');
+                        };
+
+                        reader.readAsDataURL(file);
+                    } else {
+                        logoPreview.classList.add('d-none');
+                        noLogoMessage.classList.remove('d-none');
+                    }
+                });
+
+                // ===============================================================================
+
                 const leaderPhoneInput = document.getElementById('leader_phone');
 
                 if (leaderPhoneInput.value === '') {
@@ -457,31 +488,8 @@
                     }
                 });
 
-                // Input Password
-                function togglePasswordVisibility(inputId, iconElement) {
-                    let passwordInput = document.getElementById(inputId);
-                    let icon = iconElement;
+                // ===============================================================================
 
-                    if (passwordInput.type === 'password') {
-                        passwordInput.type = 'text';
-                        icon.classList.remove('bi-eye');
-                        icon.classList.add('bi-eye-slash');
-                    } else {
-                        passwordInput.type = 'password';
-                        icon.classList.remove('bi-eye-slash');
-                        icon.classList.add('bi-eye');
-                    }
-                }
-
-                document.getElementById('toggle-password').addEventListener('click', function() {
-                    togglePasswordVisibility('password', this);
-                });
-
-                document.getElementById('toggle-password-confirm').addEventListener('click', function() {
-                    togglePasswordVisibility('password_confirmation', this);
-                });
-
-                // Select Company
                 document.getElementById('business_line_id').addEventListener('change', fetchCompanies);
                 document.getElementById('parent_company_id').addEventListener('change', fetchCompanies);
 
@@ -517,7 +525,8 @@
                     fetchCompanies();
                 }
 
-                // Select Kota/Kabupaten
+                // ===============================================================================
+
                 const oldCityId = "{{ old('city_id') }}";
 
                 document.getElementById('province_id').addEventListener('change', function() {
@@ -550,25 +559,22 @@
                     document.getElementById('province_id').dispatchEvent(new Event('change'));
                 }
 
-                // Preview Logo
-                document.getElementById('logo').addEventListener('change', function(event) {
-                    const file = event.target.files[0];
-                    const logoPreview = document.getElementById('logoPreview');
-                    const noLogoMessage = document.getElementById('noLogoMessage');
+                // ===============================================================================
 
-                    if (file) {
-                        const reader = new FileReader();
+                const form = document.getElementById('registrationForm');
 
-                        reader.onload = function(e) {
-                            logoPreview.src = e.target.result;
-                            logoPreview.classList.remove('d-none');
-                            noLogoMessage.classList.add('d-none');
-                        };
+                form.addEventListener('submit', function(event) {
+                    const allInputsFilled = Array.from(form.querySelectorAll('input, select, textarea')).every(
+                        input => {
+                            return input.value.trim() !== '' || (input.type === 'checkbox' && input
+                                .checked);
+                        });
 
-                        reader.readAsDataURL(file);
-                    } else {
-                        logoPreview.classList.add('d-none');
-                        noLogoMessage.classList.remove('d-none');
+                    if (allInputsFilled) {
+                        const confirmed = confirm("Apakah anda yakin data telah terisi dengan benar ?");
+                        if (!confirmed) {
+                            event.preventDefault();
+                        }
                     }
                 });
             });
