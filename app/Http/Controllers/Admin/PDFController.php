@@ -316,6 +316,8 @@ class PDFController extends Controller
             ($pillarFiveTotalValue * $weightPillarFive)
         );
 
+        $date = Carbon::now()->toDateString();
+
         $data = [
             'user' => $user,
             'pillarTwoValue' => $pillarTwoTotalValue,
@@ -325,10 +327,10 @@ class PDFController extends Controller
             'pillarFiveValue' => $pillarFiveTotalValue,
             'totalValue' => $pillarTwoTotalValue + $pillarOneTotalValue + $pillarThreeTotalValue + $pillarFourTotalValue + $pillarFiveTotalValue,
             'valueSummary' => str_replace('.', ',', $valueSummary),
-            'date' => Carbon::now()->toDateString(),
+            'date' => $date,
         ];
 
-        $pdfPortrait = PDF::loadView('pdf.form-assessment-cover')
+        $pdfPortrait = PDF::loadView('pdf.form-assessment-cover', ['date' => $date])
             ->setPaper('a4', 'portrait')
             ->setOption([
                 'fontDir' => public_path('/fonts'),
