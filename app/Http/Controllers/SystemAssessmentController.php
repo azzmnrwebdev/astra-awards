@@ -9,6 +9,8 @@ class SystemAssessmentController extends Controller
 {
     public function pillarOneAct(Request $request)
     {
+        $year = date('Y');
+
         $nilaiMappingRadio4 = [
             1 => 1,
             2 => 3,
@@ -23,6 +25,7 @@ class SystemAssessmentController extends Controller
             'pillar_one_question_three' => $nilaiMappingRadio4[$request->input('pillar_one_question_three')] ?? null,
             'pillar_one_question_four' => $nilaiMappingRadio4[$request->input('pillar_one_question_four')] ?? null,
             'pillar_one_question_five' => $nilaiMappingRadio4[$request->input('pillar_one_question_five')] ?? null,
+            'year' => $year
         ];
 
         SystemAssessment::updateOrCreate(
@@ -35,6 +38,8 @@ class SystemAssessmentController extends Controller
 
     public function pillarTwoAct(Request $request)
     {
+        $year = date('Y');
+
         $nilaiMappingCheckbox4 = [
             '1,2,3' => 9,
             '1,2,4' => 9,
@@ -96,6 +101,7 @@ class SystemAssessmentController extends Controller
             'pillar_two_question_three' => $resultQuestionThree,
             'pillar_two_question_four' => $resultQuestionFour,
             'pillar_two_question_five' => $resultquestionFive,
+            'year' => $year
         ];
 
         SystemAssessment::updateOrCreate(
@@ -108,6 +114,8 @@ class SystemAssessmentController extends Controller
 
     public function pillarThreeAct(Request $request)
     {
+        $year = date('Y');
+
         $nilaiMappingRadio3 = [
             1 => 1,
             2 => 7,
@@ -139,10 +147,10 @@ class SystemAssessmentController extends Controller
             '2,3,4' => 9,
         ];
 
-        $questionFourAmount = 1;
+        $questionFourAmount = 0;
         $questionFour = $request->input('pillar_three_question_four', []);
 
-        if (!empty($questionFour)) {
+        if (!empty($questionFour) && $questionFour[0] !== null) {
             $selectedOptions = explode(',', $questionFour[0]);
             $questionFourAmount = count($selectedOptions);
         }
@@ -170,6 +178,7 @@ class SystemAssessmentController extends Controller
             'pillar_three_question_four' => $resultQuestionFour,
             'pillar_three_question_five' => $request->input('pillar_three_question_five'),
             'pillar_three_question_six' => $resultQuestionSix,
+            'year' => $year
         ];
 
         SystemAssessment::updateOrCreate(
@@ -182,6 +191,8 @@ class SystemAssessmentController extends Controller
 
     public function pillarFourAct(Request $request)
     {
+        $year = date('Y');
+
         $nilaiMappingRadio2 = [
             1 => 1,
             2 => 9
@@ -201,6 +212,7 @@ class SystemAssessmentController extends Controller
             'pillar_four_question_two' => $nilaiMappingRadio2[$request->input('pillar_four_question_two')] ?? null,
             'pillar_four_question_three' => $nilaiMappingRadio4[$request->input('pillar_four_question_three')] ?? null,
             'pillar_four_question_five' => $nilaiMappingRadio2[$request->input('pillar_four_question_five')] ?? null,
+            'year' => $year
         ];
 
         SystemAssessment::updateOrCreate(
@@ -213,6 +225,8 @@ class SystemAssessmentController extends Controller
 
     public function pillarFiveAct(Request $request)
     {
+        $year = date('Y');
+
         $nilaiMappingRadio2 = [
             1 => 1,
             2 => 9
@@ -232,6 +246,7 @@ class SystemAssessmentController extends Controller
             'pillar_five_question_three' => $nilaiMappingRadio4[$request->input('pillar_five_question_three')] ?? null,
             'pillar_five_question_four' => $nilaiMappingRadio4[$request->input('pillar_five_question_four')] ?? null,
             'pillar_five_question_five' => $nilaiMappingRadio4[$request->input('pillar_five_question_five')] ?? null,
+            'year' => $year
         ];
 
         SystemAssessment::updateOrCreate(

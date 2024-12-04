@@ -46,12 +46,13 @@
 
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="{{ route('setting.index') }}">Pengaturan</a></li>
+                        <li><a class="dropdown-item" href="{{ route('form_history') }}">Riwayat Formulir</a></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
 
                                 <button type="submit" class="border-0 bg-transparent text-dark dropdown-item">
-                                    Keluar Aplikasi
+                                    Keluar
                                 </button>
                             </form>
                         </li>

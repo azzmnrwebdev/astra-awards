@@ -93,7 +93,15 @@
                                                     {{ $item->mosque->company->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarTwo->committeeAssessmnet->pillar_two_id ?? '')
+                                                    @php
+                                                        $pillarTwo = $item->mosque->pillarTwo
+                                                            ->where('year', date('Y'))
+                                                            ->first();
+
+                                                        $assessmentPillarTwo = $pillarTwo?->committeeAssessmnet;
+                                                    @endphp
+
+                                                    @if ($assessmentPillarTwo && $pillarTwo->committeeAssessmnet->pillar_two_id)
                                                         @if (
                                                             $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two &&
                                                                 $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three &&
@@ -170,7 +178,15 @@
                                                     {{ $item->mosque->company->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarOne->committeeAssessmnet->pillar_one_id ?? '')
+                                                    @php
+                                                        $pillarOne = $item->mosque->pillarOne
+                                                            ->where('year', date('Y'))
+                                                            ->first();
+
+                                                        $assessmentPillarOne = $pillarOne?->committeeAssessmnet;
+                                                    @endphp
+
+                                                    @if ($assessmentPillarOne && $pillarOne->committeeAssessmnet->pillar_one_id)
                                                         @if (
                                                             $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one &&
                                                                 $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two &&
@@ -249,7 +265,15 @@
                                                     {{ $item->mosque->company->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarThree->committeeAssessmnet->pillar_three_id ?? '')
+                                                    @php
+                                                        $pillarThree = $item->mosque->pillarThree
+                                                            ->where('year', date('Y'))
+                                                            ->first();
+
+                                                        $assessmentPillarThree = $pillarThree?->committeeAssessmnet;
+                                                    @endphp
+
+                                                    @if ($assessmentPillarThree && $pillarThree->committeeAssessmnet->pillar_three_id)
                                                         @if (
                                                             $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one &&
                                                                 $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two &&
@@ -327,7 +351,15 @@
                                                     {{ $item->mosque->company->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarFour->committeeAssessmnet->pillar_four_id ?? '')
+                                                    @php
+                                                        $pillarFour = $item->mosque->pillarFour
+                                                            ->where('year', date('Y'))
+                                                            ->first();
+
+                                                        $assessmentPillarFour = $pillarFour?->committeeAssessmnet;
+                                                    @endphp
+
+                                                    @if ($assessmentPillarFour && $pillarFour->committeeAssessmnet->pillar_four_id)
                                                         @if (
                                                             $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one &&
                                                                 $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two &&
@@ -404,7 +436,15 @@
                                                     {{ $item->mosque->company->name }}
                                                 </td>
                                                 <td class="text-center py-3">
-                                                    @if ($item->mosque->pillarFive->committeeAssessmnet->pillar_five_id ?? '')
+                                                    @php
+                                                        $pillarFive = $item->mosque->pillarFive
+                                                            ->where('year', date('Y'))
+                                                            ->first();
+
+                                                        $assessmentPillarFive = $pillarFive?->committeeAssessmnet;
+                                                    @endphp
+
+                                                    @if ($assessmentPillarFive && $pillarFive->committeeAssessmnet->pillar_five_id)
                                                         @if (
                                                             $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one &&
                                                                 $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two &&

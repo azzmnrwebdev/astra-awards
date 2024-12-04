@@ -43,10 +43,11 @@ class CommitteeAssessmentController extends Controller
             'pillar_one_question_seven' => '7',
         ];
 
+        $year = date('Y');
         $updatedQuestions = [];
         $newlyUpdatedQuestions = [];
         $formName = "Formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah";
-        $committeeAssessment = CommitteeAssessment::where('pillar_one_id', $request->input('pillar_one_id'))->first();
+        $committeeAssessment = CommitteeAssessment::where('pillar_one_id', $request->input('pillar_one_id'))->where('year', $year)->first();
 
         if ($committeeAssessment) {
             foreach ($data as $key => $value) {
@@ -83,7 +84,8 @@ class CommitteeAssessmentController extends Controller
                 }
             }
         } else {
-            $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_one_id' => $request->input('pillar_one_id')], $data));
+            $dataToSave = array_merge($data, ['pillar_one_id' => $request->input('pillar_one_id'), 'year' => $year]);
+            $committeeAssessment = CommitteeAssessment::create($dataToSave);
 
             foreach ($data as $key => $value) {
                 if (!is_null($value)) {
@@ -127,10 +129,11 @@ class CommitteeAssessmentController extends Controller
             'pillar_two_question_five' => '4',
         ];
 
+        $year = date('Y');
         $updatedQuestions = [];
         $newlyUpdatedQuestions = [];
         $formName = "Formulir Hubungan DKM dengan YAA";
-        $committeeAssessment = CommitteeAssessment::where('pillar_two_id', $request->input('pillar_two_id'))->first();
+        $committeeAssessment = CommitteeAssessment::where('pillar_two_id', $request->input('pillar_two_id'))->where('year', $year)->first();
 
         if ($committeeAssessment) {
             foreach ($data as $key => $value) {
@@ -167,7 +170,8 @@ class CommitteeAssessmentController extends Controller
                 }
             }
         } else {
-            $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_two_id' => $request->input('pillar_two_id')], $data));
+            $dataToSave = array_merge($data, ['pillar_two_id' => $request->input('pillar_two_id'), 'year' => $year]);
+            $committeeAssessment = CommitteeAssessment::create($dataToSave);
 
             foreach ($data as $key => $value) {
                 if (!is_null($value)) {
@@ -217,10 +221,11 @@ class CommitteeAssessmentController extends Controller
             'pillar_three_question_six' => '6',
         ];
 
+        $year = date('Y');
         $updatedQuestions = [];
         $newlyUpdatedQuestions = [];
         $formName = "Formulir Program Sosial";
-        $committeeAssessment = CommitteeAssessment::where('pillar_three_id', $request->input('pillar_three_id'))->first();
+        $committeeAssessment = CommitteeAssessment::where('pillar_three_id', $request->input('pillar_three_id'))->where('year', $year)->first();
 
         if ($committeeAssessment) {
             foreach ($data as $key => $value) {
@@ -257,7 +262,8 @@ class CommitteeAssessmentController extends Controller
                 }
             }
         } else {
-            $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_three_id' => $request->input('pillar_three_id')], $data));
+            $dataToSave = array_merge($data, ['pillar_three_id' => $request->input('pillar_three_id'), 'year' => $year]);
+            $committeeAssessment = CommitteeAssessment::create($dataToSave);
 
             foreach ($data as $key => $value) {
                 if (!is_null($value)) {
@@ -304,10 +310,11 @@ class CommitteeAssessmentController extends Controller
             'pillar_four_question_five' => '5',
         ];
 
+        $year = date('Y');
         $updatedQuestions = [];
         $newlyUpdatedQuestions = [];
         $formName = "Formulir Administrasi dan Keuangan";
-        $committeeAssessment = CommitteeAssessment::where('pillar_four_id', $request->input('pillar_four_id'))->first();
+        $committeeAssessment = CommitteeAssessment::where('pillar_four_id', $request->input('pillar_four_id'))->where('year', $year)->first();
 
         if ($committeeAssessment) {
             foreach ($data as $key => $value) {
@@ -344,7 +351,8 @@ class CommitteeAssessmentController extends Controller
                 }
             }
         } else {
-            $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_four_id' => $request->input('pillar_four_id')], $data));
+            $dataToSave = array_merge($data, ['pillar_four_id' => $request->input('pillar_four_id'), 'year' => $year]);
+            $committeeAssessment = CommitteeAssessment::create($dataToSave);
 
             foreach ($data as $key => $value) {
                 if (!is_null($value)) {
@@ -391,10 +399,11 @@ class CommitteeAssessmentController extends Controller
             'pillar_five_question_five' => '5',
         ];
 
+        $year = date('Y');
         $updatedQuestions = [];
         $newlyUpdatedQuestions = [];
         $formName = "Formulir Peribadahan dan Infrastruktur";
-        $committeeAssessment = CommitteeAssessment::where('pillar_five_id', $request->input('pillar_five_id'))->first();
+        $committeeAssessment = CommitteeAssessment::where('pillar_five_id', $request->input('pillar_five_id'))->where('year', $year)->first();
 
         if ($committeeAssessment) {
             foreach ($data as $key => $value) {
@@ -431,7 +440,8 @@ class CommitteeAssessmentController extends Controller
                 }
             }
         } else {
-            $committeeAssessment = CommitteeAssessment::create(array_merge(['pillar_five_id' => $request->input('pillar_five_id')], $data));
+            $dataToSave = array_merge($data, ['pillar_five_id' => $request->input('pillar_five_id'), 'year' => $year]);
+            $committeeAssessment = CommitteeAssessment::create($dataToSave);
 
             foreach ($data as $key => $value) {
                 if (!is_null($value)) {

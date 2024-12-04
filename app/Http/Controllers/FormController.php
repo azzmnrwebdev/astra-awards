@@ -8,6 +8,7 @@ use App\Models\PillarFour;
 use App\Models\PillarOne;
 use App\Models\PillarThree;
 use App\Models\PillarTwo;
+use App\Models\Presentation;
 use App\Models\SystemAssessment;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -20,6 +21,7 @@ class FormController extends Controller
 {
     public function index(Request $request)
     {
+        $year = date('Y');
         $userLogin = Auth::user();
         $admin = User::where('id', $userLogin->id)
             ->where('role', 'admin')
@@ -51,11 +53,20 @@ class FormController extends Controller
                 });
             }
 
-            $pillarOnes = (clone $query)->whereHas('mosque.pillarOne')->paginate(10);
-            $pillarTwos = (clone $query)->whereHas('mosque.pillarTwo')->paginate(10);
-            $pillarThrees = (clone $query)->whereHas('mosque.pillarThree')->paginate(10);
-            $pillarFours = (clone $query)->whereHas('mosque.pillarFour')->paginate(10);
-            $pillarFives = (clone $query)->whereHas('mosque.pillarFive')->paginate(10);
+            $pillarTypes = ['pillarOne', 'pillarTwo', 'pillarThree', 'pillarFour', 'pillarFive'];
+            $pillars = [];
+
+            foreach ($pillarTypes as $pillarType) {
+                $pillars[$pillarType] = (clone $query)->whereHas("mosque.$pillarType", function ($q) use ($year) {
+                    $q->where('year', $year);
+                })->paginate(10);
+            }
+
+            $pillarOnes = $pillars['pillarOne'];
+            $pillarTwos = $pillars['pillarTwo'];
+            $pillarThrees = $pillars['pillarThree'];
+            $pillarFours = $pillars['pillarFour'];
+            $pillarFives = $pillars['pillarFive'];
         }
 
         if ($userLogin->role !== "admin") {
@@ -67,6 +78,8 @@ class FormController extends Controller
 
     public function managementRelationship($user = null, $action = null)
     {
+        $year = date('Y');
+
         if (!$user && !$action) {
             $mosque = Auth::user()->mosque;
 
@@ -74,19 +87,19 @@ class FormController extends Controller
                 return redirect(route('form.index'));
             }
 
-            $pillarOne = PillarOne::where('mosque_id', $mosque->id)->first();
+            $pillarOne = PillarOne::where('mosque_id', $mosque->id)->where('year', $year)->first();
 
             return view('pages.form.management-relationship', compact('pillarOne'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarOne = $user->mosque->pillarOne;
+            $pillarOne = $user->mosque->pillarOne()->where('year', $year)->first();
 
             if (!$pillarOne) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Hubungan DKM dengan YAA');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
+            $systemAssessment = SystemAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->where('year', $year)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->where('year', $year)->first();
 
             return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment', 'committeeAssessment'));
         }
@@ -119,12 +132,35 @@ class FormController extends Controller
             'file_question_five' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'question_one.string' => 'Jawaban 1 harus berupa text.',
+            'question_two.string' => 'Jawaban 2 harus berupa text.',
+            'question_three.string' => 'Jawaban 5 harus berupa text.',
+            'question_four.string' => 'Jawaban 6 harus berupa text.',
+            'question_five.string' => 'Jawaban 7 harus berupa text.',
+            'file_question_one.file' => 'Dokumen harus berbentuk file.',
+            'file_question_one.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_two_one.file' => 'Dokumen harus berbentuk file.',
+            'file_question_two_one.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_two_two.file' => 'Dokumen harus berbentuk file.',
+            'file_question_two_two.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_two_three.file' => 'Dokumen harus berbentuk file.',
+            'file_question_two_three.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_three.file' => 'Dokumen harus berbentuk file.',
+            'file_question_three.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_four.file' => 'Dokumen harus berbentuk file.',
+            'file_question_four.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_five.file' => 'Dokumen harus berbentuk file.',
+            'file_question_five.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $year = date('Y');
         $mosqueId = Auth::user()->mosque->id;
 
         $pillarOne = PillarOne::updateOrCreate(
@@ -136,6 +172,7 @@ class FormController extends Controller
                 'question_three' => $request->input('question_three'),
                 'question_four' => $request->input('question_four'),
                 'question_five' => $request->input('question_five'),
+                'year' => $year
             ]
         );
 
@@ -154,6 +191,8 @@ class FormController extends Controller
 
     public function relationship($user = null, $action = null)
     {
+        $year = date('Y');
+
         if (!$user && !$action) {
             $mosque = Auth::user()->mosque;
 
@@ -161,19 +200,19 @@ class FormController extends Controller
                 return redirect(route('form.index'));
             }
 
-            $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->first();
+            $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->where('year', $year)->first();
 
             return view('pages.form.relationship', compact('pillarTwo'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarTwo = $user->mosque->pillarTwo;
+            $pillarTwo = $user->mosque->pillarTwo()->where('year', $year)->first();
 
             if (!$pillarTwo) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
+            $systemAssessment = SystemAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->where('year', $year)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->where('year', $year)->first();
 
             return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment', 'committeeAssessment'));
         }
@@ -214,12 +253,24 @@ class FormController extends Controller
             'file_question_five' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'file_question_two.file' => 'Dokumen harus berbentuk file.',
+            'file_question_two.mimes' => 'Dokumen yang diupload harus berformat ZIP.',
+            'file_question_three.file' => 'Dokumen harus berbentuk file.',
+            'file_question_three.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_four.file' => 'Dokumen harus berbentuk file.',
+            'file_question_four.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_five.file' => 'Dokumen harus berbentuk file.',
+            'file_question_five.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $year = date('Y');
         $mosque = Auth::user()->mosque;
 
         $isQuestionTwo = $request->input('status_divisiSR');
@@ -319,6 +370,7 @@ class FormController extends Controller
                 'question_four' => $questionFour,
                 'option_four' => $optionFourValue,
                 'question_five' => $questionFive,
+                'year' => $year
             ]
         );
 
@@ -334,6 +386,8 @@ class FormController extends Controller
 
     public function program($user = null, $action = null)
     {
+        $year = date('Y');
+
         if (!$user && !$action) {
             $mosque = Auth::user()->mosque;
 
@@ -341,19 +395,19 @@ class FormController extends Controller
                 return redirect(route('form.index'));
             }
 
-            $pillarThree = PillarThree::where('mosque_id', $mosque->id)->first();
+            $pillarThree = PillarThree::where('mosque_id', $mosque->id)->where('year', $year)->first();
 
             return view('pages.form.program', compact('pillarThree'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarThree = $user->mosque->pillarThree;
+            $pillarThree = $user->mosque->pillarThree()->where('year', $year)->first();
 
             if (!$pillarThree) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Program Sosial');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
+            $systemAssessment = SystemAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->where('year', $year)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->where('year', $year)->first();
 
             return view('pages.form.program', compact('user', 'pillarThree', 'systemAssessment', 'committeeAssessment'));
         }
@@ -376,18 +430,33 @@ class FormController extends Controller
             'question_one' => 'string',
             'question_two' => 'string',
             'question_three' => 'string',
-            'question_five' => 'string|max:1000',
+            'question_five' => 'nullable|string|max:1000',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_four' => 'file|mimes:pdf,jpg,jpeg,png',
             'file_question_six' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'question_one.string' => 'Jawaban 1 harus berupa text.',
+            'question_two.string' => 'Jawaban 2 harus berupa text.',
+            'question_three.string' => 'Jawaban 3 harus berupa text.',
+            'question_five.string' => 'Jawaban 5 harus berupa text.',
+            'question_five.max' => 'Jawaban 5 tidak boleh melebihi dari 1000 karakter.',
+            'file_question_one.file' => 'Dokumen harus berbentuk file.',
+            'file_question_one.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_four.file' => 'Dokumen harus berbentuk file.',
+            'file_question_four.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_six.file' => 'Dokumen harus berbentuk file.',
+            'file_question_six.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $year = date('Y');
         $mosque = Auth::user()->mosque;
         $questionFour = $request->input('question_four', []);
         $questionSix = $request->input('question_six', []);
@@ -438,6 +507,7 @@ class FormController extends Controller
                 'question_five' => $request->input('question_five'),
                 'question_six' => $questionSix,
                 'option_six' => $request->input('option_six') ?? null,
+                'year' => $year
             ]
         );
 
@@ -452,6 +522,8 @@ class FormController extends Controller
 
     public function administration($user = null, $action = null)
     {
+        $year = date('Y');
+
         if (!$user && !$action) {
             $mosque = Auth::user()->mosque;
 
@@ -459,19 +531,19 @@ class FormController extends Controller
                 return redirect(route('form.index'));
             }
 
-            $pillarFour = PillarFour::where('mosque_id', $mosque->id)->first();
+            $pillarFour = PillarFour::where('mosque_id', $mosque->id)->where('year', $year)->first();
 
             return view('pages.form.administration', compact('pillarFour'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarFour = $user->mosque->pillarFour;
+            $pillarFour = $user->mosque->pillarFour()->where('year', $year)->first();
 
             if (!$pillarFour) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Administrasi dan Keuangan');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
+            $systemAssessment = SystemAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->where('year', $year)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->where('year', $year)->first();
 
             return view('pages.form.administration', compact('user', 'pillarFour', 'systemAssessment', 'committeeAssessment'));
         }
@@ -492,7 +564,7 @@ class FormController extends Controller
         $rules = [
             'question_one' => 'string',
             'question_two' => 'string',
-            'question_three' => 'nullable|string',
+            'question_three' => 'string',
             'question_four' => 'string',
             'question_five' => 'string',
             'file_question_one' => 'file|mimes:pdf,jpg,jpeg,png',
@@ -501,12 +573,29 @@ class FormController extends Controller
             'file_question_six' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'question_one.string' => 'Jawaban 1 harus berupa text.',
+            'question_four.string' => 'Jawaban 2 harus berupa text.',
+            'question_two.string' => 'Jawaban 3 harus berupa text.',
+            'question_three.string' => 'Jawaban 4 harus berupa text.',
+            'question_five.string' => 'Jawaban 5 harus berupa text.',
+            'file_question_one.file' => 'Dokumen harus berbentuk file.',
+            'file_question_one.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_two.file' => 'Dokumen harus berbentuk file.',
+            'file_question_two.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_four.file' => 'Dokumen harus berbentuk file.',
+            'file_question_four.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_six.file' => 'Dokumen harus berbentuk file.',
+            'file_question_six.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $year = date('Y');
         $mosque = Auth::user()->mosque;
 
         $pillarFour = PillarFour::updateOrCreate(
@@ -518,6 +607,7 @@ class FormController extends Controller
                 'question_three' => $request->input('question_three'),
                 'question_four' => $request->input('question_four'),
                 'question_five' => $request->input('question_five'),
+                'year' => $year
             ]
         );
 
@@ -533,6 +623,8 @@ class FormController extends Controller
 
     public function infrastructure($user = null, $action = null)
     {
+        $year = date('Y');
+
         if (!$user && !$action) {
             $mosque = Auth::user()->mosque;
 
@@ -540,19 +632,19 @@ class FormController extends Controller
                 return redirect(route('form.index'));
             }
 
-            $pillarFive = PillarFive::where('mosque_id', $mosque->id)->first();
+            $pillarFive = PillarFive::where('mosque_id', $mosque->id)->where('year', $year)->first();
 
             return view('pages.form.infrastructure', compact('pillarFive'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarFive = $user->mosque->pillarFive;
+            $pillarFive = $user->mosque->pillarFive()->where('year', $year)->first();
 
             if (!$pillarFive) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Peribadahan dan Infrastruktur');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
+            $systemAssessment = SystemAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->where('year', $year)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->where('year', $year)->first();
 
             return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment', 'committeeAssessment'));
         }
@@ -582,12 +674,29 @@ class FormController extends Controller
             'file_question_five' => 'file|mimes:pdf,jpg,jpeg,png',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'question_one.string' => 'Jawaban 1 harus berupa text.',
+            'question_two.string' => 'Jawaban 2 harus berupa text.',
+            'question_three.string' => 'Jawaban 3 harus berupa text.',
+            'question_four.string' => 'Jawaban 4 harus berupa text.',
+            'question_five.string' => 'Jawaban 5 harus berupa text.',
+            'file_question_two.file' => 'Dokumen harus berbentuk file.',
+            'file_question_two.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_three.file' => 'Dokumen harus berbentuk file.',
+            'file_question_three.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_four.file' => 'Dokumen harus berbentuk file.',
+            'file_question_four.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+            'file_question_five.file' => 'Dokumen harus berbentuk file.',
+            'file_question_five.mimes' => 'Dokumen yang diupload harus berformat PDF, JPG, JPEG, atau PNG.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $year = date('Y');
         $mosqueId = Auth::user()->mosque->id;
 
         $pillarFive = PillarFive::updateOrCreate(
@@ -599,6 +708,7 @@ class FormController extends Controller
                 'question_three' => $request->input('question_three'),
                 'question_four' => $request->input('question_four'),
                 'question_five' => $request->input('question_five'),
+                'year' => $year
             ]
         );
 
@@ -610,6 +720,23 @@ class FormController extends Controller
         $pillarFive->save();
 
         return redirect()->back()->with('success', 'Data berhasil disimpan');
+    }
+
+    public function history(Request $request)
+    {
+        $mosque = Auth::user()->mosque;
+        $year = $request->input('tahun', date('Y'));
+
+        if ($mosque) {
+            $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->where('year', $year)->first();
+            $pillarOne = PillarOne::where('mosque_id', $mosque->id)->where('year', $year)->first();
+            $pillarThree = PillarThree::where('mosque_id', $mosque->id)->where('year', $year)->first();
+            $pillarFour = PillarFour::where('mosque_id', $mosque->id)->where('year', $year)->first();
+            $pillarFive = PillarFive::where('mosque_id', $mosque->id)->where('year', $year)->first();
+            $presentation = Presentation::where('mosque_id', $mosque->id)->where('year', $year)->first();
+        }
+
+        return view('pages.form.history', compact('pillarTwo', 'pillarOne', 'pillarThree', 'pillarFour', 'pillarFive', 'presentation'));
     }
 
     private function handleFileUpdate(Request $request, $inputName, $currentFilePath, $path)

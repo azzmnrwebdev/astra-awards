@@ -10,7 +10,7 @@ class PillarFive extends Model
     use HasFactory;
 
     protected $table = 'pillar_fives';
-    protected $fillable = ['mosque_id', 'question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'file_question_two', 'file_question_three', 'file_question_four', 'file_question_five'];
+    protected $fillable = ['mosque_id', 'question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'file_question_two', 'file_question_three', 'file_question_four', 'file_question_five', 'year'];
 
     public function mosque()
     {

@@ -10,7 +10,7 @@ class Presentation extends Model
     use HasFactory;
 
     protected $table = 'presentations';
-    protected $fillable = ['mosque_id', 'file'];
+    protected $fillable = ['mosque_id', 'file', 'year'];
 
     public function mosque()
     {

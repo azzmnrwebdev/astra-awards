@@ -89,6 +89,8 @@ Route::middleware('auth')->group(function () {
             Route::get('informasi-umum', [SettingController::class, 'general'])->name('setting.general');
             Route::post('informasi-umum', [SettingController::class, 'generalAct'])->name('setting.generalAct');
         });
+
+        Route::get('riwayat-formulir', [FormController::class, 'history'])->name('form_history');
     });
 
     // Route Admin

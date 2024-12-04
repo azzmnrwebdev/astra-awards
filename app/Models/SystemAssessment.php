@@ -41,6 +41,7 @@ class SystemAssessment extends Model
         'pillar_five_question_three',
         'pillar_five_question_four',
         'pillar_five_question_five',
+        'year'
     ];
 
     public function pillarOne()

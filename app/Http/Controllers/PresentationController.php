@@ -14,10 +14,11 @@ class PresentationController extends Controller
 {
     public function presentation(Request $request)
     {
+        $year = date('Y');
         $userLogin = Auth::user();
 
         $mosque = $userLogin->mosque;
-        $presentation = Presentation::where('mosque_id', $mosque->id)->first();
+        $presentation = Presentation::where('mosque_id', $mosque->id)->where('year', $year)->first();
 
         return view('pages.presentation.index', compact('presentation'));
     }
@@ -28,26 +29,44 @@ class PresentationController extends Controller
             'file' => 'required|file|mimes:pdf',
         ];
 
-        $validator = Validator::make($request->all(), $rules);
+        $messages = [
+            'file.required' => 'File presentasi wajib diupload.',
+            'file.file' => 'File presentasi harus berbentuk file.',
+            'file.mimes' => 'File presentasi yang diupload harus berformat PDF.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $year = date('Y');
         $mosque = Auth::user()->mosque;
 
-        $checkPillarOne = $mosque->pillarOne ? true : false;
-        $checkPillarTwo = $mosque->pillarTwo ? true : false;
-        $checkPillarThree = $mosque->pillarThree ? true : false;
-        $checkPillarFour = $mosque->pillarFour ? true : false;
-        $checkPillarFive = $mosque->pillarFive ? true : false;
+        $pillarChecks = [
+            'pillarOne',
+            'pillarTwo',
+            'pillarThree',
+            'pillarFour',
+            'pillarFive',
+        ];
 
-        if ($checkPillarOne && $checkPillarTwo && $checkPillarThree && $checkPillarFour && $checkPillarFive) {
+        $allPillarsComplete = true;
+
+        foreach ($pillarChecks as $pillar) {
+            if (!$mosque->$pillar()->where('year', $year)->exists()) {
+                $allPillarsComplete = false;
+                break;
+            }
+        }
+
+        if ($allPillarsComplete) {
             DB::beginTransaction();
 
             try {
-                $presentation = Presentation::where('mosque_id', $mosque->id)->first();
-                $filePath = $this->handleFileUpdate($request, 'file', $presentation->file ?? null, 'presentations');
+                $presentation = Presentation::where('mosque_id', $mosque->id)->where('year', $year)->first();
+                $filePath = $this->handleFileUpdate($request, $mosque->name, 'file', $presentation->file ?? null, 'presentations');
 
                 if ($filePath) {
                     $presentation = Presentation::updateOrCreate(
@@ -55,6 +74,7 @@ class PresentationController extends Controller
                         [
                             'mosque_id' => $mosque->id,
                             'file' => $filePath,
+                            'year' => $year,
                         ]
                     );
 
@@ -74,22 +94,23 @@ class PresentationController extends Controller
         }
     }
 
-    private function handleFileUpdate(Request $request, $inputName, $currentFilePath, $path)
+    private function handleFileUpdate(Request $request, $mosqueName, $inputName, $currentFilePath, $path)
     {
         if ($request->hasFile($inputName)) {
             if ($currentFilePath && Storage::disk('public')->exists(Str::after($currentFilePath, 'storage/'))) {
                 Storage::disk('public')->delete(Str::after($currentFilePath, 'storage/'));
             }
 
-            return $this->handleUploadFile($inputName, $request->file($inputName), $path);
+            return $this->handleUploadFile($mosqueName, $request->file($inputName), $path);
         }
 
         return $currentFilePath;
     }
 
-    private function handleUploadFile($name, $file, $path)
+    private function handleUploadFile($mosqueName, $file, $path)
     {
-        $fileName = $name . '-' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $file->getClientOriginalExtension();
+        $mosque = strtolower(preg_replace('/\s+/', '_', preg_replace('/\W+/', '', $mosqueName)));
+        $fileName = 'file_presentasi_' . $mosque . '_' . sha1(mt_rand(1, 999999) . microtime()) . '.' . $file->getClientOriginalExtension();
         $filePath = $file->storeAs($path, $fileName, 'public');
 
         return 'storage/' . $filePath;
