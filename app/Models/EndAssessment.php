@@ -18,6 +18,7 @@ class EndAssessment extends Model
         'presentation_value_pillar_three',
         'presentation_value_pillar_four',
         'presentation_value_pillar_five',
+        'year'
     ];
 
     public function jury()

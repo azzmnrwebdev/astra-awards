@@ -134,9 +134,10 @@ class JuryAssessmentController extends Controller
 
     public function assessment(User $user)
     {
+        $year = date('Y');
         $juryId = Auth::user()->id;
         $presentationId = $user->mosque->presentation->id ?? '';
-        $startAssessment = StartAssessment::where('presentation_id', $presentationId)->where('jury_id', $juryId)->first();
+        $startAssessment = StartAssessment::where('presentation_id', $presentationId)->where('jury_id', $juryId)->where('year', $year)->first();
 
         return view('admin.pages.assessment.jury-assessment-edit', compact('user', 'presentationId', 'startAssessment'));
     }
@@ -166,6 +167,7 @@ class JuryAssessmentController extends Controller
         }
 
         try {
+            $year = date('Y');
             $id = $request->input('id');
 
             StartAssessment::updateOrCreate(
@@ -177,7 +179,8 @@ class JuryAssessmentController extends Controller
                     'presentation_file_pillar_one' => $request->input('presentation_file_pillar_one'),
                     'presentation_file_pillar_three' => $request->input('presentation_file_pillar_three'),
                     'presentation_file_pillar_four' => $request->input('presentation_file_pillar_four'),
-                    'presentation_file_pillar_five' => $request->input('presentation_file_pillar_five')
+                    'presentation_file_pillar_five' => $request->input('presentation_file_pillar_five'),
+                    'year' => $year
                 ]
             );
 

@@ -78,7 +78,7 @@ class Mosque extends Model
 
     public function presentation()
     {
-        return $this->hasOne(Presentation::class, 'mosque_id');
+        return $this->hasOne(Presentation::class, 'mosque_id')->where('year', date('Y'));
     }
 
     public function endAssessment()

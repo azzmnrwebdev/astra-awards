@@ -18,6 +18,7 @@ class StartAssessment extends Model
         'presentation_file_pillar_three',
         'presentation_file_pillar_four',
         'presentation_file_pillar_five',
+        'year'
     ];
 
     public function jury()
