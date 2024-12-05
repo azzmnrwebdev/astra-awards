@@ -98,149 +98,88 @@ class PreAssessmentController extends Controller
                 ->orWhereHas('mosque.pillarFive');
         });
 
-        if ($categoryAreaId && $categoryMosqueId) {
-            $users = $query->select('users.*')
-                ->leftJoin('mosques', 'mosques.user_id', '=', 'users.id')
-                ->leftJoin('pillar_ones', 'pillar_ones.mosque_id', '=', 'mosques.id')
-                ->leftJoin('pillar_twos', 'pillar_twos.mosque_id', '=', 'mosques.id')
-                ->leftJoin('pillar_threes', 'pillar_threes.mosque_id', '=', 'mosques.id')
-                ->leftJoin('pillar_fours', 'pillar_fours.mosque_id', '=', 'mosques.id')
-                ->leftJoin('pillar_fives', 'pillar_fives.mosque_id', '=', 'mosques.id')
-                ->selectRaw('
-                    (
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_one_question_one, 0) +
-                                COALESCE(pillar_one_question_two, 0) +
-                                COALESCE(pillar_one_question_three, 0) +
-                                COALESCE(pillar_one_question_four, 0) +
-                                COALESCE(pillar_one_question_five, 0) +
-                                COALESCE(pillar_one_question_six, 0) +
-                                COALESCE(pillar_one_question_seven, 0)
-                            ) * 0.25
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_one_id = pillar_ones.id
-                        ), 0) +
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_two_question_two, 0) +
-                                COALESCE(pillar_two_question_three, 0) +
-                                COALESCE(pillar_two_question_four, 0) +
-                                COALESCE(pillar_two_question_five, 0)
-                            ) * 0.25
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_two_id = pillar_twos.id
-                        ), 0) +
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_three_question_one, 0) +
-                                COALESCE(pillar_three_question_two, 0) +
-                                COALESCE(pillar_three_question_three, 0) +
-                                COALESCE(pillar_three_question_four, 0) +
-                                COALESCE(pillar_three_question_five, 0) +
-                                COALESCE(pillar_three_question_six, 0)
-                            ) * 0.20
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_three_id = pillar_threes.id
-                        ), 0) +
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_four_question_one, 0) +
-                                COALESCE(pillar_four_question_two, 0) +
-                                COALESCE(pillar_four_question_three, 0) +
-                                COALESCE(pillar_four_question_four, 0) +
-                                COALESCE(pillar_four_question_five, 0)
-                            ) * 0.15
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_four_id = pillar_fours.id
-                        ), 0) +
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_five_question_one, 0) +
-                                COALESCE(pillar_five_question_two, 0) +
-                                COALESCE(pillar_five_question_three, 0) +
-                                COALESCE(pillar_five_question_four, 0) +
-                                COALESCE(pillar_five_question_five, 0)
-                            ) * 0.15
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_five_id = pillar_fives.id
-                        ), 0)
-                    ) AS "totalPillarValue"
-                ')
-                ->orderByDesc('totalPillarValue')
-                ->paginate(10);
-        } else {
-            $users = $query->select('users.*')
-                ->leftJoin('mosques', 'mosques.user_id', '=', 'users.id')
-                ->leftJoin('pillar_ones', 'pillar_ones.mosque_id', '=', 'mosques.id')
-                ->leftJoin('pillar_twos', 'pillar_twos.mosque_id', '=', 'mosques.id')
-                ->leftJoin('pillar_threes', 'pillar_threes.mosque_id', '=', 'mosques.id')
-                ->leftJoin('pillar_fours', 'pillar_fours.mosque_id', '=', 'mosques.id')
-                ->leftJoin('pillar_fives', 'pillar_fives.mosque_id', '=', 'mosques.id')
-                ->selectRaw('
-                    (
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_one_question_one, 0) +
-                                COALESCE(pillar_one_question_two, 0) +
-                                COALESCE(pillar_one_question_three, 0) +
-                                COALESCE(pillar_one_question_four, 0) +
-                                COALESCE(pillar_one_question_five, 0) +
-                                COALESCE(pillar_one_question_six, 0) +
-                                COALESCE(pillar_one_question_seven, 0)
-                            ) * 0.25
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_one_id = pillar_ones.id
-                        ), 0) +
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_two_question_two, 0) +
-                                COALESCE(pillar_two_question_three, 0) +
-                                COALESCE(pillar_two_question_four, 0) +
-                                COALESCE(pillar_two_question_five, 0)
-                            ) * 0.25
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_two_id = pillar_twos.id
-                        ), 0) +
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_three_question_one, 0) +
-                                COALESCE(pillar_three_question_two, 0) +
-                                COALESCE(pillar_three_question_three, 0) +
-                                COALESCE(pillar_three_question_four, 0) +
-                                COALESCE(pillar_three_question_five, 0) +
-                                COALESCE(pillar_three_question_six, 0)
-                            ) * 0.20
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_three_id = pillar_threes.id
-                        ), 0) +
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_four_question_one, 0) +
-                                COALESCE(pillar_four_question_two, 0) +
-                                COALESCE(pillar_four_question_three, 0) +
-                                COALESCE(pillar_four_question_four, 0) +
-                                COALESCE(pillar_four_question_five, 0)
-                            ) * 0.15
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_four_id = pillar_fours.id
-                        ), 0) +
-                        COALESCE((
-                            SELECT SUM(
-                                COALESCE(pillar_five_question_one, 0) +
-                                COALESCE(pillar_five_question_two, 0) +
-                                COALESCE(pillar_five_question_three, 0) +
-                                COALESCE(pillar_five_question_four, 0) +
-                                COALESCE(pillar_five_question_five, 0)
-                            ) * 0.15
-                            FROM committee_assessments
-                            WHERE committee_assessments.pillar_five_id = pillar_fives.id
-                        ), 0)
-                    ) AS "totalPillarValue"
-                ')
-                ->orderByDesc('totalPillarValue')
-                ->paginate(10);
-        }
+        $users = $query->paginate(10);
+
+        $users->getCollection()->transform(
+            function ($user) {
+                $totalValue = 0;
+
+                $weightPillarOne = 0.25;
+                $weightPillarTwo = 0.25;
+                $weightPillarThree = 0.20;
+                $weightPillarFour = 0.15;
+                $weightPillarFive = 0.15;
+
+                if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                    $pillarOneTotal = 0;
+
+                    $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
+                    $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
+                    $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
+                    $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
+                    $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
+                    $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
+                    $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+
+                    $totalValue += $pillarOneTotal * $weightPillarOne;
+                }
+
+                if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                    $pillarTwoTotal = 0;
+
+                    $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
+                    $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
+                    $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
+                    $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+
+                    $totalValue += $pillarTwoTotal * $weightPillarTwo;
+                }
+
+                if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                    $pillarThreeTotal = 0;
+
+                    $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
+                    $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
+                    $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
+                    $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
+                    $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
+                    $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+
+                    $totalValue += $pillarThreeTotal * $weightPillarThree;
+                }
+
+                if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                    $pillarFourTotal = 0;
+
+                    $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
+                    $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
+                    $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
+                    $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
+                    $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+
+                    $totalValue += $pillarFourTotal * $weightPillarFour;
+                }
+
+                if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                    $pillarFiveTotal = 0;
+
+                    $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
+                    $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
+                    $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
+                    $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
+                    $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
+
+                    $totalValue += $pillarFiveTotal * $weightPillarFive;
+                }
+
+                $user->totalNilai = $totalValue;
+
+                return $user;
+            }
+        );
+
+        $sortedUsers = $users->getCollection()->sortByDesc('totalNilai');
+        $users->setCollection($sortedUsers);
 
         // Menampilkan 5 data pengguna
         $categories = [];
@@ -259,10 +198,9 @@ class PreAssessmentController extends Controller
                     'mosque.pillarThree.committeeAssessmnet',
                     'mosque.pillarFour.committeeAssessmnet',
                     'mosque.pillarFive.committeeAssessmnet'
-                ])
-                    ->whereHas('mosque', function ($q) use ($area, $mosque) {
-                        $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
-                    })->get();
+                ])->whereHas('mosque', function ($q) use ($area, $mosque) {
+                    $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
+                })->get();
 
                 $topUsers = $topUsers->map(function ($user) {
                     $totalValue = 0;
@@ -275,6 +213,7 @@ class PreAssessmentController extends Controller
 
                     if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
                         $pillarOneTotal = 0;
+
                         $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
                         $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
                         $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
@@ -288,6 +227,7 @@ class PreAssessmentController extends Controller
 
                     if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
                         $pillarTwoTotal = 0;
+
                         $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
                         $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
                         $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
@@ -298,6 +238,7 @@ class PreAssessmentController extends Controller
 
                     if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
                         $pillarThreeTotal = 0;
+
                         $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
                         $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
                         $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
@@ -310,6 +251,7 @@ class PreAssessmentController extends Controller
 
                     if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
                         $pillarFourTotal = 0;
+
                         $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
                         $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
                         $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
@@ -321,6 +263,7 @@ class PreAssessmentController extends Controller
 
                     if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
                         $pillarFiveTotal = 0;
+
                         $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
                         $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
                         $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
@@ -352,12 +295,14 @@ class PreAssessmentController extends Controller
         $distributions = $user->distributions()->with('committe')->get();
         $committees = $distributions->pluck('committe');
 
-        $committeeAssessments = CommitteeAssessmentCommittee::with([
+        $committeeAssessments = CommitteeAssessmentCommittee::whereHas('committeeAssessment', function ($query) {
+            $query->where('year', date('Y'));
+        })->with([
             'committeeAssessment.pillarOne',
             'committeeAssessment.pillarTwo',
             'committeeAssessment.pillarThree',
             'committeeAssessment.pillarFour',
-            'committeeAssessment.pillarFive'
+            'committeeAssessment.pillarFive',
         ])->where('user_id', $user->id)->get();
 
         $pillarOne = null;

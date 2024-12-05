@@ -19,11 +19,11 @@ class PillarThree extends Model
 
     public function systemAssessment()
     {
-        return $this->hasOne(SystemAssessment::class, 'pillar_three_id');
+        return $this->hasOne(SystemAssessment::class, 'pillar_three_id')->where('year', date('Y'));
     }
 
     public function committeeAssessmnet()
     {
-        return $this->hasOne(CommitteeAssessment::class, 'pillar_three_id');
+        return $this->hasOne(CommitteeAssessment::class, 'pillar_three_id')->where('year', date('Y'));
     }
 }

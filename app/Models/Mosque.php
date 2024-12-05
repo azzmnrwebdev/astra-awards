@@ -53,27 +53,27 @@ class Mosque extends Model
 
     public function pillarOne()
     {
-        return $this->hasOne(PillarOne::class, 'mosque_id');
+        return $this->hasOne(PillarOne::class, 'mosque_id')->where('year', date('Y'));
     }
 
     public function pillarTwo()
     {
-        return $this->hasOne(PillarTwo::class, 'mosque_id');
+        return $this->hasOne(PillarTwo::class, 'mosque_id')->where('year', date('Y'));
     }
 
     public function pillarThree()
     {
-        return $this->hasOne(PillarThree::class, 'mosque_id');
+        return $this->hasOne(PillarThree::class, 'mosque_id')->where('year', date('Y'));
     }
 
     public function pillarFour()
     {
-        return $this->hasOne(PillarFour::class, 'mosque_id');
+        return $this->hasOne(PillarFour::class, 'mosque_id')->where('year', date('Y'));
     }
 
     public function pillarFive()
     {
-        return $this->hasOne(PillarFive::class, 'mosque_id');
+        return $this->hasOne(PillarFive::class, 'mosque_id')->where('year', date('Y'));
     }
 
     public function presentation()

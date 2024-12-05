@@ -170,8 +170,8 @@
                                 </td>
 
                                 <td class="text-center py-3">
-                                    @if ($item->totalPillarValue != 0)
-                                        {{ str_replace('.', ',', $item->totalPillarValue) }}
+                                    @if ($item->totalNilai != 0)
+                                        {{ str_replace('.', ',', $item->totalNilai) }}
                                     @else
                                         <span class="badge text-bg-danger">Belum Tersedia</span>
                                     @endif

@@ -94,19 +94,16 @@
                                                 </td>
                                                 <td class="text-center py-3">
                                                     @php
-                                                        $pillarTwo = $item->mosque->pillarTwo
-                                                            ->where('year', date('Y'))
-                                                            ->first();
-
-                                                        $assessmentPillarTwo = $pillarTwo?->committeeAssessmnet;
+                                                        $pillarTwo = $item->mosque->pillarTwo;
+                                                        $assessmentPillarTwo = $pillarTwo->committeeAssessmnet;
                                                     @endphp
 
-                                                    @if ($assessmentPillarTwo && $pillarTwo->committeeAssessmnet->pillar_two_id)
+                                                    @if ($assessmentPillarTwo && $assessmentPillarTwo->pillar_two_id)
                                                         @if (
-                                                            $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two &&
-                                                                $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three &&
-                                                                $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four &&
-                                                                $item->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five)
+                                                            $assessmentPillarTwo->pillar_two_question_two &&
+                                                                $assessmentPillarTwo->pillar_two_question_three &&
+                                                                $assessmentPillarTwo->pillar_two_question_four &&
+                                                                $assessmentPillarTwo->pillar_two_question_five)
                                                             <span class="badge rounded-pill text-bg-success">
                                                                 Sudah
                                                             </span>
@@ -179,22 +176,19 @@
                                                 </td>
                                                 <td class="text-center py-3">
                                                     @php
-                                                        $pillarOne = $item->mosque->pillarOne
-                                                            ->where('year', date('Y'))
-                                                            ->first();
-
-                                                        $assessmentPillarOne = $pillarOne?->committeeAssessmnet;
+                                                        $pillarOne = $item->mosque->pillarOne;
+                                                        $assessmentPillarOne = $pillarOne->committeeAssessmnet;
                                                     @endphp
 
-                                                    @if ($assessmentPillarOne && $pillarOne->committeeAssessmnet->pillar_one_id)
+                                                    @if ($assessmentPillarOne && $assessmentPillarOne->pillar_one_id)
                                                         @if (
-                                                            $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one &&
-                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two &&
-                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three &&
-                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four &&
-                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five &&
-                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six &&
-                                                                $item->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven)
+                                                            $assessmentPillarOne->pillar_one_question_one &&
+                                                                $assessmentPillarOne->pillar_one_question_two &&
+                                                                $assessmentPillarOne->pillar_one_question_three &&
+                                                                $assessmentPillarOne->pillar_one_question_four &&
+                                                                $assessmentPillarOne->pillar_one_question_five &&
+                                                                $assessmentPillarOne->pillar_one_question_six &&
+                                                                $assessmentPillarOne->pillar_one_question_seven)
                                                             <span class="badge rounded-pill text-bg-success">
                                                                 Sudah
                                                             </span>
@@ -266,21 +260,18 @@
                                                 </td>
                                                 <td class="text-center py-3">
                                                     @php
-                                                        $pillarThree = $item->mosque->pillarThree
-                                                            ->where('year', date('Y'))
-                                                            ->first();
-
-                                                        $assessmentPillarThree = $pillarThree?->committeeAssessmnet;
+                                                        $pillarThree = $item->mosque->pillarThree;
+                                                        $assessmentPillarThree = $pillarThree->committeeAssessmnet;
                                                     @endphp
 
-                                                    @if ($assessmentPillarThree && $pillarThree->committeeAssessmnet->pillar_three_id)
+                                                    @if ($assessmentPillarThree && $assessmentPillarThree->pillar_three_id)
                                                         @if (
-                                                            $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one &&
-                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two &&
-                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three &&
-                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four &&
-                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five &&
-                                                                $item->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six)
+                                                            $assessmentPillarThree->pillar_three_question_one &&
+                                                                $assessmentPillarThree->pillar_three_question_two &&
+                                                                $assessmentPillarThree->pillar_three_question_three &&
+                                                                $assessmentPillarThree->pillar_three_question_four &&
+                                                                $assessmentPillarThree->pillar_three_question_five &&
+                                                                $assessmentPillarThree->pillar_three_question_six)
                                                             <span class="badge rounded-pill text-bg-success">
                                                                 Sudah
                                                             </span>
@@ -352,20 +343,17 @@
                                                 </td>
                                                 <td class="text-center py-3">
                                                     @php
-                                                        $pillarFour = $item->mosque->pillarFour
-                                                            ->where('year', date('Y'))
-                                                            ->first();
-
-                                                        $assessmentPillarFour = $pillarFour?->committeeAssessmnet;
+                                                        $pillarFour = $item->mosque->pillarFour;
+                                                        $assessmentPillarFour = $pillarFour->committeeAssessmnet;
                                                     @endphp
 
-                                                    @if ($assessmentPillarFour && $pillarFour->committeeAssessmnet->pillar_four_id)
+                                                    @if ($assessmentPillarFour && $assessmentPillarFour->pillar_four_id)
                                                         @if (
-                                                            $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one &&
-                                                                $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two &&
-                                                                $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three &&
-                                                                $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four &&
-                                                                $item->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five)
+                                                            $assessmentPillarFour->pillar_four_question_one &&
+                                                                $assessmentPillarFour->pillar_four_question_two &&
+                                                                $assessmentPillarFour->pillar_four_question_three &&
+                                                                $assessmentPillarFour->pillar_four_question_four &&
+                                                                $assessmentPillarFour->pillar_four_question_five)
                                                             <span class="badge rounded-pill text-bg-success">
                                                                 Sudah
                                                             </span>
@@ -437,20 +425,17 @@
                                                 </td>
                                                 <td class="text-center py-3">
                                                     @php
-                                                        $pillarFive = $item->mosque->pillarFive
-                                                            ->where('year', date('Y'))
-                                                            ->first();
-
-                                                        $assessmentPillarFive = $pillarFive?->committeeAssessmnet;
+                                                        $pillarFive = $item->mosque->pillarFive;
+                                                        $assessmentPillarFive = $pillarFive->committeeAssessmnet;
                                                     @endphp
 
-                                                    @if ($assessmentPillarFive && $pillarFive->committeeAssessmnet->pillar_five_id)
+                                                    @if ($assessmentPillarFive && $assessmentPillarFive->pillar_five_id)
                                                         @if (
-                                                            $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one &&
-                                                                $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two &&
-                                                                $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three &&
-                                                                $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four &&
-                                                                $item->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five)
+                                                            $assessmentPillarFive->pillar_five_question_one &&
+                                                                $assessmentPillarFive->pillar_five_question_two &&
+                                                                $assessmentPillarFive->pillar_five_question_three &&
+                                                                $assessmentPillarFive->pillar_five_question_four &&
+                                                                $assessmentPillarFive->pillar_five_question_five)
                                                             <span class="badge rounded-pill text-bg-success">
                                                                 Sudah
                                                             </span>

@@ -19,11 +19,11 @@ class PillarFour extends Model
 
     public function systemAssessment()
     {
-        return $this->hasOne(SystemAssessment::class, 'pillar_four_id');
+        return $this->hasOne(SystemAssessment::class, 'pillar_four_id')->where('year', date('Y'));
     }
 
     public function committeeAssessmnet()
     {
-        return $this->hasOne(CommitteeAssessment::class, 'pillar_four_id');
+        return $this->hasOne(CommitteeAssessment::class, 'pillar_four_id')->where('year', date('Y'));
     }
 }

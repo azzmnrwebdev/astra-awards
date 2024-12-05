@@ -21,7 +21,6 @@ class FormController extends Controller
 {
     public function index(Request $request)
     {
-        $year = date('Y');
         $userLogin = Auth::user();
         $admin = User::where('id', $userLogin->id)
             ->where('role', 'admin')
@@ -39,7 +38,7 @@ class FormController extends Controller
 
             $query = User::where('role', 'user')
                 ->whereIn('id', $userIds)
-                ->with('mosque');
+                ->with(['mosque', 'mosque.pillarFive']);
 
             $search = $request->input('pencarian');
 
@@ -57,9 +56,7 @@ class FormController extends Controller
             $pillars = [];
 
             foreach ($pillarTypes as $pillarType) {
-                $pillars[$pillarType] = (clone $query)->whereHas("mosque.$pillarType", function ($q) use ($year) {
-                    $q->where('year', $year);
-                })->paginate(10);
+                $pillars[$pillarType] = (clone $query)->whereHas("mosque.$pillarType")->paginate(10);
             }
 
             $pillarOnes = $pillars['pillarOne'];
@@ -92,14 +89,14 @@ class FormController extends Controller
             return view('pages.form.management-relationship', compact('pillarOne'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarOne = $user->mosque->pillarOne()->where('year', $year)->first();
+            $pillarOne = $user->mosque->pillarOne;
 
             if (!$pillarOne) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Hubungan DKM dengan YAA');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->where('year', $year)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->where('year', $year)->first();
+            $systemAssessment = SystemAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarOne'])->where('pillar_one_id', $pillarOne->id)->first();
 
             return view('pages.form.management-relationship', compact('user', 'pillarOne', 'systemAssessment', 'committeeAssessment'));
         }
@@ -205,14 +202,14 @@ class FormController extends Controller
             return view('pages.form.relationship', compact('pillarTwo'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarTwo = $user->mosque->pillarTwo()->where('year', $year)->first();
+            $pillarTwo = $user->mosque->pillarTwo;
 
             if (!$pillarTwo) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Hubungan Manajemen Perusahaan dengan DKM dan Jamaah');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->where('year', $year)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->where('year', $year)->first();
+            $systemAssessment = SystemAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarTwo'])->where('pillar_two_id', $pillarTwo->id)->first();
 
             return view('pages.form.relationship', compact('user', 'pillarTwo', 'systemAssessment', 'committeeAssessment'));
         }
@@ -400,14 +397,14 @@ class FormController extends Controller
             return view('pages.form.program', compact('pillarThree'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarThree = $user->mosque->pillarThree()->where('year', $year)->first();
+            $pillarThree = $user->mosque->pillarThree;
 
             if (!$pillarThree) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Program Sosial');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->where('year', $year)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->where('year', $year)->first();
+            $systemAssessment = SystemAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarThree'])->where('pillar_three_id', $pillarThree->id)->first();
 
             return view('pages.form.program', compact('user', 'pillarThree', 'systemAssessment', 'committeeAssessment'));
         }
@@ -536,14 +533,14 @@ class FormController extends Controller
             return view('pages.form.administration', compact('pillarFour'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarFour = $user->mosque->pillarFour()->where('year', $year)->first();
+            $pillarFour = $user->mosque->pillarFour;
 
             if (!$pillarFour) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Administrasi dan Keuangan');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->where('year', $year)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->where('year', $year)->first();
+            $systemAssessment = SystemAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarFour'])->where('pillar_four_id', $pillarFour->id)->first();
 
             return view('pages.form.administration', compact('user', 'pillarFour', 'systemAssessment', 'committeeAssessment'));
         }
@@ -637,14 +634,14 @@ class FormController extends Controller
             return view('pages.form.infrastructure', compact('pillarFive'));
         } else {
             $user = User::where('id', $user)->first();
-            $pillarFive = $user->mosque->pillarFive()->where('year', $year)->first();
+            $pillarFive = $user->mosque->pillarFive;
 
             if (!$pillarFive) {
                 return redirect()->back()->with('error', 'Peserta belum mengisi formulir Peribadahan dan Infrastruktur');
             }
 
-            $systemAssessment = SystemAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->where('year', $year)->first();
-            $committeeAssessment = CommitteeAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->where('year', $year)->first();
+            $systemAssessment = SystemAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
+            $committeeAssessment = CommitteeAssessment::with(['pillarFive'])->where('pillar_five_id', $pillarFive->id)->first();
 
             return view('pages.form.infrastructure', compact('user', 'pillarFive', 'systemAssessment', 'committeeAssessment'));
         }
