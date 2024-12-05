@@ -231,26 +231,27 @@ class UserController extends Controller
 
     public function show(User $user)
     {
+        $year = date('Y');
         $mosque = Mosque::where('user_id', $user->id)->first();
 
         if ($mosque) {
-            $pillarOne = PillarOne::where('mosque_id', $mosque->id)->first();
+            $pillarOne = PillarOne::where('mosque_id', $mosque->id)->where('year', $year)->first();
             $pillarOneFields = ['question_one', 'question_two', 'file_question_two_one', 'file_question_two_two', 'question_three', 'question_four', 'question_five'];
             $pillarOneStatus = $this->getPillarStatus($pillarOne, $pillarOneFields);
 
-            $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->first();
+            $pillarTwo = PillarTwo::where('mosque_id', $mosque->id)->where('year', $year)->first();
             $pillarTwoFields = ['question_two', 'question_three', 'question_four', 'question_five'];
             $pillarTwoStatus = $this->getPillarStatus($pillarTwo, $pillarTwoFields);
 
-            $pillarThree = PillarThree::where('mosque_id', $mosque->id)->first();
+            $pillarThree = PillarThree::where('mosque_id', $mosque->id)->where('year', $year)->first();
             $pillarThreeFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five', 'question_six'];
             $pillarThreeStatus = $this->getPillarStatus($pillarThree, $pillarThreeFields);
 
-            $pillarFour = PillarFour::where('mosque_id', $mosque->id)->first();
+            $pillarFour = PillarFour::where('mosque_id', $mosque->id)->where('year', $year)->first();
             $pillarFourFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
             $pillarFourStatus = $this->getPillarStatus($pillarFour, $pillarFourFields);
 
-            $pillarFive = PillarFive::where('mosque_id', $mosque->id)->first();
+            $pillarFive = PillarFive::where('mosque_id', $mosque->id)->where('year', $year)->first();
             $pillarFiveFields = ['question_one', 'question_two', 'question_three', 'question_four', 'question_five'];
             $pillarFiveStatus = $this->getPillarStatus($pillarFive, $pillarFiveFields);
 
