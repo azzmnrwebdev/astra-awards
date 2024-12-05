@@ -296,8 +296,9 @@ class EndAssessmentController extends Controller
 
     public function edit(User $user)
     {
+        $year = date('Y');
         $juryId = Auth::user()->id;
-        $endAssessment = EndAssessment::where('mosque_id', $user->mosque->id)->where('jury_id', $juryId)->first();
+        $endAssessment = EndAssessment::where('mosque_id', $user->mosque->id)->where('jury_id', $juryId)->where('year', $year)->first();
 
         return view('admin.pages.assessment.end-assessment-edit', compact('user', 'endAssessment'));
     }
@@ -327,6 +328,7 @@ class EndAssessmentController extends Controller
         }
 
         try {
+            $year = date('Y');
             $id = $request->input('id');
 
             EndAssessment::updateOrCreate(
@@ -338,7 +340,8 @@ class EndAssessmentController extends Controller
                     'presentation_value_pillar_two' => $request->input('presentation_value_pillar_two'),
                     'presentation_value_pillar_three' => $request->input('presentation_value_pillar_three'),
                     'presentation_value_pillar_four' => $request->input('presentation_value_pillar_four'),
-                    'presentation_value_pillar_five' => $request->input('presentation_value_pillar_five')
+                    'presentation_value_pillar_five' => $request->input('presentation_value_pillar_five'),
+                    'year' => $year
                 ]
             );
 
