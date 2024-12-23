@@ -22,9 +22,20 @@ class Presentation extends Model
         return $this->hasMany(StartAssessment::class, 'presentation_id')->where('year', date('Y'));
     }
 
+    public function startAssessmentWithCustomYear()
+    {
+        return $this->hasMany(StartAssessment::class, 'presentation_id');
+    }
+
     public function startAssessmentForJury($juryId)
     {
         return $this->hasMany(StartAssessment::class, 'presentation_id')
             ->where('jury_id', $juryId)->where('year', date('Y'));
+    }
+
+    public function startAssessmentForJuryWithCustomYear($juryId)
+    {
+        return $this->hasMany(StartAssessment::class, 'presentation_id')
+            ->where('jury_id', $juryId);
     }
 }

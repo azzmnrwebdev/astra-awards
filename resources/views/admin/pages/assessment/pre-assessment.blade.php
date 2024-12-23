@@ -18,7 +18,7 @@
 
                 <div class="col-12 mt-3">
                     <form class="row g-3">
-                        <div class="col-md-6">
+                        <div class="col-sm-6">
                             <select name="kategori" id="kategori" class="form-select">
                                 <option value="">-- Semua Kategori --</option>
                                 @foreach ($combinedData as $data)
@@ -36,7 +36,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-sm-6">
                             <select name="panitia" id="panitia" class="form-select">
                                 <option value="">-- Semua Panitia --</option>
                                 @foreach ($committes as $committe)
@@ -52,7 +52,7 @@
                             <select name="tahun" id="tahun" class="form-select">
                                 @php
                                     $currentYear = date('Y');
-                                    $startYear = 2023;
+                                    $startYear = 2024;
                                 @endphp
 
                                 @for ($year = $startYear; $year <= $currentYear; $year++)

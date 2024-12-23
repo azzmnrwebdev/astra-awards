@@ -106,6 +106,11 @@ class Mosque extends Model
         return $this->hasOne(Presentation::class, 'mosque_id')->where('year', date('Y'));
     }
 
+    public function presentationWithCustomYear()
+    {
+        return $this->hasOne(Presentation::class, 'mosque_id');
+    }
+
     public function endAssessment()
     {
         return $this->hasMany(EndAssessment::class, 'mosque_id')->where('year', date('Y'));

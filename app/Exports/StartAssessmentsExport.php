@@ -25,6 +25,7 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
     private $categoryMosqueId;
     private $juryId;
     private $juryName;
+    private $year;
     private $search;
 
     private $index = 0;
@@ -38,23 +39,24 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
         'Content-Type' => 'text/xlsx',
     ];
 
-    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $juryId = null, $search = null)
+    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $juryId = null, $year = null, $search = null)
     {
         $currentYear = date('Y');
 
         $this->categoryAreaId = $categoryAreaId;
         $this->categoryMosqueId = $categoryMosqueId;
         $this->juryId = $juryId;
+        $this->year = $year ?? $currentYear;
         $this->search = $search;
 
-        $this->title = "LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS $currentYear";
-        $this->fileName = "Laporan-Penilaian-Awal-Peserta-Amaliah-Astra-Awards-$currentYear.xlsx";
+        $this->title = "LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS $year";
+        $this->fileName = "Laporan-Penilaian-Awal-Peserta-Amaliah-Astra-Awards-$year.xlsx";
 
         if ($this->categoryAreaId && $this->categoryMosqueId) {
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = "LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS $currentYear\n" .
+            $this->title = "LAPORAN PENILAIAN AWAL AMALIAH ASTRA AWARDS $year\n" .
                 "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
         }
 
@@ -76,17 +78,22 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                 $users = User::with([
                     'mosque',
                     'mosque.company',
-                    'mosque.presentation',
-                    'mosque.presentation.startAssessment',
-                    'mosque.pillarOne.committeeAssessmnet',
-                    'mosque.pillarTwo.committeeAssessmnet',
-                    'mosque.pillarThree.committeeAssessmnet',
-                    'mosque.pillarFour.committeeAssessmnet',
-                    'mosque.pillarFive.committeeAssessmnet'
+                    'mosque.presentationWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.presentationWithCustomYear.startAssessmentWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarOneWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarTwoWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarThreeWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarFourWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarFiveWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarOneWithCustomYear.committeeAssessmentWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarTwoWithCustomYear.committeeAssessmentWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarThreeWithCustomYear.committeeAssessmentWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarFourWithCustomYear.committeeAssessmentWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.pillarFiveWithCustomYear.committeeAssessmentWithCustomYear' => fn($query) => $query->where('year', $this->year),
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->where(function ($q) {
-                    $q->whereHas('mosque.presentation');
+                    $q->whereHas('mosque.presentationWithCustomYear');
                 })->when($this->categoryAreaId && $this->categoryMosqueId, function ($query) {
                     $query->whereHas('mosque', function ($q) {
                         $q->where('category_area_id', $this->categoryAreaId)
@@ -111,59 +118,90 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->pillarOne && $user->mosque->pillarOne->committeeAssessmnet) {
+                    $pillarOne = $user->mosque->pillarOneWithCustomYear;
+                    $pillarTwo = $user->mosque->pillarTwoWithCustomYear;
+                    $pillarThree = $user->mosque->pillarThreeWithCustomYear;
+                    $pillarFour = $user->mosque->pillarFourWithCustomYear;
+                    $pillarFive = $user->mosque->pillarFiveWithCustomYear;
+                    $pillarOneAssessments = $pillarOne?->committeeAssessmentWithCustomYear;
+                    $pillarTwoAssessments = $pillarTwo?->committeeAssessmentWithCustomYear;
+                    $pillarThreeAssessments = $pillarThree?->committeeAssessmentWithCustomYear;
+                    $pillarFourAssessments = $pillarFour?->committeeAssessmentWithCustomYear;
+                    $pillarFiveAssessments = $pillarFive?->committeeAssessmentWithCustomYear;
+
+                    if (
+                        $pillarOne &&
+                        $pillarOneAssessments
+                    ) {
                         $pillarOneTotal = 0;
-                        $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_one;
-                        $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_two;
-                        $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_three;
-                        $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_four;
-                        $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_five;
-                        $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_six;
-                        $pillarOneTotal += $user->mosque->pillarOne->committeeAssessmnet->pillar_one_question_seven;
+
+                        $pillarOneTotal += $pillarOneAssessments->pillar_one_question_one;
+                        $pillarOneTotal += $pillarOneAssessments->pillar_one_question_two;
+                        $pillarOneTotal += $pillarOneAssessments->pillar_one_question_three;
+                        $pillarOneTotal += $pillarOneAssessments->pillar_one_question_four;
+                        $pillarOneTotal += $pillarOneAssessments->pillar_one_question_five;
+                        $pillarOneTotal += $pillarOneAssessments->pillar_one_question_six;
+                        $pillarOneTotal += $pillarOneAssessments->pillar_one_question_seven;
 
                         $totalValue += $pillarOneTotal * $weightPillarOne;
                     }
 
-                    if ($user->mosque->pillarTwo && $user->mosque->pillarTwo->committeeAssessmnet) {
+                    if (
+                        $pillarTwo &&
+                        $pillarTwoAssessments
+                    ) {
                         $pillarTwoTotal = 0;
-                        $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_two;
-                        $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_three;
-                        $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_four;
-                        $pillarTwoTotal += $user->mosque->pillarTwo->committeeAssessmnet->pillar_two_question_five;
+
+                        $pillarTwoTotal += $pillarTwoAssessments->pillar_two_question_two;
+                        $pillarTwoTotal += $pillarTwoAssessments->pillar_two_question_three;
+                        $pillarTwoTotal += $pillarTwoAssessments->pillar_two_question_four;
+                        $pillarTwoTotal += $pillarTwoAssessments->pillar_two_question_five;
 
                         $totalValue += $pillarTwoTotal * $weightPillarTwo;
                     }
 
-                    if ($user->mosque->pillarThree && $user->mosque->pillarThree->committeeAssessmnet) {
+                    if (
+                        $pillarThree &&
+                        $pillarThreeAssessments
+                    ) {
                         $pillarThreeTotal = 0;
-                        $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_one;
-                        $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_two;
-                        $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_three;
-                        $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_four;
-                        $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_five;
-                        $pillarThreeTotal += $user->mosque->pillarThree->committeeAssessmnet->pillar_three_question_six;
+
+                        $pillarThreeTotal += $pillarThreeAssessments->pillar_three_question_one;
+                        $pillarThreeTotal += $pillarThreeAssessments->pillar_three_question_two;
+                        $pillarThreeTotal += $pillarThreeAssessments->pillar_three_question_three;
+                        $pillarThreeTotal += $pillarThreeAssessments->pillar_three_question_four;
+                        $pillarThreeTotal += $pillarThreeAssessments->pillar_three_question_five;
+                        $pillarThreeTotal += $pillarThreeAssessments->pillar_three_question_six;
 
                         $totalValue += $pillarThreeTotal * $weightPillarThree;
                     }
 
-                    if ($user->mosque->pillarFour && $user->mosque->pillarFour->committeeAssessmnet) {
+                    if (
+                        $pillarFour &&
+                        $pillarFourAssessments
+                    ) {
                         $pillarFourTotal = 0;
-                        $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_one;
-                        $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_two;
-                        $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_three;
-                        $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_four;
-                        $pillarFourTotal += $user->mosque->pillarFour->committeeAssessmnet->pillar_four_question_five;
+
+                        $pillarFourTotal += $pillarFourAssessments->pillar_four_question_one;
+                        $pillarFourTotal += $pillarFourAssessments->pillar_four_question_two;
+                        $pillarFourTotal += $pillarFourAssessments->pillar_four_question_three;
+                        $pillarFourTotal += $pillarFourAssessments->pillar_four_question_four;
+                        $pillarFourTotal += $pillarFourAssessments->pillar_four_question_five;
 
                         $totalValue += $pillarFourTotal * $weightPillarFour;
                     }
 
-                    if ($user->mosque->pillarFive && $user->mosque->pillarFive->committeeAssessmnet) {
+                    if (
+                        $pillarFive &&
+                        $pillarFiveAssessments
+                    ) {
                         $pillarFiveTotal = 0;
-                        $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_one;
-                        $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_two;
-                        $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_three;
-                        $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_four;
-                        $pillarFiveTotal += $user->mosque->pillarFive->committeeAssessmnet->pillar_five_question_five;
+
+                        $pillarFiveTotal += $pillarFiveAssessments->pillar_five_question_one;
+                        $pillarFiveTotal += $pillarFiveAssessments->pillar_five_question_two;
+                        $pillarFiveTotal += $pillarFiveAssessments->pillar_five_question_three;
+                        $pillarFiveTotal += $pillarFiveAssessments->pillar_five_question_four;
+                        $pillarFiveTotal += $pillarFiveAssessments->pillar_five_question_five;
 
                         $totalValue += $pillarFiveTotal * $weightPillarFive;
                     }
@@ -175,8 +213,7 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortByDesc('totalNilai')->take(5);
-                $allUsers = $allUsers->merge($topUsers);
+                $allUsers = $allUsers->merge($users->sortByDesc('totalNilai')->take(5));
             }
         }
 
@@ -200,7 +237,7 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             // Status
             $status = 'Belum Penilaian';
 
-            if ($user->mosque->presentation->startAssessmentForJury($this->juryId)->exists()) {
+            if ($user->mosque->presentationWithCustomYear->startAssessmentForJuryWithCustomYear($this->juryId)->exists()) {
                 $status = 'Sudah Penilaian';
             }
 
@@ -214,8 +251,8 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             // TOtal & Rekap Nilai
             $totalValue = null;
             $recapValue = null;
-            $assessment = $user->mosque->presentation
-                ->startAssessmentForJury($this->juryId)
+            $assessment = $user->mosque->presentationWithCustomYear
+                ->startAssessmentForJuryWithCustomYear($this->juryId)
                 ->first();
 
             if ($assessment) {
@@ -244,8 +281,8 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             $status = 'Semua Juri Sudah Menilai';
             $totalJuries = User::where('role', 'jury')->count();
 
-            $completedAssessments = $user->mosque->presentation
-                ->startAssessment()
+            $completedAssessments = $user->mosque->presentationWithCustomYear
+                ->startAssessmentWithCustomYear()
                 ->distinct('jury_id')
                 ->count('jury_id');
 
@@ -262,29 +299,29 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
             $pillarFourValue = null;
             $pillarFiveValue = null;
 
-            $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) use (&$pillarTwoValue) {
+            $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) use (&$pillarTwoValue) {
                 $pillarTwoValue += $sumAssessment->presentation_file_pillar_two;
             });
 
-            $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) use (&$pillarOneValue) {
+            $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) use (&$pillarOneValue) {
                 $pillarOneValue += $sumAssessment->presentation_file_pillar_one;
             });
 
-            $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) use (&$pillarThreeValue) {
+            $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) use (&$pillarThreeValue) {
                 $pillarThreeValue += $sumAssessment->presentation_file_pillar_three;
             });
 
-            $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) use (&$pillarFourValue) {
+            $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) use (&$pillarFourValue) {
                 $pillarFourValue += $sumAssessment->presentation_file_pillar_four;
             });
 
-            $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) use (&$pillarFiveValue) {
+            $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) use (&$pillarFiveValue) {
                 $pillarFiveValue += $sumAssessment->presentation_file_pillar_five;
             });
 
             // Total Nilai
             $totalValue = null;
-            $user->mosque->presentation->startAssessment->each(function ($sumAssessment) use (&$totalValue) {
+            $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->each(function ($sumAssessment) use (&$totalValue) {
                 $totalValue += $sumAssessment->presentation_file_pillar_two +
                     $sumAssessment->presentation_file_pillar_one +
                     $sumAssessment->presentation_file_pillar_three +
@@ -294,7 +331,7 @@ class StartAssessmentsExport implements FromCollection, Responsable, WithCustomS
 
             // Rekap Nilai
             $recapValue = null;
-            $user->mosque->presentation->startAssessment->each(function ($sumAssessment) use (&$recapValue) {
+            $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->each(function ($sumAssessment) use (&$recapValue) {
                 $recapValue += $sumAssessment->presentation_file_pillar_two * 0.25 +
                     $sumAssessment->presentation_file_pillar_one * 0.25 +
                     $sumAssessment->presentation_file_pillar_three * 0.20 +

@@ -9,14 +9,14 @@
                 <div class="col-12">
                     <div class="row g-2">
                         <div class="col-auto">
-                            <a href="{{ route('start_assessment.list_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'pencarian' => $search]) }}"
+                            <a href="{{ route('start_assessment.list_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'juri' => $juryId, 'tahun' => request('tahun'), 'pencarian' => $search]) }}"
                                 class="btn btn-success rounded-0"><i
                                     class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Laporan Penilaian</a>
                         </div>
 
                         <div class="col-auto">
                             @if (!$juryId)
-                                <a href="{{ route('start_assessment.recap_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'pencarian' => $search]) }}"
+                                <a href="{{ route('start_assessment.recap_download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'tahun' => request('tahun'), 'pencarian' => $search]) }}"
                                     class="btn btn-success rounded-0"><i
                                         class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Rekapitulasi
                                     Penilaian</a>
@@ -57,6 +57,22 @@
                         </div>
 
                         <div class="col-12">
+                            <select name="tahun" id="tahun" class="form-select">
+                                @php
+                                    $currentYear = date('Y');
+                                    $startYear = 2024;
+                                @endphp
+
+                                @for ($year = $startYear; $year <= $currentYear; $year++)
+                                    <option value="{{ $year }}"
+                                        {{ request('tahun', $currentYear) == $year ? 'selected' : '' }}>
+                                        {{ $year }}
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="col-12">
                             <input type="search" name="pencarian" id="pencarian" value="{{ $search }}"
                                 class="form-control" placeholder="Cari peserta?">
                             <div class="form-text">Kata kunci bisa berdasarkan nama masjid/musala atau
@@ -88,8 +104,8 @@
                                 @if (auth()->check() && auth()->user()->hasRole('jury'))
                                     <td class="text-center py-3">
                                         @php
-                                            $assessment = $item->mosque->presentation
-                                                ->startAssessmentForJury(auth()->id())
+                                            $assessment = $item->mosque->presentationWithCustomYear
+                                                ->startAssessmentForJuryWithCustomYear(auth()->id())
                                                 ->first();
                                         @endphp
 
@@ -107,11 +123,11 @@
                                     </td>
                                 @endif
                                 <td class="text-center py-3">
-                                    {!! $item->mosque->presentation->startAssessment->count() > 0
+                                    {!! $item->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->count() > 0
                                         ? str_replace(
                                             '.',
                                             ',',
-                                            $item->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                            $item->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                                 return $sumAssessment->presentation_file_pillar_two * 0.25 +
                                                     $sumAssessment->presentation_file_pillar_one * 0.25 +
                                                     $sumAssessment->presentation_file_pillar_three * 0.2 +
@@ -122,18 +138,18 @@
                                         : '<span class="badge text-bg-danger">Belum Tersedia</span>' !!}
                                 </td>
                                 <td class="text-center py-3">
-                                    {!! $item->mosque->presentation->startAssessment->count() > 0
+                                    {!! $item->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->count() > 0
                                         ? str_replace(
                                             '.',
                                             ',',
                                             round(
-                                                $item->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                                $item->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                                     return $sumAssessment->presentation_file_pillar_two * 0.25 +
                                                         $sumAssessment->presentation_file_pillar_one * 0.25 +
                                                         $sumAssessment->presentation_file_pillar_three * 0.2 +
                                                         $sumAssessment->presentation_file_pillar_four * 0.15 +
                                                         $sumAssessment->presentation_file_pillar_five * 0.15;
-                                                }) / $item->mosque->presentation->startAssessment->count(),
+                                                }) / $item->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->count(),
                                                 2,
                                             ),
                                         )
@@ -192,13 +208,13 @@
                                             '.',
                                             ',',
                                             round(
-                                                $item->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                                $item->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                                     return $sumAssessment->presentation_file_pillar_two * 0.25 +
                                                         $sumAssessment->presentation_file_pillar_one * 0.25 +
                                                         $sumAssessment->presentation_file_pillar_three * 0.2 +
                                                         $sumAssessment->presentation_file_pillar_four * 0.15 +
                                                         $sumAssessment->presentation_file_pillar_five * 0.15;
-                                                }) / $item->mosque->presentation->startAssessment->count(),
+                                                }) / $item->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->count(),
                                                 2,
                                             ),
                                         ) }}
@@ -226,7 +242,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#kategori, #juri, #pencarian').on('input keydown change', function(e) {
+                $('#kategori, #juri, #tahun, #pencarian').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -247,6 +263,7 @@
                     const params = {};
                     const categoryId = $('#kategori').val();
                     const juryId = $('#juri').val();
+                    const year = $('#tahun').val();
                     const searchValue = $('#pencarian').val();
                     const url = '{{ route('start_assessment.index') }}';
 
@@ -259,6 +276,10 @@
 
                     if (juryId !== '') {
                         params.juri = juryId;
+                    }
+
+                    if (year !== '') {
+                        params.tahun = year;
                     }
 
                     if (searchValue.trim() !== '') {

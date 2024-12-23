@@ -49,14 +49,14 @@ class PreAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         $this->year = $year ?? $currentYear;
         $this->search = $search;
 
-        $this->title = "LAPORAN PRA PENILAIAN AMALIAH ASTRA AWARDS $currentYear";
-        $this->fileName = "Laporan-Pra-Penilaian-Peserta-Amaliah-Astra-Awards-$currentYear.xlsx";
+        $this->title = "LAPORAN PRA PENILAIAN AMALIAH ASTRA AWARDS $year";
+        $this->fileName = "Laporan-Pra-Penilaian-Peserta-Amaliah-Astra-Awards-$year.xlsx";
 
         if ($this->categoryAreaId && $this->categoryMosqueId) {
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = "LAPORAN PRA PENILAIAN AMALIAH ASTRA AWARDS $currentYear\n" .
+            $this->title = "LAPORAN PRA PENILAIAN AMALIAH ASTRA AWARDS $year\n" .
                 "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
         }
 
