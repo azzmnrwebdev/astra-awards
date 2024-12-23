@@ -56,9 +56,19 @@ class Mosque extends Model
         return $this->hasOne(PillarOne::class, 'mosque_id')->where('year', date('Y'));
     }
 
+    public function pillarOneWithCustomYear()
+    {
+        return $this->hasOne(PillarOne::class, 'mosque_id');
+    }
+
     public function pillarTwo()
     {
         return $this->hasOne(PillarTwo::class, 'mosque_id')->where('year', date('Y'));
+    }
+
+    public function pillarTwoWithCustomYear()
+    {
+        return $this->hasOne(PillarTwo::class, 'mosque_id');
     }
 
     public function pillarThree()
@@ -66,14 +76,29 @@ class Mosque extends Model
         return $this->hasOne(PillarThree::class, 'mosque_id')->where('year', date('Y'));
     }
 
+    public function pillarThreeWithCustomYear()
+    {
+        return $this->hasOne(PillarThree::class, 'mosque_id');
+    }
+
     public function pillarFour()
     {
         return $this->hasOne(PillarFour::class, 'mosque_id')->where('year', date('Y'));
     }
 
+    public function pillarFourWithCustomYear()
+    {
+        return $this->hasOne(PillarFour::class, 'mosque_id');
+    }
+
     public function pillarFive()
     {
         return $this->hasOne(PillarFive::class, 'mosque_id')->where('year', date('Y'));
+    }
+
+    public function pillarFiveWithCustomYear()
+    {
+        return $this->hasOne(PillarFive::class, 'mosque_id');
     }
 
     public function presentation()
@@ -95,58 +120,47 @@ class Mosque extends Model
     public function getTotalPillarValueAttribute()
     {
         $totalValue = 0;
-        $anyAssessment = false;
 
-        if ($this->pillarOne && $this->pillarOne->committeeAssessmnet) {
-            $totalValue += $this->pillarOne->committeeAssessmnet->pillar_one_question_one +
-                $this->pillarOne->committeeAssessmnet->pillar_one_question_two +
-                $this->pillarOne->committeeAssessmnet->pillar_one_question_three +
-                $this->pillarOne->committeeAssessmnet->pillar_one_question_four +
-                $this->pillarOne->committeeAssessmnet->pillar_one_question_five +
-                $this->pillarOne->committeeAssessmnet->pillar_one_question_six +
-                $this->pillarOne->committeeAssessmnet->pillar_one_question_seven;
-
-            $anyAssessment = true;
+        if ($this->pillarOneWithCustomYear && $this->pillarOneWithCustomYear->committeeAssessmentWithCustomYear) {
+            $totalValue += $this->pillarOneWithCustomYear->committeeAssessmentWithCustomYear->pillar_one_question_one +
+                $this->pillarOneWithCustomYear->committeeAssessmentWithCustomYear->pillar_one_question_two +
+                $this->pillarOneWithCustomYear->committeeAssessmentWithCustomYear->pillar_one_question_three +
+                $this->pillarOneWithCustomYear->committeeAssessmentWithCustomYear->pillar_one_question_four +
+                $this->pillarOneWithCustomYear->committeeAssessmentWithCustomYear->pillar_one_question_five +
+                $this->pillarOneWithCustomYear->committeeAssessmentWithCustomYear->pillar_one_question_six +
+                $this->pillarOneWithCustomYear->committeeAssessmentWithCustomYear->pillar_one_question_seven;
         }
 
-        if ($this->pillarTwo && $this->pillarTwo->committeeAssessmnet) {
-            $totalValue += $this->pillarTwo->committeeAssessmnet->pillar_two_question_two +
-                $this->pillarTwo->committeeAssessmnet->pillar_two_question_three +
-                $this->pillarTwo->committeeAssessmnet->pillar_two_question_four +
-                $this->pillarTwo->committeeAssessmnet->pillar_two_question_five;
-
-            $anyAssessment = true;
+        if ($this->pillarTwoWithCustomYear && $this->pillarTwoWithCustomYear->committeeAssessmentWithCustomYear) {
+            $totalValue += $this->pillarTwoWithCustomYear->committeeAssessmentWithCustomYear->pillar_two_question_two +
+                $this->pillarTwoWithCustomYear->committeeAssessmentWithCustomYear->pillar_two_question_three +
+                $this->pillarTwoWithCustomYear->committeeAssessmentWithCustomYear->pillar_two_question_four +
+                $this->pillarTwoWithCustomYear->committeeAssessmentWithCustomYear->pillar_two_question_five;
         }
 
-        if ($this->pillarThree && $this->pillarThree->committeeAssessmnet) {
-            $totalValue += $this->pillarThree->committeeAssessmnet->pillar_three_question_one +
-                $this->pillarThree->committeeAssessmnet->pillar_three_question_two +
-                $this->pillarThree->committeeAssessmnet->pillar_three_question_three +
-                $this->pillarThree->committeeAssessmnet->pillar_three_question_four +
-                $this->pillarThree->committeeAssessmnet->pillar_three_question_five +
-                $this->pillarThree->committeeAssessmnet->pillar_three_question_six;
-
-            $anyAssessment = true;
+        if ($this->pillarThreeWithCustomYear && $this->pillarThreeWithCustomYear->committeeAssessmentWithCustomYear) {
+            $totalValue += $this->pillarThreeWithCustomYear->committeeAssessmentWithCustomYear->pillar_three_question_one +
+                $this->pillarThreeWithCustomYear->committeeAssessmentWithCustomYear->pillar_three_question_two +
+                $this->pillarThreeWithCustomYear->committeeAssessmentWithCustomYear->pillar_three_question_three +
+                $this->pillarThreeWithCustomYear->committeeAssessmentWithCustomYear->pillar_three_question_four +
+                $this->pillarThreeWithCustomYear->committeeAssessmentWithCustomYear->pillar_three_question_five +
+                $this->pillarThreeWithCustomYear->committeeAssessmentWithCustomYear->pillar_three_question_six;
         }
 
-        if ($this->pillarFour && $this->pillarFour->committeeAssessmnet) {
-            $totalValue += $this->pillarFour->committeeAssessmnet->pillar_four_question_one +
-                $this->pillarFour->committeeAssessmnet->pillar_four_question_two +
-                $this->pillarFour->committeeAssessmnet->pillar_four_question_three +
-                $this->pillarFour->committeeAssessmnet->pillar_four_question_four +
-                $this->pillarFour->committeeAssessmnet->pillar_four_question_five;
-
-            $anyAssessment = true;
+        if ($this->pillarFourWithCustomYear && $this->pillarFourWithCustomYear->committeeAssessmentWithCustomYear) {
+            $totalValue += $this->pillarFourWithCustomYear->committeeAssessmentWithCustomYear->pillar_four_question_one +
+                $this->pillarFourWithCustomYear->committeeAssessmentWithCustomYear->pillar_four_question_two +
+                $this->pillarFourWithCustomYear->committeeAssessmentWithCustomYear->pillar_four_question_three +
+                $this->pillarFourWithCustomYear->committeeAssessmentWithCustomYear->pillar_four_question_four +
+                $this->pillarFourWithCustomYear->committeeAssessmentWithCustomYear->pillar_four_question_five;
         }
 
-        if ($this->pillarFive && $this->pillarFive->committeeAssessmnet) {
-            $totalValue += $this->pillarFive->committeeAssessmnet->pillar_five_question_one +
-                $this->pillarFive->committeeAssessmnet->pillar_five_question_two +
-                $this->pillarFive->committeeAssessmnet->pillar_five_question_three +
-                $this->pillarFive->committeeAssessmnet->pillar_five_question_four +
-                $this->pillarFive->committeeAssessmnet->pillar_five_question_five;
-
-            $anyAssessment = true;
+        if ($this->pillarFiveWithCustomYear && $this->pillarFiveWithCustomYear->committeeAssessmentWithCustomYear) {
+            $totalValue += $this->pillarFiveWithCustomYear->committeeAssessmentWithCustomYear->pillar_five_question_one +
+                $this->pillarFiveWithCustomYear->committeeAssessmentWithCustomYear->pillar_five_question_two +
+                $this->pillarFiveWithCustomYear->committeeAssessmentWithCustomYear->pillar_five_question_three +
+                $this->pillarFiveWithCustomYear->committeeAssessmentWithCustomYear->pillar_five_question_four +
+                $this->pillarFiveWithCustomYear->committeeAssessmentWithCustomYear->pillar_five_question_five;
         }
 
         return $totalValue;

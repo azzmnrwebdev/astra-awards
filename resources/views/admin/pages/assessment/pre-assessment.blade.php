@@ -9,7 +9,7 @@
                 <div class="col-12">
                     <div class="row g-2">
                         <div class="col-auto">
-                            <a href="{{ route('pre_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'panitia' => $committeId, 'pencarian' => $search]) }}"
+                            <a href="{{ route('pre_assessment.download_excel', ['kategori_area' => $categoryAreaId, 'kategori_masjid' => $categoryMosqueId, 'panitia' => $committeId, 'tahun' => request('tahun'), 'pencarian' => $search]) }}"
                                 class="btn btn-success rounded-0"><i
                                     class="bi bi-file-earmark-spreadsheet-fill me-2 fs-5"></i>Laporan Penilaian</a>
                         </div>
@@ -18,7 +18,7 @@
 
                 <div class="col-12 mt-3">
                     <form class="row g-3">
-                        <div class="col-12">
+                        <div class="col-md-6">
                             <select name="kategori" id="kategori" class="form-select">
                                 <option value="">-- Semua Kategori --</option>
                                 @foreach ($combinedData as $data)
@@ -36,7 +36,7 @@
                             </select>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-md-6">
                             <select name="panitia" id="panitia" class="form-select">
                                 <option value="">-- Semua Panitia --</option>
                                 @foreach ($committes as $committe)
@@ -45,6 +45,22 @@
                                         {{ $committe->name }}
                                     </option>
                                 @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <select name="tahun" id="tahun" class="form-select">
+                                @php
+                                    $currentYear = date('Y');
+                                    $startYear = 2023;
+                                @endphp
+
+                                @for ($year = $startYear; $year <= $currentYear; $year++)
+                                    <option value="{{ $year }}"
+                                        {{ request('tahun', $currentYear) == $year ? 'selected' : '' }}>
+                                        {{ $year }}
+                                    </option>
+                                @endfor
                             </select>
                         </div>
 
@@ -79,16 +95,19 @@
                                 <td class="text-center py-3">{{ $item->mosque->company->name }}</td>
                                 <td class="text-center py-3">
                                     @php
-                                        $pillarOne = $item->mosque->pillarOne;
-                                        $pillarTwo = $item->mosque->pillarTwo;
-                                        $pillarThree = $item->mosque->pillarThree;
-                                        $pillarFour = $item->mosque->pillarFour;
-                                        $pillarFive = $item->mosque->pillarFive;
+                                        $pillarOne = $item->mosque->pillarOneWithCustomYear;
+                                        $pillarTwo = $item->mosque->pillarTwoWithCustomYear;
+                                        $pillarThree = $item->mosque->pillarThreeWithCustomYear;
+                                        $pillarFour = $item->mosque->pillarFourWithCustomYear;
+                                        $pillarFive = $item->mosque->pillarFiveWithCustomYear;
 
                                         $filledPillars = 0;
 
-                                        if ($pillarOne && $pillarOne->committeeAssessmnet?->pillar_one_id) {
-                                            $pillarOneAssessment = $pillarOne->committeeAssessmnet;
+                                        if (
+                                            $pillarOne &&
+                                            $pillarOne->committeeAssessmentWithCustomYear?->pillar_one_id
+                                        ) {
+                                            $pillarOneAssessment = $pillarOne->committeeAssessmentWithCustomYear;
                                             if (
                                                 $pillarOneAssessment->pillar_one_question_one &&
                                                 $pillarOneAssessment->pillar_one_question_two &&
@@ -102,8 +121,11 @@
                                             }
                                         }
 
-                                        if ($pillarTwo && $pillarTwo->committeeAssessmnet?->pillar_two_id) {
-                                            $pillarTwoAssessment = $pillarTwo->committeeAssessmnet;
+                                        if (
+                                            $pillarTwo &&
+                                            $pillarTwo->committeeAssessmentWithCustomYear?->pillar_two_id
+                                        ) {
+                                            $pillarTwoAssessment = $pillarTwo->committeeAssessmentWithCustomYear;
                                             if (
                                                 $pillarTwoAssessment->pillar_two_question_two &&
                                                 $pillarTwoAssessment->pillar_two_question_three &&
@@ -114,8 +136,11 @@
                                             }
                                         }
 
-                                        if ($pillarThree && $pillarThree->committeeAssessmnet?->pillar_three_id) {
-                                            $pillarThreeAssessment = $pillarThree->committeeAssessmnet;
+                                        if (
+                                            $pillarThree &&
+                                            $pillarThree->committeeAssessmentWithCustomYear?->pillar_three_id
+                                        ) {
+                                            $pillarThreeAssessment = $pillarThree->committeeAssessmentWithCustomYear;
                                             if (
                                                 $pillarThreeAssessment->pillar_three_question_one &&
                                                 $pillarThreeAssessment->pillar_three_question_two &&
@@ -128,8 +153,11 @@
                                             }
                                         }
 
-                                        if ($pillarFour && $pillarFour->committeeAssessmnet?->pillar_four_id) {
-                                            $pillarFourAssessment = $pillarFour->committeeAssessmnet;
+                                        if (
+                                            $pillarFour &&
+                                            $pillarFour->committeeAssessmentWithCustomYear?->pillar_four_id
+                                        ) {
+                                            $pillarFourAssessment = $pillarFour->committeeAssessmentWithCustomYear;
                                             if (
                                                 $pillarFourAssessment->pillar_four_question_one &&
                                                 $pillarFourAssessment->pillar_four_question_two &&
@@ -141,8 +169,11 @@
                                             }
                                         }
 
-                                        if ($pillarFive && $pillarFive->committeeAssessmnet?->pillar_five_id) {
-                                            $pillarFiveAssessment = $pillarFive->committeeAssessmnet;
+                                        if (
+                                            $pillarFive &&
+                                            $pillarFive->committeeAssessmentWithCustomYear?->pillar_five_id
+                                        ) {
+                                            $pillarFiveAssessment = $pillarFive->committeeAssessmentWithCustomYear;
                                             if (
                                                 $pillarFiveAssessment->pillar_five_question_one &&
                                                 $pillarFiveAssessment->pillar_five_question_two &&
@@ -244,7 +275,7 @@
             $(document).ready(function() {
                 let debounceTimeout;
 
-                $('#kategori, #panitia, #pencarian').on('input keydown change', function(e) {
+                $('#kategori, #panitia, #tahun, #pencarian').on('input keydown change', function(e) {
                     if (e.which !== 13) {
                         clearTimeout(debounceTimeout);
 
@@ -265,6 +296,7 @@
                     const params = {};
                     const categoryId = $('#kategori').val();
                     const committeId = $('#panitia').val();
+                    const year = $('#tahun').val();
                     const searchValue = $('#pencarian').val();
                     const url = '{{ route('pre_assessment.index') }}';
 
@@ -277,6 +309,10 @@
 
                     if (committeId !== '') {
                         params.panitia = committeId;
+                    }
+
+                    if (year !== '') {
+                        params.tahun = year;
                     }
 
                     if (searchValue.trim() !== '') {

@@ -26,4 +26,9 @@ class PillarFour extends Model
     {
         return $this->hasOne(CommitteeAssessment::class, 'pillar_four_id')->where('year', date('Y'));
     }
+
+    public function committeeAssessmentWithCustomYear()
+    {
+        return $this->hasOne(CommitteeAssessment::class, 'pillar_four_id');
+    }
 }
