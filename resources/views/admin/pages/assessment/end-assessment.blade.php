@@ -169,7 +169,7 @@
                                         : '<span class="badge text-bg-danger">Belum Tersedia</span>' !!}
                                 </td>
                                 <td class="text-center py-3">
-                                    <a href="{{ route('end_assessment.show', ['user' => $item->id]) }}"
+                                    <a href="{{ route('end_assessment.show', ['user' => $item->id, 'tahun' => request('tahun')]) }}"
                                         class="text-dark align-middle"><i class="bi bi-eye"></i></a>
                                 </td>
                             </tr>
@@ -250,7 +250,7 @@
                                 </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('jury'))
-                                        @if (request('tahun') == date('Y'))
+                                        @if (empty(request('tahun')) || request('tahun') == date('Y'))
                                             <a href="{{ route('end_assessment.edit', ['user' => $item->id]) }}"
                                                 class="text-dark align-middle"><i class="bi bi-pencil"></i></a>
                                         @else
@@ -317,7 +317,7 @@
                                         ) }}
                                     </td>
                                     <td class="text-center py-3">
-                                        <a href="{{ route('end_assessment.show', ['user' => $item->id]) }}"
+                                        <a href="{{ route('end_assessment.show', ['user' => $item->id, 'tahun' => request('tahun')]) }}"
                                             class="text-dark align-middle"><i class="bi bi-eye"></i></a>
                                     </td>
                                 </tr>

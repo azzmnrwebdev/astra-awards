@@ -19,9 +19,9 @@
             <div class="mb-4">
                 <h5 class="card-title fw-semibold">Pihak Penilai</h5>
 
-                @if ($user->mosque->endAssessment && $user->mosque->endAssessment->isNotEmpty())
+                @if ($user->mosque->endAssessmentWithCustomYear && $user->mosque->endAssessmentWithCustomYear->isNotEmpty())
                     <ol class="list-group list-group-numbered mt-3">
-                        @foreach ($user->mosque->endAssessment as $item)
+                        @foreach ($user->mosque->endAssessmentWithCustomYear as $item)
                             <li class="list-group-item border-0 py-1">{{ $item->jury->name }}</li>
                         @endforeach
                     </ol>
@@ -52,7 +52,10 @@
 
                         <tbody class="border-start border-end">
                             @php
-                                $assessment = $user->mosque->endAssessmentForJury(auth()->id())->first();
+                                $assessment = $user->mosque
+                                    ->endAssessmentForJuryWithCustomYear(auth()->id())
+                                    ->where('year', $year)
+                                    ->first();
                             @endphp
 
                             <tr>
@@ -61,7 +64,7 @@
                                 </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                        {{ $user->mosque->endAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                             return $sumAssessment->presentation_value_pillar_two;
                                         }) }}
                                     @else
@@ -76,7 +79,7 @@
                                 </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                        {{ $user->mosque->endAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                             return $sumAssessment->presentation_value_pillar_one;
                                         }) }}
                                     @else
@@ -91,7 +94,7 @@
                                 </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                        {{ $user->mosque->endAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                             return $sumAssessment->presentation_value_pillar_three;
                                         }) }}
                                     @else
@@ -106,7 +109,7 @@
                                 </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                        {{ $user->mosque->endAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                             return $sumAssessment->presentation_value_pillar_four;
                                         }) }}
                                     @else
@@ -121,7 +124,7 @@
                                 </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                        {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                        {{ $user->mosque->endAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                             return $sumAssessment->presentation_value_pillar_five;
                                         }) }}
                                     @else
@@ -171,7 +174,7 @@
                                     Total Nilai Berdasarkan Seluruh Juri Yang Menilai
                                 </td>
                                 <td class="text-center fw-semibold py-3">
-                                    {{ $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                    {{ $user->mosque->endAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                         return $sumAssessment->presentation_value_pillar_two +
                                             $sumAssessment->presentation_value_pillar_one +
                                             $sumAssessment->presentation_value_pillar_three +
@@ -189,7 +192,7 @@
                                     {{ str_replace(
                                         '.',
                                         ',',
-                                        $user->mosque->endAssessment->sum(function ($sumAssessment) {
+                                        $user->mosque->endAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                             return $sumAssessment->presentation_value_pillar_two * 0.25 +
                                                 $sumAssessment->presentation_value_pillar_one * 0.25 +
                                                 $sumAssessment->presentation_value_pillar_three * 0.2 +
@@ -210,7 +213,7 @@
     @prepend('scripts')
         <script>
             document.getElementById('pageTitle').addEventListener('click', function() {
-                window.location.href = "{{ route('end_assessment.index') }}";
+                window.history.back();
             });
         </script>
     @endprepend

@@ -296,9 +296,15 @@ class EndAssessmentController extends Controller
         return view('admin.pages.assessment.end-assessment', compact('endAssessmentTheadNames', 'startAssessmentTheadNames', 'categoryTheadNames', 'juries', 'combinedData', 'categoryAreaId', 'categoryMosqueId', 'juryId', 'search', 'endAssessmentAllUsers', 'usersInStartAssessment', 'categories'));
     }
 
-    public function show(User $user)
+    public function show(User $user, Request $request)
     {
-        return view('admin.pages.assessment.end-assessment-show', compact('user'));
+        $year = $request->input('tahun', date('Y'));
+
+        $user->load([
+            'mosque.endAssessmentWithCustomYear' => fn($query) => $query->where('year', $year),
+        ]);
+
+        return view('admin.pages.assessment.end-assessment-show', compact('year', 'user'));
     }
 
     public function edit(User $user)
