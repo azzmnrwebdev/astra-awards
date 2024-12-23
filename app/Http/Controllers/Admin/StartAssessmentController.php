@@ -280,8 +280,15 @@ class StartAssessmentController extends Controller
         return view('admin.pages.assessment.start-assessment', compact('theadName', 'categoryTheadName', 'combinedData', 'juries', 'categoryAreaId', 'categoryMosqueId', 'juryId', 'search', 'paginatedUsers', 'categories'));
     }
 
-    public function show(User $user)
+    public function show(User $user, Request $request)
     {
+        $year = $request->input('tahun', date('Y'));
+
+        $user->load([
+            'mosque.presentationWithCustomYear' => fn($query) => $query->where('year', $year),
+            'mosque.presentationWithCustomYear.startAssessmentWithCustomYear' => fn($query) => $query->where('year', $year),
+        ]);
+
         return view('admin.pages.assessment.start-assessment-show', compact('user'));
     }
 

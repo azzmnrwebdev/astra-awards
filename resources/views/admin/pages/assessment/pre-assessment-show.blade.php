@@ -18,11 +18,11 @@
         <div class="card-body p-lg-4">
             @if (count($committees) > 0)
                 @if (
-                    $user->mosque->pillarOne ||
-                        $user->mosque->pillarTwo ||
-                        $user->mosque->pillarThree ||
-                        $user->mosque->pillarFour ||
-                        $user->mosque->pillarFive)
+                    $user->mosque->pillarOneWithCustomYear ||
+                        $user->mosque->pillarTwoWithCustomYear ||
+                        $user->mosque->pillarThreeWithCustomYear ||
+                        $user->mosque->pillarFourWithCustomYear ||
+                        $user->mosque->pillarFiveWithCustomYear)
                     {{-- Header --}}
                     <div class="mb-4">
                         <h5 class="card-title fw-semibold">Pihak Penilai</h5>
@@ -697,7 +697,7 @@
     @prepend('scripts')
         <script>
             document.getElementById('pageTitle').addEventListener('click', function() {
-                window.location.href = "{{ route('pre_assessment.index') }}";
+                window.history.back();
             });
         </script>
     @endprepend

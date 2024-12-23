@@ -19,9 +19,11 @@
             <div class="mb-4">
                 <h5 class="card-title fw-semibold">Pihak Penilai</h5>
 
-                @if ($user->mosque->presentation->startAssessment && $user->mosque->presentation->startAssessment->isNotEmpty())
+                @if (
+                    $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear &&
+                        $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->isNotEmpty())
                     <ol class="list-group list-group-numbered mt-3">
-                        @foreach ($user->mosque->presentation->startAssessment as $item)
+                        @foreach ($user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear as $item)
                             <li class="list-group-item border-0 py-1">{{ $item->jury->name }}</li>
                         @endforeach
                     </ol>
@@ -36,8 +38,8 @@
 
             <h5 class="card-title fw-semibold mb-4">Lampiran Penilaian Awal</h5>
 
-            <embed src="{{ asset($user->mosque->presentation->file) }}" type="application/pdf" width="100%"
-                height="500px" />
+            <embed src="{{ asset($user->mosque->presentationWithCustomYear->file) }}" type="application/pdf"
+                width="100%" height="500px" />
 
             <div class="table-responsive mt-3">
                 <table class="table table-hover text-nowrap align-middle mb-0">
@@ -54,7 +56,9 @@
 
                     <tbody class="border-start border-end">
                         @php
-                            $assessment = $user->mosque->presentation->startAssessmentForJury(auth()->id())->first();
+                            $assessment = $user->mosque->presentationWithCustomYear
+                                ->startAssessmentForJuryWithCustomYear(auth()->id())
+                                ->first();
                         @endphp
 
                         <tr>
@@ -63,7 +67,7 @@
                             </td>
                             <td class="text-center py-3">
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    {{ $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                    {{ $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                         return $sumAssessment->presentation_file_pillar_two;
                                     }) }}
                                 @else
@@ -78,7 +82,7 @@
                             </td>
                             <td class="text-center py-3">
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    {{ $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                    {{ $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                         return $sumAssessment->presentation_file_pillar_one;
                                     }) }}
                                 @else
@@ -93,7 +97,7 @@
                             </td>
                             <td class="text-center py-3">
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    {{ $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                    {{ $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                         return $sumAssessment->presentation_file_pillar_three;
                                     }) }}
                                 @else
@@ -108,7 +112,7 @@
                             </td>
                             <td class="text-center py-3">
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    {{ $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                    {{ $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                         return $sumAssessment->presentation_file_pillar_four;
                                     }) }}
                                 @else
@@ -123,7 +127,7 @@
                             </td>
                             <td class="text-center py-3">
                                 @if (auth()->check() && auth()->user()->hasRole('admin'))
-                                    {{ $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                    {{ $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                         return $sumAssessment->presentation_file_pillar_five;
                                     }) }}
                                 @else
@@ -173,7 +177,7 @@
                                 Total Nilai Berdasarkan Seluruh Juri Yang Menilai
                             </td>
                             <td class="text-center fw-semibold py-3">
-                                {{ $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                {{ $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                     return $sumAssessment->presentation_file_pillar_two +
                                         $sumAssessment->presentation_file_pillar_one +
                                         $sumAssessment->presentation_file_pillar_three +
@@ -191,7 +195,7 @@
                                 {{ str_replace(
                                     '.',
                                     ',',
-                                    $user->mosque->presentation->startAssessment->sum(function ($sumAssessment) {
+                                    $user->mosque->presentationWithCustomYear->startAssessmentWithCustomYear->sum(function ($sumAssessment) {
                                         return $sumAssessment->presentation_file_pillar_two * 0.25 +
                                             $sumAssessment->presentation_file_pillar_one * 0.25 +
                                             $sumAssessment->presentation_file_pillar_three * 0.2 +
@@ -211,7 +215,7 @@
     @prepend('scripts')
         <script>
             document.getElementById('pageTitle').addEventListener('click', function() {
-                window.location.href = "{{ route('start_assessment.index') }}";
+                window.history.back();
             });
         </script>
     @endprepend

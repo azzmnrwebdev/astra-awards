@@ -353,13 +353,15 @@ class PreAssessmentController extends Controller
         return view('admin.pages.assessment.pre-assessment', compact('theadName', 'otherTheadName', 'combinedData', 'committes', 'categoryAreaId', 'categoryMosqueId', 'committeId', 'search', 'users', 'categories'));
     }
 
-    public function show(User $user)
+    public function show(User $user, Request $request)
     {
+        $year = $request->input('tahun', date('Y'));
+
         $distributions = $user->distributions()->with('committe')->get();
         $committees = $distributions->pluck('committe');
 
-        $committeeAssessments = CommitteeAssessmentCommittee::whereHas('committeeAssessment', function ($query) {
-            $query->where('year', date('Y'));
+        $committeeAssessments = CommitteeAssessmentCommittee::whereHas('committeeAssessment', function ($query) use ($year) {
+            $query->where('year', $year);
         })->with([
             'committeeAssessment.pillarOne',
             'committeeAssessment.pillarTwo',
@@ -367,6 +369,7 @@ class PreAssessmentController extends Controller
             'committeeAssessment.pillarFour',
             'committeeAssessment.pillarFive',
         ])->where('user_id', $user->id)->get();
+
 
         $pillarOne = null;
         $pillarTwo = null;

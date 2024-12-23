@@ -250,8 +250,12 @@
                                 </td>
                                 <td class="text-center py-3">
                                     @if (auth()->check() && auth()->user()->hasRole('jury'))
-                                        <a href="{{ route('end_assessment.edit', ['user' => $item->id]) }}"
-                                            class="text-dark align-middle"><i class="bi bi-pencil"></i></a>
+                                        @if (request('tahun') == date('Y'))
+                                            <a href="{{ route('end_assessment.edit', ['user' => $item->id]) }}"
+                                                class="text-dark align-middle"><i class="bi bi-pencil"></i></a>
+                                        @else
+                                            -
+                                        @endif
                                     @else
                                         -
                                     @endif

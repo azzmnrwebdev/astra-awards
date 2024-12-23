@@ -156,7 +156,7 @@
                                         : '<span class="badge text-bg-danger">Belum Tersedia</span>' !!}
                                 </td>
                                 <td class="text-center py-3">
-                                    <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
+                                    <a href="{{ route('start_assessment.show', ['user' => $item->id, 'tahun' => request('tahun')]) }}"
                                         class="text-dark align-middle"><i class="bi bi-eye"></i>
                                 </td>
                             </tr>
@@ -220,7 +220,7 @@
                                         ) }}
                                     </td>
                                     <td class="text-center py-3">
-                                        <a href="{{ route('start_assessment.show', ['user' => $item->id]) }}"
+                                        <a href="{{ route('start_assessment.show', ['user' => $item->id, 'tahun' => request('tahun')]) }}"
                                             class="text-dark align-middle"><i class="bi bi-eye"></i>
                                     </td>
                                 </tr>

@@ -208,7 +208,7 @@
                                     @endif
                                 </td>
                                 <td class="text-center py-3">
-                                    <a href="{{ route('pre_assessment.show', ['user' => $item->id]) }}"
+                                    <a href="{{ route('pre_assessment.show', ['user' => $item->id, 'tahun' => request('tahun')]) }}"
                                         class="text-dark align-middle"><i class="bi bi-eye"></i>
                                 </td>
                             </tr>
@@ -253,7 +253,7 @@
                                     <td class="text-center py-3">{{ $item->mosque->city->province->name }}</td>
                                     <td class="text-center py-3">{{ str_replace('.', ',', $item->totalNilai) }}</td>
                                     <td class="text-center py-3">
-                                        <a href="{{ route('pre_assessment.show', ['user' => $item->id]) }}"
+                                        <a href="{{ route('pre_assessment.show', ['user' => $item->id, 'tahun' => request('tahun')]) }}"
                                             class="text-dark align-middle"><i class="bi bi-eye"></i>
                                     </td>
                                 </tr>
