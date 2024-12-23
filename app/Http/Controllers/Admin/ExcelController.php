@@ -96,17 +96,19 @@ class ExcelController extends Controller
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
         $juryId = $request->input('juri');
+        $year = $request->input('tahun');
         $search = $request->input('pencarian');
 
-        return new EndAssessmentsExport($categoryAreaId, $categoryMosqueId, $juryId, $search);
+        return new EndAssessmentsExport($categoryAreaId, $categoryMosqueId, $juryId, $year, $search);
     }
 
     public function endAssessmentRecapies(Request $request)
     {
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
+        $year = $request->input('tahun');
         $search = $request->input('pencarian');
 
-        return new EndAssessmentRecapExport($categoryAreaId, $categoryMosqueId, $search);
+        return new EndAssessmentRecapExport($categoryAreaId, $categoryMosqueId, $year, $search);
     }
 }

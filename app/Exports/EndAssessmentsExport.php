@@ -25,6 +25,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
     private $categoryMosqueId;
     private $juryId;
     private $juryName;
+    private $year;
     private $search;
 
     private $index = 0;
@@ -38,23 +39,24 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
         'Content-Type' => 'text/xlsx',
     ];
 
-    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $juryId = null, $search = null)
+    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $juryId = null, $year = null, $search = null)
     {
         $currentYear = date('Y');
 
         $this->categoryAreaId = $categoryAreaId;
         $this->categoryMosqueId = $categoryMosqueId;
         $this->juryId = $juryId;
+        $this->year = $year ?? $currentYear;
         $this->search = $search;
 
-        $this->title = "LAPORAN PENILAIAN AKHIR AMALIAH ASTRA AWARDS $currentYear";
-        $this->fileName = "Laporan-Penilaian-Akhir-Peserta-Amaliah-Astra-Awards-$currentYear.xlsx";
+        $this->title = "LAPORAN PENILAIAN AKHIR AMALIAH ASTRA AWARDS $year";
+        $this->fileName = "Laporan-Penilaian-Akhir-Peserta-Amaliah-Astra-Awards-$year.xlsx";
 
         if ($this->categoryAreaId && $this->categoryMosqueId) {
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = "LAPORAN PENILAIAN AKHIR AMALIAH ASTRA AWARDS $currentYear\n" .
+            $this->title = "LAPORAN PENILAIAN AKHIR AMALIAH ASTRA AWARDS $year\n" .
                 "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
         }
 
@@ -76,8 +78,8 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                 $users = User::with([
                     'mosque',
                     'mosque.company',
-                    'mosque.presentation',
-                    'mosque.presentation.startAssessment'
+                    'mosque.presentationWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.presentationWithCustomYear.startAssessmentWithCustomYear' => fn($query) => $query->where('year', $this->year),
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->when($this->categoryAreaId && $this->categoryMosqueId, function ($query) {
@@ -104,12 +106,14 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment->isNotEmpty()) {
-                        $totalPillarOne = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_one');
-                        $totalPillarTwo = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_two');
-                        $totalPillarThree = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_three');
-                        $totalPillarFour = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_four');
-                        $totalPillarFive = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_five');
+                    $presentation = $user->mosque->presentationWithCustomYear;
+
+                    if ($presentation && $presentation->startAssessmentWithCustomYear->isNotEmpty()) {
+                        $totalPillarOne = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_one');
+                        $totalPillarTwo = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_two');
+                        $totalPillarThree = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_three');
+                        $totalPillarFour = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_four');
+                        $totalPillarFive = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_five');
 
                         $totalValue += $totalPillarOne * $weightPillarOne;
                         $totalValue += $totalPillarTwo * $weightPillarTwo;
@@ -117,7 +121,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
 
-                        $juryCount = $user->mosque->presentation->startAssessment->count();
+                        $juryCount = $presentation->startAssessmentWithCustomYear->count();
 
                         if ($juryCount > 0) {
                             $totalValue = $totalValue / $juryCount;
@@ -155,7 +159,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             // Status
             $status = 'Belum Penilaian';
 
-            if ($user->mosque->endAssessmentForJury($this->juryId)->exists()) {
+            if ($user->mosque->endAssessmentForJuryWithCustomYear($this->juryId)->where('year', $this->year)->exists()) {
                 $status = 'Sudah Penilaian';
             }
 
@@ -170,7 +174,8 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $totalValue = null;
             $recapValue = null;
             $assessment = $user->mosque
-                ->endAssessmentForJury($this->juryId)
+                ->endAssessmentForJuryWithCustomYear($this->juryId)
+                ->where('year', $this->year)
                 ->first();
 
             if ($assessment) {
@@ -199,7 +204,8 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $status = 'Semua Juri Sudah Menilai';
             $totalJuries = User::where('role', 'jury')->count();
 
-            $completedAssessments = $user->mosque->endAssessment()
+            $completedAssessments = $user->mosque->endAssessmentWithCustomYear()
+                ->where('year', $this->year)
                 ->distinct('jury_id')
                 ->count('jury_id');
 
@@ -216,29 +222,29 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
             $pillarFourValue = null;
             $pillarFiveValue = null;
 
-            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarTwoValue) {
+            $user->mosque->endAssessmentWithCustomYear->where('year', $this->year)->sum(function ($sumAssessment) use (&$pillarTwoValue) {
                 $pillarTwoValue += $sumAssessment->presentation_value_pillar_two;
             });
 
-            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarOneValue) {
+            $user->mosque->endAssessmentWithCustomYear->where('year', $this->year)->sum(function ($sumAssessment) use (&$pillarOneValue) {
                 $pillarOneValue += $sumAssessment->presentation_value_pillar_one;
             });
 
-            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarThreeValue) {
+            $user->mosque->endAssessmentWithCustomYear->where('year', $this->year)->sum(function ($sumAssessment) use (&$pillarThreeValue) {
                 $pillarThreeValue += $sumAssessment->presentation_value_pillar_three;
             });
 
-            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarFourValue) {
+            $user->mosque->endAssessmentWithCustomYear->where('year', $this->year)->sum(function ($sumAssessment) use (&$pillarFourValue) {
                 $pillarFourValue += $sumAssessment->presentation_value_pillar_four;
             });
 
-            $user->mosque->endAssessment->sum(function ($sumAssessment) use (&$pillarFiveValue) {
+            $user->mosque->endAssessmentWithCustomYear->where('year', $this->year)->sum(function ($sumAssessment) use (&$pillarFiveValue) {
                 $pillarFiveValue += $sumAssessment->presentation_value_pillar_five;
             });
 
             // Total Nilai
             $totalValue = null;
-            $user->mosque->endAssessment->each(function ($sumAssessment) use (&$totalValue) {
+            $user->mosque->endAssessmentWithCustomYear->where('year', $this->year)->each(function ($sumAssessment) use (&$totalValue) {
                 $totalValue += $sumAssessment->presentation_value_pillar_two +
                     $sumAssessment->presentation_value_pillar_one +
                     $sumAssessment->presentation_value_pillar_three +
@@ -248,7 +254,7 @@ class EndAssessmentsExport implements FromCollection, Responsable, WithCustomSta
 
             // Rekap Nilai
             $recapValue = null;
-            $user->mosque->endAssessment->each(function ($sumAssessment) use (&$recapValue) {
+            $user->mosque->endAssessmentWithCustomYear->where('year', $this->year)->each(function ($sumAssessment) use (&$recapValue) {
                 $recapValue += $sumAssessment->presentation_value_pillar_two * 0.25 +
                     $sumAssessment->presentation_value_pillar_one * 0.25 +
                     $sumAssessment->presentation_value_pillar_three * 0.20 +

@@ -5,18 +5,20 @@ namespace App\Http\Controllers\Admin;
 use ZipArchive;
 use App\Models\User;
 use App\Models\CategoryArea;
+use Illuminate\Http\Request;
 use App\Models\CategoryMosque;
 use App\Http\Controllers\Controller;
 
 class ZipController extends Controller
 {
-    public function getPresentationFile()
+    public function getPresentationFile(Request $request)
     {
         $categoryAreas = CategoryArea::all();
         $categoryMosques = CategoryMosque::all();
+        $year = $request->input('tahun', date('Y'));
 
         $public_dir = public_path();
-        $zipFileName = 'presentations.zip';
+        $zipFileName = 'File-Presentasi-Lolos-Tahun-' . $year . '.zip';
         $zip = new ZipArchive;
 
         if ($zip->open($public_dir . '/' . $zipFileName, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
@@ -24,8 +26,8 @@ class ZipController extends Controller
                 foreach ($categoryMosques as $categoryMosque) {
                     $users = User::with([
                         'mosque',
-                        'mosque.presentation',
-                        'mosque.presentation.startAssessment'
+                        'mosque.presentationWithCustomYear' => fn($query) => $query->where('year', $year),
+                        'mosque.presentationWithCustomYear.startAssessmentWithCustomYear' => fn($query) => $query->where('year', $year),
                     ])->whereHas('mosque', function ($q) use ($categoryArea, $categoryMosque) {
                         $q->where('category_area_id', $categoryArea->id)->where('category_mosque_id', $categoryMosque->id);
                     })->get();
@@ -39,12 +41,14 @@ class ZipController extends Controller
                         $weightPillarFour = 0.15;
                         $weightPillarFive = 0.15;
 
-                        if ($user->mosque->presentation && $user->mosque->presentation->startAssessment->isNotEmpty()) {
-                            $totalPillarOne = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_one');
-                            $totalPillarTwo = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_two');
-                            $totalPillarThree = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_three');
-                            $totalPillarFour = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_four');
-                            $totalPillarFive = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_five');
+                        $presentation = $user->mosque->presentationWithCustomYear;
+
+                        if ($presentation && $presentation->startAssessmentWithCustomYear->isNotEmpty()) {
+                            $totalPillarOne = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_one');
+                            $totalPillarTwo = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_two');
+                            $totalPillarThree = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_three');
+                            $totalPillarFour = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_four');
+                            $totalPillarFive = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_five');
 
                             $totalValue += $totalPillarOne * $weightPillarOne;
                             $totalValue += $totalPillarTwo * $weightPillarTwo;
@@ -52,7 +56,7 @@ class ZipController extends Controller
                             $totalValue += $totalPillarFour * $weightPillarFour;
                             $totalValue += $totalPillarFive * $weightPillarFive;
 
-                            $juryCount = $user->mosque->presentation->startAssessment->count();
+                            $juryCount = $presentation->startAssessmentWithCustomYear->count();
 
                             if ($juryCount > 0) {
                                 $totalValue = $totalValue / $juryCount;
@@ -71,11 +75,10 @@ class ZipController extends Controller
                     $folderName = "{$categoryArea->name} dan {$categoryMosque->name}/";
 
                     foreach ($getUsers as $user) {
-                        if ($user->mosque->presentation) {
-                            $filePath = $user->mosque->presentation->file;
+                        if ($user->mosque->presentationWithCustomYear) {
+                            $filePath = $user->mosque->presentationWithCustomYear->file;
 
                             if (file_exists($filePath)) {
-                                // dd('bisa');
                                 $zip->addFile($filePath, $folderName . basename($filePath));
                             }
                         }

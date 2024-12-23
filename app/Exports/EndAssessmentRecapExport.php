@@ -22,13 +22,14 @@ class EndAssessmentRecapExport implements FromCollection, Responsable, WithCusto
 
     private $categoryAreaId;
     private $categoryMosqueId;
+    private $year;
     private $search;
 
     private $index = 0;
     private $juryNames = [];
 
-    private $title = 'REKAPITULASI PENILAIAN AKHIR AMALIAH ASTRA AWARDS 2024';
-    private $fileName = 'Rekap-Penilaian-Akhir-Peserta-Amaliah-Astra-Awards-2024.xlsx';
+    private $title;
+    private $fileName;
 
     private $writerType = Excel::XLSX;
 
@@ -36,11 +37,17 @@ class EndAssessmentRecapExport implements FromCollection, Responsable, WithCusto
         'Content-Type' => 'text/xlsx',
     ];
 
-    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $search = null)
+    public function __construct($categoryAreaId = null, $categoryMosqueId = null, $year = null, $search = null)
     {
+        $currentYear = date('Y');
+
         $this->categoryAreaId = $categoryAreaId;
         $this->categoryMosqueId = $categoryMosqueId;
+        $this->year = $year ?? $currentYear;
         $this->search = $search;
+
+        $this->title = "REKAPITULASI PENILAIAN AKHIR AMALIAH ASTRA AWARDS $year";
+        $this->fileName = "Rekap-Penilaian-Akhir-Peserta-Amaliah-Astra-Awards-$year.xlsx";
 
         $this->juryNames = User::where('role', 'jury')->pluck('name')->toArray();
 
@@ -48,7 +55,7 @@ class EndAssessmentRecapExport implements FromCollection, Responsable, WithCusto
             $categoryArea = CategoryArea::find($this->categoryAreaId);
             $categoryMosque = CategoryMosque::find($this->categoryMosqueId);
 
-            $this->title = "REKAPITULASI PENILAIAN AKHIR AMALIAH ASTRA AWARDS 2024\n" .
+            $this->title = "REKAPITULASI PENILAIAN AKHIR AMALIAH ASTRA AWARDS $year\n" .
                 "BERDASARKAN KATEGORI " . strtoupper($categoryArea->name) . " DAN " . strtoupper($categoryMosque->name);
         }
     }
@@ -65,11 +72,12 @@ class EndAssessmentRecapExport implements FromCollection, Responsable, WithCusto
                 $users = User::with([
                     'mosque',
                     'mosque.company',
-                    'mosque.endAssessment',
+                    'mosque.presentationWithCustomYear' => fn($query) => $query->where('year', $this->year),
+                    'mosque.endAssessmentWithCustomYear' => fn($query) => $query->where('year', $this->year),
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->where(function ($q) {
-                    $q->whereHas('mosque.presentation');
+                    $q->whereHas('mosque.presentationWithCustomYear');
                 })->when($this->categoryAreaId && $this->categoryMosqueId, function ($query) {
                     $query->whereHas('mosque', function ($q) {
                         $q->where('category_area_id', $this->categoryAreaId)
@@ -94,12 +102,14 @@ class EndAssessmentRecapExport implements FromCollection, Responsable, WithCusto
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->endAssessment->isNotEmpty()) {
-                        $totalPillarOne = $user->mosque->endAssessment->sum('presentation_value_pillar_one');
-                        $totalPillarTwo = $user->mosque->endAssessment->sum('presentation_value_pillar_two');
-                        $totalPillarThree = $user->mosque->endAssessment->sum('presentation_value_pillar_three');
-                        $totalPillarFour = $user->mosque->endAssessment->sum('presentation_value_pillar_four');
-                        $totalPillarFive = $user->mosque->endAssessment->sum('presentation_value_pillar_five');
+                    $endAssessment = $user->mosque->endAssessmentWithCustomYear;
+
+                    if ($endAssessment->isNotEmpty()) {
+                        $totalPillarOne = $endAssessment->sum('presentation_value_pillar_one');
+                        $totalPillarTwo = $endAssessment->sum('presentation_value_pillar_two');
+                        $totalPillarThree = $endAssessment->sum('presentation_value_pillar_three');
+                        $totalPillarFour = $endAssessment->sum('presentation_value_pillar_four');
+                        $totalPillarFive = $endAssessment->sum('presentation_value_pillar_five');
 
                         $totalValue += $totalPillarOne * $weightPillarOne;
                         $totalValue += $totalPillarTwo * $weightPillarTwo;
@@ -107,7 +117,7 @@ class EndAssessmentRecapExport implements FromCollection, Responsable, WithCusto
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
 
-                        $juryCount = $user->mosque->endAssessment->count();
+                        $juryCount = $endAssessment->count();
 
                         if ($juryCount > 0) {
                             $totalValue = $totalValue / $juryCount;
@@ -141,7 +151,7 @@ class EndAssessmentRecapExport implements FromCollection, Responsable, WithCusto
         $totalScore = 0;
         $jurorScores = [];
 
-        $assessments = $user->mosque->endAssessment;
+        $assessments = $user->mosque->endAssessmentWithCustomYear;
 
         if ($assessments->count() > 0) {
             foreach ($assessments as $assessment) {
@@ -294,7 +304,7 @@ class EndAssessmentRecapExport implements FromCollection, Responsable, WithCusto
         }
 
         $sheet->getStyle("B2:{$averageColumn}{$lastDataRow}")
-        ->getBorders()
+            ->getBorders()
             ->getAllBorders()
             ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 

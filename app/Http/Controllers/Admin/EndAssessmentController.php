@@ -73,6 +73,7 @@ class EndAssessmentController extends Controller
         $categoryAreaId = $request->input('kategori_area');
         $categoryMosqueId = $request->input('kategori_masjid');
         $juryId = $request->input('juri');
+        $year = $request->input('tahun', date('Y'));
         $search = $request->input('pencarian');
 
         // Menampilkan semua data pengguna penilaian akhir
@@ -83,7 +84,7 @@ class EndAssessmentController extends Controller
                 $users = User::with([
                     'mosque',
                     'mosque.company',
-                    'mosque.endAssessment'
+                    'mosque.endAssessmentWithCustomYear' => fn($query) => $query->where('year', $year),
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->when($categoryAreaId && $categoryMosqueId, function ($query) use ($categoryAreaId, $categoryMosqueId) {
@@ -93,7 +94,7 @@ class EndAssessmentController extends Controller
                     });
                 })->when($juryId, function ($query) use ($juryId) {
                     $query->where(function ($q) use ($juryId) {
-                        $q->whereHas('mosque.endAssessment', function ($q2) use ($juryId) {
+                        $q->whereHas('mosque.endAssessmentWithCustomYear', function ($q2) use ($juryId) {
                             $q2->where('jury_id', $juryId);
                         });
                     });
@@ -116,12 +117,14 @@ class EndAssessmentController extends Controller
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->endAssessment->isNotEmpty()) {
-                        $totalPillarOne = $user->mosque->endAssessment->sum('presentation_value_pillar_one');
-                        $totalPillarTwo = $user->mosque->endAssessment->sum('presentation_value_pillar_two');
-                        $totalPillarThree = $user->mosque->endAssessment->sum('presentation_value_pillar_three');
-                        $totalPillarFour = $user->mosque->endAssessment->sum('presentation_value_pillar_four');
-                        $totalPillarFive = $user->mosque->endAssessment->sum('presentation_value_pillar_five');
+                    $endAssessment = $user->mosque->endAssessmentWithCustomYear;
+
+                    if ($endAssessment->isNotEmpty()) {
+                        $totalPillarOne = $endAssessment->sum('presentation_value_pillar_one');
+                        $totalPillarTwo = $endAssessment->sum('presentation_value_pillar_two');
+                        $totalPillarThree = $endAssessment->sum('presentation_value_pillar_three');
+                        $totalPillarFour = $endAssessment->sum('presentation_value_pillar_four');
+                        $totalPillarFive = $endAssessment->sum('presentation_value_pillar_five');
 
                         $totalValue += $totalPillarOne * $weightPillarOne;
                         $totalValue += $totalPillarTwo * $weightPillarTwo;
@@ -129,7 +132,7 @@ class EndAssessmentController extends Controller
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
 
-                        $juryCount = $user->mosque->endAssessment->count();
+                        $juryCount = $endAssessment->count();
 
                         if ($juryCount > 0) {
                             $totalValue = $totalValue / $juryCount;
@@ -165,12 +168,12 @@ class EndAssessmentController extends Controller
                 $users = User::with([
                     'mosque',
                     'mosque.company',
-                    'mosque.presentation',
-                    'mosque.presentation.startAssessment'
+                    'mosque.presentationWithCustomYear' => fn($query) => $query->where('year', $year),
+                    'mosque.presentationWithCustomYear.startAssessmentWithCustomYear' => fn($query) => $query->where('year', $year),
                 ])->whereHas('mosque', function ($q) use ($area, $mosque) {
                     $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
                 })->where(function ($q) {
-                    $q->whereHas('mosque.presentation');
+                    $q->whereHas('mosque.presentationWithCustomYear');
                 })->when($search, function ($query) use ($search) {
                     $query->where(function ($q) use ($search) {
                         $q->whereHas('mosque', function ($q2) use ($search) {
@@ -190,12 +193,14 @@ class EndAssessmentController extends Controller
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->presentation && $user->mosque->presentation->startAssessment->isNotEmpty()) {
-                        $totalPillarOne = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_one');
-                        $totalPillarTwo = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_two');
-                        $totalPillarThree = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_three');
-                        $totalPillarFour = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_four');
-                        $totalPillarFive = $user->mosque->presentation->startAssessment->sum('presentation_file_pillar_five');
+                    $presentation = $user->mosque->presentationWithCustomYear;
+
+                    if ($presentation && $presentation->startAssessmentWithCustomYear->isNotEmpty()) {
+                        $totalPillarOne = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_one');
+                        $totalPillarTwo = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_two');
+                        $totalPillarThree = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_three');
+                        $totalPillarFour = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_four');
+                        $totalPillarFive = $presentation->startAssessmentWithCustomYear->sum('presentation_file_pillar_five');
 
                         $totalValue += $totalPillarOne * $weightPillarOne;
                         $totalValue += $totalPillarTwo * $weightPillarTwo;
@@ -203,7 +208,7 @@ class EndAssessmentController extends Controller
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
 
-                        $juryCount = $user->mosque->presentation->startAssessment->count();
+                        $juryCount = $presentation->startAssessmentWithCustomYear->count();
 
                         if ($juryCount > 0) {
                             $totalValue = $totalValue / $juryCount;
@@ -217,9 +222,7 @@ class EndAssessmentController extends Controller
                     return $user->totalNilai > 0;
                 });
 
-                $topUsers = $users->sortByDesc('totalNilai')->take(3);
-
-                $startAssessmentUsers = $startAssessmentUsers->merge($topUsers);
+                $startAssessmentUsers = $startAssessmentUsers->merge($users->sortByDesc('totalNilai')->take(3));
             }
         }
 
@@ -238,10 +241,12 @@ class EndAssessmentController extends Controller
 
         foreach ($categoryAreas as $area) {
             foreach ($categoryMosques as $mosque) {
-                $topUsers = User::with(['mosque', 'mosque.endAssessment'])
-                    ->whereHas('mosque', function ($q) use ($area, $mosque) {
-                        $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
-                    })->get();
+                $topUsers = User::with([
+                    'mosque',
+                    'mosque.endAssessmentWithCustomYear' => fn($query) => $query->where('year', $year),
+                ])->whereHas('mosque', function ($q) use ($area, $mosque) {
+                    $q->where('category_area_id', $area->id)->where('category_mosque_id', $mosque->id);
+                })->get();
 
                 $topUsers = $topUsers->map(function ($user) {
                     $totalValue = 0;
@@ -252,12 +257,14 @@ class EndAssessmentController extends Controller
                     $weightPillarFour = 0.15;
                     $weightPillarFive = 0.15;
 
-                    if ($user->mosque->endAssessment->isNotEmpty()) {
-                        $totalPillarOne = $user->mosque->endAssessment->sum('presentation_value_pillar_one');
-                        $totalPillarTwo = $user->mosque->endAssessment->sum('presentation_value_pillar_two');
-                        $totalPillarThree = $user->mosque->endAssessment->sum('presentation_value_pillar_three');
-                        $totalPillarFour = $user->mosque->endAssessment->sum('presentation_value_pillar_four');
-                        $totalPillarFive = $user->mosque->endAssessment->sum('presentation_value_pillar_five');
+                    $endAssessment = $user->mosque->endAssessmentWithCustomYear;
+
+                    if ($endAssessment->isNotEmpty()) {
+                        $totalPillarOne = $endAssessment->sum('presentation_value_pillar_one');
+                        $totalPillarTwo = $endAssessment->sum('presentation_value_pillar_two');
+                        $totalPillarThree = $endAssessment->sum('presentation_value_pillar_three');
+                        $totalPillarFour = $endAssessment->sum('presentation_value_pillar_four');
+                        $totalPillarFive = $endAssessment->sum('presentation_value_pillar_five');
 
                         $totalValue += $totalPillarOne * $weightPillarOne;
                         $totalValue += $totalPillarTwo * $weightPillarTwo;
@@ -265,7 +272,7 @@ class EndAssessmentController extends Controller
                         $totalValue += $totalPillarFour * $weightPillarFour;
                         $totalValue += $totalPillarFive * $weightPillarFive;
 
-                        $juryCount = $user->mosque->endAssessment->count();
+                        $juryCount = $endAssessment->count();
 
                         if ($juryCount > 0) {
                             $totalValue = $totalValue / $juryCount;

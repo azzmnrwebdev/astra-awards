@@ -116,10 +116,21 @@ class Mosque extends Model
         return $this->hasMany(EndAssessment::class, 'mosque_id')->where('year', date('Y'));
     }
 
+    public function endAssessmentWithCustomYear()
+    {
+        return $this->hasMany(EndAssessment::class, 'mosque_id');
+    }
+
     public function endAssessmentForJury($juryId)
     {
         return $this->hasMany(EndAssessment::class, 'mosque_id')
             ->where('jury_id', $juryId)->where('year', date('Y'));
+    }
+
+    public function endAssessmentForJuryWithCustomYear($juryId)
+    {
+        return $this->hasMany(EndAssessment::class, 'mosque_id')
+            ->where('jury_id', $juryId);
     }
 
     public function getTotalPillarValueAttribute()
